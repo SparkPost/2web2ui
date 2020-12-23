@@ -20,6 +20,8 @@ import { listApiKeys } from 'src/actions/api-keys';
 import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { getReports } from 'src/actions/reports';
+import OGDashbaordPage from 'src/pages/dashboard';
+import useHibanaToggle from 'src/hooks/useHibanaToggle';
 
 function mapStateToProps(state) {
   const isAnAdmin = isAdmin(state);
@@ -106,7 +108,7 @@ const mapDispatchToProps = {
   listApiKeys,
 };
 
-export default connect(
+export const DashboardPageContainerV2 = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(props => {
@@ -116,3 +118,7 @@ export default connect(
     </DashboardContextProvider>
   );
 });
+
+export default function DashboardV2(props) {
+  return useHibanaToggle(OGDashbaordPage, DashboardPageContainerV2)(props);
+}
