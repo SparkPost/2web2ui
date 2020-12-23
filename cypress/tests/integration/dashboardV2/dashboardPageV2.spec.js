@@ -1,7 +1,7 @@
 import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
 import { LINKS } from 'src/constants';
 
-const PAGE_URL = '/dashboardV2';
+const PAGE_URL = '/dashboard';
 
 describe('Version 2 of the dashboard page', () => {
   beforeEach(() => {
@@ -523,11 +523,48 @@ describe('Version 2 of the dashboard page', () => {
       ).should('not.exist');
     });
 
-    it('renders with a relevant page title, relevant headings, and links when the `allow_dashboard_v2` account flag is enabled', () => {
+    it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
+      stubGrantsRequest({ role: 'reporting' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsersRequest({ access_level: 'reporting' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@stubbedUsersRequest']);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should('not.exist');
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should('not.exist');
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.exist',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.exist');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.exist');
+    });
+
+    it('renders with a relevant page title, relevant headings, and links', () => {
       commonBeforeSteps();
       cy.title().should('include', 'Dashboard');
       cy.findByRole('heading', { name: 'Welcome, Ulysses!' }).should('be.visible');
-
       cy.findByRole('heading', { name: 'Setup Documentation' }).should('be.visible');
       cy.verifyLink({
         content: 'Integration Documentation',
@@ -560,13 +597,6 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
       cy.findByDataId('transmissions-usage-section').should('not.exist');
       cy.findByDataId('validations-usage-section').should('not.exist');
-    });
-
-    it('renders the 404 page if the user has Hibana enabled but does not have the `allow_dashboard_v2` account flag', () => {
-      cy.visit(PAGE_URL);
-
-      cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-      cy.url().should('include', '404');
     });
 
     describe('sidebar', () => {
@@ -649,15 +679,6 @@ describe('Version 2 of the dashboard page', () => {
         cy.findByRole('heading', { name: 'Recipient Validation' }).should('not.exist');
         cy.findByRole('heading', { name: 'Recent Alerts' }).should('not.exist');
       });
-    });
-  }
-
-  if (!IS_HIBANA_ENABLED) {
-    it('renders the 404 page when the user does not have Hibana enabled', () => {
-      cy.visit(PAGE_URL);
-
-      cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-      cy.url().should('include', '404');
     });
   }
 });
