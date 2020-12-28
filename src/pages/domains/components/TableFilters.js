@@ -98,6 +98,7 @@ function DomainField({ onChange, value, disabled, placeholder = '' }) {
 
   return (
     <TextField
+      mb="400"
       id={uniqueId}
       maxWidth="inherit"
       label="Filter Domains"
@@ -147,7 +148,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
     });
 
   return (
-    <Box>
+    <Box mb="400">
       <Label label="Domain Status" />
       <Popover
         left
