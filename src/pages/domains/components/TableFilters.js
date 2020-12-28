@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search } from '@sparkpost/matchbox-icons';
 import {
   Box,
-  Button,
   Checkbox,
   Popover,
   TextField,
@@ -12,14 +11,14 @@ import {
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
-import { StyledFilterFields, StatusPopoverContent, StyledGridCell } from './styles';
-import { ChevronRight } from '@sparkpost/matchbox-icons';
-import styled from 'styled-components';
-
-const Chevron = styled(ChevronRight)`
-  color: ${props => props.theme.colors.blue['700']};
-  transform: rotate(90deg);
-`;
+import {
+  StyledFilterFields,
+  StatusPopoverContent,
+  AlignedTextButton,
+  AlignedButtonIcon,
+  Chevron,
+  StyledGridCell,
+} from './styles';
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -101,6 +100,7 @@ function DomainField({ onChange, value, disabled, placeholder = '' }) {
   return (
     <TextField
       id={uniqueId}
+      maxWidth="inherit"
       label="Filter Domains"
       prefix={<Search />}
       onChange={onChange}
@@ -141,6 +141,12 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
   const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
 
+  let activeDomainStatusLabels = checkedCheckboxes
+    .filter(checkbox => checkbox.name !== 'selectAll')
+    .map(checkbox => {
+      return checkbox.label;
+    });
+
   return (
     <Box>
       <Label label="Domain Status" />
@@ -151,7 +157,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
         open={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
         trigger={
-          <Button
+          <AlignedTextButton
             outline
             fullWidth
             variant="monochrome"
@@ -163,19 +169,15 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
               {hasCheckedCheckboxes ? (
-                checkedCheckboxes
-                  .filter(checkbox => checkbox.name !== 'selectAll')
-                  .map((checkbox, index) => (
-                    <span key={`${checkbox.name}-${index}`}>{checkbox.label}&nbsp;</span>
-                  ))
+                activeDomainStatusLabels.join(', ')
               ) : (
                 <span>Domain Status</span>
               )}
             </StatusPopoverContent>
 
             <ScreenReaderOnly>Domain Status</ScreenReaderOnly>
-            <Button.Icon as={Chevron} ml="100" size={25} />
-          </Button>
+            <AlignedButtonIcon as={Chevron} size={25} />
+          </AlignedTextButton>
         }
       >
         <Box padding="300">
