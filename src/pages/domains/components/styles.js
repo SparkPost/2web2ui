@@ -37,11 +37,11 @@ export const AlignedTextButton = styled(Button)`
   }
 
   @media (min-width: ${props => props.theme.breakpoints[1]}) {
-    max-width: 150px;
+    width: 150px;
   }
 
   @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    max-width: 250px;
+    width: 250px;
   }
 `;
 

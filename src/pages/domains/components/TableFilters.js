@@ -44,27 +44,48 @@ export function reducer(state, action) {
         };
       }
 
+      let mappedCheckboxes = state.checkboxes.map(filter => {
+        if (filter.name === action.name) {
+          return {
+            ...filter,
+            isChecked: !isChecked,
+          };
+        }
+        return filter;
+      });
+
+      const checkboxesWithoutSelectAll = mappedCheckboxes
+        .map(checkbox => (checkbox.name !== 'selectAll' ? checkbox : undefined))
+        .filter(Boolean); // get rid of selectAll
+
+      const allSelected =
+        checkboxesWithoutSelectAll.map(checkbox => checkbox.isChecked).filter(Boolean)?.length ===
+        checkboxesWithoutSelectAll?.length;
+
+      // Force select all state here...
+      if (allSelected) {
+        mappedCheckboxes = mappedCheckboxes.map(checkbox => {
+          if (checkbox.name === 'selectAll') {
+            checkbox.isChecked = true;
+          }
+
+          return checkbox;
+        });
+      } else {
+        mappedCheckboxes = mappedCheckboxes.map(checkbox => {
+          if (checkbox.name === 'selectAll') {
+            checkbox.isChecked = false;
+          }
+
+          return checkbox;
+        });
+      }
+
       return {
         ...state,
         // Return the relevant checked box and update its checked state,
         // otherwise, return any other checkbox.
-        checkboxes: state.checkboxes.map(filter => {
-          if (filter.name === action.name) {
-            return {
-              ...filter,
-              isChecked: !isChecked,
-            };
-          }
-          //if any checkbox is unchecked make sure selectAll is unchecked too
-          if (action.name !== 'selectAll' && isChecked && filter.name === 'selectAll') {
-            return {
-              ...filter,
-              isChecked: false,
-            };
-          }
-
-          return filter;
-        }),
+        checkboxes: mappedCheckboxes,
       };
     }
 
@@ -140,12 +161,15 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
   const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
+  const allCheckboxesChecked = checkboxes.length === checkedCheckboxes?.length;
 
-  let activeDomainStatusLabels = checkedCheckboxes
+  const activeDomainStatusLabels = checkedCheckboxes
     .filter(checkbox => checkbox.name !== 'selectAll')
     .map(checkbox => {
       return checkbox.label;
     });
+
+  const activeStatusLabels = activeDomainStatusLabels.join(', ');
 
   return (
     <Box mb="400">
@@ -168,11 +192,9 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
             {/* This content is purely visual and is not exposed to screen readers, rather, "Domain Status" is always exposed for those users */}
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
-              {hasCheckedCheckboxes ? (
-                activeDomainStatusLabels.join(', ')
-              ) : (
-                <span>Domain Status</span>
-              )}
+              {!hasCheckedCheckboxes && 'None'}
+              {hasCheckedCheckboxes && allCheckboxesChecked && 'All'}
+              {hasCheckedCheckboxes && !allCheckboxesChecked && activeStatusLabels}
             </StatusPopoverContent>
 
             <ScreenReaderOnly>Domain Status</ScreenReaderOnly>
@@ -185,12 +207,14 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
             Checkboxes filter the table. When checked, table elements are visible, when unchecked
             they are hidden from the table.
           </ScreenReaderOnly>
+
           <Checkbox
             label="Select All"
             id="select-all"
             name="selectAll"
             onChange={onCheckboxChange}
             checked={checkboxes.find(filter => filter.name === 'selectAll').isChecked}
+            disabled={allCheckboxesChecked}
           />
         </Box>
         <Divider />
