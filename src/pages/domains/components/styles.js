@@ -24,7 +24,6 @@ export const StatusPopoverContent = styled.span`
   width: 100px;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
 
   > * {
     /* Hacky fix, but addresses vertical centering without introducing a flex parent that wreaks havoc on text truncation */
