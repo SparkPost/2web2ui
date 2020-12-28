@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
-import { Panel } from 'src/components/matchbox';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import { usePageFilters } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -15,6 +14,7 @@ import {
   getActiveStatusFilters,
   filterStateToParams,
 } from '../helpers';
+import { DomainsPanel, DomainsPanelSection } from './styles';
 import _ from 'lodash';
 
 const filtersInitialState = {
@@ -209,8 +209,8 @@ export default function TrackingDomainsTab() {
 
   return (
     <>
-      <Panel mb="400">
-        <Panel.Section>
+      <DomainsPanel mb="400">
+        <DomainsPanelSection>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
@@ -244,14 +244,14 @@ export default function TrackingDomainsTab() {
               }}
             />
           </TableFilters>
-        </Panel.Section>
+        </DomainsPanelSection>
 
         {listPending && <Loading />}
 
         {isEmpty && <Empty message="There is no data to display" />}
 
         {!listPending && !isEmpty && <TrackingDomainsTable tableInstance={tableInstance} />}
-      </Panel>
+      </DomainsPanel>
 
       <Pagination
         data={rows}
