@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 import _ from 'lodash';
 import { Loading } from 'src/components/loading/Loading';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import selectAccessConditionState from 'src/selectors/accessConditionState';
 import { useHibana } from 'src/context/HibanaContext';
 import config from 'src/config';
 
-export function DefaultRedirect({ location, history, currentUser, ready }) {
+export function DefaultRedirect({ currentUser, ready }) {
   const [{ isHibanaEnabled }] = useHibana();
+  const location = useLocation();
+  const history = useHistory();
   useEffect(() => {
     const handleRedirect = () => {
       const { state: routerState = {}, ...locationWithoutState } = location;
@@ -29,7 +31,7 @@ export function DefaultRedirect({ location, history, currentUser, ready }) {
         return;
       }
 
-      // reporting users are all sent to the summary report
+      // users are sent to the summary report depending on whether hibana is enabled and allowedAccessLevels list
       if (_.includes(allowedAccessLevels, currentUser.access_level)) {
         history.replace({ ...location, pathname: '/reports/summary' });
         return;
@@ -45,4 +47,4 @@ export function DefaultRedirect({ location, history, currentUser, ready }) {
 }
 
 const mapStateToProps = state => selectAccessConditionState(state);
-export default withRouter(connect(mapStateToProps)(DefaultRedirect));
+export default connect(mapStateToProps)(DefaultRedirect);

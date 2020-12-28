@@ -523,44 +523,6 @@ describe('Version 2 of the dashboard page', () => {
       ).should('not.exist');
     });
 
-    it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
-      stubGrantsRequest({ role: 'reporting' });
-      stubAlertsReq();
-      stubAccountsReq();
-      stubUsersRequest({ access_level: 'reporting' });
-
-      cy.visit(PAGE_URL);
-      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@stubbedUsersRequest']);
-
-      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
-
-      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
-        'be.visible',
-      );
-
-      cy.verifyLink({
-        content: 'Go To Analytics Report',
-        href: '/signals/analytics',
-      });
-
-      // step 1 text...
-      cy.findAllByText('is required in order to start or enable analytics.').should('not.exist');
-
-      // step 2 text...
-      cy.findAllByText('Once a sending domain has been added, it needs to be').should('not.exist');
-
-      // step 3 text...
-      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
-        'not.exist',
-      );
-
-      // step 4 text...
-      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.exist');
-      cy.findByText(
-        'Follow the Getting Started documentation to set up sending via API or SMTP.',
-      ).should('not.exist');
-    });
-
     it('renders with a relevant page title, relevant headings, and links', () => {
       commonBeforeSteps();
       cy.title().should('include', 'Dashboard');

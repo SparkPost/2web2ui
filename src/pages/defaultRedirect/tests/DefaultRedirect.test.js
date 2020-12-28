@@ -1,116 +1,64 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import cases from 'jest-in-case';
-
+import { shallow, mount } from 'enzyme';
 import { DefaultRedirect } from '../DefaultRedirect';
-import { ROLES } from 'src/constants';
+import { useHibana } from 'src/context/HibanaContext';
+import routeData from 'react-router-dom';
 
-// jest.mock('src/config', () => ({
-//   splashPage: '/config/splash',
-//   zuora: {
-//     baseUrl: '/zuora/base/url',
-//   },
-//   site: {},
-// }));
+jest.mock('src/context/HibanaContext');
+useHibana.mockImplementation(() => [{ isHibanaEnabled: false }]);
+const mockHistoryPush = jest.fn();
+const mockHistoryReplace = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useRouteMatch: () => ({ params: {} }),
+  useHistory: () => ({ push: mockHistoryPush, replace: mockHistoryReplace }),
+}));
 
-describe('Component: DefaultRedirect', () => {
-  let props;
-  let wrapper;
-  let instance;
+describe('DefaultRedirect', () => {
+  let defaultProps;
+  let subject;
 
   beforeEach(() => {
-    props = {
-      location: {
-        state: {},
-        search: '?test=one',
-      },
-      history: {
-        push: jest.fn(),
-        replace: jest.fn(),
-      },
+    defaultProps = {
       currentUser: {
         access_level: 'admin',
       },
       ready: false,
     };
-    props.history.push.mockName('historyPushMock');
-    props.history.replace.mockName('historyReplaceMock');
-    wrapper = shallow(<DefaultRedirect {...props} />);
-    instance = wrapper.instance();
   });
 
   it('should render correctly by default', () => {
-    expect(wrapper).toMatchSnapshot();
+    jest.spyOn(routeData, 'useLocation').mockReturnValue({
+      state: {},
+      search: '?test=one',
+    });
+    expect(shallow(<DefaultRedirect {...defaultProps} />)).toMatchSnapshot();
   });
 
   it('should redirect after login', () => {
-    const location = {
-      state: {
-        redirectAfterLogin: {
-          pathname: '/test/redirect/after/login',
-          search: '?query-muh-thangs',
-          hash: '#cornbeef',
-        },
-      },
+    const redirectAfterLogin = {
+      pathname: '/test/redirect/after/login',
+      search: '?query-muh-thangs',
+      hash: '#cornbeef',
     };
-    wrapper.setProps({ location });
-    props.history.replace.mockClear();
-    instance.handleRedirect();
-    expect(props.history.replace).toHaveBeenCalledTimes(1);
-    expect(props.history.replace).toHaveBeenCalledWith(location.state.redirectAfterLogin);
+    jest.spyOn(routeData, 'useLocation').mockReturnValue({
+      search: '?test=one',
+      state: {
+        redirectAfterLogin: redirectAfterLogin,
+      },
+    });
+    subject = props => mount(<DefaultRedirect {...props} />);
+    subject({ ...defaultProps });
+    expect(mockHistoryReplace).toHaveBeenCalledTimes(1);
+    expect(mockHistoryReplace).toHaveBeenCalledWith(redirectAfterLogin);
   });
 
   it('should do nothing if no redirect after login and not ready', () => {
-    props.history.replace.mockClear();
-    instance.handleRedirect();
-    expect(props.history.replace).not.toHaveBeenCalled();
-  });
-
-  cases(
-    'should redirect to summary report for some users',
-    ({ accessLevel }) => {
-      wrapper.setProps({
-        currentUser: {
-          access_level: accessLevel,
-        },
-        ready: true,
-      });
-      props.history.replace.mockClear();
-      instance.handleRedirect();
-      expect(props.history.replace).toHaveBeenCalledTimes(1);
-      expect(props.history.replace).toHaveBeenCalledWith({
-        pathname: '/reports/summary',
-        search: '?test=one',
-        state: {},
-      });
-    },
-    {
-      reporting: { accessLevel: ROLES.REPORTING },
-      'subaccount reporting': { accessLevel: ROLES.SUBACCOUNT_REPORTING },
-    },
-  );
-
-  it('should redirect based on config', () => {
-    wrapper.setProps({ ready: true });
-    props.history.replace.mockClear();
-    instance.handleRedirect();
-    expect(props.history.replace).toHaveBeenCalledTimes(1);
-    expect(props.history.replace).toHaveBeenCalledWith({
-      pathname: '/dashboard',
-      search: '?test=one',
+    jest.spyOn(routeData, 'useLocation').mockReturnValue({
       state: {},
+      search: '?test=one',
     });
-  });
-
-  it('should handle a redirect on mount', () => {
-    jest.spyOn(instance, 'handleRedirect');
-    instance.componentDidMount();
-    expect(instance.handleRedirect).toHaveBeenCalledTimes(1);
-  });
-
-  it('should handle a redirect on update', () => {
-    jest.spyOn(instance, 'handleRedirect');
-    instance.componentDidUpdate();
-    expect(instance.handleRedirect).toHaveBeenCalledTimes(1);
+    mount(<DefaultRedirect {...defaultProps} />);
+    expect(mockHistoryReplace).not.toHaveBeenCalled();
   });
 });
