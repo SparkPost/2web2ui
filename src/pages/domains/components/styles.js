@@ -35,7 +35,7 @@ export const AlignedTextButton = styled(Button)`
 
   > span,
   > span > span {
-    vertical-align: top; /* Note: Fixes text and button alignment so they're all the same vertical alignment (v align the children of the button) */
+    vertical-align: middle; /* Note: Fixes text and button alignment so they're all the same vertical alignment (v align the children of the button) */
   }
 
   @media (min-width: ${props => props.theme.breakpoints[1]}) {
