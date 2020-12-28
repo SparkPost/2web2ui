@@ -67,29 +67,23 @@ describe('The log in page', () => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
     cy.title().should('include', 'Dashboard');
+    cy.get('[data-id="nav-button-accounts"]').click();
+    cy.findByRole('link', { name: 'Log Out' }).click();
   });
-  if (IS_HIBANA_ENABLED) {
-    it('logs in and redirects to the dashboard page for reporting users', () => {
-      cy.stubAuth();
-      stubGrantsRequest({ role: 'reporting' });
+  it('logs in and redirects to the dashboard page for reporting users when hibana is enabled and summary report page when hibana is not enabled', () => {
+    cy.stubAuth();
+    stubGrantsRequest({ role: 'reporting' });
+    cy.login({ isStubbed: true });
+    if (!IS_HIBANA_ENABLED) {
       stubUsersRequest({ access_level: 'reporting' });
-
-      cy.login({ isStubbed: true });
-      cy.wait(['@getGrants', '@stubbedUsersRequest']);
-      cy.title().should('include', 'Dashboard');
-    });
-  }
-  if (!IS_HIBANA_ENABLED) {
-    it('logs in and redirects to the summary report page for reporting users', () => {
-      cy.stubAuth();
-      stubGrantsRequest({ role: 'reporting' });
-      stubUsersRequest({ access_level: 'reporting' });
-
-      cy.login({ isStubbed: true });
       cy.wait(['@getGrants', '@stubbedUsersRequest']);
       cy.title().should('include', 'Summary Report');
-    });
-  }
+    } else {
+      stubUsersRequest({ access_level: 'reporting', hibana: true });
+      cy.wait(['@getGrants', '@stubbedUsersRequest']);
+      cy.title().should('include', 'Dashboard');
+    }
+  });
 });
 
 function stubGrantsRequest({ role }) {
@@ -101,10 +95,17 @@ function stubGrantsRequest({ role }) {
 }
 
 // this is an override of the stub set by stubAuth
-function stubUsersRequest({ access_level }) {
-  cy.stubRequest({
-    url: `/api/v1/users/${USERNAME}`,
-    fixture: `users/200.get.${access_level}.json`,
-    requestAlias: 'stubbedUsersRequest',
-  });
+function stubUsersRequest({ access_level, hibana }) {
+  if (hibana) {
+    cy.stubRequest({
+      url: `/api/v1/users/${USERNAME}`,
+      fixture: `users/200.get.${access_level}-hibana.json`,
+      requestAlias: 'stubbedUsersRequest',
+    });
+  } else
+    cy.stubRequest({
+      url: `/api/v1/users/${USERNAME}`,
+      fixture: `users/200.get.${access_level}.json`,
+      requestAlias: 'stubbedUsersRequest',
+    });
 }
