@@ -63,23 +63,13 @@ export function reducer(state, action) {
         checkboxesWithoutSelectAll?.length;
 
       // Force select all state here...
-      if (allSelected) {
-        mappedCheckboxes = mappedCheckboxes.map(checkbox => {
-          if (checkbox.name === 'selectAll') {
-            checkbox.isChecked = true;
-          }
+      mappedCheckboxes = mappedCheckboxes.map(checkbox => {
+        if (checkbox.name === 'selectAll') {
+          checkbox.isChecked = allSelected;
+        }
 
-          return checkbox;
-        });
-      } else {
-        mappedCheckboxes = mappedCheckboxes.map(checkbox => {
-          if (checkbox.name === 'selectAll') {
-            checkbox.isChecked = false;
-          }
-
-          return checkbox;
-        });
-      }
+        return checkbox;
+      });
 
       return {
         ...state,
