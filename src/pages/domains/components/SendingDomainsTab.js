@@ -14,7 +14,7 @@ import {
   getActiveStatusFilters,
   filterStateToParams,
 } from '../helpers';
-import { DomainsPanel, DomainsPanelSection } from './styles';
+import { DomainTabPanel, DomainTabPanelSection } from './styles';
 
 import _ from 'lodash';
 
@@ -293,8 +293,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   return (
     <>
-      <DomainsPanel mb="400">
-        <DomainsPanelSection>
+      <DomainTabPanel mb="400">
+        <DomainTabPanelSection>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
@@ -328,14 +328,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               }}
             />
           </TableFilters>
-        </DomainsPanelSection>
+        </DomainTabPanelSection>
 
         {listPending && <Loading />}
 
         {isEmpty && <Empty message="There is no data to display" />}
 
         {!listPending && !isEmpty && <SendingDomainsTable tableInstance={tableInstance} />}
-      </DomainsPanel>
+      </DomainTabPanel>
 
       <Pagination
         data={rows}

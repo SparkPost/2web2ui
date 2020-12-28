@@ -57,11 +57,9 @@ export const Chevron = styled(ChevronRight)`
   transform: rotate(90deg);
 `;
 
-// TEMPORARY?
-export const DomainsPanel = styled(Panel)``;
+export const DomainTabPanel = styled(Panel)``;
 
-// TEMPORARY? (just to prove/fix the display - then discuss with team)
-export const DomainsPanelSection = styled(Panel.Section)`
+export const DomainTabPanelSection = styled(Panel.Section)`
   padding: 1rem 0.75rem;
 
   > div > div,
