@@ -70,7 +70,7 @@ describe('The log in page', () => {
     if (!IS_HIBANA_ENABLED) {
       cy.get('[data-id="nav-button-accounts"]').click();
     } else {
-      cy.get('[data-id="nav-button-accounts"]').click();
+      cy.get('[data-id="desktop-navigation-account-popover"]').click();
     }
     cy.findByRole('link', { name: 'Log Out' }).click();
   });

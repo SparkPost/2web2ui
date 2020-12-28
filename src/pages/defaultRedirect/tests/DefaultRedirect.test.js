@@ -3,7 +3,8 @@ import { shallow, mount } from 'enzyme';
 import { DefaultRedirect } from '../DefaultRedirect';
 import { useHibana } from 'src/context/HibanaContext';
 import routeData from 'react-router-dom';
-
+import cases from 'jest-in-case';
+import { ROLES } from 'src/constants';
 jest.mock('src/context/HibanaContext');
 useHibana.mockImplementation(() => [{ isHibanaEnabled: false }]);
 const mockHistoryPush = jest.fn();
@@ -52,6 +53,33 @@ describe('DefaultRedirect', () => {
     expect(mockHistoryReplace).toHaveBeenCalledTimes(1);
     expect(mockHistoryReplace).toHaveBeenCalledWith(redirectAfterLogin);
   });
+
+  cases(
+    'should redirect to summary report for some users',
+    ({ accessLevel }) => {
+      jest.spyOn(routeData, 'useLocation').mockReturnValue({
+        state: {},
+        search: '?test=one',
+      });
+      subject = props => mount(<DefaultRedirect {...props} />);
+      subject({
+        currentUser: {
+          access_level: accessLevel,
+        },
+        ready: true,
+      });
+      expect(mockHistoryReplace).toHaveBeenCalledTimes(1);
+      expect(mockHistoryReplace).toHaveBeenCalledWith({
+        pathname: '/reports/summary',
+        search: '?test=one',
+        state: {},
+      });
+    },
+    {
+      reporting: { accessLevel: ROLES.REPORTING },
+      'subaccount reporting': { accessLevel: ROLES.SUBACCOUNT_REPORTING },
+    },
+  );
 
   it('should do nothing if no redirect after login and not ready', () => {
     jest.spyOn(routeData, 'useLocation').mockReturnValue({
