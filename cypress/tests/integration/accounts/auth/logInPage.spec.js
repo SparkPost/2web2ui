@@ -67,7 +67,11 @@ describe('The log in page', () => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
     cy.title().should('include', 'Dashboard');
-    cy.get('[data-id="nav-button-accounts"]').click();
+    if (!IS_HIBANA_ENABLED) {
+      cy.get('[data-id="nav-button-accounts"]').click();
+    } else {
+      cy.get('[data-id="nav-button-accounts"]').click();
+    }
     cy.findByRole('link', { name: 'Log Out' }).click();
   });
   it('logs in and redirects to the dashboard page for reporting users when hibana is enabled and summary report page when hibana is not enabled', () => {
