@@ -5,7 +5,6 @@
  * help clear the application state. This preservation of state between tests is very helpful with other features,
  * and mainly painful on this one. A necessary tradeoff!
  */
-import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
 
 describe('The log in page', () => {
   beforeEach(() => {
@@ -63,53 +62,9 @@ describe('The log in page', () => {
     cy.findByText('User credentials are invalid').should('be.visible');
   });
 
-  it('logs in and redirects to the dashboard for admin users', () => {
+  it('logs in and redirects to the dashboard', () => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
     cy.title().should('include', 'Dashboard');
-    if (!IS_HIBANA_ENABLED) {
-      cy.get('[data-id="nav-button-accounts"]').click();
-    } else {
-      cy.get('[data-id="desktop-navigation-account-popover"]').click();
-    }
-    cy.findByRole('link', { name: 'Log Out' }).click();
-  });
-  it('logs in and redirects to the dashboard page for reporting users when hibana is enabled and summary report page when hibana is not enabled', () => {
-    cy.stubAuth();
-    stubGrantsRequest({ role: 'reporting' });
-    cy.login({ isStubbed: true });
-    if (!IS_HIBANA_ENABLED) {
-      stubUsersRequest({ access_level: 'reporting' });
-      cy.wait(['@getGrants', '@stubbedUsersRequest']);
-      cy.title().should('include', 'Summary Report');
-    } else {
-      stubUsersRequest({ access_level: 'reporting', hibana: true });
-      cy.wait(['@getGrants', '@stubbedUsersRequest']);
-      cy.title().should('include', 'Dashboard');
-    }
   });
 });
-
-function stubGrantsRequest({ role }) {
-  cy.stubRequest({
-    url: '/api/v1/authenticate/grants*',
-    fixture: `authenticate/grants/200.get.${role}.json`,
-    requestAlias: 'getGrants',
-  });
-}
-
-// this is an override of the stub set by stubAuth
-function stubUsersRequest({ access_level, hibana }) {
-  if (hibana) {
-    cy.stubRequest({
-      url: `/api/v1/users/${USERNAME}`,
-      fixture: `users/200.get.${access_level}-hibana.json`,
-      requestAlias: 'stubbedUsersRequest',
-    });
-  } else
-    cy.stubRequest({
-      url: `/api/v1/users/${USERNAME}`,
-      fixture: `users/200.get.${access_level}.json`,
-      requestAlias: 'stubbedUsersRequest',
-    });
-}
