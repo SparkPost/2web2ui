@@ -11,8 +11,6 @@ export const StyledFilterFields = styled.div`
   }
 `;
 
-export const StyledGridCell = styled.div``;
-
 export const StatusPopoverContent = styled.span`
   display: inline-block; /* Necessary to supply width & cut ellipse joined string */
   width: calc(100% - 1rem); /* NOTE: Works in conjunction with AlignedButtonIcon */
@@ -56,8 +54,6 @@ export const Chevron = styled(ChevronRight)`
   color: ${props => props.theme.colors.blue['700']};
   transform: rotate(90deg);
 `;
-
-export const DomainTabPanel = styled(Panel)``;
 
 export const DomainTabPanelSection = styled(Panel.Section)`
   padding: 1rem 0.75rem;

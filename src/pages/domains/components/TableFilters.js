@@ -17,7 +17,6 @@ import {
   AlignedTextButton,
   AlignedButtonIcon,
   Chevron,
-  StyledGridCell,
 } from './styles';
 
 export function reducer(state, action) {
@@ -115,7 +114,7 @@ function SortSelect({ options, onChange, disabled }) {
   const uniqueId = useUniqueId('domains-sort-select');
 
   return (
-    <StyledGridCell>
+    <div>
       <ListBox
         id={uniqueId}
         label="Sort By"
@@ -131,7 +130,7 @@ function SortSelect({ options, onChange, disabled }) {
           );
         })}
       </ListBox>
-    </StyledGridCell>
+    </div>
   );
 }
 
