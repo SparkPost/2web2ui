@@ -275,13 +275,11 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         }),
       };
 
-      // IMPORTANT! This is triggering the second useEffect load
       filtersStateDispatch({
         type: 'LOAD',
         names: statusFiltersToApply,
         domainName: domainNameFilter,
       }); // NOTE: Updates the filter/checkbox display state
-
       updateFilters(filterStateToParams(newFilterState)); // NOTE: Updates the URL query params on checkbox status change
       setAllFilters(getReactTableFilters(filterStateToParams(newFilterState))); // NOTE: Updates the state/table filtering on checkbox status change
 
