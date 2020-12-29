@@ -251,35 +251,44 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
+  // useEffect to synce query params on page load to react state
   const firstLoad = useRef(true);
   useEffect(() => {
-    if (!listPending) {
-      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
+    if (firstLoad.current) {
+      // NOTE: filters is the URL query param state - we need to take from the url and set it as state
+      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName'); // remove the domain name query param
       const activeStatusFilters = getActiveStatusFilters(filters);
       const statusFiltersToApply = !activeStatusFilters.length
         ? allStatusFilterNames
         : activeStatusFilters.map(i => i.name);
       const domainNameFilter = filters['domainName'];
 
-      if (firstLoad.current) {
-        firstLoad.current = false;
+      firstLoad.current = false;
 
-        filtersStateDispatch({
-          type: 'LOAD',
-          names: statusFiltersToApply,
-          domainName: domainNameFilter,
-        });
+      let newFilterState = {
+        ...filtersState,
+        checkboxes: filtersState.checkboxes.map(checkbox => {
+          return {
+            ...checkbox,
+            isChecked: statusFiltersToApply.indexOf(checkbox.name) >= 0,
+          };
+        }),
+      };
 
-        setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      // IMPORTANT! This is triggering the second useEffect load
+      filtersStateDispatch({
+        type: 'LOAD',
+        names: statusFiltersToApply,
+        domainName: domainNameFilter,
+      }); // NOTE: Updates the filter/checkbox display state
 
-        return;
-      }
+      updateFilters(filterStateToParams(newFilterState)); // NOTE: Updates the URL query params on checkbox status change
+      setAllFilters(getReactTableFilters(filterStateToParams(newFilterState))); // NOTE: Updates the state/table filtering on checkbox status change
 
-      updateFilters(filterStateToParams(filtersState));
-      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersState, listPending]);
+  }, []); // IMPORTANT! LEAVE EMPTY
 
   if (sendingDomainsListError) {
     return (
@@ -310,7 +319,25 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               checkboxes={filtersState.checkboxes}
               domainType={renderBounceOnly ? 'bounce' : 'sending'}
               onCheckboxChange={e => {
-                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
+                const newCheckboxes = filtersState.checkboxes.map(checkbox => {
+                  if (checkbox.name === e.target.name) {
+                    return {
+                      ...checkbox,
+                      isChecked: !checkbox.isChecked,
+                    };
+                  }
+
+                  return checkbox;
+                });
+
+                const newFilterState = {
+                  ...filtersState,
+                  checkboxes: newCheckboxes,
+                };
+
+                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
+                updateFilters(filterStateToParams(newFilterState)); // NOTE: Updates the URL query params on checkbox status change
+                setAllFilters(getReactTableFilters(filterStateToParams(newFilterState))); // NOTE: Updates the state/table filtering on checkbox status change
               }}
             />
 

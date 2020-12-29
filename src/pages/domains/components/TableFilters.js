@@ -19,6 +19,18 @@ import {
   Chevron,
 } from './styles';
 
+function getAllSelectedState(checkboxes) {
+  const checkboxesWithoutSelectAll = checkboxes
+    .map(checkbox => (checkbox.name !== 'selectAll' ? checkbox : undefined))
+    .filter(Boolean); // get rid of selectAll
+
+  const allSelected =
+    checkboxesWithoutSelectAll.map(checkbox => checkbox.isChecked).filter(Boolean)?.length ===
+    checkboxesWithoutSelectAll?.length;
+
+  return allSelected;
+}
+
 export function reducer(state, action) {
   switch (action.type) {
     case 'DOMAIN_FILTER_CHANGE': {
@@ -44,23 +56,18 @@ export function reducer(state, action) {
         };
       }
 
-      let mappedCheckboxes = state.checkboxes.map(filter => {
-        if (filter.name === action.name) {
+      let mappedCheckboxes = state.checkboxes.map(checkbox => {
+        if (checkbox.name === action.name) {
           return {
-            ...filter,
+            ...checkbox,
             isChecked: !isChecked,
           };
         }
-        return filter;
+        return checkbox;
       });
 
-      const checkboxesWithoutSelectAll = mappedCheckboxes
-        .map(checkbox => (checkbox.name !== 'selectAll' ? checkbox : undefined))
-        .filter(Boolean); // get rid of selectAll
-
-      const allSelected =
-        checkboxesWithoutSelectAll.map(checkbox => checkbox.isChecked).filter(Boolean)?.length ===
-        checkboxesWithoutSelectAll?.length;
+      // Post Toggle of the individual checkbox - check to see if we need selectAll turned on
+      const allSelected = getAllSelectedState(mappedCheckboxes);
 
       // Force select all state here...
       mappedCheckboxes = mappedCheckboxes.map(checkbox => {
@@ -80,13 +87,24 @@ export function reducer(state, action) {
     }
 
     case 'LOAD': {
-      const checkboxes = state.checkboxes.map(filter => {
-        const isChecked = action.names.indexOf(filter.name) >= 0;
-
+      let checkboxes = state.checkboxes.map(checkbox => {
+        const isChecked = action.names.indexOf(checkbox.name) >= 0;
         return {
-          ...filter,
+          ...checkbox,
           isChecked: isChecked,
         };
+      });
+
+      const allSelected = getAllSelectedState(checkboxes);
+      checkboxes = checkboxes.map(checkbox => {
+        if (checkbox.name === 'selectAll') {
+          return {
+            ...checkbox,
+            isChecked: allSelected,
+          };
+        }
+
+        return checkbox;
       });
 
       return {
