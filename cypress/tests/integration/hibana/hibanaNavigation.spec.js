@@ -18,10 +18,51 @@ if (IS_HIBANA_ENABLED) {
         fixture: `authenticate/grants/200.get.${role}.json`,
       });
     }
+    function stubUsageReq({ fixture = 'usage/200.get.json' } = {}) {
+      cy.stubRequest({
+        url: '/api/v1/usage',
+        fixture: fixture,
+        requestAlias: 'usageReq',
+      });
+    }
+
+    function stubAlertsReq({ fixture = 'alerts/200.get.json' } = {}) {
+      cy.stubRequest({
+        url: '/api/v1/alerts',
+        fixture: fixture,
+        requestAlias: 'alertsReq',
+      });
+    }
+
+    function stubReportsRequest({ fixture = 'reports/200.get.json' } = {}) {
+      cy.stubRequest({
+        url: '/api/v1/reports',
+        fixture: fixture,
+        requestAlias: 'getReports',
+      });
+    }
+
+    function stubSubaccountsRequest() {
+      cy.stubRequest({
+        url: '/api/v1/subaccounts',
+        fixture: 'subaccounts/200.get.json',
+        requestAlias: 'subaccountsReq',
+      });
+    }
 
     beforeEach(() => {
       cy.stubAuth();
       cy.login({ isStubbed: true });
+      stubUsageReq();
+      stubAlertsReq();
+      stubReportsRequest();
+      stubSubaccountsRequest();
+      cy.stubRequest({
+        method: 'GET',
+        url: '/api/v1/metrics/deliverability**/**',
+        fixture: 'metrics/deliverability/200.get.json',
+        requestAlias: 'dataGetDeliverability',
+      });
     });
 
     describe('desktop navigation', () => {
@@ -98,6 +139,7 @@ if (IS_HIBANA_ENABLED) {
       it('all nav links renders correctly for developer', () => {
         commonBeforeSteps();
         stubGrantsRequest({ role: 'developer' });
+        cy.wait('@stubbedGrantsRequest');
         cy.get(desktopNavSelector).within(() => {
           cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });

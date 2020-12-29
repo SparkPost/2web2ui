@@ -678,7 +678,7 @@ function stubAlertsReq({ fixture = 'alerts/200.get.json' } = {}) {
   });
 }
 
-function stubApiKeyReq({ fixture = 'alerts/200.get.json' } = {}) {
+function stubApiKeyReq({ fixture = 'api-keys/200.get.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/api-keys**',
     fixture: fixture,
@@ -686,7 +686,7 @@ function stubApiKeyReq({ fixture = 'alerts/200.get.json' } = {}) {
   });
 }
 
-function stubSendingDomains({ fixture = 'alerts/200.get.json' } = {}) {
+function stubSendingDomains({ fixture = 'sending-domains/200.get.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/sending-domains**',
     fixture: fixture,
