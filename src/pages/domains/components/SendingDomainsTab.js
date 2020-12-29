@@ -348,8 +348,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
                   domainName: e.target.value,
                 };
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
-                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params on checkbox status change
-                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering on checkbox status change
+                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
+                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
               }}
               placeholder={domains.length > 0 ? `e.g. ${domains[0]?.domainName}` : ''}
             />
@@ -383,8 +383,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
                 };
 
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
-                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params on checkbox status change
-                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering on checkbox status change
+                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
+                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
               }}
             />
 
