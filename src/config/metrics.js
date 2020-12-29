@@ -500,6 +500,37 @@ export const rejectionTabMetrics = list.filter(({ tab }) => tab && tab === 'reje
 export const delayTabMetrics = list.filter(({ tab }) => tab && tab === 'delayed');
 export const linksTabMetrics = list.filter(({ tab }) => tab && tab === 'links');
 
+export const DELIVERABILITY_BOUNCE_METRIC_KEYS = [
+  'count_sent',
+  'count_bounce',
+  'count_inband_bounce',
+  'count_outofband_bounce',
+  'count_admin_bounce',
+  'count_targeted',
+];
+
+export const DELIVERABILITY_DELAY_METRIC_KEYS = [
+  'count_accepted',
+  'count_delayed',
+  'count_delayed_first',
+];
+
+export const DELIVERABILITY_REJECTION_METRIC_KEYS = ['count_rejected', 'count_targeted'];
+
+export const DELIVERABILITY_LINKS_METRIC_KEYS = [
+  'count_accepted',
+  'count_clicked',
+  'count_sent',
+  'count_unique_clicked_approx',
+  'count_unique_confirmed_opened_approx',
+];
+
+export const LINKS_BY_DOMAIN_METRIC_KEYS = ['count_clicked', 'count_raw_clicked_approx'];
+
+export const REJECTIONS_BY_DOMAIN_METRIC_KEYS = ['count_clicked', 'count_raw_clicked_approx'];
+
+export const BOUNCE_BY_DOMAIN_METRIC_KEYS = ['count_bounce'];
+
 export const map = list.reduce((accumulator = {}, metric) => ({
   ...accumulator,
   [metric.key]: metric,
@@ -508,10 +539,12 @@ export const map = list.reduce((accumulator = {}, metric) => ({
 const selectableMetrics = list.filter(
   metric => (metric.inSummary || metric.inReportBuilder) && metric.category && !metric.deprecated,
 );
+
 const categoriesObj = categories.reduce((accumulator, current) => {
   accumulator[current] = [];
   return accumulator;
 }, {});
+
 const categorizedMetrics = selectableMetrics.reduce((accumulator, current) => {
   accumulator[current.category].push(current);
   return accumulator;

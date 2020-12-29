@@ -2,7 +2,6 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import { ListPage } from '../ListPage';
 
-const hideNewApiKey = jest.fn();
 const listApiKeys = jest.fn(() => []);
 const listSubaccounts = jest.fn(() => []);
 
@@ -10,7 +9,6 @@ describe('Api Keys List Page', () => {
   const props = {
     loading: false,
     error: null,
-    hideNewApiKey,
     listApiKeys,
     listSubaccounts,
     hasSubaccounts: false,
@@ -22,14 +20,14 @@ describe('Api Keys List Page', () => {
         short_key: 'ab01',
         grants: ['metrics/view'],
         subaccount_id: 101,
-        canCurrentUserEdit: true
+        canCurrentUserEdit: true,
       },
       {
         id: '456id',
         label: 'Test Key 2',
         short_key: 'fe98',
         grants: ['smtp/inject'],
-        canCurrentUserEdit: true
+        canCurrentUserEdit: true,
       },
       {
         id: '789id',
@@ -37,9 +35,9 @@ describe('Api Keys List Page', () => {
         short_key: 'c00l',
         grants: ['metrics/view'],
         username: 'other_user',
-        canCurrentUserEdit: false
-      }
-    ]
+        canCurrentUserEdit: false,
+      },
+    ],
   };
 
   let wrapper;
@@ -53,7 +51,7 @@ describe('Api Keys List Page', () => {
   });
 
   it('renders when there are no keys', () => {
-    wrapper.setProps({ keys: []});
+    wrapper.setProps({ keys: [] });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -62,7 +60,7 @@ describe('Api Keys List Page', () => {
   });
 
   it('renders errors when present', () => {
-    wrapper.setProps({ error: { message: 'Uh oh! It broke. ' }});
+    wrapper.setProps({ error: { message: 'Uh oh! It broke. ' } });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -81,12 +79,6 @@ describe('Api Keys List Page', () => {
     page.props = { listApiKeys: jest.fn() };
     page.onReloadApiBanner();
     expect(page.props.listApiKeys).toHaveBeenCalledTimes(1);
-  });
-
-  it('should hide api key on component unmount', () => {
-    expect(hideNewApiKey).not.toHaveBeenCalled();
-    wrapper.unmount();
-    expect(hideNewApiKey).toHaveBeenCalled();
   });
 
   it('should render correctly with subaccounts', () => {

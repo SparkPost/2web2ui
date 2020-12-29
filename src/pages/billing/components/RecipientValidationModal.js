@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Grid, Panel, Stack, Text } from 'src/components/matchbox';
-import { OGOnlyWrapper } from 'src/components/hibana';
+import { Box, Grid, Panel, Stack, Text, Modal } from 'src/components/matchbox';
+import RecipientValidationCostModal from 'src/components/billing/RecipientValidationCostModal';
 import { Close } from '@sparkpost/matchbox-icons';
 import { formatCurrency, formatFullNumber } from 'src/helpers/units';
+import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import styles from './RecipientValidationModal.module.scss';
 import cx from 'classnames';
 import { RECIPIENT_VALIDATION_TIERS } from 'src/constants';
@@ -19,7 +20,8 @@ const RightAlignedText = styled.div`
   text-align: 'right';
 `;
 
-export default ({ onClose, volumeUsed }) => {
+// This is the old, reskinned Modal
+export function RecipientValidationModal({ onClose, volumeUsed, open }) {
   const TierRows = RECIPIENT_VALIDATION_TIERS.map(({ volumeMax, volumeMin, cost }) => {
     const tierCost = Math.max(Math.min(volumeMax, volumeUsed) - volumeMin, 0) * cost;
     const tierEmpty = tierCost <= 0;
@@ -61,13 +63,12 @@ export default ({ onClose, volumeUsed }) => {
   });
 
   return (
-    <OGOnlyWrapper
-      as={Panel.LEGACY}
-      actions={[{ content: <Close />, onClick: onClose }]}
-      className={styles.modalContainer}
-      title="How was this calculated?"
-    >
-      <Box as={Panel.LEGACY} title="How was this calculated?">
+    <Modal.LEGACY open={open} onClose={onClose}>
+      <Panel.LEGACY
+        actions={[{ content: <Close />, onClick: onClose }]}
+        className={styles.modalContainer}
+        title="How was this calculated?"
+      >
         <Panel.LEGACY.Section>
           <Stack space="200">
             <Stack space="200">{TierRows}</Stack>
@@ -87,7 +88,13 @@ export default ({ onClose, volumeUsed }) => {
             </Box>
           </Stack>
         </Panel.LEGACY.Section>
-      </Box>
-    </OGOnlyWrapper>
+      </Panel.LEGACY>
+    </Modal.LEGACY>
   );
-};
+}
+
+function RecipientValidationModalWrapper(props) {
+  return useHibanaToggle(RecipientValidationModal, RecipientValidationCostModal)(props);
+}
+
+export default RecipientValidationModalWrapper;

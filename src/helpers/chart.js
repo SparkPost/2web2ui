@@ -81,7 +81,7 @@ function getLineChartFormatters(precision, to = moment()) {
   return formatters;
 }
 
-function cumulativeData({ data, key }) {
+function cumulativeSum({ data, key }) {
   const results = data.reduce((cumulativeDataSet, data) => {
     const cumulativeData = { ...data };
 
@@ -100,7 +100,7 @@ function cumulativeData({ data, key }) {
 const formatYAxisPercent = _.memoize(v => `${roundToPlaces(v, v < 1 ? 3 : 1)}%`);
 
 export {
-  cumulativeData,
+  cumulativeSum,
   getDayLines,
   getTimeTickFormatter,
   getTooltipLabelFormatter,

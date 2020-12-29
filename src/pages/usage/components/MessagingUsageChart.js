@@ -4,21 +4,24 @@ import { Box, Text } from 'src/components/matchbox';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { formatNumber } from 'src/helpers/units';
 import { fillByDate } from 'src/helpers/date';
-import { cumulativeData } from 'src/helpers/chart';
+import { cumulativeSum } from 'src/helpers/chart';
 import { getTimeTickFormatter, getTooltipLabelFormatter } from 'src/helpers/chart.js';
 
 function MessagingUsageChart(props) {
   const { data = [], planVolume, overage, dailyLimit, start, end } = props;
 
-  const filledData = React.useMemo(() => {
-    return fillByDate({ dataSet: cumulativeData({ data, key: 'usage' }), from: start, to: end });
-  }, [data, start, end]);
+  const cumulativeData = cumulativeSum({ data, key: 'usage' });
 
-  const thresholdIndex = filledData.findIndex(item => {
+  const filledData = React.useMemo(() => {
+    return fillByDate({ dataSet: cumulativeData, from: start, to: end });
+  }, [cumulativeData, start, end]);
+
+  const thresholdIndex = cumulativeData.findIndex(item => {
     return item.usage >= planVolume;
   });
 
-  const thresholdPercentage = (thresholdIndex / filledData.length) * 100;
+  const thresholdPercentage =
+    thresholdIndex === -1 ? 100 : (thresholdIndex / cumulativeData.length) * 100;
 
   const CustomTooltip = ({ showTooltip, payload, label }) => {
     if (!showTooltip) {

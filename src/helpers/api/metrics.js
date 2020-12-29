@@ -97,3 +97,11 @@ export function getAttempted(params) {
     params,
   };
 }
+
+export function getEngagement(params) {
+  return {
+    method: 'GET',
+    url: `${DELIVERABILITY_BASE_URL}/link-name`,
+    params,
+  };
+}

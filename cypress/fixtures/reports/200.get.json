@@ -47,6 +47,18 @@
       "name": "My new report",
       "query_string": "from=2020-09-18T15%3A00%3A00Z&to=2020-09-25T15%3A08%3A36Z&range=7days&timezone=America%2FNew_York&precision=hour&filters=Campaign%3ABlack%20Friday&metrics=count_bounce&report=0e860570-c1a8-47cf-9c39-1ffee38dd982",
       "subaccount_id": 0
+    },
+    {
+      "created": "2020-09-22T19:55:34.215Z",
+      "creator": "mockuser",
+      "current_user_can_edit": true,
+      "description": "Here is a description",
+      "id": "0e860570-c1a8-47cf-9c39-1ffee38dd983",
+      "is_editable": false,
+      "modified": "2020-10-08T19:39:53.830Z",
+      "name": "Comparison Report",
+      "query_string": "range=7days&comparisons[0][type]=Subaccount&comparisons[0][value]=Fake Subaccount 3 (ID 103)&comparisons[0][id]=103&comparisons[1][type]=Subaccount&comparisons[1][value]=Fake Subaccount 1 (ID 101)&comparisons[1][id]=101",
+      "subaccount_id": 0
     }
   ]
 }

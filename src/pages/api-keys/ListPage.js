@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Setup } from 'src/components/images';
 import { PageLink } from 'src/components/links';
 import { Page } from 'src/components/matchbox';
-
-import { listApiKeys, hideNewApiKey } from 'src/actions/api-keys';
-import { list as listSubaccounts } from 'src/actions/subaccounts';
 
 import {
   Loading,
@@ -16,8 +12,6 @@ import {
   ShortKeyCode,
 } from 'src/components';
 import { filterBoxConfig } from './tableConfig';
-import { selectKeysForAccount } from 'src/selectors/api-keys';
-import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
 import { LINKS } from 'src/constants';
 
@@ -29,18 +23,6 @@ const primaryAction = {
 
 export class ListPage extends Component {
   state = { copied: false };
-
-  // only want to show the new key after a create
-  componentWillUnmount() {
-    this.props.hideNewApiKey();
-  }
-
-  componentDidMount() {
-    this.props.listApiKeys();
-    if (hasSubaccounts && this.props.subaccounts.length === 0) {
-      this.props.listSubaccounts();
-    }
-  }
 
   getLabel = ({ canCurrentUserEdit, id, subaccount_id, label }) => {
     if (canCurrentUserEdit) {
@@ -127,7 +109,7 @@ export class ListPage extends Component {
         primaryAction={primaryAction}
         title="API Keys"
         empty={{
-          show: keys.length === 0,
+          show: !error && keys.length === 0,
           image: Setup,
           content: <p>Create an API key you can use to access our REST or SMTP API services.</p>,
           secondaryAction: {
@@ -144,16 +126,4 @@ export class ListPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { error, newKey, keysLoading } = state.apiKeys;
-  return {
-    hasSubaccounts: hasSubaccounts(state),
-    subaccounts: state.subaccounts.list,
-    keys: selectKeysForAccount(state),
-    error,
-    newKey,
-    loading: keysLoading,
-  };
-};
-
-export default connect(mapStateToProps, { listApiKeys, listSubaccounts, hideNewApiKey })(ListPage);
+export default ListPage;

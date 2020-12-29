@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RecipientValidationModal from '../RecipientValidationModal';
+import { RecipientValidationModal } from '../RecipientValidationModal';
 
 describe('Component: RecipientValidationModal', () => {
   let wrapper;
@@ -8,9 +8,9 @@ describe('Component: RecipientValidationModal', () => {
 
   beforeEach(() => {
     props = {
-      volumeUsed: 123123
+      volumeUsed: 123123,
     };
-    wrapper = shallow(< RecipientValidationModal {...props} />);
+    wrapper = shallow(<RecipientValidationModal {...props} />);
   });
 
   it('should render properly', () => {

@@ -1,44 +1,34 @@
 import React from 'react';
 import { TableCollection, Subaccount } from 'src/components';
-import { Box, Radio, Table, Tag } from 'src/components/matchbox';
+import { Box, Radio, Table, Tag, Tooltip } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
+import { shrinkToFit } from 'src/helpers/string';
 
 const FilterBoxWrapper = props => (
   <Box borderBottom="400" padding="400">
     {props}
   </Box>
 );
-
-export const MyReportsTabWithSelectableRows = ({
-  reports,
-  currentUser,
-  handleRadioChange,
-  selectedReportId,
-  searchedText,
-  setSearchedText,
-}) => {
+const SHRINK_LENGTH = 50;
+export const MyReportsTabWithSelectableRows = ({ reports, currentUser, register }) => {
   const myReports = reports.filter(({ creator }) => creator === currentUser);
   const getMyReportColumns = () => {
     return [
-      {},
-      { label: 'Name', sortKey: 'name' },
+      { label: 'Name', sortKey: 'name', maxWidth: '250' },
       { label: 'Last Modification', sortKey: 'modified' },
     ];
+  };
+  const TableWrapper = ({ children }) => {
+    return (
+      <Radio.Group label="reportList" labelHidden>
+        <Table>{children}</Table>
+      </Radio.Group>
+    );
   };
   const myReportsRows = report => {
     const { name, modified, id } = report;
     return [
-      <Radio
-        value={id}
-        id={id}
-        key={id}
-        name="reportId"
-        label={`Report ${id}`}
-        labelHidden
-        onChange={() => handleRadioChange(id)}
-        checked={selectedReportId === id}
-      />,
-      <div>{name}</div>,
+      <Radio value={id} id={id} key={id} ref={register} name="reportId" label={name} />,
       <div>{formatDateTime(modified)}</div>,
     ];
   };
@@ -47,7 +37,7 @@ export const MyReportsTabWithSelectableRows = ({
       rows={myReports}
       columns={getMyReportColumns()}
       getRowData={myReportsRows}
-      wrapperComponent={Table}
+      wrapperComponent={TableWrapper}
       filterBox={{
         label: '',
         show: true,
@@ -55,28 +45,27 @@ export const MyReportsTabWithSelectableRows = ({
         exampleModifiers: ['name', 'modified'],
         maxWidth: '1250',
         wrapper: FilterBoxWrapper,
-        initialValue: searchedText,
-        onChange: value => setSearchedText(value),
       }}
     />
   );
 };
 
-export const AllReportsTabWithSelectableRows = ({
-  reports,
-  handleRadioChange,
-  selectedReportId,
-  searchedText,
-  setSearchedText,
-}) => {
+export const AllReportsTabWithSelectableRows = ({ reports, register }) => {
   const getColumnsForAllReports = () => {
     return [
-      {},
       { label: 'Name', sortKey: 'name' },
       { label: 'Last Modification', width: '25%', sortKey: 'modified' },
       { label: 'Created By', sortKey: 'creator' },
       {},
     ];
+  };
+
+  const TableWrapper = ({ children }) => {
+    return (
+      <Radio.Group label="reportList" labelHidden>
+        <Table>{children}</Table>
+      </Radio.Group>
+    );
   };
 
   const allReportsRows = report => {
@@ -86,13 +75,17 @@ export const AllReportsTabWithSelectableRows = ({
         value={id}
         id={id}
         key={id}
-        label={`Report ${id}`}
-        labelHidden
+        ref={register}
+        label={
+          <Tooltip dark content={name}>
+            {/* can't find a better way to do this and stop making the Modal scroll horizontally when the reports have huge names*/}
+            {/* label text is not getting wrapped vertically for Radio */}
+            {shrinkToFit(name, SHRINK_LENGTH)}
+          </Tooltip>
+        }
         name="reportId"
-        onChange={() => handleRadioChange(id)}
-        checked={selectedReportId === id}
+        maxWidth="200"
       />,
-      <div>{name}</div>,
       <div>{formatDateTime(modified)}</div>,
       <div>{creator}</div>,
       <Tag>
@@ -105,7 +98,7 @@ export const AllReportsTabWithSelectableRows = ({
       rows={reports}
       columns={getColumnsForAllReports()}
       getRowData={allReportsRows}
-      wrapperComponent={Table}
+      wrapperComponent={TableWrapper}
       filterBox={{
         label: '',
         show: true,
@@ -113,8 +106,6 @@ export const AllReportsTabWithSelectableRows = ({
         exampleModifiers: ['name', 'modified', 'creator'],
         maxWidth: '1250',
         wrapper: FilterBoxWrapper,
-        initialValue: searchedText,
-        onChange: value => setSearchedText(value),
       }}
     />
   );

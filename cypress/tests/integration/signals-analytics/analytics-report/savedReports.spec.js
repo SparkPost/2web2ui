@@ -46,14 +46,14 @@ if (IS_HIBANA_ENABLED) {
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
-      cy.findAllByText('Open Rate').should('be.visible');
+      cy.findAllByText('Opens').should('be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
       cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
-      cy.findAllByText('Open Rate').should('be.visible');
+      cy.findAllByText('Opens').should('be.visible');
       // Additional params
       cy.findAllByText('Christmas').should('be.visible');
 
@@ -79,7 +79,7 @@ if (IS_HIBANA_ENABLED) {
         cy.findAllByText('Sent').should('be.visible');
         cy.findAllByText('Accepted').should('be.visible');
         cy.findAllByText('Clicks').should('be.visible');
-        cy.findAllByText('Open Rate').should('be.visible');
+        cy.findAllByText('Opens').should('be.visible');
       });
     });
 
@@ -208,10 +208,7 @@ if (IS_HIBANA_ENABLED) {
         cy.findByLabelText('Report').focus(); // open typeahead
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.findAllByRole('option')
-            .eq(0)
-            .should('have.contain', 'My Bounce Report')
-            .click();
+          cy.findByRole('option', { name: 'My Bounce Report mockuser' }).click();
         });
 
         cy.findByLabelText('Report').should('have.value', 'My Bounce Report');
@@ -221,10 +218,7 @@ if (IS_HIBANA_ENABLED) {
         );
         cy.findByLabelText('Precision').should('have.value', 'hour');
 
-        cy.get('[data-id="metric-tag"]')
-          .should('have.length', 1)
-          .eq(0)
-          .should('have.contain', 'Bounces');
+        cy.get('[data-id="metric-tag"]').should('have.contain', 'Bounces');
       });
 
       it('should edit details of a saved report', () => {
@@ -235,10 +229,7 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('button', { name: 'Edit Details' }).should('be.disabled');
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.findAllByRole('option')
-            .eq(0)
-            .should('have.contain', 'My Bounce Report')
-            .click();
+          cy.findByRole('option', { name: 'My Bounce Report mockuser' }).click();
         });
 
         cy.findByRole('button', { name: 'Edit Details' }).click();
@@ -254,19 +245,18 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('button', { name: 'Save Changes' }).should('be.disabled');
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.findAllByRole('option')
-            .eq(0)
-            .should('have.contain', 'My Bounce Report')
-            .click();
+          cy.findByRole('option', { name: 'Comparison Report mockuser' }).click();
         });
 
         cy.findByRole('button', { name: 'Save Changes' }).click();
-        cy.findByLabelText('Name').should('have.value', 'My Bounce Report');
+        cy.findByLabelText('Name').should('have.value', 'Comparison Report');
         cy.findByLabelText('Description').should('have.value', 'Here is a description');
 
         cy.withinModal(() => {
           cy.findByText('Bounces').should('be.visible');
           cy.findByText('Last 7 Days').should('be.visible');
+          cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+          cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
         });
       });
 

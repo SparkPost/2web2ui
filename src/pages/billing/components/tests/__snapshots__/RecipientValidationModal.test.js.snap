@@ -1,21 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: RecipientValidationModal should render properly 1`] = `
-<OGOnlyWrapper
-  actions={
-    Array [
-      Object {
-        "content": <Close />,
-        "onClick": undefined,
-      },
-    ]
-  }
-  as={[Function]}
-  className="modalContainer"
-  title="How was this calculated?"
->
-  <Box
-    as={[Function]}
+<Modal.LEGACY>
+  <Panel.LEGACY
+    actions={
+      Array [
+        Object {
+          "content": <Close />,
+          "onClick": undefined,
+        },
+      ]
+    }
+    className="modalContainer"
     title="How was this calculated?"
   >
     <Panel.LEGACY.Section>
@@ -428,6 +424,6 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
         </Box>
       </Stack>
     </Panel.LEGACY.Section>
-  </Box>
-</OGOnlyWrapper>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

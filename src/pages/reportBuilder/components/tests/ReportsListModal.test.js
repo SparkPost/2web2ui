@@ -8,6 +8,8 @@ describe('ReportsListModal', () => {
     currentUser: 'Sparky McSparkFace',
     handleDelete: jest.fn(),
     handleEdit: jest.fn(),
+    isScheduledReportsEnabled: true,
+    allowDashboardV2: true,
     open: true,
     reports: [
       {
@@ -62,11 +64,22 @@ describe('ReportsListModal', () => {
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
   });
 
-  it('does not render action list for not editable reports', () => {
+  it('renders action list for not editable reports but does not have Edit and delete options', () => {
     subject();
     screen.getByText('All Reports').click();
     expect(screen.queryByTestId('popover-allreports-0')).toBeInTheDocument();
-    expect(screen.queryByTestId('popover-allreports-1')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('popover-allreports-1')).toBeInTheDocument();
+    screen.queryByTestId('popover-allreports-1').click();
+    expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Pin to Dashboard' })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Schedule' })).toBeInTheDocument();
+
+    screen.queryByTestId('popover-allreports-0').click();
+    expect(screen.queryByRole('button', { name: 'Edit' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Delete' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Pin to Dashboard' })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Schedule' })).toBeInTheDocument();
   });
 
   it('handles delete when clicking delete in the actionlist', () => {

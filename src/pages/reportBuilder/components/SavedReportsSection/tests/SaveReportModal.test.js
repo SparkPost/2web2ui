@@ -10,7 +10,7 @@ jest.mock('src/context/HibanaContext', () => ({
 }));
 
 jest.mock('src/pages/reportBuilder/context/ReportBuilderContext', () => ({
-  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar', filters: [] } })),
+  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar', filters: [], comparisons: [] } })),
 }));
 
 const mockOnCancel = jest.fn();

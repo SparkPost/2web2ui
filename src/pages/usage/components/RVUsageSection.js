@@ -1,14 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
-import { Panel, Box, Grid, Inline, Layout } from 'src/components/matchbox';
+import { Box, Grid, Inline, Layout, Panel, Button } from 'src/components/matchbox';
+import { RequestPage } from '@sparkpost/matchbox-icons';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { PageLink } from 'src/components/links';
+import RecipientValidationCostModal from 'src/components/billing/RecipientValidationCostModal';
 import { formatDate } from 'src/helpers/date';
 import totalRecipientValidationCost from 'src/helpers/recipientValidation';
+import { useModal } from 'src/hooks';
 import { LabelAndKeyPair } from '.';
 import RVUsageChart from './RVUsageChart';
 
 export default function RVUsageSection({ rvUsage, rvUsageHistory, usageHistoryStatus }) {
+  const { closeModal, openModal, isModalOpen } = useModal();
   const volumeUsed = _.get(rvUsage, 'month.used', 0);
 
   const usageChart = React.useMemo(() => {
@@ -19,11 +23,16 @@ export default function RVUsageSection({ rvUsage, rvUsageHistory, usageHistorySt
     return (
       <Panel mb="-1px" data-id="rv-usage-chart">
         <Panel.Section>
+          <Box textAlign="right" mb="200">
+            <Panel.Action onClick={openModal}>
+              View Expense Calculation <Button.Icon as={RequestPage} />
+            </Panel.Action>
+          </Box>
           <RVUsageChart data={rvUsageHistory} start={rvUsage.month.start} end={rvUsage.month.end} />
         </Panel.Section>
       </Panel>
     );
-  }, [usageHistoryStatus, rvUsageHistory, rvUsage.month.start, rvUsage.month.end]);
+  }, [usageHistoryStatus, rvUsageHistory, rvUsage.month.start, rvUsage.month.end, openModal]);
 
   return (
     <>
@@ -71,6 +80,13 @@ export default function RVUsageSection({ rvUsage, rvUsageHistory, usageHistorySt
           </Grid>
         </Box>
       </Layout.Section>
+      <RecipientValidationCostModal
+        open={isModalOpen}
+        onClose={closeModal}
+        volumeUsed={volumeUsed}
+        start={rvUsage.month.start}
+        end={rvUsage.month.end}
+      />
     </>
   );
 }

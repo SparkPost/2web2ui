@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
@@ -15,11 +15,9 @@ const defaultReportName = 'Summary Report';
 export default function usePinnedReport(onboarding) {
   const pinnedReport = { options: {}, name: '', linkToReportBuilder: '/' };
   const dispatch = useDispatch();
-  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (onboarding === 'done') {
-      isFirstRender.current = false; //used this to prevent triggering the getAggregateTable action on first render since loading state is false in reducer initially
       dispatch(listSubaccounts());
       dispatch(getReports());
     }
@@ -44,7 +42,7 @@ export default function usePinnedReport(onboarding) {
     };
   };
 
-  pinnedReport.loading = subaccountsLoading || reportsLoading || isFirstRender.current;
+  pinnedReport.loading = subaccountsLoading || reportsLoading;
   let summaryReportQueryString = PRESET_REPORT_CONFIGS.find(x => x.name === defaultReportName)
     .query_string;
   const summaryReportOptions = parseSearch(summaryReportQueryString);

@@ -1,3 +1,4 @@
+import { DELIVERABILITY_BOUNCE_METRIC_KEYS } from 'src/config/metrics';
 import {
   fetchDeliverability,
   fetchBounceClassifications,
@@ -11,14 +12,7 @@ import {
 
 const ADMIN_REASON_METRICS = getMetricsFromKeys(['count_admin_bounce']);
 const CLASSIFICATION_METRICS = getMetricsFromKeys(['count_bounce', 'count_admin_bounce']);
-const DELIVERABILITY_METRICS = getMetricsFromKeys([
-  'count_sent',
-  'count_bounce',
-  'count_inband_bounce',
-  'count_outofband_bounce',
-  'count_admin_bounce',
-  'count_targeted',
-]);
+const DELIVERABILITY_METRICS = getMetricsFromKeys(DELIVERABILITY_BOUNCE_METRIC_KEYS);
 const REASON_METRICS = getMetricsFromKeys(['count_bounce']);
 
 export function refreshBounceReport(updates = {}) {

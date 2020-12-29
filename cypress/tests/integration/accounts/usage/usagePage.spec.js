@@ -59,6 +59,26 @@ describe('The usage page', () => {
       cy.findByText('Feb 4th').should('be.visible');
     });
 
+    it('renders RV usage cost calculation modal correctly', () => {
+      cy.stubRequest({
+        url: '/api/v1/usage',
+        fixture: 'usage/200.get.json',
+        requestAlias: 'usageReq',
+      });
+
+      cy.stubRequest({
+        url: '/api/v1/usage/history',
+        fixture: 'usage/history/200.get.json',
+        requestAlias: 'usageHistoryReq',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@usageReq', '@usageHistoryReq', '@subscriptionReq', '@accountReq']);
+      cy.findByText('View Expense Calculation').click();
+      cy.findByText('Recipient Validation Expense Calculation').should('be.visible');
+      cy.findAllByText('$0.50').should('have.length', 3);
+    });
+
     it('does not render recipient validation section when the user has no RV usage', () => {
       cy.stubRequest({
         url: '/api/v1/usage',

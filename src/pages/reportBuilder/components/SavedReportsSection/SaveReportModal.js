@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   Inline,
+  LabelValue,
   Modal,
   Stack,
   Tag,
@@ -19,6 +20,7 @@ import { getMetricsFromKeys } from 'src/helpers/metrics';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import ActiveFilters from 'src/components/reportBuilder/ActiveFilters';
 import { formatDateTime, relativeDateOptionsIndexed } from 'src/helpers/date';
+import ActiveComparisons from '../ActiveComparisons';
 
 const DateRange = ({ to, from, relativeRange }) => {
   if (relativeRange === 'custom') {
@@ -74,6 +76,7 @@ export function SaveReportModal(props) {
   const { search = '' } = useLocation();
   const { state: reportOptions } = useReportBuilderContext();
   const hasFilters = Boolean(reportOptions.filters.length);
+  const hasComparisons = Boolean(reportOptions.comparisons.length);
 
   React.useEffect(() => {
     if (!report) return;
@@ -118,16 +121,33 @@ export function SaveReportModal(props) {
           {saveQuery && (
             <Stack>
               <Box>
-                <Heading as="h6">Metrics</Heading>
-
-                <ActiveMetrics metrics={reportOptions.metrics} />
+                <LabelValue>
+                  <LabelValue.Label>Metrics</LabelValue.Label>
+                  <LabelValue.Value>
+                    <ActiveMetrics metrics={reportOptions.metrics} />
+                  </LabelValue.Value>
+                </LabelValue>
               </Box>
 
               {hasFilters ? (
                 <Box>
-                  <Heading as="h6">Filters</Heading>
+                  <LabelValue>
+                    <LabelValue.Label>Filters</LabelValue.Label>
+                    <LabelValue.Value>
+                      <ActiveFilters filters={reportOptions.filters} />
+                    </LabelValue.Value>
+                  </LabelValue>
+                </Box>
+              ) : null}
 
-                  <ActiveFilters filters={reportOptions.filters} />
+              {hasComparisons ? (
+                <Box>
+                  <LabelValue>
+                    <LabelValue.Label>Comparisons</LabelValue.Label>
+                    <LabelValue.Value>
+                      <ActiveComparisons comparisons={reportOptions.comparisons} />
+                    </LabelValue.Value>
+                  </LabelValue>
                 </Box>
               ) : null}
 

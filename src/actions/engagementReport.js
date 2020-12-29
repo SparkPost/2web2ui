@@ -1,3 +1,4 @@
+import { DELIVERABILITY_LINKS_METRIC_KEYS, LINKS_BY_DOMAIN_METRIC_KEYS } from 'src/config/metrics';
 import { fetch as getMetrics } from 'src/actions/metrics';
 import {
   getMetricsFromKeys,
@@ -5,15 +6,9 @@ import {
   getQueryFromOptionsV2,
 } from 'src/helpers/metrics';
 
-const DELIVERABILITY_METRICS = getMetricsFromKeys([
-  'count_accepted',
-  'count_clicked',
-  'count_sent',
-  'count_unique_clicked_approx',
-  'count_unique_confirmed_opened_approx',
-]);
+const DELIVERABILITY_METRICS = getMetricsFromKeys(DELIVERABILITY_LINKS_METRIC_KEYS);
 
-const LINK_METRICS = getMetricsFromKeys(['count_clicked', 'count_raw_clicked_approx']);
+const LINK_METRICS = getMetricsFromKeys(LINKS_BY_DOMAIN_METRIC_KEYS);
 
 export function refreshEngagementReport(updates = {}) {
   return dispatch => {

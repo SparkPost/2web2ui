@@ -5,18 +5,23 @@ import fp from 'lodash/fp';
  * Camel cases aggregates
  */
 function formatAggregates(aggregates) {
-  return fp.mapKeys((key) => snakeToCamel(key))(aggregates);
+  return fp.mapKeys(key => snakeToCamel(key))(aggregates);
 }
 
 /**
  * Formats category objects from getBounceClassifications
  */
 function formatCategory(classification) {
-  const { bounce_category_name, bounce_class_name, count_bounce = 0, count_admin_bounce = 0 } = classification;
+  const {
+    bounce_category_name,
+    bounce_class_name,
+    count_bounce = 0,
+    count_admin_bounce = 0,
+  } = classification;
   return {
     category: bounce_category_name,
     name: bounce_class_name,
-    count: count_bounce || count_admin_bounce
+    count: count_bounce || count_admin_bounce,
   };
 }
 
@@ -28,7 +33,7 @@ function formatCategory(classification) {
 function reshapeCategories(data) {
   const categories = [];
 
-  const assignToCategory = (item) => {
+  const assignToCategory = item => {
     const { category, ...rest } = item;
     const index = fp.findIndex(({ name }) => name === category)(categories);
 
@@ -36,7 +41,7 @@ function reshapeCategories(data) {
       categories.push({
         name: category,
         count: rest.count,
-        children: [rest]
+        children: [rest],
       });
     } else {
       categories[index].count = categories[index].count + rest.count;
@@ -44,10 +49,7 @@ function reshapeCategories(data) {
     }
   };
 
-  fp.flow(
-    fp.flatMap(formatCategory),
-    fp.each(assignToCategory)
-  )(data);
+  fp.flow(fp.flatMap(formatCategory), fp.each(assignToCategory))(data);
 
   return fp.orderBy(['count'], ['desc'])(categories);
 }
@@ -58,12 +60,8 @@ function reshapeCategories(data) {
 function getBandTypes({ countInbandBounce, countOutofbandBounce }) {
   return [
     { name: 'In-Band', count: countInbandBounce },
-    { name: 'Out-of-Band', count: countOutofbandBounce }
+    { name: 'Out-of-Band', count: countOutofbandBounce },
   ];
 }
 
-export {
-  formatAggregates,
-  reshapeCategories,
-  getBandTypes
-};
+export { formatAggregates, reshapeCategories, getBandTypes };

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { LabelledValue } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Panel, Modal } from 'src/components/matchbox';
+import { Panel, Modal, Text } from 'src/components/matchbox';
 import { ButtonLink } from 'src/components/links';
-import { OGOnlyWrapper } from 'src/components/hibana';
 import {
   PremiumBanner,
   EnterpriseBanner,
@@ -22,7 +21,7 @@ import { formatFullNumber } from 'src/helpers/units';
 import totalRVCost from 'src/helpers/recipientValidation';
 import _ from 'lodash';
 import { formatDateTime } from 'src/helpers/date';
-import { Text } from 'src/components/matchbox';
+
 const PAYMENT_MODAL = 'payment';
 const CONTACT_MODAL = 'contact';
 const IP_MODAL = 'ip';
@@ -164,16 +163,13 @@ export default class BillingSummary extends Component {
           {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
           {show === IP_MODAL && <AddIps onClose={this.handleModal} />}
         </Modal.LEGACY>
-        <OGOnlyWrapper as={Modal.LEGACY} open={show === RV_MODAL} onClose={this.handleModal}>
-          <Box
-            as={Modal.LEGACY}
-            open={show === RV_MODAL}
-            onClose={this.handleModal}
-            showCloseButton={true}
-          >
-            <RecipientValidationModal volumeUsed={volumeUsed} onClose={this.handleModal} />
-          </Box>
-        </OGOnlyWrapper>
+        <RecipientValidationModal
+          volumeUsed={volumeUsed}
+          open={show === RV_MODAL}
+          onClose={this.handleModal}
+          start={rvUsage?.recipient_validation?.month?.start}
+          end={rvUsage?.recipient_validation?.month?.end}
+        />
       </div>
     );
   }
