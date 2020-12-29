@@ -38,3 +38,5 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
 
   return <HibanaPage {...props} />;
 }
+OGPage.displayName = 'OGPage';
+HibanaPage.displayName = 'HibanaPage';
