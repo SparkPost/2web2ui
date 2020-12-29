@@ -59,6 +59,12 @@ if (IS_HIBANA_ENABLED) {
       stubSubaccountsRequest();
       cy.stubRequest({
         method: 'GET',
+        url: '/api/v1/users/mockuser/two-factor/backup',
+        fixture: 'users/two-factor/backup/200.get.json',
+        requestAlias: 'twofabackup',
+      });
+      cy.stubRequest({
+        method: 'GET',
         url: '/api/v1/metrics/deliverability**/**',
         fixture: 'metrics/deliverability/200.get.json',
         requestAlias: 'dataGetDeliverability',
@@ -66,13 +72,14 @@ if (IS_HIBANA_ENABLED) {
     });
 
     describe('desktop navigation', () => {
-      beforeEach(() => {
-        cy.viewport(960, 1024);
-      });
+      // beforeEach(() => {
+      //   cy.viewport(960, 1024);
+      // });
 
       it('all nav links renders correctly for admin', () => {
         commonBeforeSteps();
         stubGrantsRequest({ role: 'admin' });
+        cy.wait('@stubbedGrantsRequest');
         cy.get(desktopNavSelector).within(() => {
           cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
@@ -495,11 +502,10 @@ if (IS_HIBANA_ENABLED) {
 
       beforeEach(() => {
         cy.viewport(959, 1024);
+        cy.visit('/account/profile'); //dashboard has some charts animation which causes resizing to be slow
       });
 
       it('does not render the desktop navigation below the 960px viewport width', () => {
-        commonBeforeSteps();
-
         cy.get(desktopNavSelector).should('not.be.visible');
 
         // Can't just check for mobile nav visiblity - effective height is 0px due to use of `react-focus-lock`
@@ -512,7 +518,6 @@ if (IS_HIBANA_ENABLED) {
       });
 
       it('renders default nav items and child items', () => {
-        commonBeforeSteps();
         toggleMobileMenu();
 
         cy.get(mobileNavSelector).within(() => {
@@ -558,7 +563,6 @@ if (IS_HIBANA_ENABLED) {
       });
 
       it('opens the help modal and closes the navigation when clicking "Help"', () => {
-        commonBeforeSteps();
         toggleMobileMenu();
 
         cy.get(mobileNavSelector).within(() => {
@@ -570,7 +574,6 @@ if (IS_HIBANA_ENABLED) {
       });
 
       it('moves focus to the menu when opened', () => {
-        commonBeforeSteps();
         toggleMobileMenu();
 
         // Grabs the `<nav>` element associated with a label via `aria-labelledby`
@@ -578,7 +581,6 @@ if (IS_HIBANA_ENABLED) {
       });
 
       it('closes when hitting the escape key', () => {
-        commonBeforeSteps();
         toggleMobileMenu();
 
         cy.get('body').type('{esc}');
