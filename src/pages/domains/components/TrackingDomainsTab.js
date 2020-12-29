@@ -171,7 +171,6 @@ export default function TrackingDomainsTab() {
   // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    // TOTEST: Make sure on page load when no rows are set, this doesn't mess anything up...
     if (rows && rows.length === 0 && listPending) {
       return;
     }
@@ -202,9 +201,7 @@ export default function TrackingDomainsTab() {
         filtersState: newFiltersState,
       }); // NOTE: Sets the filters display
 
-      // http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true&selectAll=true - selectAll got stripped off
-      // Sets url if it's not set at all... TODO: only call if no url query params are set?
-      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
+      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params, sets url if it's not set at all...
 
       // TODO: FIX - NOT WORKING!
       setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering

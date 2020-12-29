@@ -254,7 +254,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    // TOTEST: Make sure on page load when no rows are set, this doesn't mess anything up...
     if (rows && rows.length === 0 && listPending) {
       return;
     }
@@ -284,8 +283,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         type: 'LOAD',
         filtersState: newFiltersState,
       }); // NOTE: Sets the filters display
-      // Sets url if it's not set at all... TODO: only call if no url query params are set?
-      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
+
+      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params, sets url if it's not set at all...
 
       // TODO: FIX - NOT WORKING!
       setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
