@@ -3,12 +3,15 @@ import { Page } from 'src/components/matchbox';
 import ApiErrorBanner from 'src/components/apiErrorBanner';
 import { Templates } from 'src/components/images';
 import { PageLink } from 'src/components/links';
-import Loading from 'src/components/loading';
 import SnippetCollection from './components/SnippetCollection';
 import SnippetsEmptyState from './components/SnippetsEmptyState';
 import { ROLES } from 'src/constants';
 export default class ListPage extends React.Component {
+  state = {
+    isFirstRender: true,
+  };
   componentDidMount() {
+    this.setState({ isFirstRender: false });
     this.props.getSnippets();
     if (this.props.hasSubaccounts && this.props.subaccounts.length === 0) {
       this.props.listSubaccounts();
@@ -41,10 +44,6 @@ export default class ListPage extends React.Component {
   render() {
     const { canCreate, error, loading, snippets } = this.props;
 
-    if (loading) {
-      return <Loading />;
-    }
-
     return (
       <Page
         title="Snippets"
@@ -60,6 +59,7 @@ export default class ListPage extends React.Component {
           content: <p>Build, import, edit, and reuse snippets.</p>,
         }}
         hibanaEmptyStateComponent={SnippetsEmptyState}
+        loading={loading || this.state.isFirstRender}
       >
         {error ? this.renderError() : this.renderCollection()}
       </Page>
