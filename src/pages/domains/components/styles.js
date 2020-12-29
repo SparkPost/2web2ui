@@ -46,7 +46,7 @@ export const AlignedTextButton = styled(Button)`
 
 export const AlignedButtonIcon = styled(Button.Icon)`
   position: absolute;
-  right: 0.75rem; /* note: same as Matchbox listbox svg icon */
+  right: ${props => props.theme.space['300']}; /* Note: same as Matchbox listbox svg icon */
 `;
 
 export const Chevron = styled(ChevronRight)`
