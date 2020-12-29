@@ -15,7 +15,6 @@ import {
   getActiveStatusFilters,
   filterStateToParams,
 } from '../helpers';
-import { DomainTabPanelSection } from './styles';
 import _ from 'lodash';
 
 const filtersInitialState = {
@@ -211,7 +210,7 @@ export default function TrackingDomainsTab() {
   return (
     <>
       <Panel mb="400">
-        <DomainTabPanelSection>
+        <Panel.Section>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
@@ -245,7 +244,7 @@ export default function TrackingDomainsTab() {
               }}
             />
           </TableFilters>
-        </DomainTabPanelSection>
+        </Panel.Section>
 
         {listPending && <Loading />}
 

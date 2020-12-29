@@ -1,4 +1,3 @@
-import { Panel } from 'src/components/matchbox';
 import { Button } from 'src/components/matchbox';
 import { ChevronRight } from '@sparkpost/matchbox-icons';
 import styled from 'styled-components';
@@ -53,17 +52,4 @@ export const AlignedButtonIcon = styled(Button.Icon)`
 export const Chevron = styled(ChevronRight)`
   color: ${props => props.theme.colors.blue['700']};
   transform: rotate(90deg);
-`;
-
-export const DomainTabPanelSection = styled(Panel.Section)`
-  padding: 1rem 0.75rem;
-
-  > div > div,
-  > div > div > div {
-    margin-left: 0;
-  }
-
-  @media (min-width: ${props => props.theme.breakpoints[1]}) {
-    padding: 1rem;
-  }
 `;

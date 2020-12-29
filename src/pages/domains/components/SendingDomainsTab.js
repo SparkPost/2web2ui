@@ -15,7 +15,6 @@ import {
   getActiveStatusFilters,
   filterStateToParams,
 } from '../helpers';
-import { DomainTabPanelSection } from './styles';
 
 import _ from 'lodash';
 
@@ -295,7 +294,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   return (
     <>
       <Panel mb="400">
-        <DomainTabPanelSection>
+        <Panel.Section>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
@@ -329,7 +328,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               }}
             />
           </TableFilters>
-        </DomainTabPanelSection>
+        </Panel.Section>
 
         {listPending && <Loading />}
 
