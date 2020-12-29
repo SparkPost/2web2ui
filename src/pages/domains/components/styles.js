@@ -12,12 +12,15 @@ export const StyledFilterFields = styled.div`
 
 export const StatusPopoverContent = styled.span`
   display: inline-block; /* Necessary to supply width & cut ellipse joined string */
-  width: calc(100% - 1rem); /* NOTE: Works in conjunction with AlignedButtonIcon */
+  width: calc(
+    100% - ${props => props.theme.space['400']}
+  ); /* NOTE: Works in conjunction with AlignedButtonIcon */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  margin-right: 1rem; /* because we AlignedButtonIcon absolute right */
+  margin-right: ${props =>
+    props.theme.space['400']}; /* because we AlignedButtonIcon absolute right */
 
   > * {
     /* Hacky fix, but addresses vertical centering without introducing a flex parent that wreaks havoc on text truncation */
@@ -28,7 +31,10 @@ export const StatusPopoverContent = styled.span`
 
 export const AlignedTextButton = styled(Button)`
   text-align: left;
-  line-height: 20px; /* Note: Fixes text and button alignment so they're all the same vertical alignment (see styles/note on span children) */
+  line-height: ${props =>
+    props.theme.space[
+      '450'
+    ]}; /* Note: Fixes text and button alignment so they're all the same vertical alignment (see styles/note on span children) */
 
   > span,
   > span > span {
