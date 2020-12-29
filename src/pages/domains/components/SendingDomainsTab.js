@@ -144,8 +144,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listSubaccounts,
   } = useDomains();
 
-  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
+  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
@@ -251,21 +251,25 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  // useEffect to synce query params on page load to react state
+  // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
+    // TOTEST: Make sure on page load when no rows are set, this doesn't mess anything up...
+    if (rows && rows.length === 0 && listPending) {
+      return;
+    }
+
     if (firstLoad.current) {
-      // NOTE: filters is the URL query param state - we need to take from the url and set it as state
-      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName'); // remove the domain name query param
+      // NOTE: take what usePageFilters returns and dispatch back to usePageFilters, updateFilters, and setAllFilters
+      const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName');
       const activeStatusFilters = getActiveStatusFilters(filters);
       const statusFiltersToApply = !activeStatusFilters.length
-        ? allStatusFilterNames
+        ? allStatusCheckboxNames
         : activeStatusFilters.map(i => i.name);
-      const domainNameFilter = filters['domainName'];
 
       firstLoad.current = false;
 
-      let newFilterState = {
+      let newFiltersState = {
         ...filtersState,
         checkboxes: filtersState.checkboxes.map(checkbox => {
           return {
@@ -274,19 +278,51 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
           };
         }),
       };
+      newFiltersState['domainName'] = filters['domainName'];
 
       filtersStateDispatch({
         type: 'LOAD',
-        names: statusFiltersToApply,
-        domainName: domainNameFilter,
-      }); // NOTE: Updates the filter/checkbox display state
-      updateFilters(filterStateToParams(newFilterState)); // NOTE: Updates the URL query params on checkbox status change
-      setAllFilters(getReactTableFilters(filterStateToParams(newFilterState))); // NOTE: Updates the state/table filtering on checkbox status change
+        filtersState: newFiltersState,
+      }); // NOTE: Sets the filters display
+      // Sets url if it's not set at all... TODO: only call if no url query params are set?
+      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
+
+      // TODO: FIX - NOT WORKING!
+      setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
+      // TODO: FIX - NOT WORKING!
+
+      /**
+       * TODO: Cypress test - Page Load URL params possible
+       * URL Params Possible:
+          0: {label: "Select All", name: "selectAll", isChecked: false}
+          1: {label: "Verified", name: "readyForSending", isChecked: true}
+          2: {label: "DKIM Signing", name: "readyForDKIM", isChecked: true}
+          3: {label: "Bounce", name: "readyForBounce", isChecked: true}
+          4: {label: "SPF Valid", name: "validSPF", isChecked: true}
+          5: {label: "Unverified", name: "unverified", isChecked: true}
+          6: {label: "Blocked", name: "blocked", isChecked: true}
+
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true&selectAll=true&domainName=test
+             - needs to: Domain name input set, and table filtered
+
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true&selectAll=true
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true
+          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true
+          http://localhost:3100/domains/list/sending?readyForSending=true
+          http://localhost:3100/domains/list/sending
+          http://localhost:3100/domains/list/sending?selectAll=true
+          http://localhost:3100/domains/list/sending?selectAll=false
+
+          Also assert the table rows are correctly filtered down...
+      */
 
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // IMPORTANT! LEAVE EMPTY
+  }, [rows, listPending]);
 
   if (sendingDomainsListError) {
     return (
@@ -307,7 +343,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               disabled={listPending}
               value={filtersState.domainName}
               onChange={e => {
-                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+                const newFiltersState = {
+                  ...filtersState,
+                  domainName: e.target.value,
+                };
+                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
+                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params on checkbox status change
+                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering on checkbox status change
               }}
               placeholder={domains.length > 0 ? `e.g. ${domains[0]?.domainName}` : ''}
             />
@@ -318,6 +360,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               domainType={renderBounceOnly ? 'bounce' : 'sending'}
               onCheckboxChange={e => {
                 const newCheckboxes = filtersState.checkboxes.map(checkbox => {
+                  if (e.target.name === 'selectAll') {
+                    return {
+                      ...checkbox,
+                      isChecked: true,
+                    };
+                  }
+
                   if (checkbox.name === e.target.name) {
                     return {
                       ...checkbox,
@@ -328,14 +377,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
                   return checkbox;
                 });
 
-                const newFilterState = {
+                const newFiltersState = {
                   ...filtersState,
                   checkboxes: newCheckboxes,
                 };
 
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
-                updateFilters(filterStateToParams(newFilterState)); // NOTE: Updates the URL query params on checkbox status change
-                setAllFilters(getReactTableFilters(filterStateToParams(newFilterState))); // NOTE: Updates the state/table filtering on checkbox status change
+                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params on checkbox status change
+                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering on checkbox status change
               }}
             />
 

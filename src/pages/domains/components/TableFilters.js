@@ -11,6 +11,7 @@ import {
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
+import { getAllSelectedForCheckboxes } from '../helpers';
 import {
   StyledFilterFields,
   StatusPopoverContent,
@@ -18,18 +19,6 @@ import {
   AlignedButtonIcon,
   Chevron,
 } from './styles';
-
-function getAllSelectedState(checkboxes) {
-  const checkboxesWithoutSelectAll = checkboxes
-    .map(checkbox => (checkbox.name !== 'selectAll' ? checkbox : undefined))
-    .filter(Boolean); // get rid of selectAll
-
-  const allSelected =
-    checkboxesWithoutSelectAll.map(checkbox => checkbox.isChecked).filter(Boolean)?.length ===
-    checkboxesWithoutSelectAll?.length;
-
-  return allSelected;
-}
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -67,7 +56,7 @@ export function reducer(state, action) {
       });
 
       // Post Toggle of the individual checkbox - check to see if we need selectAll turned on
-      const allSelected = getAllSelectedState(mappedCheckboxes);
+      const allSelected = getAllSelectedForCheckboxes(mappedCheckboxes);
 
       // Force select all state here...
       mappedCheckboxes = mappedCheckboxes.map(checkbox => {
@@ -87,30 +76,18 @@ export function reducer(state, action) {
     }
 
     case 'LOAD': {
-      let checkboxes = state.checkboxes.map(checkbox => {
-        const isChecked = action.names.indexOf(checkbox.name) >= 0;
-        return {
-          ...checkbox,
-          isChecked: isChecked,
-        };
-      });
-
-      const allSelected = getAllSelectedState(checkboxes);
-      checkboxes = checkboxes.map(checkbox => {
+      const allSelected = getAllSelectedForCheckboxes(action.filtersState.checkboxes);
+      const checkboxesWithAllSelectedMapped = action.filtersState.checkboxes.map(checkbox => {
         if (checkbox.name === 'selectAll') {
-          return {
-            ...checkbox,
-            isChecked: allSelected,
-          };
+          checkbox.isChecked = allSelected;
         }
-
         return checkbox;
       });
 
       return {
         ...state,
-        domainName: action.domainName,
-        checkboxes,
+        domainName: action.filtersState.domainName,
+        checkboxes: checkboxesWithAllSelectedMapped,
       };
     }
 
