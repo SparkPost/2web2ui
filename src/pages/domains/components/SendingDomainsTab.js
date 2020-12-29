@@ -269,7 +269,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
       firstLoad.current = false;
 
-      let newFiltersState = {
+      const newFiltersState = {
         ...filtersState,
         checkboxes: filtersState.checkboxes.map(checkbox => {
           return {
