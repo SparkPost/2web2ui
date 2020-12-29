@@ -5,6 +5,7 @@ import { Templates } from 'src/components/images';
 import { PageLink } from 'src/components/links';
 import Loading from 'src/components/loading';
 import SnippetCollection from './components/SnippetCollection';
+import SnippetsEmptyState from './components/SnippetsEmptyState';
 import { ROLES } from 'src/constants';
 export default class ListPage extends React.Component {
   componentDidMount() {
@@ -58,6 +59,7 @@ export default class ListPage extends React.Component {
           title: 'Manage your template snippets',
           content: <p>Build, import, edit, and reuse snippets.</p>,
         }}
+        hibanaEmptyStateComponent={SnippetsEmptyState}
       >
         {error ? this.renderError() : this.renderCollection()}
       </Page>
