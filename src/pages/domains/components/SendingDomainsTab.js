@@ -153,49 +153,23 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const data = React.useMemo(() => domains, [domains]);
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Blocked',
-        accessor: 'blocked',
-        filter,
-      },
-      { Header: 'CreationTime', accessor: 'creationTime' },
-      {
-        Header: 'DefaultBounceDomain',
-        accessor: 'defaultBounceDomain',
-        filter,
-      },
       { Header: 'DomainName', accessor: 'domainName' },
-      {
-        Header: 'ReadyForBounce',
-        accessor: 'readyForBounce',
-        filter,
-      },
-      {
-        Header: 'ReadyForDKIM',
-        accessor: 'readyForDKIM',
-        filter,
-      },
-      {
-        Header: 'ReadyForSending',
-        accessor: 'readyForSending',
-        filter,
-      },
+      { Header: 'CreationTime', accessor: 'creationTime' },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
       {
-        Header: 'Unverified',
-        accessor: 'unverified',
-        filter,
-      },
-      {
-        Header: 'ValidSPF',
-        accessor: 'validSPF',
-        filter,
-      },
-      {
-        Header: 'SelectAll',
-        accessor: 'selectAll',
+        Header: 'Domain Status',
+        accessor: row => ({
+          readyForBounce: row.readyForBounce,
+          blocked: row.blocked,
+          defaultBounceDomain: row.defaultBounceDomain,
+          readyForDKIM: row.readyForDKIM,
+          readyForSending: row.readyForSending,
+          unverified: row.unverified,
+          validSPF: row.validSPF,
+        }),
+        filter: filter,
       },
     ],
     [filter],
@@ -275,7 +249,20 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       }
 
       updateFilters(filterStateToParams(filtersState));
-      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      setAllFilters(
+        getReactTableFilters({
+          domainName: filterStateToParams(filtersState)['domainName'],
+          'Domain Status': {
+            readyForBounce: filterStateToParams(filtersState)['readyForBounce'],
+            blocked: filterStateToParams(filtersState)['blocked'],
+            defaultBounceDomain: filterStateToParams(filtersState)['defaultBounceDomain'],
+            readyForDKIM: filterStateToParams(filtersState)['readyForDKIM'],
+            readyForSending: filterStateToParams(filtersState)['readyForSending'],
+            unverified: filterStateToParams(filtersState)['unverified'],
+            validSPF: filterStateToParams(filtersState)['validSPF'],
+          },
+        }),
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersState, listPending]);
