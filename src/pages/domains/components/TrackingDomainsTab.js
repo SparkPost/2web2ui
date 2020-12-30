@@ -177,6 +177,7 @@ export default function TrackingDomainsTab() {
 
     if (firstLoad.current) {
       // NOTE: take what usePageFilters returns and dispatch back to usePageFilters, updateFilters, and setAllFilters
+      //  - usePageFilters is stripping the url on page load based on the defaults passed in... :(
       const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName'); // remove the domainName
       const activeStatusFilters = getActiveStatusFilters(filters);
       const statusFiltersToApply = !activeStatusFilters.length
