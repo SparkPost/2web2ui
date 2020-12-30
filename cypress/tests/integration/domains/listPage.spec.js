@@ -615,7 +615,20 @@ describe('The domains list page', () => {
         cy.findByText('There is no data to display').should('be.visible');
       });
 
-      it('syncs domain status with query param readyForSending', () => {
+      it('syncs query param domain name input', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/sending?domainName=spf-`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'spf-valid.com',
+          statusTags: ['Sending', 'SPF Valid'],
+        });
+      });
+
+      it('syncs query param readyForSending checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?readyForSending=true`);
@@ -623,89 +636,148 @@ describe('The domains list page', () => {
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
         cy.findByLabelText('Verified').should('be.checked');
-        // TODO: Assert other things aren't checked
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
+        cy.findByLabelText('Bounce').should('not.be.checked');
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('not.be.checked');
 
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        // THIS ROW SHOULDN'T EXIST.... IMO
+        // verifyTableRow({
+        //   rowIndex: 0,
+        //   domainName: 'spf-valid.com',
+        //   statusTags: ['Sending', 'SPF Valid'],
+        // });
+        // THIS ROW SHOULDN'T EXIST.... IMO
+        // verifyTableRow({
+        //   rowIndex: 1,
+        //   domainName: 'dkim-signing.com',
+        //   statusTags: ['Sending', 'DKIM Signing'],
+        // });
+
+        // THIS ROW SHOULDN BE THE ONLY ONE.... IMO
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'ready-for-sending.com',
+          statusTags: ['Sending'],
+        });
+        // THIS ROW SHOULDN'T EXIST.... IMO
+        // verifyTableRow({
+        //   rowIndex: 3,
+        //   domainName: 'default-bounce.com',
+        //   statusTags: ['Sending', 'Bounce'],
+        // });
       });
 
-      it('syncs domain status with query param readyForDKIM', () => {
+      it('syncs query param readyForDKIM checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?readyForDKIM=true`);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
         cy.findByLabelText('DKIM Signing').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        cy.findByLabelText('Bounce').should('not.be.checked');
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('not.be.checked');
       });
 
-      it('syncs domain status with query param readyForBounce', () => {
+      it('syncs query param readyForBounce checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?readyForBounce=true`);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
         cy.findByLabelText('Bounce').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('not.be.checked');
       });
 
-      it('syncs domain status with query param validSPF', () => {
+      it('syncs query param validSPF checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?validSPF=true`);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
+        cy.findByLabelText('Bounce').should('not.be.checked');
         cy.findByLabelText('SPF Valid').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('not.be.checked');
       });
 
-      it('syncs domain status with query param unverified', () => {
+      it('syncs query param unverified checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?unverified=true`);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
+        cy.findByLabelText('Bounce').should('not.be.checked');
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
         cy.findByLabelText('Unverified').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        cy.findByLabelText('Blocked').should('not.be.checked');
       });
 
-      it('syncs domain status with query param blocked', () => {
+      it('syncs query param blocked checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?blocked=true`);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
+        cy.findByLabelText('Bounce').should('not.be.checked');
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
         cy.findByLabelText('Blocked').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
       });
 
-      it('syncs domain status with query param selectAll', () => {
+      it('syncs query param selectAll checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/sending?selectAll=true`);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
+        cy.findByLabelText('Bounce').should('not.be.checked');
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('not.be.checked');
         // TODO: Assert nothing is checked.... - just what's happening now - but we might want to change that behavior
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
       });
 
-      // TODO: Add a test to click all checkbox filter values, and type into the domain input - validating the url updates correctly
+      it('Filters the table based on the domain status dropdown state.', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/sending`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('checked');
+        cy.findByLabelText('DKIM Signing').should('checked');
+        cy.findByLabelText('Bounce').should('checked');
+        cy.findByLabelText('SPF Valid').should('checked');
+        cy.findByLabelText('Unverified').should('checked');
+        cy.findByLabelText('Blocked').should('checked');
+
+        // TODO: Click each filter and check table for each filter state combination
+      });
     });
 
     describe('bounce domains table', () => {
@@ -1111,46 +1183,56 @@ describe('The domains list page', () => {
         });
       });
 
-      it('syncs domain status with query param verified', () => {
+      it('syncs query param verified checkbox', () => {
         stubTrackingDomains();
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking?verified=true`);
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
-        // TODO: Assert other things aren't checked
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
         cy.findByLabelText('Verified').should('be.checked');
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('not.be.checked');
       });
 
-      it('syncs domain status with query param unverified', () => {
+      it('syncs query param unverified checkbox', () => {
         stubTrackingDomains();
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking?unverified=true`);
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
         cy.findByLabelText('Unverified').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
+        cy.findByLabelText('Blocked').should('not.be.checked');
       });
 
-      it('syncs domain status with query param blocked', () => {
+      it('syncs query param blocked checkbox', () => {
         stubTrackingDomains();
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking?blocked=true`);
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
         cy.findByLabelText('Blocked').should('be.checked');
-        // TODO: Assert other things aren't checked
-
-        // TODO: Assert table is correct too! (and add a test for sending domains too)
       });
 
-      // TODO: Add a test to click all checkbox filter values, and type into the domain input - validating the url updates correctly
+      it('Filters the table based on the domain status dropdown state.', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/sending`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('checked');
+        cy.findByLabelText('Unverified').should('checked');
+        cy.findByLabelText('Blocked').should('be.checked');
+
+        // TODO: Click each filter and check table for each filter state combination
+      });
     });
   }
 
