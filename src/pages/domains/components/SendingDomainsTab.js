@@ -144,6 +144,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listSubaccounts,
   } = useDomains();
 
+  // eslint-disable-next-line no-unused-vars
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
@@ -235,8 +236,11 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
-    filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
-    resetFilters();
+    // TODO: Figure out a way to do this without clearing out url/state on page load....
+    //  - This is Causing issues on page load...
+    // QUESTION: Does the Tabs component have an event emitter so we can do this on that event instead of a useEffect?
+    // filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
+    // resetFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderBounceOnly]);
 
@@ -254,13 +258,11 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    if (rows && rows.length === 0 && listPending) {
+    if (!rows || (rows && rows.length === 0) || listPending) {
       return;
     }
 
     if (firstLoad.current) {
-      // NOTE: take what usePageFilters returns and dispatch back to usePageFilters, updateFilters, and setAllFilters
-      //  - usePageFilters is stripping the url on page load based on the defaults passed in... :(
       const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName');
       const activeStatusFilters = getActiveStatusFilters(filters);
       const statusFiltersToApply = !activeStatusFilters.length
@@ -284,12 +286,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         type: 'LOAD',
         filtersState: newFiltersState,
       }); // NOTE: Sets the filters display
-
       updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params, sets url if it's not set at all...
 
-      // TODO: FIX - NOT WORKING!
+      // Question - should we strip off selectAll so it doesn't get dispatched to the table?
       setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
-      // TODO: FIX - NOT WORKING!
 
       /**
        * TODO: Cypress test - Page Load URL params possible
