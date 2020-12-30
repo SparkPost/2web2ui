@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 // Components
 import { Page } from 'src/components/matchbox';
-import { Loading, ApiErrorBanner, DeleteModal, ConfirmationModal } from 'src/components';
+import { ApiErrorBanner, DeleteModal, ConfirmationModal } from 'src/components';
 import { Setup } from 'src/components/images';
 import { PageLink } from 'src/components/links';
 import TestCollection from './components/TestCollection';
 import InfoBanner from './components/InfoBanner';
+import AbTestEmptyState from './components/AbTestEmptyState';
 
 export class ListPage extends Component {
   state = {
@@ -13,7 +14,13 @@ export class ListPage extends Component {
     showCancelModal: false,
     testToDelete: {},
     testToCancel: {},
+    isFirstRender: true, //this is set to display loading on the first render
   };
+
+  componentDidMount() {
+    this.setState({ isFirstRender: false });
+    this.props.listAbTests();
+  }
 
   toggleDelete = (id, subaccount_id) => {
     this.setState({
@@ -72,10 +79,6 @@ export class ListPage extends Component {
   render() {
     const { loading, error, abTests, deletePending, cancelPending } = this.props;
 
-    if (loading) {
-      return <Loading />;
-    }
-
     return (
       <Page
         title="A/B Testing"
@@ -90,6 +93,8 @@ export class ListPage extends Component {
           title: 'Create an A/B test',
           content: <p>Create and run A/B tests to boost your engagement.</p>,
         }}
+        hibanaEmptyStateComponent={AbTestEmptyState}
+        loading={loading || this.state.isFirstRender}
       >
         {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
