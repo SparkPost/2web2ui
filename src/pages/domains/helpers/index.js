@@ -2,13 +2,13 @@ import getReactTableFilters from './getReactTableFilters';
 import customDomainStatusFilter from './customDomainStatusFilter';
 import getActiveStatusFilters from './getActiveStatusFilters';
 import filterStateToParams from './filterStateToParams';
-import getAllSelectedForCheckboxes from './getAllSelectedForCheckboxes';
+import getAllSelected from './getAllSelected';
 import setCheckboxIsChecked from './setCheckboxIsChecked';
 
 export {
   getReactTableFilters,
   customDomainStatusFilter,
-  getAllSelectedForCheckboxes,
+  getAllSelected,
   setCheckboxIsChecked,
   getActiveStatusFilters,
   filterStateToParams,

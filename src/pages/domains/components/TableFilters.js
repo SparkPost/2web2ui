@@ -11,7 +11,7 @@ import {
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
-import { getAllSelectedForCheckboxes } from '../helpers';
+import { getAllSelected } from '../helpers';
 import {
   StyledFilterFields,
   StatusPopoverContent,
@@ -56,7 +56,7 @@ export function reducer(state, action) {
       });
 
       // Post Toggle of the individual checkbox - check to see if we need selectAll turned on
-      const allSelected = getAllSelectedForCheckboxes(mappedCheckboxes);
+      const allSelected = getAllSelected(mappedCheckboxes);
 
       // Force select all state here...
       mappedCheckboxes = mappedCheckboxes.map(checkbox => {
@@ -76,7 +76,7 @@ export function reducer(state, action) {
     }
 
     case 'LOAD': {
-      const allSelected = getAllSelectedForCheckboxes(action.filtersState.checkboxes);
+      const allSelected = getAllSelected(action.filtersState.checkboxes);
       const checkboxesWithAllSelectedMapped = action.filtersState.checkboxes.map(checkbox => {
         if (checkbox.name === 'selectAll') {
           checkbox.isChecked = allSelected;

@@ -1,4 +1,4 @@
-const getAllSelectedForCheckboxes = function(checkboxes) {
+const getAllSelected = function(checkboxes) {
   const checkboxesWithoutSelectAll = checkboxes
     .map(checkbox => (checkbox.name !== 'selectAll' ? checkbox : undefined))
     .filter(Boolean); // get rid of selectAll
@@ -10,4 +10,4 @@ const getAllSelectedForCheckboxes = function(checkboxes) {
   return allSelected;
 };
 
-export default getAllSelectedForCheckboxes;
+export default getAllSelected;
