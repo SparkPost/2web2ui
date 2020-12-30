@@ -136,7 +136,6 @@ const options = [
   },
 ];
 
-let previousRenderBounceOnly; // NOTE: Track Sending / Bounce TAB changes with renderBounceOnly boolean
 export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const {
     listSendingDomains,
@@ -153,7 +152,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
-  if (previousRenderBounceOnly !== undefined && renderBounceOnly !== previousRenderBounceOnly) {
+  const previousRenderBounceOnly = useRef(renderBounceOnly);
+  if (renderBounceOnly !== previousRenderBounceOnly.current) {
     // filtersInitialState -> selectAll was being set to false after first reset... huh...
     filtersInitialState.checkboxes.map(checkbox => {
       checkbox.isChecked = true;
@@ -161,9 +161,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }); // force selectAll true again...
     filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
     resetFilters();
-    previousRenderBounceOnly = renderBounceOnly; // set previous after dispatching resets
-  } else if (!previousRenderBounceOnly) {
-    previousRenderBounceOnly = renderBounceOnly; // set for the first time
+    previousRenderBounceOnly.current = renderBounceOnly; // set previous after dispatching resets
   }
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
