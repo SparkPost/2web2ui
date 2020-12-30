@@ -207,10 +207,10 @@ export default function TrackingDomainsTab() {
     updateFilters(flattenedFilters);
 
     const domainStatusValues = {
-      blocked: filterStateToParams(filtersState)['blocked'],
-      defaultTrackingDomain: filterStateToParams(filtersState)['defaultTrackingDomain'],
-      unverified: filterStateToParams(filtersState)['unverified'],
-      verified: filterStateToParams(filtersState)['verified'],
+      blocked: flattenedFilters['blocked'],
+      defaultTrackingDomain: flattenedFilters['defaultTrackingDomain'],
+      unverified: flattenedFilters['unverified'],
+      verified: flattenedFilters['verified'],
     };
 
     const reactTableFilters = getReactTableFilters({
