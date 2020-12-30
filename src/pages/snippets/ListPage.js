@@ -6,7 +6,6 @@ import { PageLink } from 'src/components/links';
 import SnippetCollection from './components/SnippetCollection';
 import SnippetsEmptyState from './components/SnippetsEmptyState';
 import InfoBanner from './components/InfoBanner';
-import { HibanaStateContext } from 'src/context/HibanaContext';
 import { ROLES } from 'src/constants';
 export default class ListPage extends React.Component {
   state = {
@@ -47,29 +46,25 @@ export default class ListPage extends React.Component {
     const { canCreate, error, loading, snippets } = this.props;
 
     return (
-      <HibanaStateContext.Consumer>
-        {value => (
-          <Page
-            title="Snippets"
-            primaryAction={
-              canCreate
-                ? { Component: PageLink, content: 'Create Snippet', to: '/snippets/create' }
-                : undefined
-            }
-            empty={{
-              show: !error && snippets.length === 0,
-              image: Templates,
-              title: 'Manage your template snippets',
-              content: <p>Build, import, edit, and reuse snippets.</p>,
-            }}
-            hibanaEmptyStateComponent={SnippetsEmptyState}
-            loading={loading || this.state.isFirstRender}
-          >
-            {this.props.isEmptyStateEnabled && value.isHibanaEnabled && <InfoBanner />}
-            {error ? this.renderError() : this.renderCollection()}
-          </Page>
-        )}
-      </HibanaStateContext.Consumer>
+      <Page
+        title="Snippets"
+        primaryAction={
+          canCreate
+            ? { Component: PageLink, content: 'Create Snippet', to: '/snippets/create' }
+            : undefined
+        }
+        empty={{
+          show: !error && snippets.length === 0,
+          image: Templates,
+          title: 'Manage your template snippets',
+          content: <p>Build, import, edit, and reuse snippets.</p>,
+        }}
+        hibanaEmptyStateComponent={SnippetsEmptyState}
+        loading={loading || this.state.isFirstRender}
+      >
+        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
+        {error ? this.renderError() : this.renderCollection()}
+      </Page>
     );
   }
 }
