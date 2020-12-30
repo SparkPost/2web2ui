@@ -574,15 +574,30 @@ describe('The domains list page', () => {
           statusTags: ['Sending', 'Bounce'],
         });
 
-        cy.findByLabelText('SPF Valid').uncheck({ force: true });
+        cy.findByLabelText('Verified').uncheck({ force: true });
         verifyTableRow({
           rowIndex: 0,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['Sending', 'SPF Valid'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
           domainName: 'dkim-signing.com',
           creationDate: 'Aug 4, 2017',
           statusTags: ['Sending', 'DKIM Signing'],
         });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        });
+        cy.get('tbody tr')
+          .eq(3)
+          .should('not.exist');
 
-        cy.findByLabelText('Bounce').uncheck({ force: true });
+        cy.findByLabelText('SPF Valid').uncheck({ force: true });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'dkim-signing.com',
@@ -591,26 +606,26 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 1,
-          domainName: 'ready-for-sending.com',
-          creationDate: 'Aug 2, 2017',
-          statusTags: ['Sending'],
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
         });
         cy.get('tbody tr')
           .eq(2)
           .should('not.exist');
 
-        cy.findByLabelText('DKIM Signing').uncheck({ force: true });
+        cy.findByLabelText('Bounce').uncheck({ force: true });
         verifyTableRow({
           rowIndex: 0,
-          domainName: 'ready-for-sending.com',
-          creationDate: 'Aug 2, 2017',
-          statusTags: ['Sending'],
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
         });
         cy.get('tbody tr')
           .eq(1)
           .should('not.exist');
 
-        cy.findByLabelText('Verified').uncheck({ force: true });
+        cy.findByLabelText('DKIM Signing').uncheck({ force: true });
 
         cy.findByText('There is no data to display').should('be.visible');
       });
@@ -653,9 +668,14 @@ describe('The domains list page', () => {
           statusTags: ['Sending', 'DKIM Signing'],
         });
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 2,
           domainName: 'ready-for-sending.com',
           statusTags: ['Sending'],
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'default-bounce.com',
+          statusTags: ['Sending', 'Bounce'],
         });
       });
 
@@ -734,6 +754,45 @@ describe('The domains list page', () => {
         cy.findByLabelText('Blocked').should('be.checked');
       });
 
+      it('resets state when switching between sending and bounce', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/sending?blocked=true`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('not.be.checked');
+        cy.findByLabelText('DKIM Signing').should('not.be.checked');
+        cy.findByLabelText('Bounce').should('not.be.checked');
+        cy.findByLabelText('SPF Valid').should('not.be.checked');
+        cy.findByLabelText('Unverified').should('not.be.checked');
+        cy.findByLabelText('Blocked').should('be.checked');
+
+        cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('be.checked');
+        cy.findByLabelText('DKIM Signing').should('be.checked');
+        cy.findByLabelText('SPF Valid').should('be.checked');
+        cy.findByLabelText('Unverified').should('be.checked');
+        cy.findByLabelText('Blocked').should('be.checked');
+
+        // Click some more...
+        cy.findByLabelText('Verified').uncheck({ force: true });
+        cy.findByLabelText('Unverified').uncheck({ force: true });
+        cy.findByLabelText('Blocked').uncheck({ force: true });
+
+        cy.findByRole('tab', { name: 'Sending Domains' }).click({ force: true });
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Verified').should('be.checked');
+        cy.findByLabelText('DKIM Signing').should('be.checked');
+        cy.findByLabelText('Bounce').should('be.checked');
+        cy.findByLabelText('SPF Valid').should('be.checked');
+        cy.findByLabelText('Unverified').should('be.checked');
+        cy.findByLabelText('Blocked').should('be.checked');
+      });
+
       it('syncs query param selectAll checkbox', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
@@ -748,7 +807,6 @@ describe('The domains list page', () => {
         cy.findByLabelText('SPF Valid').should('not.be.checked');
         cy.findByLabelText('Unverified').should('not.be.checked');
         cy.findByLabelText('Blocked').should('not.be.checked');
-        // TODO: Assert nothing is checked.... - just what's happening now - but we might want to change that behavior
       });
     });
 

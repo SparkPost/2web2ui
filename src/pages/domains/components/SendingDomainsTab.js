@@ -153,12 +153,17 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
-  // NOTE: I'm putting this here because it was already happening - but I'm not entirely certain we want this to happen in this way
-  // We could potentially store the filter state in local storage and between page changes load up the previous set.
-  if (previousRenderBounceOnly && renderBounceOnly !== previousRenderBounceOnly) {
+  if (previousRenderBounceOnly !== undefined && renderBounceOnly !== previousRenderBounceOnly) {
+    // filtersInitialState -> selectAll was being set to false after first reset... huh...
+    filtersInitialState.checkboxes.map(checkbox => {
+      checkbox.isChecked = true;
+      return checkbox;
+    }); // force selectAll true again...
     filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
     resetFilters();
     previousRenderBounceOnly = renderBounceOnly; // set previous after dispatching resets
+  } else if (!previousRenderBounceOnly) {
+    previousRenderBounceOnly = renderBounceOnly; // set for the first time
   }
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
