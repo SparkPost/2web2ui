@@ -9,6 +9,7 @@ const customDomainStatusFilter = function(rows, columnIds, value) {
       let trueForStleastOne = 0;
       Object.keys(value).forEach(status => {
         if (status !== 'blocked' && row.values[column]['blocked']) return;
+        //if a domain is blocked we don't have to compare other fields
         else if (value[status] && row.values[column][status]) {
           trueForStleastOne++;
           return;
