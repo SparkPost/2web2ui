@@ -761,6 +761,7 @@ describe('The domains list page', () => {
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Select All').should('not.be.checked');
         cy.findByLabelText('Verified').should('not.be.checked');
         cy.findByLabelText('DKIM Signing').should('not.be.checked');
         cy.findByLabelText('Bounce').should('not.be.checked');
@@ -771,6 +772,7 @@ describe('The domains list page', () => {
         cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Select All').should('be.checked');
         cy.findByLabelText('Verified').should('be.checked');
         cy.findByLabelText('DKIM Signing').should('be.checked');
         cy.findByLabelText('SPF Valid').should('be.checked');
@@ -785,6 +787,7 @@ describe('The domains list page', () => {
         cy.findByRole('tab', { name: 'Sending Domains' }).click({ force: true });
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Select All').should('be.checked');
         cy.findByLabelText('Verified').should('be.checked');
         cy.findByLabelText('DKIM Signing').should('be.checked');
         cy.findByLabelText('Bounce').should('be.checked');
