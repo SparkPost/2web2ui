@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
-import { Panel } from 'src/components/matchbox';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import { usePageFilters } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -13,11 +12,15 @@ import {
   getReactTableFilters,
   customDomainStatusFilter,
   getActiveStatusFilters,
+  setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
 
+import { DomainsListPanel, DomainsListPanelSection } from './styles';
+
 import _ from 'lodash';
 
+// For local reducer state
 const filtersInitialState = {
   domainName: undefined,
   checkboxes: [
@@ -44,6 +47,7 @@ const filtersInitialState = {
   ],
 };
 
+// For usePageFilters
 const initFiltersForTracking = {
   domainName: { defaultValue: undefined },
   verified: {
@@ -103,33 +107,25 @@ export default function TrackingDomainsTab() {
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Blocked',
-        accessor: 'blocked',
-        filter,
-      },
       { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
       { Header: 'DomainName', accessor: 'domainName' },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
       { Header: 'SubaccountId', accessor: 'subaccountId' },
       { Header: 'SubaccountName', accessor: 'subaccountName' },
       {
-        Header: 'Unverified',
-        accessor: 'unverified',
+        Header: 'DomainStatus',
+        accessor: row => ({
+          blocked: row.blocked,
+          defaultTrackingDomain: row.defaultTrackingDomain,
+          unverified: row.unverified,
+          verified: row.verified,
+        }),
         filter,
-      },
-      {
-        Header: 'Verified',
-        accessor: 'verified',
-        filter,
-      },
-      {
-        Header: 'SelectAll',
-        accessor: 'selectAll',
       },
     ],
     [filter],
   );
+
   const sortBy = React.useMemo(() => [{ id: 'domainName', desc: false }], []);
   const tableInstance = useTable(
     {
@@ -199,35 +195,31 @@ export default function TrackingDomainsTab() {
         type: 'LOAD',
         filtersState: newFiltersState,
       }); // NOTE: Sets the filters display
-
-      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params, sets url if it's not set at all...
-
-      // Question - should we strip off selectAll so it doesn't get dispatched to the table?
-      setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
-
-      /**
-       * TODO: Cypress test - Page Load URL params sync -> UI state
-       * URL Params Possible:
-          0: {label: "Select All", name: "selectAll", isChecked: true}
-          1: {label: "Verified", name: "verified", isChecked: true}
-          2: {label: "Unverified", name: "unverified", isChecked: true}
-          3: {label: "Blocked", name: "blocked", isChecked: true}
-
-          http://localhost:3100/domains/list/tracking?verified=true&unverified=true&blocked=true&selectAll=true
-          http://localhost:3100/domains/list/tracking?verified=true&unverified=true&blocked=true
-          http://localhost:3100/domains/list/tracking?verified=true&unverified=true
-          http://localhost:3100/domains/list/tracking?verified=true
-          http://localhost:3100/domains/list/tracking
-          http://localhost:3100/domains/list/tracking?selectAll=true
-          http://localhost:3100/domains/list/tracking?selectAll=false
-
-          Also assert the table rows are correctly filtered down...
-       */
-
+      batchDispatchUrlAndTable(newFiltersState);
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, listPending]);
+
+  function batchDispatchUrlAndTable(newFiltersState) {
+    const flattenedFilters = filterStateToParams(newFiltersState);
+
+    updateFilters(flattenedFilters);
+
+    const domainStatusValues = {
+      blocked: filterStateToParams(filtersState)['blocked'],
+      defaultTrackingDomain: filterStateToParams(filtersState)['defaultTrackingDomain'],
+      unverified: filterStateToParams(filtersState)['unverified'],
+      verified: filterStateToParams(filtersState)['verified'],
+    };
+
+    const reactTableFilters = getReactTableFilters({
+      domainName: flattenedFilters['domainName'],
+      DomainStatus: domainStatusValues,
+    });
+
+    setAllFilters(reactTableFilters);
+  }
 
   if (trackingDomainsListError) {
     return (
@@ -241,8 +233,8 @@ export default function TrackingDomainsTab() {
 
   return (
     <>
-      <Panel mb="400">
-        <Panel.Section>
+      <DomainsListPanel mb="400">
+        <DomainsListPanelSection>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
@@ -253,8 +245,7 @@ export default function TrackingDomainsTab() {
                   domainName: e.target.value,
                 };
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
-                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
-                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
+                batchDispatchUrlAndTable(newFiltersState);
               }}
               placeholder={
                 trackingDomains.length > 0 ? `e.g. ${trackingDomains[0]?.domainName}` : ''
@@ -265,32 +256,13 @@ export default function TrackingDomainsTab() {
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
-                const newCheckboxes = filtersState.checkboxes.map(checkbox => {
-                  if (e.target.name === 'selectAll') {
-                    return {
-                      ...checkbox,
-                      isChecked: true,
-                    };
-                  }
-
-                  if (checkbox.name === e.target.name) {
-                    return {
-                      ...checkbox,
-                      isChecked: !checkbox.isChecked,
-                    };
-                  }
-
-                  return checkbox;
-                });
-
+                const newCheckboxes = setCheckboxIsChecked(e.target.name, filtersState.checkboxes);
                 const newFiltersState = {
                   ...filtersState,
                   checkboxes: newCheckboxes,
                 };
-
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
-                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
-                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
+                batchDispatchUrlAndTable(newFiltersState);
               }}
             />
 
@@ -307,14 +279,14 @@ export default function TrackingDomainsTab() {
               }}
             />
           </TableFilters>
-        </Panel.Section>
+        </DomainsListPanelSection>
 
         {listPending && <Loading />}
 
         {isEmpty && <Empty message="There is no data to display" />}
 
         {!listPending && !isEmpty && <TrackingDomainsTable tableInstance={tableInstance} />}
-      </Panel>
+      </DomainsListPanel>
 
       <Pagination
         data={rows}

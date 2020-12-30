@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
-import { Panel } from 'src/components/matchbox';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import { usePageFilters } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -13,11 +12,15 @@ import {
   getReactTableFilters,
   customDomainStatusFilter,
   getActiveStatusFilters,
+  setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
 
+import { DomainsListPanel, DomainsListPanelSection } from './styles';
+
 import _ from 'lodash';
 
+// For local reducer state
 const filtersInitialState = {
   domainName: '',
   checkboxes: [
@@ -59,6 +62,7 @@ const filtersInitialState = {
   ],
 };
 
+// For usePageFilters
 const initFiltersForSending = {
   domainName: { defaultValue: undefined },
   readyForSending: {
@@ -132,6 +136,7 @@ const options = [
   },
 ];
 
+let previousRenderBounceOnly; // NOTE: Track Sending / Bounce TAB changes with renderBounceOnly boolean
 export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const {
     listSendingDomains,
@@ -148,60 +153,44 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
+  // NOTE: I'm putting this here because it was already happening - but I'm not entirely certain we want this to happen in this way
+  // We could potentially store the filter state in local storage and between page changes load up the previous set.
+  if (previousRenderBounceOnly && renderBounceOnly !== previousRenderBounceOnly) {
+    filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
+    resetFilters();
+    previousRenderBounceOnly = renderBounceOnly; // set previous after dispatching resets
+  }
+
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
   const filter = React.useMemo(() => customDomainStatusFilter, []);
 
   const data = React.useMemo(() => domains, [domains]);
+
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Blocked',
-        accessor: 'blocked',
-        filter,
-      },
       { Header: 'CreationTime', accessor: 'creationTime' },
-      {
-        Header: 'DefaultBounceDomain',
-        accessor: 'defaultBounceDomain',
-        filter,
-      },
       { Header: 'DomainName', accessor: 'domainName' },
-      {
-        Header: 'ReadyForBounce',
-        accessor: 'readyForBounce',
-        filter,
-      },
-      {
-        Header: 'ReadyForDKIM',
-        accessor: 'readyForDKIM',
-        filter,
-      },
-      {
-        Header: 'ReadyForSending',
-        accessor: 'readyForSending',
-        filter,
-      },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
       {
-        Header: 'Unverified',
-        accessor: 'unverified',
+        Header: 'DomainStatus',
+        accessor: row => ({
+          readyForBounce: row.readyForBounce,
+          blocked: row.blocked,
+          defaultBounceDomain: row.defaultBounceDomain,
+          readyForDKIM: row.readyForDKIM,
+          readyForSending: row.readyForSending,
+          unverified: row.unverified,
+          validSPF: row.validSPF,
+        }),
         filter,
-      },
-      {
-        Header: 'ValidSPF',
-        accessor: 'validSPF',
-        filter,
-      },
-      {
-        Header: 'SelectAll',
-        accessor: 'selectAll',
       },
     ],
     [filter],
   );
+
   const sortBy = React.useMemo(
     () => [
       { id: 'creationTime', desc: true },
@@ -209,6 +198,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     ],
     [],
   );
+
   const tableInstance = useTable(
     {
       columns,
@@ -233,16 +223,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { rows, setAllFilters, toggleSortBy, state, gotoPage, setPageSize } = tableInstance;
 
   const isEmpty = !listPending && rows?.length === 0;
-
-  // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
-  useEffect(() => {
-    // TODO: Figure out a way to do this without clearing out url/state on page load....
-    //  - This is Causing issues on page load...
-    // QUESTION: Does the Tabs component have an event emitter so we can do this on that event instead of a useEffect?
-    // filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
-    // resetFilters();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [renderBounceOnly]);
 
   // Make initial requests
   useEffect(() => {
@@ -286,43 +266,38 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         type: 'LOAD',
         filtersState: newFiltersState,
       }); // NOTE: Sets the filters display
-      updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params, sets url if it's not set at all...
 
-      // Question - should we strip off selectAll so it doesn't get dispatched to the table?
-      setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
-
-      /**
-       * TODO: Cypress test - Page Load URL params possible
-       * URL Params Possible:
-          0: {label: "Select All", name: "selectAll", isChecked: false}
-          1: {label: "Verified", name: "readyForSending", isChecked: true}
-          2: {label: "DKIM Signing", name: "readyForDKIM", isChecked: true}
-          3: {label: "Bounce", name: "readyForBounce", isChecked: true}
-          4: {label: "SPF Valid", name: "validSPF", isChecked: true}
-          5: {label: "Unverified", name: "unverified", isChecked: true}
-          6: {label: "Blocked", name: "blocked", isChecked: true}
-
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true&selectAll=true&domainName=test
-             - needs to: Domain name input set, and table filtered
-
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true&selectAll=true
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true&blocked=true
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true&unverified=true
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true&validSPF=true
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true&readyForBounce=true
-          http://localhost:3100/domains/list/sending?readyForSending=true&readyForDKIM=true
-          http://localhost:3100/domains/list/sending?readyForSending=true
-          http://localhost:3100/domains/list/sending
-          http://localhost:3100/domains/list/sending?selectAll=true
-          http://localhost:3100/domains/list/sending?selectAll=false
-
-          Also assert the table rows are correctly filtered down...
-      */
-
+      batchDispatchUrlAndTable(newFiltersState);
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, listPending]);
+
+  function batchDispatchUrlAndTable(newFiltersState) {
+    const flattenedFilters = filterStateToParams(newFiltersState);
+
+    updateFilters(flattenedFilters);
+
+    const domainStatusValues = {
+      blocked: flattenedFilters['blocked'],
+      readyForDKIM: flattenedFilters['readyForDKIM'],
+      readyForSending: flattenedFilters['readyForSending'],
+      unverified: flattenedFilters['unverified'],
+      validSPF: flattenedFilters['validSPF'],
+    };
+
+    if (!renderBounceOnly) {
+      domainStatusValues['defaultBounceDomain'] = flattenedFilters['defaultBounceDomain'];
+      domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
+    }
+
+    const reactTableFilters = getReactTableFilters({
+      domainName: flattenedFilters['domainName'],
+      DomainStatus: domainStatusValues, // NOTE: DomainStatus is the Header Key for react-table (needs to match)
+    });
+
+    setAllFilters(reactTableFilters);
+  }
 
   if (sendingDomainsListError) {
     return (
@@ -336,8 +311,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   return (
     <>
-      <Panel mb="400">
-        <Panel.Section>
+      <DomainsListPanel mb="400">
+        <DomainsListPanelSection>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
@@ -348,8 +323,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
                   domainName: e.target.value,
                 };
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
-                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
-                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
+                batchDispatchUrlAndTable(newFiltersState);
               }}
               placeholder={domains.length > 0 ? `e.g. ${domains[0]?.domainName}` : ''}
             />
@@ -359,32 +333,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               checkboxes={filtersState.checkboxes}
               domainType={renderBounceOnly ? 'bounce' : 'sending'}
               onCheckboxChange={e => {
-                const newCheckboxes = filtersState.checkboxes.map(checkbox => {
-                  if (e.target.name === 'selectAll') {
-                    return {
-                      ...checkbox,
-                      isChecked: true,
-                    };
-                  }
-
-                  if (checkbox.name === e.target.name) {
-                    return {
-                      ...checkbox,
-                      isChecked: !checkbox.isChecked,
-                    };
-                  }
-
-                  return checkbox;
-                });
-
+                const newCheckboxes = setCheckboxIsChecked(e.target.name, filtersState.checkboxes);
                 const newFiltersState = {
                   ...filtersState,
                   checkboxes: newCheckboxes,
                 };
-
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
-                updateFilters(filterStateToParams(newFiltersState)); // NOTE: Updates the URL query params
-                setAllFilters(getReactTableFilters(filterStateToParams(newFiltersState))); // NOTE: Updates the state/table filtering
+                batchDispatchUrlAndTable(newFiltersState);
               }}
             />
 
@@ -402,14 +357,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               }}
             />
           </TableFilters>
-        </Panel.Section>
+        </DomainsListPanelSection>
 
         {listPending && <Loading />}
 
         {isEmpty && <Empty message="There is no data to display" />}
 
         {!listPending && !isEmpty && <SendingDomainsTable tableInstance={tableInstance} />}
-      </Panel>
+      </DomainsListPanel>
 
       <Pagination
         data={rows}

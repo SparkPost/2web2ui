@@ -1,9 +1,17 @@
 function filterStateToParams(filtersState) {
   let params = {};
-  for (let checkbox of filtersState.checkboxes) {
-    params[checkbox.name] = checkbox.isChecked;
+
+  if (filtersState?.checkboxes) {
+    for (let checkbox of filtersState.checkboxes) {
+      params[checkbox.name] = checkbox.isChecked;
+    }
   }
-  params.domainName = filtersState.domainName;
+  if (filtersState?.domainName) {
+    params.domainName = filtersState.domainName;
+  } else {
+    params.domainName = '';
+  }
+
   return params;
 }
 
