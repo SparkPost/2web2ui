@@ -12,6 +12,8 @@ exports[`Page: A/B Test List should render cancel modal 1`] = `
       "title": "Create an A/B test",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "component": [Function],
@@ -98,6 +100,8 @@ exports[`Page: A/B Test List should render delete modal 1`] = `
       "title": "Create an A/B test",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "component": [Function],
@@ -184,6 +188,8 @@ exports[`Page: A/B Test List should render error when it fails 1`] = `
       "title": "Create an A/B test",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "component": [Function],
@@ -196,7 +202,14 @@ exports[`Page: A/B Test List should render error when it fails 1`] = `
   <ApiErrorBanner
     errorDetails="this failed"
     message="Sorry, we seem to have had some trouble loading your A/B tests."
-    reload={[MockFunction]}
+    reload={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": undefined,
+      }
+    }
   />
   <DeleteModal
     content={
@@ -236,6 +249,8 @@ exports[`Page: A/B Test List should render happy path 1`] = `
       "title": "Create an A/B test",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "component": [Function],
@@ -310,4 +325,90 @@ exports[`Page: A/B Test List should render happy path 1`] = `
 </Page>
 `;
 
-exports[`Page: A/B Test List should render loading component when loading data 1`] = `<Loading />`;
+exports[`Page: A/B Test List should render loading component when loading data 1`] = `
+<Page
+  empty={
+    Object {
+      "content": <p>
+        Create and run A/B tests to boost your engagement.
+      </p>,
+      "image": [Function],
+      "show": false,
+      "title": "Create an A/B test",
+    }
+  }
+  hibanaEmptyStateComponent={[Function]}
+  loading={true}
+  primaryAction={
+    Object {
+      "component": [Function],
+      "content": "Create a New A/B Test",
+      "to": "/ab-testing/create",
+    }
+  }
+  title="A/B Testing"
+>
+  <TestCollection
+    abTests={
+      Array [
+        Object {
+          "default_template": Object {
+            "template_id": "ab-test-1",
+          },
+          "id": "id-1",
+          "name": "my ab test 1",
+          "status": "scheduled",
+          "updated_at": "2018-10-21T10:10:10.000Z",
+          "version": "1",
+        },
+        Object {
+          "default_template": Object {
+            "template_id": "ab-test-2",
+          },
+          "id": "id-2",
+          "name": "my ab test 2",
+          "status": "running",
+          "updated_at": "2018-10-22T10:10:10.000Z",
+          "version": "2",
+        },
+        Object {
+          "default_template": Object {
+            "template_id": "ab-test-3",
+          },
+          "id": "id-3",
+          "name": "my ab test 3",
+          "status": "completed",
+          "updated_at": "2018-10-23T10:10:10.000Z",
+          "version": "3",
+          "winning_template_id": "ab-test-winner",
+        },
+      ]
+    }
+    toggleCancel={[Function]}
+    toggleDelete={[Function]}
+  />
+  <DeleteModal
+    content={
+      <p>
+        The test and all associated versions will be immediately and permanently removed. This cannot be undone.
+      </p>
+    }
+    onCancel={[Function]}
+    onDelete={[Function]}
+    open={false}
+    title="Are you sure you want to delete this test?"
+  />
+  <ConfirmationModal
+    confirmVerb="OK"
+    content={
+      <p>
+        The test will be cancelled and all further messages will be delivered to the default template.
+      </p>
+    }
+    onCancel={[Function]}
+    onConfirm={[Function]}
+    open={false}
+    title="Are you sure you want to cancel this test?"
+  />
+</Page>
+`;
