@@ -102,29 +102,19 @@ export default function TrackingDomainsTab() {
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Blocked',
-        accessor: 'blocked',
-        filter,
-      },
-      { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
       { Header: 'DomainName', accessor: 'domainName' },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
       { Header: 'SubaccountId', accessor: 'subaccountId' },
       { Header: 'SubaccountName', accessor: 'subaccountName' },
       {
-        Header: 'Unverified',
-        accessor: 'unverified',
-        filter,
-      },
-      {
-        Header: 'Verified',
-        accessor: 'verified',
-        filter,
-      },
-      {
-        Header: 'SelectAll',
-        accessor: 'selectAll',
+        Header: 'Domain Status',
+        accessor: row => ({
+          blocked: row.blocked,
+          defaultTrackingDomain: row.defaultTrackingDomain,
+          unverified: row.unverified,
+          verified: row.verified,
+        }),
+        filter: filter,
       },
     ],
     [filter],
@@ -192,7 +182,17 @@ export default function TrackingDomainsTab() {
       }
 
       updateFilters(filterStateToParams(filtersState));
-      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      setAllFilters(
+        getReactTableFilters({
+          domainName: filterStateToParams(filtersState)['domainName'],
+          'Domain Status': {
+            blocked: filterStateToParams(filtersState)['blocked'],
+            defaultTrackingDomain: filterStateToParams(filtersState)['defaultTrackingDomain'],
+            unverified: filterStateToParams(filtersState)['unverified'],
+            verified: filterStateToParams(filtersState)['verified'],
+          },
+        }),
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersState, listPending]);

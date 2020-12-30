@@ -5,7 +5,7 @@ import { TranslatableText } from 'src/components/text';
 import useUniqueId from 'src/hooks/useUniqueId';
 
 export default function TrackingDomainStatusCell({ row }) {
-  const { defaultTrackingDomain, unverified, blocked } = row;
+  const { defaultTrackingDomain, unverified, blocked } = row['Domain Status'];
   const tooltipId = useUniqueId('default-tracking-domain');
 
   if (blocked) return <Tag color="red">Blocked</Tag>;
