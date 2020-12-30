@@ -1,11 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import { PageLink } from 'src/components/links';
-import { Box, Button, Grid, Panel, Tag } from 'src/components/matchbox';
+import { Box, Button, Grid, LabelValue, Panel, Tag } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
 import { domainRegex } from 'src/helpers/regex';
 import { ShowChart } from '@sparkpost/matchbox-icons';
-import { Definition } from 'src/components/text';
+import { Definition as DefinitionOG } from 'src/components/text';
+import { useHibana } from 'src/context/HibanaContext';
 
 export default ({
   resourceName,
@@ -14,6 +15,10 @@ export default ({
   resolvedTimestamp,
   daysListed,
 }) => {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
+  const Definition = isHibanaEnabled ? LabelValue : DefinitionOG;
+
   const engagementSummaryFrom = moment
     .utc(listedTimestamp)
     .subtract('7', 'days')

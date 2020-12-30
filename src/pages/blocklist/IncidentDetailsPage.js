@@ -1,8 +1,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ApiErrorBanner, Loading, PanelLoading } from 'src/components';
-import { PageLink } from 'src/components/links';
-import { Grid, Layout, Page, Panel, Stack, Text } from 'src/components/matchbox';
+import { ExternalLink, PageLink } from 'src/components/links';
+import {
+  Box,
+  Button,
+  Columns,
+  Column,
+  Grid,
+  Inline,
+  Layout,
+  Page,
+  Panel,
+  Stack,
+  Text,
+} from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import {
   getIncident,
@@ -63,6 +75,7 @@ export const IncidentDetailsPage = ({
     days_listed,
     resolved_at_timestamp,
     occurred_at_timestamp,
+    recommendation = {},
   } = incident || {};
 
   const renderError = () => (
@@ -179,6 +192,46 @@ export const IncidentDetailsPage = ({
               name={`${resource} on ${blocklist_name}`}
               type="history"
             />
+          </Layout.Section>
+        </Layout>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Remediation Checklist</Layout.SectionTitle>
+            <Stack space="400">
+              <Text>
+                There could be a few different reasons why you got listed, take a look at our
+                recommendations to get you back up and running.
+              </Text>
+            </Stack>
+          </Layout.Section>
+          <Layout.Section>
+            <Panel data-id="remediation-steps">
+              <Panel.Header>
+                <Panel.Headline as="h6">{recommendation.title}</Panel.Headline>
+              </Panel.Header>
+              <Panel.Section>
+                <Stack>
+                  {(recommendation.check_list || []).map((item, count) => (
+                    <Columns key={count}>
+                      <Column width={1 / 100}>
+                        <Box fontWeight="semibold">{count + 1}.</Box>
+                      </Column>
+                      <Column>{item} </Column>
+                    </Columns>
+                  ))}
+                  <Inline>
+                    <ExternalLink as={Button} to={recommendation.action_link} variant="primary">
+                      {recommendation?.action_text}
+                    </ExternalLink>
+                    {recommendation?.info_text && (
+                      <ExternalLink as={Button} to={recommendation.info_url} variant="secondary">
+                        {recommendation?.info_text}
+                      </ExternalLink>
+                    )}
+                  </Inline>
+                </Stack>
+              </Panel.Section>
+            </Panel>
           </Layout.Section>
         </Layout>
         <Layout>
