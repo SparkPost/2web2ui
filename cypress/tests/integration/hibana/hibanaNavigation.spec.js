@@ -16,6 +16,7 @@ if (IS_HIBANA_ENABLED) {
       cy.stubRequest({
         url: '/api/v1/authenticate/grants*',
         fixture: `authenticate/grants/200.get.${role}.json`,
+        requestAlias: 'stubbedGrantsRequest',
       });
     }
     function stubUsageReq({ fixture = 'usage/200.get.json' } = {}) {
