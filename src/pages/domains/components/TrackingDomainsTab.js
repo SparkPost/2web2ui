@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useReducer } from 'react';
+import React, { useEffect, useCallback, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
@@ -221,6 +221,8 @@ export default function TrackingDomainsTab() {
     setAllFilters(reactTableFilters);
   }
 
+  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 500), []);
+
   if (trackingDomainsListError) {
     return (
       <ApiErrorBanner
@@ -245,7 +247,7 @@ export default function TrackingDomainsTab() {
                   domainName: e.target.value,
                 };
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
-                batchDispatchUrlAndTable(newFiltersState);
+                throttleDomainHandler(newFiltersState);
               }}
               placeholder={
                 trackingDomains.length > 0 ? `e.g. ${trackingDomains[0]?.domainName}` : ''
