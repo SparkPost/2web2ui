@@ -221,7 +221,7 @@ export default function TrackingDomainsTab() {
     setAllFilters(reactTableFilters);
   }
 
-  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 500), []);
+  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 1000), []);
 
   if (trackingDomainsListError) {
     return (

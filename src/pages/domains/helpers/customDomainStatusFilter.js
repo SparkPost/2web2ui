@@ -1,22 +1,34 @@
+/**
+ * @param {*} rows The rows of data to compare against and filter down
+ * @param {*} columnIds The names of the table column (set when configuring react-table)
+ * @param {*} value What the user set their domain status filters to
+ */
 const customDomainStatusFilter = function(rows, columnIds, value) {
-  const column = columnIds[0];
-  return rows
+  const appliedFilters = value;
+  const tableColumnName = columnIds[0];
+  const mappedRows = rows
     .map(row => {
-      let atleastOneTrue = 0;
+      let atLeastOneIsFilteredOut = 0;
       Object.keys(value).forEach(status => {
-        // QUESTION: Do we really need to call out these fields? or can we keep it generic?
-        if (status !== 'blocked' && row.values[column]['blocked']) return;
-        //if a domain is blocked we don't have to compare other fields
-        else if (value[status] && row.values[column][status]) {
-          atleastOneTrue++;
-          return;
+        if (status !== 'blocked' && row.values[tableColumnName]['blocked']) return; // blocked gets filtered out regardless of other applied filters
+        if (status !== 'unverified' && row.values[tableColumnName]['unverified']) return; // unverified gets filtered out regardless of other applied filters
+
+        // When verified (readyForSending) gets filtered out, we still need to consider the other filters applied
+        if (status === 'readyForSending' && !appliedFilters[status]) {
+          if (row.values[tableColumnName]['readyForDKIM']) return;
+          if (row.values[tableColumnName]['readyForBounce']) return;
+          if (row.values[tableColumnName]['validSPF']) return;
+          atLeastOneIsFilteredOut++;
+        } else if (!appliedFilters[status] && row.values[tableColumnName][status]) {
+          atLeastOneIsFilteredOut++;
         }
       });
 
-      // QUESTION: CAN WE REVERSE THE LOGIC -> MAKE IT RETURN TRUE...?
-      return atleastOneTrue > 0 ? row : false;
+      return atLeastOneIsFilteredOut ? undefined : row;
     })
     .filter(Boolean);
+
+  return mappedRows;
 };
 
 export default customDomainStatusFilter;

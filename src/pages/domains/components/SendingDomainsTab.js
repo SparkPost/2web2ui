@@ -299,7 +299,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     setAllFilters(reactTableFilters);
   }
 
-  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 500), []);
+  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 1000), []);
 
   if (sendingDomainsListError) {
     return (
