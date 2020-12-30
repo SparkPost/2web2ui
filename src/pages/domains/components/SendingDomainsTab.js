@@ -247,19 +247,19 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
         return;
       }
-
-      updateFilters(filterStateToParams(filtersState));
+      const filtersObj = filterStateToParams(filtersState);
+      updateFilters(filtersObj);
       setAllFilters(
         getReactTableFilters({
-          domainName: filterStateToParams(filtersState)['domainName'],
+          domainName: filtersObj['domainName'],
           'Domain Status': {
-            readyForBounce: filterStateToParams(filtersState)['readyForBounce'],
-            blocked: filterStateToParams(filtersState)['blocked'],
-            defaultBounceDomain: filterStateToParams(filtersState)['defaultBounceDomain'],
-            readyForDKIM: filterStateToParams(filtersState)['readyForDKIM'],
-            readyForSending: filterStateToParams(filtersState)['readyForSending'],
-            unverified: filterStateToParams(filtersState)['unverified'],
-            validSPF: filterStateToParams(filtersState)['validSPF'],
+            readyForBounce: !renderBounceOnly && filtersObj['readyForBounce'],
+            blocked: filtersObj['blocked'],
+            defaultBounceDomain: !renderBounceOnly && filtersObj['defaultBounceDomain'],
+            readyForDKIM: filtersObj['readyForDKIM'],
+            readyForSending: filtersObj['readyForSending'],
+            unverified: filtersObj['unverified'],
+            validSPF: filtersObj['validSPF'],
           },
         }),
       );
