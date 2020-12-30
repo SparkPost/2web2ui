@@ -8,16 +8,16 @@ const customDomainStatusFilter = function(rows, columnIds, value) {
   const tableColumnName = columnIds[0];
   const mappedRows = rows
     .map(row => {
-      let trueForStleastOne = 0;
+      let trueForAtleastOne = 0;
       Object.keys(appliedFilters).forEach(status => {
         if (status !== 'blocked' && row.values[tableColumnName]['blocked']) return;
         //if a domain is blocked we don't have to compare other fields
         else if (appliedFilters[status] && row.values[tableColumnName][status]) {
-          trueForStleastOne++;
+          trueForAtleastOne++;
           return;
         }
       });
-      return trueForStleastOne > 0 ? row : false;
+      return trueForAtleastOne > 0 ? row : false;
     })
     .filter(Boolean);
 
