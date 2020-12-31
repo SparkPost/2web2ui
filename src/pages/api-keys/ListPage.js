@@ -23,7 +23,7 @@ const primaryAction = {
 };
 
 export class ListPage extends Component {
-  state = { copied: false };
+  state = { copied: false, isFirstRender: true };
 
   // only want to show the new key after a create
   componentWillUnmount() {
@@ -31,6 +31,7 @@ export class ListPage extends Component {
   }
 
   componentDidMount() {
+    this.setState({ isFirstRender: false });
     this.props.listApiKeys();
     if (this.props.hasSubaccounts && this.props.subaccounts.length === 0) {
       this.props.listSubaccounts();
