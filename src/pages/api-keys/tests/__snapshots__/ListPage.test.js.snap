@@ -52,6 +52,7 @@ exports[`Api Keys List Page renders correctly 1`] = `
     }
   }
   hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -152,6 +153,7 @@ exports[`Api Keys List Page renders errors when present 1`] = `
     }
   }
   hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -186,6 +188,7 @@ exports[`Api Keys List Page renders when there are no keys 1`] = `
     }
   }
   hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -293,6 +296,7 @@ exports[`Api Keys List Page should show api key banner on successful create 1`] 
     }
   }
   hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
