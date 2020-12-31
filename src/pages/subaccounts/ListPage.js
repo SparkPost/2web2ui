@@ -24,7 +24,12 @@ const primaryAction = {
 };
 
 export class ListPage extends Component {
+  state = {
+    isFirstRender: true, //this is set to display loading on the first render
+  };
+
   componentDidMount() {
+    this.setState({ isFirstRender: false });
     this.props.listSubaccounts();
   }
 
@@ -83,7 +88,7 @@ export class ListPage extends Component {
           },
         }}
         hibanaEmptyStateComponent={SubaccountEmptyState}
-        loading={loading}
+        loading={loading || this.state.isFirstRender}
       >
         {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
