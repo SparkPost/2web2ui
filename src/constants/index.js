@@ -8,6 +8,7 @@ export const AUTH_ROUTE = '/auth';
 export const TFA_ROUTE = '/auth/tfa';
 export const ENABLE_TFA_AUTH_ROUTE = '/auth/enable-tfa';
 export const SSO_AUTH_ROUTE = '/auth/sso';
+export const CREATE_SUBACCOUNT = '/account/subaccounts/create';
 export const DASHBOARD_ROUTE = '/dashboard';
 export const COOKIE_DOMAIN = '.sparkpost.com';
 

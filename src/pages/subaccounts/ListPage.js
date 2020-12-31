@@ -8,8 +8,8 @@ import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { selectSubaccounts } from 'src/selectors/subaccounts';
 import getRowData from './helpers/getRowData';
 import { LINKS } from 'src/constants';
-
-// const columns = ['Name', 'ID', 'Status', null];
+import InfoBanner from './components/InfoBanner';
+import SubaccountEmptyState from './components/SubaccountEmptyState';
 
 const columns = [
   { label: 'Name', width: '40%', sortKey: 'name' },
@@ -82,7 +82,10 @@ export class ListPage extends Component {
             external: true,
           },
         }}
+        hibanaEmptyStateComponent={SubaccountEmptyState}
+        loading={loading}
       >
+        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );

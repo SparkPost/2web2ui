@@ -38,18 +38,6 @@ export class ListPage extends Component {
     }
   }
 
-  // only want to show the new key after a create
-  componentWillUnmount() {
-    this.props.hideNewApiKey();
-  }
-
-  componentDidMount() {
-    this.props.listApiKeys();
-    if (this.props.hasSubaccounts && this.props.subaccounts.length === 0) {
-      this.props.listSubaccounts();
-    }
-  }
-
   getLabel = ({ canCurrentUserEdit, id, subaccount_id, label }) => {
     if (canCurrentUserEdit) {
       return (

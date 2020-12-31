@@ -16,7 +16,7 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
   const allowEmptyStates = useSelector(isAccountUiOptionSet('allow_empty_states'));
   const showHibanaEmptyState = allowEmptyStates && HibanaEmptyStateComponent && props.empty?.show;
 
-  // this is to prevent duplicates, but we still have to be careful if this component is unmounted and remounted
+  // IMPORTANT - props.loading needs to have a isFirstRender boolean set from the parent scope - see api-keys/ListPage.js
   React.useEffect(() => {
     if (isHibanaEnabled && showHibanaEmptyState && !props.loading) {
       segmentTrack(SEGMENT_EVENTS.EMPTY_STATE_LOADED, {
@@ -38,5 +38,6 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
 
   return <HibanaPage {...props} />;
 }
+
 OGPage.displayName = 'OGPage';
 HibanaPage.displayName = 'HibanaPage';

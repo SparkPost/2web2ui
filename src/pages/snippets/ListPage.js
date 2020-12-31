@@ -11,6 +11,7 @@ export default class ListPage extends React.Component {
   state = {
     isFirstRender: true, //this is set to display loading on the first render
   };
+
   componentDidMount() {
     this.setState({ isFirstRender: false });
     this.props.getSnippets();
