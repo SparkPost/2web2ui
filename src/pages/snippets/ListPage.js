@@ -3,11 +3,16 @@ import { Page } from 'src/components/matchbox';
 import ApiErrorBanner from 'src/components/apiErrorBanner';
 import { Templates } from 'src/components/images';
 import { PageLink } from 'src/components/links';
-import Loading from 'src/components/loading';
 import SnippetCollection from './components/SnippetCollection';
+import SnippetsEmptyState from './components/SnippetsEmptyState';
+import InfoBanner from './components/InfoBanner';
 import { ROLES } from 'src/constants';
 export default class ListPage extends React.Component {
+  state = {
+    isFirstRender: true, //this is set to display loading on the first render
+  };
   componentDidMount() {
+    this.setState({ isFirstRender: false });
     this.props.getSnippets();
     if (this.props.hasSubaccounts && this.props.subaccounts.length === 0) {
       this.props.listSubaccounts();
@@ -40,10 +45,6 @@ export default class ListPage extends React.Component {
   render() {
     const { canCreate, error, loading, snippets } = this.props;
 
-    if (loading) {
-      return <Loading />;
-    }
-
     return (
       <Page
         title="Snippets"
@@ -58,7 +59,10 @@ export default class ListPage extends React.Component {
           title: 'Manage your template snippets',
           content: <p>Build, import, edit, and reuse snippets.</p>,
         }}
+        hibanaEmptyStateComponent={SnippetsEmptyState}
+        loading={loading || this.state.isFirstRender}
       >
+        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );

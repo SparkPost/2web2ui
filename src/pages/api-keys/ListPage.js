@@ -14,6 +14,7 @@ import {
 import { filterBoxConfig } from './tableConfig';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
 import { LINKS } from 'src/constants';
+import ApiKeysEmptyState from './components/ApiKeysEmptyState';
 
 const primaryAction = {
   content: 'Create API Key',
@@ -22,7 +23,20 @@ const primaryAction = {
 };
 
 export class ListPage extends Component {
-  state = { copied: false };
+  state = { copied: false, isFirstRender: true };
+
+  // only want to show the new key after a create
+  componentWillUnmount() {
+    this.props.hideNewApiKey();
+  }
+
+  componentDidMount() {
+    this.setState({ isFirstRender: false });
+    this.props.listApiKeys();
+    if (this.props.hasSubaccounts && this.props.subaccounts.length === 0) {
+      this.props.listSubaccounts();
+    }
+  }
 
   getLabel = ({ canCurrentUserEdit, id, subaccount_id, label }) => {
     if (canCurrentUserEdit) {
@@ -118,6 +132,8 @@ export class ListPage extends Component {
             to: LINKS.API_DOCS,
           },
         }}
+        hibanaEmptyStateComponent={ApiKeysEmptyState}
+        loading={loading || this.state.isFirstRender}
       >
         {newKey && this.renderBanner()}
         {error ? this.renderError() : this.renderCollection()}
