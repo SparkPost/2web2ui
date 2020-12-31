@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search } from '@sparkpost/matchbox-icons';
 import {
   Box,
-  Button,
   Checkbox,
   Popover,
   TextField,
@@ -12,14 +11,14 @@ import {
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
-import { StyledFilterFields, StatusPopoverContent, StyledGridCell } from './styles';
-import { ChevronRight } from '@sparkpost/matchbox-icons';
-import styled from 'styled-components';
-
-const Chevron = styled(ChevronRight)`
-  color: ${props => props.theme.colors.blue['700']};
-  transform: rotate(90deg);
-`;
+import { getAllSelected } from '../helpers';
+import {
+  StyledFilterFields,
+  StatusPopoverContent,
+  AlignedTextButton,
+  AlignedButtonIcon,
+  Chevron,
+} from './styles';
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -46,44 +45,49 @@ export function reducer(state, action) {
         };
       }
 
-      return {
-        ...state,
-        // Return the relevant checked box and update its checked state,
-        // otherwise, return any other checkbox.
-        checkboxes: state.checkboxes.map(filter => {
-          if (filter.name === action.name) {
-            return {
-              ...filter,
-              isChecked: !isChecked,
-            };
-          }
-          //if any checkbox is unchecked make sure selectAll is unchecked too
-          if (action.name !== 'selectAll' && isChecked && filter.name === 'selectAll') {
-            return {
-              ...filter,
-              isChecked: false,
-            };
-          }
+      let mappedCheckboxes = state.checkboxes.map(checkbox => {
+        if (checkbox.name === action.name) {
+          return {
+            ...checkbox,
+            isChecked: !isChecked,
+          };
+        }
+        return checkbox;
+      });
 
-          return filter;
-        }),
-      };
-    }
+      // Post Toggle of the individual checkbox - check to see if we need selectAll turned on
+      const allSelected = getAllSelected(mappedCheckboxes);
 
-    case 'LOAD': {
-      const checkboxes = state.checkboxes.map(filter => {
-        const isChecked = action.names.indexOf(filter.name) >= 0;
+      // Force select all state here...
+      mappedCheckboxes = mappedCheckboxes.map(checkbox => {
+        if (checkbox.name === 'selectAll') {
+          checkbox.isChecked = allSelected;
+        }
 
-        return {
-          ...filter,
-          isChecked: isChecked,
-        };
+        return checkbox;
       });
 
       return {
         ...state,
-        domainName: action.domainName,
-        checkboxes,
+        // Return the relevant checked box and update its checked state,
+        // otherwise, return any other checkbox.
+        checkboxes: mappedCheckboxes,
+      };
+    }
+
+    case 'LOAD': {
+      const allSelected = getAllSelected(action.filtersState.checkboxes);
+      const checkboxesWithAllSelectedMapped = action.filtersState.checkboxes.map(checkbox => {
+        if (checkbox.name === 'selectAll') {
+          checkbox.isChecked = allSelected;
+        }
+        return checkbox;
+      });
+
+      return {
+        ...state,
+        domainName: action.filtersState.domainName,
+        checkboxes: checkboxesWithAllSelectedMapped,
       };
     }
 
@@ -100,7 +104,9 @@ function DomainField({ onChange, value, disabled, placeholder = '' }) {
 
   return (
     <TextField
+      mb="400"
       id={uniqueId}
+      maxWidth="inherit"
       label="Filter Domains"
       prefix={<Search />}
       onChange={onChange}
@@ -115,7 +121,7 @@ function SortSelect({ options, onChange, disabled }) {
   const uniqueId = useUniqueId('domains-sort-select');
 
   return (
-    <StyledGridCell>
+    <div>
       <ListBox
         id={uniqueId}
         label="Sort By"
@@ -131,7 +137,7 @@ function SortSelect({ options, onChange, disabled }) {
           );
         })}
       </ListBox>
-    </StyledGridCell>
+    </div>
   );
 }
 
@@ -140,9 +146,18 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
   const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
+  const allCheckboxesChecked = checkboxes.length === checkedCheckboxes?.length;
+
+  const activeDomainStatusLabels = checkedCheckboxes
+    .filter(checkbox => checkbox.name !== 'selectAll')
+    .map(checkbox => {
+      return checkbox.label;
+    });
+
+  const activeStatusLabels = activeDomainStatusLabels.join(', ');
 
   return (
-    <Box>
+    <Box mb="400">
       <Label label="Domain Status" />
       <Popover
         left
@@ -151,7 +166,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
         open={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
         trigger={
-          <Button
+          <AlignedTextButton
             outline
             fullWidth
             variant="monochrome"
@@ -162,20 +177,14 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
             {/* This content is purely visual and is not exposed to screen readers, rather, "Domain Status" is always exposed for those users */}
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
-              {hasCheckedCheckboxes ? (
-                checkedCheckboxes
-                  .filter(checkbox => checkbox.name !== 'selectAll')
-                  .map((checkbox, index) => (
-                    <span key={`${checkbox.name}-${index}`}>{checkbox.label}&nbsp;</span>
-                  ))
-              ) : (
-                <span>Domain Status</span>
-              )}
+              {!hasCheckedCheckboxes && 'None'}
+              {hasCheckedCheckboxes && allCheckboxesChecked && 'All'}
+              {hasCheckedCheckboxes && !allCheckboxesChecked && activeStatusLabels}
             </StatusPopoverContent>
 
             <ScreenReaderOnly>Domain Status</ScreenReaderOnly>
-            <Button.Icon as={Chevron} ml="100" size={25} />
-          </Button>
+            <AlignedButtonIcon as={Chevron} size={25} />
+          </AlignedTextButton>
         }
       >
         <Box padding="300">
@@ -183,12 +192,14 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
             Checkboxes filter the table. When checked, table elements are visible, when unchecked
             they are hidden from the table.
           </ScreenReaderOnly>
+
           <Checkbox
             label="Select All"
             id="select-all"
             name="selectAll"
             onChange={onCheckboxChange}
             checked={checkboxes.find(filter => filter.name === 'selectAll').isChecked}
+            disabled={allCheckboxesChecked}
           />
         </Box>
         <Divider />

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useReducer } from 'react';
+import React, { useEffect, useCallback, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
-import { Panel } from 'src/components/matchbox';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import { usePageFilters } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -13,10 +12,15 @@ import {
   getReactTableFilters,
   customDomainStatusFilter,
   getActiveStatusFilters,
+  setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
+
+import { DomainsListPanel, DomainsListPanelSection } from './styles';
+
 import _ from 'lodash';
 
+// For local reducer state
 const filtersInitialState = {
   domainName: '',
   checkboxes: [
@@ -58,6 +62,7 @@ const filtersInitialState = {
   ],
 };
 
+// For usePageFilters
 const initFiltersForSending = {
   domainName: { defaultValue: undefined },
   readyForSending: {
@@ -143,63 +148,52 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listSubaccounts,
   } = useDomains();
 
-  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+  // eslint-disable-next-line no-unused-vars
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
+  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+
+  const previousRenderBounceOnly = useRef(renderBounceOnly);
+  if (renderBounceOnly !== previousRenderBounceOnly.current) {
+    // filtersInitialState -> selectAll was being set to false after first reset... huh...
+    filtersInitialState.checkboxes.map(checkbox => {
+      checkbox.isChecked = true;
+      return checkbox;
+    }); // force selectAll true again...
+    filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
+    resetFilters();
+    previousRenderBounceOnly.current = renderBounceOnly; // set previous after dispatching resets
+  }
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
   const filter = React.useMemo(() => customDomainStatusFilter, []);
 
   const data = React.useMemo(() => domains, [domains]);
+
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Blocked',
-        accessor: 'blocked',
-        filter,
-      },
       { Header: 'CreationTime', accessor: 'creationTime' },
-      {
-        Header: 'DefaultBounceDomain',
-        accessor: 'defaultBounceDomain',
-        filter,
-      },
       { Header: 'DomainName', accessor: 'domainName' },
-      {
-        Header: 'ReadyForBounce',
-        accessor: 'readyForBounce',
-        filter,
-      },
-      {
-        Header: 'ReadyForDKIM',
-        accessor: 'readyForDKIM',
-        filter,
-      },
-      {
-        Header: 'ReadyForSending',
-        accessor: 'readyForSending',
-        filter,
-      },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
       {
-        Header: 'Unverified',
-        accessor: 'unverified',
+        Header: 'DomainStatus',
+        accessor: row => ({
+          readyForBounce: row.readyForBounce,
+          blocked: row.blocked,
+          defaultBounceDomain: row.defaultBounceDomain,
+          readyForDKIM: row.readyForDKIM,
+          readyForSending: row.readyForSending,
+          unverified: row.unverified,
+          validSPF: row.validSPF,
+        }),
         filter,
-      },
-      {
-        Header: 'ValidSPF',
-        accessor: 'validSPF',
-        filter,
-      },
-      {
-        Header: 'SelectAll',
-        accessor: 'selectAll',
       },
     ],
     [filter],
   );
+
   const sortBy = React.useMemo(
     () => [
       { id: 'creationTime', desc: true },
@@ -207,6 +201,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     ],
     [],
   );
+
   const tableInstance = useTable(
     {
       columns,
@@ -232,13 +227,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const isEmpty = !listPending && rows?.length === 0;
 
-  // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
-  useEffect(() => {
-    filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
-    resetFilters();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [renderBounceOnly]);
-
   // Make initial requests
   useEffect(() => {
     listSendingDomains();
@@ -250,35 +238,71 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
+  // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    if (!listPending) {
-      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
+    if (!rows || (rows && rows.length === 0) || listPending) {
+      return;
+    }
+
+    if (firstLoad.current) {
+      const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName');
       const activeStatusFilters = getActiveStatusFilters(filters);
       const statusFiltersToApply = !activeStatusFilters.length
-        ? allStatusFilterNames
+        ? allStatusCheckboxNames
         : activeStatusFilters.map(i => i.name);
-      const domainNameFilter = filters['domainName'];
 
-      if (firstLoad.current) {
-        firstLoad.current = false;
+      firstLoad.current = false;
 
-        filtersStateDispatch({
-          type: 'LOAD',
-          names: statusFiltersToApply,
-          domainName: domainNameFilter,
-        });
+      const newFiltersState = {
+        ...filtersState,
+        checkboxes: filtersState.checkboxes.map(checkbox => {
+          return {
+            ...checkbox,
+            isChecked: statusFiltersToApply.indexOf(checkbox.name) >= 0,
+          };
+        }),
+      };
+      newFiltersState['domainName'] = filters['domainName'];
 
-        setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      filtersStateDispatch({
+        type: 'LOAD',
+        filtersState: newFiltersState,
+      }); // NOTE: Sets the filters display
 
-        return;
-      }
-
-      updateFilters(filterStateToParams(filtersState));
-      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      batchDispatchUrlAndTable(newFiltersState);
+      return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersState, listPending]);
+  }, [rows, listPending]);
+
+  function batchDispatchUrlAndTable(newFiltersState) {
+    const flattenedFilters = filterStateToParams(newFiltersState);
+
+    updateFilters(flattenedFilters);
+
+    const domainStatusValues = {
+      blocked: flattenedFilters['blocked'],
+      readyForDKIM: flattenedFilters['readyForDKIM'],
+      readyForSending: flattenedFilters['readyForSending'],
+      unverified: flattenedFilters['unverified'],
+      validSPF: flattenedFilters['validSPF'],
+    };
+
+    if (!renderBounceOnly) {
+      domainStatusValues['defaultBounceDomain'] = flattenedFilters['defaultBounceDomain'];
+      domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
+    }
+
+    const reactTableFilters = getReactTableFilters({
+      domainName: flattenedFilters['domainName'],
+      DomainStatus: domainStatusValues, // NOTE: DomainStatus is the Header Key for react-table (needs to match)
+    });
+
+    setAllFilters(reactTableFilters);
+  }
+
+  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 1000), []);
 
   if (sendingDomainsListError) {
     return (
@@ -292,14 +316,19 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   return (
     <>
-      <Panel mb="400">
-        <Panel.Section>
+      <DomainsListPanel mb="400">
+        <DomainsListPanelSection>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
               value={filtersState.domainName}
               onChange={e => {
-                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+                const newFiltersState = {
+                  ...filtersState,
+                  domainName: e.target.value,
+                };
+                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
+                throttleDomainHandler(newFiltersState);
               }}
               placeholder={domains.length > 0 ? `e.g. ${domains[0]?.domainName}` : ''}
             />
@@ -309,7 +338,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               checkboxes={filtersState.checkboxes}
               domainType={renderBounceOnly ? 'bounce' : 'sending'}
               onCheckboxChange={e => {
-                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
+                const newCheckboxes = setCheckboxIsChecked(e.target.name, filtersState.checkboxes);
+                const newFiltersState = {
+                  ...filtersState,
+                  checkboxes: newCheckboxes,
+                };
+                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
+                batchDispatchUrlAndTable(newFiltersState);
               }}
             />
 
@@ -327,14 +362,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               }}
             />
           </TableFilters>
-        </Panel.Section>
+        </DomainsListPanelSection>
 
         {listPending && <Loading />}
 
         {isEmpty && <Empty message="There is no data to display" />}
 
         {!listPending && !isEmpty && <SendingDomainsTable tableInstance={tableInstance} />}
-      </Panel>
+      </DomainsListPanel>
 
       <Pagination
         data={rows}

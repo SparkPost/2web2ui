@@ -29,7 +29,7 @@ export default function TrackingDomainsTable({ tableInstance }) {
               </Table.Cell>
 
               <Table.Cell>
-                <TrackingDomainStatusCell row={row.values} />
+                <TrackingDomainStatusCell domainStatus={row?.values?.DomainStatus} />
               </Table.Cell>
             </Table.Row>
           );
