@@ -202,6 +202,64 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
+    it('Shows form warning if 10 comparison filters used', () => {
+      cy.stubRequest({
+        url: '/api/v1/subaccounts',
+        fixture: 'subaccounts/200.get.many.json',
+        requestAlias: 'getManySubaccounts',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@getManySubaccounts', '@getDeliverability', '@getTimeSeries']);
+
+      openCompareByModal();
+      cy.withinDrawer(() => {
+        cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+
+        cy.findAllByLabelText('Subaccount')
+          .eq(0)
+          .type('Fake Subaccount');
+        cy.findByText('Fake Subaccount 1 (ID 101)')
+          .should('be.visible')
+          .click();
+        cy.findAllByLabelText('Subaccount')
+          .eq(1)
+          .type('Fake Subaccount');
+        cy.findByText('Fake Subaccount 2 (ID 102)')
+          .should('be.visible')
+          .click();
+
+        Array(7)
+          .fill()
+          .forEach((_item, index) => {
+            cy.findByRole('button', { name: 'Add Subaccount' }).click();
+            cy.findAllByLabelText('Subaccount')
+              .eq(index + 2)
+              .type('Fake Subaccount');
+            cy.findByText(`Fake Subaccount ${index + 3} (ID 10${index + 3})`)
+              .should('be.visible')
+              .click();
+          });
+
+        cy.findByRole('button', { name: 'Add Subaccount' }).click();
+        cy.findAllByLabelText('Subaccount')
+          .eq(9)
+          .type('Fake Subaccount');
+        cy.findByText(`Fake Subaccount 10 (ID 110)`)
+          .should('be.visible')
+          .click();
+
+        cy.findByText('Limit on number of comparisons reached').should('exist');
+
+        cy.findAllByRole('button', { name: 'Remove Filter' })
+          .eq(8)
+          .should('be.visible')
+          .click();
+
+        cy.findByText('Limit on number of comparisons reached').should('not.exist');
+      });
+    });
+
     it('Properly loads form with query parameter', () => {
       cy.visit(
         '/signals/analytics?comparisons%5B0%5D%5Btype%5D=Subaccount&comparisons%5B0%5D%5Bvalue%5D=Fake%20Subaccount%201%20%28ID%20101%29&comparisons%5B0%5D%5Bid%5D=101&comparisons%5B1%5D%5Btype%5D=Subaccount&comparisons%5B1%5D%5Bvalue%5D=Fake%20Subaccount%203%20%28ID%20103%29&comparisons%5B1%5D%5Bid%5D=103',

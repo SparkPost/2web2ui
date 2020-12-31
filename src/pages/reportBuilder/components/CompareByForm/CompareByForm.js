@@ -30,6 +30,7 @@ const initialState = {
   filters: [null, null],
   filterType: undefined,
   error: null,
+  errorStatus: 'danger',
 };
 
 const StyledButton = styled(Button)`
@@ -48,22 +49,39 @@ const RemoveButton = ({ onClick }) => (
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_FILTER':
+      if (state.filters.length >= 9) {
+        return {
+          ...state,
+          filters: [...state.filters, null],
+          error: 'Limit on number of comparisons reached',
+          errorStatus: 'warning',
+        };
+      }
       return { ...state, filters: [...state.filters, null] };
     case 'REMOVE_FILTER':
       return {
         ...state,
         filters: state.filters.filter((_filter, filterIndex) => filterIndex !== action.index),
+        error: null,
       };
     case 'SET_FILTER':
       const newFilters = state.filters;
       newFilters[action.index] = action.value;
+      if (state.filters.length >= 10) {
+        return {
+          ...state,
+          error: 'Limit on number of comparisons reached',
+          errorStatus: 'warning',
+          filters: newFilters,
+        };
+      }
       return { ...state, error: null, filters: newFilters };
     case 'SET_FILTER_TYPE':
       return { error: null, filters: [null, null], filterType: action.filterType };
     case 'RESET_FORM':
       return { ...initialState, filters: [null, null], filterType: undefined };
     case 'SET_ERROR':
-      return { ...state, error: action.error };
+      return { ...state, error: action.error, errorStatus: 'danger' };
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -92,7 +110,7 @@ function CompareByForm({
   const { state: reportOptions } = useReportBuilderContext();
   const { comparisons } = reportOptions;
   const [state, dispatch] = useReducer(reducer, getInitialState(comparisons));
-  const { filters, filterType, error } = state;
+  const { filters, filterType, error, errorStatus } = state;
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -155,7 +173,7 @@ function CompareByForm({
       <Box padding="500" paddingBottom="8rem">
         <Stack>
           {error && (
-            <Banner size="small" status="danger">
+            <Banner size="small" status={errorStatus}>
               {error}
             </Banner>
           )}
@@ -211,7 +229,7 @@ function CompareByForm({
                 </Box>
               );
             })}
-          {filterType && areInputsFilled && (
+          {filterType && areInputsFilled && filters.length < 10 && (
             <Box>
               <Button
                 onClick={() => {
