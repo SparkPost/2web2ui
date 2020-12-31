@@ -10,6 +10,8 @@ import getRowData from './helpers/getRowData';
 import { LINKS } from 'src/constants';
 import InfoBanner from './components/InfoBanner';
 import SubaccountEmptyState from './components/SubaccountEmptyState';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import { useHibana } from 'src/context/HibanaContext';
 
 const columns = [
   { label: 'Name', width: '40%', sortKey: 'name' },
@@ -101,6 +103,12 @@ const mapStateToProps = state => ({
   subaccounts: selectSubaccounts(state),
   loading: state.subaccounts.listLoading,
   error: state.subaccounts.listError,
+  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
-export default connect(mapStateToProps, { listSubaccounts })(ListPage);
+function ListPageContainer(props) {
+  const [{ isHibanaEnabled }] = useHibana();
+  return <ListPage isHibanaEnabled={isHibanaEnabled} {...props} />;
+}
+
+export default connect(mapStateToProps, { listSubaccounts })(ListPageContainer);

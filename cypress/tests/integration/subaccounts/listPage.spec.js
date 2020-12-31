@@ -38,15 +38,32 @@ describe('The subaccounts list page', () => {
       cy.wait(['@subaccounts']);
       cy.title().should('include', 'Subaccounts');
       cy.findByRole('heading', { name: 'Manage your subaccounts' }).should('be.visible');
+      cy.findByText('Subaccounts are a good way of managing external client accounts.');
+      cy.verifyLink({
+        content: 'Create Subaccount',
+        href: '/account/subaccounts/create',
+      });
+      cy.verifyLink({
+        content: 'Learn more',
+        href: 'https://developers.sparkpost.com/api/subaccounts.html',
+      });
     });
 
     it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
-      stubSubaccount({ fixture: '200.get.no-results.json' });
+      stubSubaccount({ fixture: 'subaccounts/200.get.json' });
       stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait(['@subaccounts']);
       cy.title().should('include', 'Subaccounts');
       cy.findByRole('heading', { name: 'Subaccounts' }).should('be.visible');
+      cy.findByRole('heading', { name: 'Organize Sending and Analytics' }).should('be.visible');
+      cy.findByText(
+        'Subaccounts can be used to provision and manage senders separately from each other, and to provide assets and reporting data for each of them.',
+      );
+      cy.verifyLink({
+        content: 'Subaccounts Documentation',
+        href: 'https://sparkpost.com/docs/user-guide/subaccounts/',
+      });
     });
 
     it('renders the empty state when there are no subaccounts', () => {
@@ -56,6 +73,21 @@ describe('The subaccounts list page', () => {
       cy.wait(['@subaccounts']);
       cy.title().should('include', 'Subaccounts');
       cy.findByRole('heading', { name: 'Subaccounts' }).should('be.visible');
+      cy.get('p').contains(
+        'Subaccounts can be used to provision and manage senders separately from each other, and to provide assets and reporting data for each of them. Subaccounts are great for service providers who send on behalf of others or for businesses that want to separate different streams of traffic.',
+      );
+      cy.findByText('Common uses for Subaccounts');
+      cy.findByText('Sending as a service provider for multiple unique customers.');
+      cy.findByText('Keeping unique internal business units independent from one another.');
+      cy.findByText('Tracking mission critical campaign data separate from other mailstreams.');
+      cy.verifyLink({
+        content: 'Create Subaccount',
+        href: '/account/subaccounts/create',
+      });
+      cy.verifyLink({
+        content: 'Subaccounts Documentation',
+        href: 'https://sparkpost.com/docs/user-guide/subaccounts/',
+      });
     });
   }
 });
