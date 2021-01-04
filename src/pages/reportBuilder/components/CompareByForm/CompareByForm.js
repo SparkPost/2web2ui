@@ -92,7 +92,10 @@ const getInitialState = comparisons => {
     return initialState;
   }
 
-  return { filterType: REPORT_BUILDER_FILTER_KEY_MAP[comparisons[0].type], filters: comparisons };
+  return {
+    filterType: REPORT_BUILDER_FILTER_KEY_MAP[comparisons[0].type],
+    filters: [...comparisons],
+  };
 };
 
 function CompareByForm({
