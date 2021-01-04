@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Page } from 'src/components/matchbox';
 import { Loading, ApiErrorBanner, TableCollection } from 'src/components';
 import { PageLink } from 'src/components/links';
+import RecipientListEmptyState from './components/RecipientListEmptyState';
 import InfoBanner from './components/InfoBanner';
 
 const columns = [
@@ -24,6 +25,13 @@ const getRowData = ({ name, id, total_accepted_recipients }) => [
 ];
 
 export class ListPage extends Component {
+  state = { isFirstRender: true };
+
+  componentDidMount() {
+    this.setState({ isFirstRender: false });
+    this.props.listRecipientLists();
+  }
+
   onReloadApiBanner = () => {
     this.props.listRecipientLists({ force: true }); // force a refresh
   };
@@ -57,15 +65,23 @@ export class ListPage extends Component {
   }
 
   render() {
-    const { error, loading } = this.props;
+    const { error, loading, recipientLists, isEmptyStateEnabled, isHibanaEnabled } = this.props;
 
     if (loading) {
       return <Loading />;
     }
 
     return (
-      <Page title="Recipient Lists" primaryAction={primaryAction}>
-        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
+      <Page
+        title="Recipient Lists"
+        primaryAction={primaryAction}
+        empty={{
+          show: !error && recipientLists.length === 0,
+        }}
+        hibanaEmptyStateComponent={RecipientListEmptyState}
+        loading={loading || this.state.isFirstRender}
+      >
+        {isEmptyStateEnabled && isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );
