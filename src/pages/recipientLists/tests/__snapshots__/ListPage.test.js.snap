@@ -13,7 +13,7 @@ exports[`renders correctly 1`] = `
         "external": true,
         "to": "https://developers.sparkpost.com/api/recipient-lists.html",
       },
-      "show": false,
+      "show": true,
     }
   }
   hibanaEmptyStateComponent={[Function]}
@@ -107,7 +107,7 @@ exports[`renders errors when present 1`] = `
         "external": true,
         "to": "https://developers.sparkpost.com/api/recipient-lists.html",
       },
-      "show": false,
+      "show": true,
     }
   }
   hibanaEmptyStateComponent={[Function]}

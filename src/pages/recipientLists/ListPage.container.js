@@ -26,7 +26,7 @@ function ListPageContainer(props) {
       loading={loading}
       recipientLists={recipientLists}
       isEmptyStateEnabled={isEmptyStateEnabled}
-      listRecipientLists={() => dispatch(listRecipientLists())}
+      listRecipientLists={props => dispatch(listRecipientLists(props))}
     />
   );
 }

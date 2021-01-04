@@ -90,7 +90,7 @@ export class ListPage extends Component {
         hibanaEmptyStateComponent={RecipientListEmptyState}
         loading={loading || this.state.isFirstRender}
       >
-        {isEmptyStateEnabled && isHibanaEnabled && <InfoBanner />}
+        {!error && isEmptyStateEnabled && isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );

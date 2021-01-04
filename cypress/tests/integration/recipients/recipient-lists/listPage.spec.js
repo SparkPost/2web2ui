@@ -74,7 +74,7 @@ describe('The recipient lists page', () => {
         href: 'https://www.sparkpost.com/docs/user-guide/uploading-recipient-list/',
       });
     });
-    it('renders the empty state when there are no ab tests', () => {
+    it('renders the empty state when there are no recipient lists', () => {
       stubRecipientLists({ fixture: '200.get.no-results.json' });
       stubAccountsReq();
       cy.visit(PAGE_URL);
