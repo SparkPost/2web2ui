@@ -4,6 +4,15 @@ exports[`renders correctly 1`] = `
 <Page
   empty={
     Object {
+      "content": <p>
+        Manage your recipient lists
+      </p>,
+      "image": [Function],
+      "secondaryAction": Object {
+        "content": "Learn More",
+        "external": true,
+        "to": "https://developers.sparkpost.com/api/recipient-lists.html",
+      },
       "show": false,
     }
   }
@@ -89,6 +98,15 @@ exports[`renders errors when present 1`] = `
 <Page
   empty={
     Object {
+      "content": <p>
+        Manage your recipient lists
+      </p>,
+      "image": [Function],
+      "secondaryAction": Object {
+        "content": "Learn More",
+        "external": true,
+        "to": "https://developers.sparkpost.com/api/recipient-lists.html",
+      },
       "show": false,
     }
   }

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 import { Page } from 'src/components/matchbox';
 import { Loading, ApiErrorBanner, TableCollection } from 'src/components';
+import { Users } from 'src/components/images';
 import { PageLink } from 'src/components/links';
 import RecipientListEmptyState from './components/RecipientListEmptyState';
 import InfoBanner from './components/InfoBanner';
+import { LINKS } from 'src/constants';
 
 const columns = [
   { label: 'Name', sortKey: 'name' },
@@ -77,6 +79,13 @@ export class ListPage extends Component {
         primaryAction={primaryAction}
         empty={{
           show: !error && recipientLists.length === 0,
+          image: Users,
+          content: <p>Manage your recipient lists</p>,
+          secondaryAction: {
+            content: 'Learn More',
+            to: LINKS.RECIP_API,
+            external: true,
+          },
         }}
         hibanaEmptyStateComponent={RecipientListEmptyState}
         loading={loading || this.state.isFirstRender}
