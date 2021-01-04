@@ -1,3 +1,4 @@
+import { DELIVERABILITY_DELAY_METRIC_KEYS } from 'src/config/metrics';
 import { fetchDeliverability, fetchDelayReasonsByDomain } from 'src/actions/metrics';
 import {
   getMetricsFromKeys,
@@ -5,11 +6,7 @@ import {
   getQueryFromOptionsV2,
 } from 'src/helpers/metrics';
 
-const DELIVERABILITY_METRICS = getMetricsFromKeys([
-  'count_accepted',
-  'count_delayed',
-  'count_delayed_first',
-]);
+const DELIVERABILITY_METRICS = getMetricsFromKeys(DELIVERABILITY_DELAY_METRIC_KEYS);
 
 export function refreshDelayReport(updates = {}) {
   return dispatch => {

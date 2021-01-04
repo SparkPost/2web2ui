@@ -1,6 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ListPage renders loading page 1`] = `<Loading />`;
+exports[`ListPage renders loading page 1`] = `
+<Page
+  empty={
+    Object {
+      "content": <p>
+        Build, import, edit, and reuse snippets.
+      </p>,
+      "image": [Function],
+      "show": false,
+      "title": "Manage your template snippets",
+    }
+  }
+  hibanaEmptyStateComponent={[Function]}
+  loading={true}
+  primaryAction={
+    Object {
+      "Component": [Function],
+      "content": "Create Snippet",
+      "to": "/snippets/create",
+    }
+  }
+  title="Snippets"
+>
+  <SnippetCollection
+    canCreate={true}
+    canViewSubaccounts={true}
+    hasSubaccounts={true}
+    snippets={
+      Array [
+        Object {
+          "id": "example-id",
+          "name": "Example Snippet",
+        },
+      ]
+    }
+  />
+</Page>
+`;
 
 exports[`ListPage renders page with error banner 1`] = `
 <Page
@@ -14,6 +51,8 @@ exports[`ListPage renders page with error banner 1`] = `
       "title": "Manage your template snippets",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -43,6 +82,8 @@ exports[`ListPage renders page with snippet collection 1`] = `
       "title": "Manage your template snippets",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -80,6 +121,8 @@ exports[`ListPage renders page without primary action button 1`] = `
       "title": "Manage your template snippets",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   title="Snippets"
 >
   <SnippetCollection
@@ -110,6 +153,8 @@ exports[`ListPage renders page without subaccount column 1`] = `
       "title": "Manage your template snippets",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -147,6 +192,8 @@ exports[`ListPage renders page without subaccount column if a subaccount reporti
       "title": "Manage your template snippets",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],

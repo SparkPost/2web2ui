@@ -1,22 +1,20 @@
 import React from 'react';
-import { usePrepareReportBuilderQuery, useSparkPostQuery } from 'src/hooks';
-import { DELIVERABILITY_DELAY_METRIC_KEYS } from 'src/config/metrics';
-import { getDelayReasonByDomain, getDeliverability } from 'src/helpers/api/metrics';
+import { useSparkPostQuery, usePrepareReportBuilderQuery } from 'src/hooks';
+import { DELIVERABILITY_LINKS_METRIC_KEYS, LINKS_BY_DOMAIN_METRIC_KEYS } from 'src/config/metrics';
 import { ApiErrorBanner, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
 import { getMetricsFromKeys, getFilterByComparison } from 'src/helpers/metrics';
+import { getEngagement, getDeliverability } from 'src/helpers/api/metrics';
+import { LinksTable } from '../tables';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import { TAB_LOADING_HEIGHT } from '../../constants';
-import { DelayReasonTable } from '../tables';
 
-export default function DelayReasonComparisonTab({ comparison }) {
-  const { aggregatesQuery, delayReasonsQuery, isPending, isError } = useQueriesWithComparison(
-    comparison,
-  );
+export default function LinksComparisonTab({ comparison }) {
+  const { aggregatesQuery, linksQuery, isPending, isError } = useQueriesWithComparison(comparison);
 
   function handleReload() {
+    linksQuery.refetch();
     aggregatesQuery.refetch();
-    delayReasonsQuery.refetch();
   }
 
   if (isPending) {
@@ -31,10 +29,13 @@ export default function DelayReasonComparisonTab({ comparison }) {
     );
   }
 
-  const reasons = delayReasonsQuery.data;
-  const totalAccepted = aggregatesQuery.data ? aggregatesQuery.data.count_accepted : 1;
-
-  return <DelayReasonTable reasons={reasons} totalAccepted={totalAccepted} loading={false} />;
+  return (
+    <LinksTable
+      links={linksQuery.data}
+      totalClicks={aggregatesQuery.data.count_clicked}
+      loading={false}
+    />
+  );
 }
 
 /**
@@ -45,26 +46,27 @@ export default function DelayReasonComparisonTab({ comparison }) {
  */
 function useQueriesWithComparison(comparison) {
   const { state: reportOptions } = useReportBuilderContext();
-  const deliverabilityMetrics = getMetricsFromKeys(DELIVERABILITY_DELAY_METRIC_KEYS);
+  const deliverabilityMetrics = getMetricsFromKeys(DELIVERABILITY_LINKS_METRIC_KEYS);
+  const linkMetrics = getMetricsFromKeys(LINKS_BY_DOMAIN_METRIC_KEYS);
   const existingFilters = reportOptions.filters ? reportOptions.filters : [];
   const comparisonFilter = getFilterByComparison(comparison);
-  const aggregatesParams = usePrepareReportBuilderQuery({
+  const aggregatesArgs = usePrepareReportBuilderQuery({
     ...reportOptions,
     filters: [...existingFilters, comparisonFilter],
     metrics: deliverabilityMetrics,
   });
-  const delayReasonsParams = usePrepareReportBuilderQuery({
+  const linkArgs = usePrepareReportBuilderQuery({
     ...reportOptions,
     filters: [...existingFilters, comparisonFilter],
-    metrics: reportOptions.metrics,
+    metrics: linkMetrics,
   });
-  const delayReasonsQuery = useSparkPostQuery(() => getDelayReasonByDomain(delayReasonsParams));
-  const aggregatesQuery = useSparkPostQuery(() => getDeliverability(aggregatesParams));
+  const linksQuery = useSparkPostQuery(() => getEngagement(linkArgs));
+  const aggregatesQuery = useSparkPostQuery(() => getDeliverability(aggregatesArgs));
 
   return {
     aggregatesQuery,
-    delayReasonsQuery,
-    isPending: aggregatesQuery.status === 'loading' || delayReasonsQuery.status === 'loading',
-    isError: aggregatesQuery.status === 'error' || delayReasonsQuery.status === 'error',
+    linksQuery,
+    isPending: linksQuery.status === 'loading' || aggregatesQuery.status === 'loading',
+    isError: linksQuery.status === 'error' || aggregatesQuery.status === 'error',
   };
 }

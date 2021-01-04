@@ -66,7 +66,11 @@ describe('Version 2 of the dashboard page', () => {
         requestAlias: 'updateUIOptions',
       });
       cy.withinModal(() => {
-        cy.findByLabelText('Report d50d8475-d4e8-4df0-950f-b142f77df0bf').check({ force: true });
+        // arbitary wait was added because of this issue https://sparkpost.atlassian.net/browse/FE-1284
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(0);
+        cy.get('[type="radio"]').check('d50d8475-d4e8-4df0-950f-b142f77df0bf', { force: true });
+
         cy.findByRole('button', { name: 'Change Report' }).click();
       });
       cy.wait('@updateUIOptions').then(xhr => {
@@ -79,7 +83,7 @@ describe('Version 2 of the dashboard page', () => {
 
     // TODO: I believe this test is catching a bug - the `AggregatedMetrics` component does not make a request for the summary chart data
     // If it's already available in the Redux store, it will be present, however.
-    it.skip('renders the Analytics Report step with pinned report when last usage date is not null and a pinned report is present in account ui options', () => {
+    it('renders the Analytics Report step with pinned report when last usage date is not null and a pinned report is present in account ui options', () => {
       stubGrantsRequest({ role: 'admin' });
       stubAlertsReq();
       stubAccountsReq();
@@ -406,11 +410,12 @@ describe('Version 2 of the dashboard page', () => {
       stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
       // Force not admin here - Our mocked cypress state always has the user as admin
       stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest']);
+      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest', '@usageReq']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -436,12 +441,14 @@ describe('Version 2 of the dashboard page', () => {
 
       // step 4 text...
       cy.findByRole('heading', { name: 'Start Sending!' }).should('not.exist');
+
+      //text from default Analytics report step...
       cy.findByText(
         'Follow the Getting Started documentation to set up sending via API or SMTP.',
       ).should('not.exist');
     });
 
-    it('Shows the default "Go To Analytics Report" onboarding step for templates users with last usage date', () => {
+    it('Shows the Pinned Report onboarding step for templates users with last usage date', () => {
       stubGrantsRequest({ role: 'templates' });
       stubAlertsReq();
       stubAccountsReq();
@@ -452,16 +459,11 @@ describe('Version 2 of the dashboard page', () => {
       cy.visit(PAGE_URL);
       cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest', '@usageReq']);
 
-      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+      cy.findByRole('heading', { name: 'Summary Report' }).should('be.visible');
 
       cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
-        'be.visible',
+        'not.exist',
       );
-
-      cy.verifyLink({
-        content: 'Go To Analytics Report',
-        href: '/signals/analytics',
-      });
 
       // step 1 text...
       cy.findAllByText('is required in order to start or enable analytics.').should('not.exist');
@@ -491,44 +493,6 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.visit(PAGE_URL);
       cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest', '@usageReq']);
-
-      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
-
-      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
-        'be.visible',
-      );
-
-      cy.verifyLink({
-        content: 'Go To Analytics Report',
-        href: '/signals/analytics',
-      });
-
-      // step 1 text...
-      cy.findAllByText('is required in order to start or enable analytics.').should('not.exist');
-
-      // step 2 text...
-      cy.findAllByText('Once a sending domain has been added, it needs to be').should('not.exist');
-
-      // step 3 text...
-      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
-        'not.exist',
-      );
-
-      // step 4 text...
-      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.exist');
-      cy.findByText(
-        'Follow the Getting Started documentation to set up sending via API or SMTP.',
-      ).should('not.exist');
-    });
-
-    it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
-      stubGrantsRequest({ role: 'reporting' });
-      stubAlertsReq();
-      stubAccountsReq();
-      stubUsersRequest({ access_level: 'reporting' });
-
-      cy.visit(PAGE_URL);
-      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@stubbedUsersRequest']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 

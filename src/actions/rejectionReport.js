@@ -1,3 +1,4 @@
+import { DELIVERABILITY_REJECTION_METRIC_KEYS } from 'src/config/metrics';
 import { fetchRejectionReasonsByDomain, fetchDeliverability } from 'src/actions/metrics';
 import {
   getQueryFromOptions,
@@ -5,7 +6,7 @@ import {
   getQueryFromOptionsV2,
 } from 'src/helpers/metrics';
 
-const REJECTION_METRICS = getMetricsFromKeys(['count_rejected', 'count_targeted']);
+const REJECTION_METRICS = getMetricsFromKeys(DELIVERABILITY_REJECTION_METRIC_KEYS);
 
 export function refreshRejectionReport(updates = {}) {
   return dispatch => {

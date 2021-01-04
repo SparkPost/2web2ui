@@ -16,7 +16,7 @@ describe('Blocklist Component: RelatedIncidents', () => {
     };
 
     return render(
-      <TestApp>
+      <TestApp isHibanaEnabled={false}>
         <IncidentDetails {...defaults} {...props} />
       </TestApp>,
     );

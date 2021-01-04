@@ -18,7 +18,7 @@ function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } =
     requestAlias: 'accountReq',
   });
 }
-describe('The A/B Testing create page', () => {
+describe('The A/B Testing list page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });

@@ -1,5 +1,5 @@
 import {
-  cumulativeData,
+  cumulativeSum,
   getDayLines,
   getTimeTickFormatter,
   getTooltipLabelFormatter,
@@ -37,7 +37,7 @@ describe('Helper: chart', () => {
     ];
   });
 
-  describe('cumulativeData', () => {
+  describe('cumulativeSum', () => {
     const testData = [
       { date: '2020-11-15', usage: 1000 },
       { date: '2020-11-16', usage: 1000 },
@@ -47,7 +47,7 @@ describe('Helper: chart', () => {
     ];
 
     it('should return an array of cumulative data', () => {
-      const dataSet = cumulativeData({ data: testData, key: 'usage' });
+      const dataSet = cumulativeSum({ data: testData, key: 'usage' });
       expect(dataSet[0].usage).toEqual(1000);
       expect(dataSet[1].usage).toEqual(2000);
       expect(dataSet[2].usage).toEqual(3000);

@@ -23,7 +23,7 @@ function getUniqueUnits(metrics) {
   return _.uniq(metrics.map(({ unit = DEFAULT_UNIT }) => unit));
 }
 export function ChartGroups(props) {
-  const { reportOptions } = props;
+  const { reportOptions, small } = props;
   const { comparisons } = reportOptions;
   const hasComparisons = Boolean(comparisons.length);
   const [activeChart, setActiveChart] = useState(null);
@@ -36,6 +36,7 @@ export function ChartGroups(props) {
           setActiveChart={setActiveChart}
           id="chart"
           reportOptions={reportOptions}
+          small={small}
         />
       </Panel.Section>
     );
@@ -65,6 +66,7 @@ export function ChartGroups(props) {
                   setActiveChart={setActiveChart}
                   id={`chart_group_${index}`}
                   reportOptions={{ ...reportOptions, filters: comparedFilters }}
+                  small={small}
                 />
               </Box>{' '}
             </Stack>
@@ -76,7 +78,7 @@ export function ChartGroups(props) {
 }
 
 export function Charts(props) {
-  const { reportOptions, activeChart, setActiveChart, id } = props;
+  const { reportOptions, activeChart, setActiveChart, id, small } = props;
   const { comparisons, metrics } = reportOptions;
 
   // Prepares params for request
@@ -113,6 +115,7 @@ export function Charts(props) {
   switch (charts.length * (comparisons.length || 1)) {
     case 1:
       height = 400;
+      if (small) height = 200;
       break;
     case 2:
       height = 200;

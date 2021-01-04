@@ -38,7 +38,7 @@ function mapStateToProps(state) {
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
 
   let onboarding = 'done';
-  if (canViewUsage && lastUsageDate === null && (isAnAdmin || isDev)) {
+  if (lastUsageDate === null && (isAnAdmin || isDev)) {
     let addSendingDomainNeeded;
     let verifySendingNeeded;
     let createApiKeyNeeded;
@@ -60,8 +60,7 @@ function mapStateToProps(state) {
 
     if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
       onboarding = 'startSending';
-  } else if (isTemplatesUser || isReportingUser) {
-    //TODO: revisit this condition if usage/view grant gets added for reporting & subaccount_reporting users
+  } else if (lastUsageDate === null && (isTemplatesUser || isReportingUser)) {
     onboarding = 'analyticsReportPromo';
   }
 

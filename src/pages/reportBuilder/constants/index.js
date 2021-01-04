@@ -20,7 +20,7 @@ export const PRESET_REPORT_CONFIGS = [
     id: 'engagement',
     name: 'Engagement Report',
     query_string:
-      'range=day&metrics=count_sent&metrics=count_accepted&metrics=count_clicked&metrics=open_rate_approx',
+      'range=day&metrics=count_sent&metrics=count_accepted&metrics=count_clicked&metrics=count_rendered',
     type: 'preset',
   },
   {

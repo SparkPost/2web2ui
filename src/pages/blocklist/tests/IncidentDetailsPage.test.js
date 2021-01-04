@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+import { render, screen, within } from '@testing-library/react';
 import React from 'react';
 import TestApp from 'src/__testHelpers__/TestApp';
 import { IncidentDetailsPage } from '../IncidentDetailsPage';
@@ -11,6 +12,15 @@ IncidentDetails.mockImplementation(() => <div className="mock-incident-details">
 jest.mock('../components/RelatedIncidents');
 RelatedIncidents.mockImplementation(() => <div className="mock-related-incidents"></div>);
 
+const recommendation = {
+  title: 'Fix This',
+  check_list: ['If you are happy', 'And you know it', 'Clap your hands'],
+  action_text: 'Request Removal',
+  action_link: 'https://www.foo.com',
+  info_text: 'Learn More',
+  info_url: 'https://www.bar.com',
+};
+
 const mockIncident = {
   id: '123',
   resource: '1.2.3.4',
@@ -18,6 +28,7 @@ const mockIncident = {
   occurred_at: '2019-12-31T18:14:57.899Z',
   resolved_at: '2019-12-31T19:01:32.741Z',
   status: 'resolved',
+  recommendation,
 };
 
 const mockHistoricalIncidents = [
@@ -59,7 +70,7 @@ describe('IncidentDetailsPage', () => {
   const mockListIncidentsForBlocklist = jest.fn();
   const mockListHistoricalResolvedIncidents = jest.fn();
 
-  const subject = props => {
+  const subject = (props, renderFn = mount, isHibanaEnabled = false) => {
     const defaults = {
       id: mockIncident.id,
       getIncident: mockGetIncident,
@@ -67,8 +78,9 @@ describe('IncidentDetailsPage', () => {
       listIncidentsForBlocklist: mockListIncidentsForBlocklist,
       listHistoricalResolvedIncidents: mockListHistoricalResolvedIncidents,
     };
-    return mount(
-      <TestApp>
+
+    return renderFn(
+      <TestApp isHibanaEnabled={isHibanaEnabled}>
         <IncidentDetailsPage {...defaults} {...props} />
       </TestApp>,
     );
@@ -104,5 +116,50 @@ describe('IncidentDetailsPage', () => {
 
     expect(wrapper.find('.mock-related-incidents')).toHaveLength(3);
     expect(wrapper.find('.mock-incident-details')).toHaveLength(1);
+  });
+
+  it('renders the remediation steps for Hibana', () => {
+    const props = {
+      loading: false,
+      incident: mockIncident,
+      incidentsForBlocklist: mockIncidentsForBlocklist,
+      incidentsForResource: mockIncidentsForResource,
+      historicalIncidents: mockHistoricalIncidents,
+    };
+
+    subject(props, render, true);
+
+    expect(screen.getByText('Fix This')).toBeVisible();
+    expect(screen.getByText('If you are happy')).toBeVisible();
+    expect(screen.getByText('And you know it')).toBeVisible();
+    expect(screen.getByText('Clap your hands')).toBeVisible();
+    expect(screen.getByText('Request Removal')).toBeVisible();
+    expect(screen.getByText('Request Removal').closest('a')).toHaveAttribute(
+      'href',
+      'https://www.foo.com',
+    );
+    expect(screen.getByText('Learn More')).toBeVisible();
+    expect(screen.getByText('Learn More').closest('a')).toHaveAttribute(
+      'href',
+      'https://www.bar.com',
+    );
+  });
+
+  it('does not render info button when info_text does not exist', () => {
+    const props = {
+      loading: false,
+      incident: {
+        ...mockIncident,
+        recommendation: { ...recommendation, info_text: '', info_url: '' },
+      },
+      incidentsForBlocklist: mockIncidentsForBlocklist,
+      incidentsForResource: mockIncidentsForResource,
+      historicalIncidents: mockHistoricalIncidents,
+    };
+
+    subject(props, render, true);
+    const recommendations = screen.getByTestId('remediation-steps');
+
+    expect(within(recommendations).getAllByRole('link')).toHaveLength(1);
   });
 });

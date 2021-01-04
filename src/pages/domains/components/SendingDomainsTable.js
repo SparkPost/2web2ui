@@ -89,8 +89,9 @@ function StatusCell({ row }) {
     readyForSending,
     validSPF,
     unverified,
-    subaccountId,
-  } = row;
+  } = row.DomainStatus;
+  const { subaccountId } = row;
+
   const tooltipId = useUniqueId('default-bounce-domain');
   const tooltipContent = `Default${subaccountId ? ' Subaccount ' : ''} Bounce Domain`;
 

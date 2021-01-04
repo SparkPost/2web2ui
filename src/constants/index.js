@@ -77,6 +77,7 @@ export const LINKS = {
     'https://developers.sparkpost.com/api/transmissions/#transmissions-post-send-an-a-b-test',
   RECIP_DOCS: 'https://www.sparkpost.com/docs/user-guide/uploading-recipient-list/',
   API_KEYS_GUIDE: 'https://www.sparkpost.com/docs/getting-started/create-api-keys/',
+  SNIPPETS_DOCS: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
 };
 
 export const ENTERPRISE_PLAN_CODES = ['ent1'];

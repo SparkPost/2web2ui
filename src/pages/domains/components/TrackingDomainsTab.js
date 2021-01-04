@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useReducer } from 'react';
+import React, { useEffect, useCallback, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
-import { Panel } from 'src/components/matchbox';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import { usePageFilters } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -13,10 +12,15 @@ import {
   getReactTableFilters,
   customDomainStatusFilter,
   getActiveStatusFilters,
+  setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
+
+import { DomainsListPanel, DomainsListPanelSection } from './styles';
+
 import _ from 'lodash';
 
+// For local reducer state
 const filtersInitialState = {
   domainName: undefined,
   checkboxes: [
@@ -43,6 +47,7 @@ const filtersInitialState = {
   ],
 };
 
+// For usePageFilters
 const initFiltersForTracking = {
   domainName: { defaultValue: undefined },
   verified: {
@@ -95,40 +100,32 @@ export default function TrackingDomainsTab() {
     trackingDomainsListError,
   } = useDomains();
 
-  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
+  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
   const filter = React.useMemo(() => customDomainStatusFilter, []);
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Blocked',
-        accessor: 'blocked',
-        filter,
-      },
       { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
       { Header: 'DomainName', accessor: 'domainName' },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
       { Header: 'SubaccountId', accessor: 'subaccountId' },
       { Header: 'SubaccountName', accessor: 'subaccountName' },
       {
-        Header: 'Unverified',
-        accessor: 'unverified',
+        Header: 'DomainStatus',
+        accessor: row => ({
+          blocked: row.blocked,
+          defaultTrackingDomain: row.defaultTrackingDomain,
+          unverified: row.unverified,
+          verified: row.verified,
+        }),
         filter,
-      },
-      {
-        Header: 'Verified',
-        accessor: 'verified',
-        filter,
-      },
-      {
-        Header: 'SelectAll',
-        accessor: 'selectAll',
       },
     ],
     [filter],
   );
+
   const sortBy = React.useMemo(() => [{ id: 'domainName', desc: false }], []);
   const tableInstance = useTable(
     {
@@ -167,35 +164,64 @@ export default function TrackingDomainsTab() {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
+  // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    if (!listPending) {
-      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
+    if (!rows || (rows && rows.length === 0) || listPending) {
+      return;
+    }
+
+    if (firstLoad.current) {
+      const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName'); // remove the domainName
       const activeStatusFilters = getActiveStatusFilters(filters);
       const statusFiltersToApply = !activeStatusFilters.length
-        ? allStatusFilterNames
+        ? allStatusCheckboxNames
         : activeStatusFilters.map(i => i.name);
-      const domainNameFilter = filters['domainName'];
 
-      if (firstLoad.current) {
-        firstLoad.current = false;
+      firstLoad.current = false;
 
-        filtersStateDispatch({
-          type: 'LOAD',
-          names: statusFiltersToApply,
-          domainName: domainNameFilter,
-        });
+      let newFiltersState = {
+        ...filtersState,
+        checkboxes: filtersState.checkboxes.map(checkbox => {
+          return {
+            ...checkbox,
+            isChecked: statusFiltersToApply.indexOf(checkbox.name) >= 0,
+          };
+        }),
+      };
+      newFiltersState['domainName'] = filters['domainName'];
 
-        setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
-
-        return;
-      }
-
-      updateFilters(filterStateToParams(filtersState));
-      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+      filtersStateDispatch({
+        type: 'LOAD',
+        filtersState: newFiltersState,
+      }); // NOTE: Sets the filters display
+      batchDispatchUrlAndTable(newFiltersState);
+      return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersState, listPending]);
+  }, [rows, listPending]);
+
+  function batchDispatchUrlAndTable(newFiltersState) {
+    const flattenedFilters = filterStateToParams(newFiltersState);
+
+    updateFilters(flattenedFilters);
+
+    const domainStatusValues = {
+      blocked: flattenedFilters['blocked'],
+      defaultTrackingDomain: flattenedFilters['defaultTrackingDomain'],
+      unverified: flattenedFilters['unverified'],
+      verified: flattenedFilters['verified'],
+    };
+
+    const reactTableFilters = getReactTableFilters({
+      domainName: flattenedFilters['domainName'],
+      DomainStatus: domainStatusValues,
+    });
+
+    setAllFilters(reactTableFilters);
+  }
+
+  const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 1000), []);
 
   if (trackingDomainsListError) {
     return (
@@ -209,14 +235,19 @@ export default function TrackingDomainsTab() {
 
   return (
     <>
-      <Panel mb="400">
-        <Panel.Section>
+      <DomainsListPanel mb="400">
+        <DomainsListPanelSection>
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
               value={filtersState.domainName}
               onChange={e => {
-                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+                const newFiltersState = {
+                  ...filtersState,
+                  domainName: e.target.value,
+                };
+                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value }); // NOTE: Updates the text input
+                throttleDomainHandler(newFiltersState);
               }}
               placeholder={
                 trackingDomains.length > 0 ? `e.g. ${trackingDomains[0]?.domainName}` : ''
@@ -227,7 +258,13 @@ export default function TrackingDomainsTab() {
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
-                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
+                const newCheckboxes = setCheckboxIsChecked(e.target.name, filtersState.checkboxes);
+                const newFiltersState = {
+                  ...filtersState,
+                  checkboxes: newCheckboxes,
+                };
+                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name }); // NOTE: updates checkbox state
+                batchDispatchUrlAndTable(newFiltersState);
               }}
             />
 
@@ -244,14 +281,14 @@ export default function TrackingDomainsTab() {
               }}
             />
           </TableFilters>
-        </Panel.Section>
+        </DomainsListPanelSection>
 
         {listPending && <Loading />}
 
         {isEmpty && <Empty message="There is no data to display" />}
 
         {!listPending && !isEmpty && <TrackingDomainsTable tableInstance={tableInstance} />}
-      </Panel>
+      </DomainsListPanel>
 
       <Pagination
         data={rows}

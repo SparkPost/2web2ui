@@ -2,6 +2,10 @@ import React from 'react';
 import { useSparkPostQuery } from 'src/hooks';
 import { ApiErrorBanner, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
+import {
+  DELIVERABILITY_BOUNCE_METRIC_KEYS,
+  BOUNCE_BY_DOMAIN_METRIC_KEYS,
+} from 'src/config/metrics';
 import { getMetricsFromKeys, getFilterByComparison } from 'src/helpers/metrics';
 import { getBounceReasonByDomain, getDeliverability } from 'src/helpers/api/metrics';
 import { selectReasons, selectFormattedAggregates } from 'src/selectors/bounceReport';
@@ -11,9 +15,14 @@ import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import { TAB_LOADING_HEIGHT } from '../../constants';
 
 export default function BounceReasonComparisonTab({ comparison }) {
-  const { aggregatesQuery, bounceReasonsQuery, isPending, isError } = useQueriesWithComparison(
-    comparison,
-  );
+  const {
+    aggregatesQuery,
+    bounceReasonsQuery,
+    isPending,
+    isError,
+    reasons,
+    aggregates,
+  } = useQueriesWithComparison(comparison);
 
   function handleReload() {
     bounceReasonsQuery.refetch();
@@ -32,12 +41,6 @@ export default function BounceReasonComparisonTab({ comparison }) {
     );
   }
 
-  // This re-structuring using the `bounceReport` key is a holdover from Redux - could we refactor these selectors to be less opinionated?
-  const reasons = selectReasons({ bounceReport: { reasons: bounceReasonsQuery.data } });
-  const aggregates = selectFormattedAggregates({
-    bounceReport: { aggregates: aggregatesQuery.data[0] },
-  });
-
   return <BounceReasonTable reasons={reasons} aggregates={aggregates} loading={false} />;
 }
 
@@ -45,17 +48,12 @@ export default function BounceReasonComparisonTab({ comparison }) {
  * Prepares request parameters using common hooks, then leverages helper functions to determine which `metrics` are passed as arguments to each request.
  *
  * @param {Object} comparison - passed in comparison set by the user via the "Compare By" feature
+ *
  */
 function useQueriesWithComparison(comparison) {
   const { state: reportOptions } = useReportBuilderContext();
-  // I borrowed this logic from `src/actions/bounceReport`
-  const deliverabilityMetrics = getMetricsFromKeys([
-    'count_bounce',
-    'count_inband_bounce',
-    'count_outofband_bounce',
-    'count_admin_bounce',
-  ]);
-  const bounceReasonMetrics = getMetricsFromKeys(['count_bounce']);
+  const deliverabilityMetrics = getMetricsFromKeys(DELIVERABILITY_BOUNCE_METRIC_KEYS);
+  const bounceReasonMetrics = getMetricsFromKeys(BOUNCE_BY_DOMAIN_METRIC_KEYS);
   const existingFilters = reportOptions.filters ? reportOptions.filters : [];
   const comparisonFilter = getFilterByComparison(comparison);
   const aggregatesParams = usePrepareReportBuilderQuery({
@@ -76,5 +74,16 @@ function useQueriesWithComparison(comparison) {
     bounceReasonsQuery,
     isPending: bounceReasonsQuery.status === 'loading' || aggregatesQuery.status === 'loading',
     isError: bounceReasonsQuery.status === 'error' || aggregatesQuery.status === 'error',
+    // This re-structuring using the `bounceReport` key is a holdover from Redux - could we refactor these selectors to be less opinionated?
+    reasons:
+      bounceReasonsQuery.status === 'success'
+        ? selectReasons({ bounceReport: { reasons: bounceReasonsQuery.data } })
+        : [],
+    aggregates:
+      aggregatesQuery.status === 'success'
+        ? selectFormattedAggregates({
+            bounceReport: { aggregates: aggregatesQuery.data[0] },
+          })
+        : [],
   };
 }

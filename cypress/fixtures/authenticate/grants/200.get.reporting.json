@@ -44,6 +44,9 @@
     },
     {
       "key": "support/manage"
+    },
+    {
+      "key": "usage/view"
     }
   ]
 }

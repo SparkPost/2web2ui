@@ -54,18 +54,11 @@ describe('ChangeReportModal', () => {
 
     screen.getByText('All Reports').click();
     expect(screen.getAllByRole('radio')).toHaveLength(2);
-    testSecondTab(['Name', 'Last Modification', 'My Saved Report', /Sep [123] 2020/]);
+    testSecondTab(['Name', 'Last Modification', /Sep [123] 2020/]);
     expect(screen.getByText('Created By')).toBeVisible();
     expect(screen.getByText('Sparky McSparkFace')).toBeVisible();
 
     expect(screen.getByRole('button', { name: 'Change Report' })).toBeVisible();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible();
-  });
-
-  it('does not render action list for reports', () => {
-    subject();
-    screen.getByText('All Reports').click();
-    expect(screen.queryByTestId('popover-allreports-0')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('popover-allreports-1')).not.toBeInTheDocument();
   });
 });
