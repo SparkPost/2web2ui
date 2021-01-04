@@ -52,7 +52,7 @@ export const segmentIdentify = traits => {
     traits[SEGMENT_TRAITS.TENANT]
   ) {
     const filteredTraits = Object.values(SEGMENT_TRAITS).reduce((filtered, key) => {
-      if (traits[key]) {
+      if (traits[key] !== undefined) {
         filtered[key] = traits[key];
       }
       return filtered;
