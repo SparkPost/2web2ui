@@ -249,7 +249,7 @@ if (IS_HIBANA_ENABLED) {
           .should('be.visible')
           .click();
 
-        cy.findByText('Limit on number of comparisons reached').should('exist');
+        cy.findByText('Limit on number of comparisons reached').should('be.visible');
         cy.findByRole('button', { name: 'Add Subaccount' }).should('not.exist');
 
         cy.findAllByRole('button', { name: 'Remove Filter' })

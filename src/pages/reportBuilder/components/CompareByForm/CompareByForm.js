@@ -175,11 +175,6 @@ function CompareByForm({
     <form onSubmit={handleFormSubmit}>
       <Box padding="500" paddingBottom="8rem">
         <Stack>
-          {error && (
-            <Banner size="small" status={errorStatus}>
-              {error}
-            </Banner>
-          )}
           <Select
             placeholder="Select Resource"
             placeholderValue="Select Resource"
@@ -244,6 +239,11 @@ function CompareByForm({
                 <Button.Icon as={Add} />
               </Button>
             </Box>
+          )}
+          {error && (
+            <Banner size="small" status={errorStatus}>
+              {error}
+            </Banner>
           )}
         </Stack>
       </Box>
