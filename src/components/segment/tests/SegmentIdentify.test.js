@@ -65,11 +65,9 @@ describe('SegmentIdentify', () => {
         first_name: 'Test',
         last_name: 'User',
         is_sso: true,
+        tfa_enabled: true,
         username: 'username',
         email: 'email@abc.com',
-      },
-      tfa: {
-        enabled: true,
       },
     };
 

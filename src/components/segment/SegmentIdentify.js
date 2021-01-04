@@ -31,7 +31,7 @@ const mapStateToProps = state => ({
   [SEGMENT_TRAITS.FIRST_NAME]: state.currentUser.first_name,
   [SEGMENT_TRAITS.LAST_NAME]: state.currentUser.last_name,
   [SEGMENT_TRAITS.SSO_ENABLED]: Boolean(state.currentUser.is_sso),
-  [SEGMENT_TRAITS.TFA_ENABLED]: Boolean(state.tfa.enabled),
+  [SEGMENT_TRAITS.TFA_ENABLED]: Boolean(state.currentUser.tfa_enabled),
 });
 
 export default connect(mapStateToProps, {})(SegmentIdentify);
