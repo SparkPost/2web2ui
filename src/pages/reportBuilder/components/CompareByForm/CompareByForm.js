@@ -54,6 +54,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         filters: [...state.filters, null],
+        formChanged: true,
         hasMaxComparisonsError: Boolean(state.filters.length >= 9), //Will now be 10
       };
     case 'REMOVE_FILTER':
@@ -61,6 +62,7 @@ const reducer = (state, action) => {
         ...state,
         filters: state.filters.filter((_filter, filterIndex) => filterIndex !== action.index),
         hasMaxComparisonsError: false,
+        formChanged: true,
       };
     case 'SET_FILTER':
       const newFilters = state.filters;
@@ -73,11 +75,13 @@ const reducer = (state, action) => {
         hasMaxComparisonsError: false,
         filters: [null, null],
         filterType: action.filterType,
+        formChanged: true,
       };
-    case 'RESET_FORM':
-      return { ...initialState, filters: [null, null], filterType: undefined };
     case 'SET_MIN_COMPARE_ERROR':
-      return { ...state, hasMinComparisonsError: true };
+      return { ...state, hasMinComparisonsError: true, formChanged: true };
+    case 'RESET_FORM':
+      return { ...initialState, filters: [null, null], filterType: undefined, formChanged: true };
+
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -123,12 +127,11 @@ function CompareByForm({
       });
     }
 
-    if (formattedFilters.length >= 2) {
-      segmentTrack(SEGMENT_EVENTS.REPORT_BUILDER_COMPARISON_ADDED, {
-        comparisonType: state.filterType,
-        numberOfComparisons: formattedFilters.length,
-      });
-    }
+    segmentTrack(SEGMENT_EVENTS.REPORT_BUILDER_COMPARISON_ADDED, {
+      formChanged: state.formChanged,
+      comparisonType: state.filterType,
+      numberOfComparisons: formattedFilters.length,
+    });
 
     return handleSubmit({ comparisons: formattedFilters });
   }
