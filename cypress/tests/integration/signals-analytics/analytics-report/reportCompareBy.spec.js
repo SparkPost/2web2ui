@@ -250,6 +250,7 @@ if (IS_HIBANA_ENABLED) {
           .click();
 
         cy.findByText('Limit on number of comparisons reached').should('exist');
+        cy.findByRole('button', { name: 'Add Subaccount' }).should('not.exist');
 
         cy.findAllByRole('button', { name: 'Remove Filter' })
           .eq(8)
