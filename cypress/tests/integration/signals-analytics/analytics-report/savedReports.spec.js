@@ -179,6 +179,50 @@ if (IS_HIBANA_ENABLED) {
       cy.findByText('You have successfully saved Hello There').click();
     });
 
+    it('removes report id if saving a new report using an existing report', () => {
+      cy.visit(`${PAGE_URL}&report=d50d8475-d4e8-4df0-950f-b142f77df0bf`);
+      cy.wait([
+        '@accountReq',
+        '@userReq',
+        '@reportsReq',
+        '@billingSubscriptionReq',
+        '@getTimeSeries',
+        '@getDeliverability',
+      ]);
+
+      cy.findByRole('button', { name: 'Save New Report' }).click();
+
+      cy.withinModal(() => {
+        cy.findByText('Save New Report').should('be.visible');
+
+        // Check validation
+        cy.findByRole('button', { name: 'Save Report' }).click();
+
+        cy.stubRequest({
+          url: '/api/v1/reports',
+          fixture: 'reports/200.get.new-report',
+          requestAlias: 'newGetSavedReports',
+        });
+
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/reports',
+          fixture: 'reports/200.post.json',
+          requestAlias: 'saveNewReport',
+        });
+
+        // Check submission
+        cy.findByLabelText('Name').type('Hello There');
+        cy.findByLabelText('Description').type('General Kenobi');
+        cy.findByLabelText('Allow others to edit report').check({ force: true });
+        cy.findByRole('button', { name: 'Save Report' }).click();
+      });
+
+      cy.wait('@saveNewReport').then(xhr => {
+        cy.wrap(xhr.url).should('not.include', 'report=d50d8475-d4e8-4df0-950f-b142f77df0bf');
+      });
+    });
+
     describe('with saved reports', () => {
       beforeEach(() => {
         cy.stubRequest({
