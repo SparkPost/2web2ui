@@ -29,8 +29,8 @@ import styled from 'styled-components';
 const initialState = {
   filters: [null, null],
   filterType: undefined,
-  error: null,
-  errorStatus: 'danger',
+  hasMinComparisonsError: false,
+  hasMaxComparisonsError: false,
 };
 
 const StyledButton = styled(Button)`
@@ -49,39 +49,33 @@ const RemoveButton = ({ onClick }) => (
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_FILTER':
-      if (state.filters.length >= 9) {
-        return {
-          ...state,
-          filters: [...state.filters, null],
-          error: 'Limit on number of comparisons reached',
-          errorStatus: 'warning',
-        };
-      }
-      return { ...state, filters: [...state.filters, null] };
+      return {
+        ...state,
+        filters: [...state.filters, null],
+        hasMaxComparisonsError: Boolean(state.filters.length >= 9), //Will now be 10
+      };
     case 'REMOVE_FILTER':
       return {
         ...state,
         filters: state.filters.filter((_filter, filterIndex) => filterIndex !== action.index),
-        error: null,
+        hasMaxComparisonsError: false,
       };
     case 'SET_FILTER':
       const newFilters = state.filters;
       newFilters[action.index] = action.value;
-      if (state.filters.length >= 10) {
-        return {
-          ...state,
-          error: 'Limit on number of comparisons reached',
-          errorStatus: 'warning',
-          filters: newFilters,
-        };
-      }
-      return { ...state, error: null, filters: newFilters };
+      return { ...state, filters: newFilters, hasMinComparisonsError: false };
     case 'SET_FILTER_TYPE':
-      return { error: null, filters: [null, null], filterType: action.filterType };
+      return {
+        ...initialState,
+        hasMinComparisonsError: false,
+        hasMaxComparisonsError: false,
+        filters: [null, null],
+        filterType: action.filterType,
+      };
     case 'RESET_FORM':
       return { ...initialState, filters: [null, null], filterType: undefined };
-    case 'SET_ERROR':
-      return { ...state, error: action.error, errorStatus: 'danger' };
+    case 'SET_MIN_COMPARE_ERROR':
+      return { ...state, hasMinComparisonsError: true };
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -113,7 +107,7 @@ function CompareByForm({
   const { state: reportOptions } = useReportBuilderContext();
   const { comparisons } = reportOptions;
   const [state, dispatch] = useReducer(reducer, getInitialState(comparisons));
-  const { filters, filterType, error, errorStatus } = state;
+  const { filters, filterType, hasMinComparisonsError, hasMaxComparisonsError } = state;
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -121,7 +115,10 @@ function CompareByForm({
     const formattedFilters = filters.filter(filter => filter !== null);
 
     if (formattedFilters.length < 2 && formattedFilters.length > 0) {
-      return dispatch({ type: 'SET_ERROR', error: 'Select more than one item to compare' });
+      return dispatch({
+        type: 'SET_MIN_COMPARE_ERROR',
+        error: 'Select more than one item to compare',
+      });
     }
 
     return handleSubmit({ comparisons: formattedFilters });
@@ -240,10 +237,19 @@ function CompareByForm({
               </Button>
             </Box>
           )}
-          {error && (
-            <Banner size="small" status={errorStatus}>
-              {error}
-            </Banner>
+          {hasMinComparisonsError && (
+            <Box>
+              <Banner size="small" status="danger">
+                Select more than one item to compare{' '}
+              </Banner>
+            </Box>
+          )}
+          {hasMaxComparisonsError && (
+            <Box>
+              <Banner size="small" status="warning">
+                Limit on number of comparisons reached
+              </Banner>
+            </Box>
           )}
         </Stack>
       </Box>
