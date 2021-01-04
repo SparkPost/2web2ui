@@ -7,9 +7,22 @@ describe('The templates list page', () => {
     cy.login({ isStubbed: true });
   });
 
-  it('has a relevant page title', () => {
+  it('has a relevant page title and relevant links', () => {
+    cy.stubRequest({
+      url: TEMPLATES_API_URL,
+      fixture: 'templates/200.get.alphabetical-results.json',
+      requestAlias: 'getTemplates',
+    });
     cy.visit(PAGE_URL);
+    cy.wait('@getTemplates');
+
     cy.title().should('include', 'Templates');
+    cy.findByRole('heading', { name: 'Templates' }).should('be.visible');
+    cy.verifyLink({
+      content: 'Create Template',
+      href: '/templates/create',
+    });
+    cy.findByRole('link', { name: 'Save As CSV' }).should('be.visible'); // This may seem semantically incorrect, but it's actually right! https://css-tricks.com/building-good-download-button/
   });
 
   it('renders an error message when an error occurs when fetching templates and then allows the user to re-request template data within the message', () => {
@@ -245,7 +258,7 @@ describe('The templates list page', () => {
       .should('contain', 'Draft');
   });
 
-  it('has a table "Last Updated" in ascending and descending order by date', () => {
+  it('has a table sorted by "Last Updated" in ascending and descending order by date', () => {
     cy.stubRequest({
       url: TEMPLATES_API_URL,
       fixture: 'templates/200.get.time-ordered-results.json',
@@ -385,15 +398,6 @@ describe('The templates list page', () => {
       cy.findByText('Stubbed Template 1').should('not.exist');
       cy.findByText('Stubbed Template 2').should('not.exist');
       cy.findByText('Stubbed Template 3').should('not.exist');
-    });
-  });
-
-  it('has a "Create Template" button that navigates to the template creation page', () => {
-    cy.visit(PAGE_URL);
-
-    cy.verifyLink({
-      content: 'Create Template',
-      href: '/templates/create',
     });
   });
 });
