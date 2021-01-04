@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Actions
 import { listRecipientLists } from 'src/actions/recipientLists';
@@ -12,14 +12,23 @@ import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 function ListPageContainer(props) {
   const [{ isHibanaEnabled }] = useHibana();
 
-  return <ListPage isHibanaEnabled={isHibanaEnabled} {...props} />;
+  const { error, listLoading: loading, list: recipientLists } = useSelector(
+    state => state.recipientLists,
+  );
+  const isEmptyStateEnabled = useSelector(isAccountUiOptionSet('allow_empty_states'));
+  const dispatch = useDispatch();
+
+  return (
+    <ListPage
+      isHibanaEnabled={isHibanaEnabled}
+      {...props}
+      error={error}
+      loading={loading}
+      recipientLists={recipientLists}
+      isEmptyStateEnabled={isEmptyStateEnabled}
+      listRecipientLists={() => dispatch(listRecipientLists())}
+    />
+  );
 }
 
-const mapStateToProps = state => ({
-  error: state.recipientLists.error,
-  loading: state.recipientLists.listLoading,
-  recipientLists: state.recipientLists.list,
-  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
-});
-
-export default connect(mapStateToProps, { listRecipientLists })(ListPageContainer);
+export default ListPageContainer;
