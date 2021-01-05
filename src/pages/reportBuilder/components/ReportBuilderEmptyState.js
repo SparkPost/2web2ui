@@ -6,6 +6,7 @@ import { Page } from 'src/components/matchbox';
 import { useHistory } from 'react-router-dom';
 import { LINKS } from 'src/constants';
 import { Heading } from 'src/components/text';
+import { tokens } from '@sparkpost/design-tokens-hibana';
 
 export default function ReportBuilderEmptyState() {
   const history = useHistory();
@@ -46,7 +47,7 @@ export default function ReportBuilderEmptyState() {
           {
             content: (
               <>
-                Deliverability Metrics <Rocket color="#fa6423" size="25" />
+                Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
               </>
             ),
             onClick: function noRefCheck() {},
