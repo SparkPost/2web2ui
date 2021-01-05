@@ -16,6 +16,8 @@ exports[`renders correctly 1`] = `
       "show": false,
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -92,75 +94,6 @@ exports[`renders correctly 1`] = `
 </Page>
 `;
 
-exports[`renders empty state 1`] = `
-<Page
-  empty={
-    Object {
-      "content": <p>
-        Manage your recipient lists
-      </p>,
-      "image": [Function],
-      "secondaryAction": Object {
-        "content": "Learn More",
-        "external": true,
-        "to": "https://developers.sparkpost.com/api/recipient-lists.html",
-      },
-      "show": true,
-    }
-  }
-  primaryAction={
-    Object {
-      "Component": [Function],
-      "content": "Create Recipient List",
-      "to": "/lists/recipient-lists/create",
-    }
-  }
-  title="Recipient Lists"
->
-  <TableCollection
-    columns={
-      Array [
-        Object {
-          "label": "Name",
-          "sortKey": "name",
-        },
-        Object {
-          "label": "ID",
-          "sortKey": "id",
-        },
-        Object {
-          "label": "Recipients",
-          "sortKey": "total_accepted_recipients",
-          "width": "20%",
-        },
-      ]
-    }
-    defaultSortColumn="name"
-    defaultSortDirection="asc"
-    filterBox={
-      Object {
-        "exampleModifiers": Array [
-          "name",
-          "id",
-          "count",
-        ],
-        "itemToStringKeys": Array [
-          "name",
-          "id",
-        ],
-        "keyMap": Object {
-          "count": "total_accepted_recipients",
-        },
-        "show": true,
-      }
-    }
-    getRowData={[Function]}
-    pagination={true}
-    rows={Array []}
-  />
-</Page>
-`;
-
 exports[`renders errors when present 1`] = `
 <Page
   empty={
@@ -177,6 +110,8 @@ exports[`renders errors when present 1`] = `
       "show": false,
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -187,7 +122,7 @@ exports[`renders errors when present 1`] = `
   title="Recipient Lists"
 >
   <ApiErrorBanner
-    message="Sorry, we ran into an error loading your Recipient Lists"
+    message="Sorry, we ran into an error loading Recipient Lists"
     reload={[Function]}
   />
 </Page>

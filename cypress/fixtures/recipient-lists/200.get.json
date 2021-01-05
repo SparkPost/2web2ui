@@ -1,0 +1,28 @@
+{
+    "results": [
+        {
+            "id": "1",
+            "name": "List One",
+            "description": "",
+            "total_accepted_recipients": 1
+        },
+        {
+            "id": "2",
+            "name": "List Two",
+            "description": "",
+            "total_accepted_recipients": 1
+        },
+        {
+            "id": "3",
+            "name": "List Three",
+            "description": "",
+            "total_accepted_recipients": 1
+        },
+        {
+            "id": "4",
+            "name": "List Four",
+            "description": "",
+            "total_accepted_recipients": 2
+        }
+    ]
+}

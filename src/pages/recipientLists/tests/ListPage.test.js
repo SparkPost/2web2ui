@@ -14,9 +14,9 @@ const props = {
       description: 'An email list of graduate students at UMD',
       attributes: {
         internal_id: 112,
-        list_group_id: 12321
+        list_group_id: 12321,
       },
-      total_accepted_recipients: 3
+      total_accepted_recipients: 3,
     },
     {
       id: 'unique_id_4_undergraduates',
@@ -24,11 +24,11 @@ const props = {
       description: 'An email list of undergraduate students at UMBC',
       attributes: {
         internal_id: 111,
-        list_group_id: 11321
+        list_group_id: 11321,
       },
-      total_accepted_recipients: 8
-    }
-  ]
+      total_accepted_recipients: 8,
+    },
+  ],
 };
 
 let wrapper;
@@ -44,25 +44,14 @@ it('renders correctly', () => {
 it('renders loading', () => {
   const loadingProps = {
     ...props,
-    loading: true
+    loading: true,
   };
 
   expect(shallow(<ListPage {...loadingProps} />)).toMatchSnapshot();
 });
 
-it('renders empty state', () => {
-  const emptyprops = {
-    loading: false,
-    error: null,
-    recipientLists: [],
-    listRecipientLists: jest.fn(() => [])
-  };
-  wrapper = shallow(<ListPage {...emptyprops} />);
-  expect(wrapper).toMatchSnapshot();
-});
-
 it('renders errors when present', () => {
-  wrapper.setProps({ error: true, payload: { message: 'Uh oh! It broke.' }});
+  wrapper.setProps({ error: true, payload: { message: 'Uh oh! It broke.' } });
   expect(wrapper).toMatchSnapshot();
 });
 
