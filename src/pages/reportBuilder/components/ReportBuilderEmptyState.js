@@ -1,9 +1,11 @@
 import React from 'react';
 import { EmptyState, Tabs } from 'src/components/matchbox';
+import { Rocket } from '@sparkpost/matchbox-icons';
 import AnalyticsWebp from '@sparkpost/matchbox-media/images/Analytics.webp';
 import { Page } from 'src/components/matchbox';
 import { useHistory } from 'react-router-dom';
 import { LINKS } from 'src/constants';
+import { Heading } from 'src/components/text';
 
 export default function ReportBuilderEmptyState() {
   const history = useHistory();
@@ -26,6 +28,7 @@ export default function ReportBuilderEmptyState() {
           Analytics Documentation
         </EmptyState.Action>
       </EmptyState>
+      <Heading as="h2">Example Analytics</Heading>
       <Tabs
         keyboardActivation="auto"
         mb="800"
@@ -38,6 +41,14 @@ export default function ReportBuilderEmptyState() {
           },
           {
             content: 'Investigating Problems',
+            onClick: function noRefCheck() {},
+          },
+          {
+            content: (
+              <>
+                Deliverability Metrics <Rocket color="#fa6423" size="25" />
+              </>
+            ),
             onClick: function noRefCheck() {},
           },
         ]}
