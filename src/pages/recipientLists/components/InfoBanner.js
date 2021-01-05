@@ -30,8 +30,9 @@ export default function InfoBanner() {
       mb="600"
     >
       <p>
-        When sending email to multiple recipients, it’s best to put them in a recipient list. This
-        is particularly true when sending multiple emails to the same recipients.
+        A recipient list is a collection of recipients that can be used in a transmission. When
+        sending email to multiple recipients, it’s best to put them in a recipient list. This is
+        particularly true when sending multiple emails to the same recipients.
       </p>
       <Banner.Action color="blue" to={LINKS.RECIP_DOCS} external variant="outline">
         Recipient Lists Documentation
