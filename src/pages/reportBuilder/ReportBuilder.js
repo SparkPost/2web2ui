@@ -24,6 +24,7 @@ import {
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { getFormattedDateRangeForAggregateData } from 'src/helpers/date';
 import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import {
   Charts,
   ReportOptions,
@@ -57,6 +58,7 @@ export function ReportBuilder({
   subaccountsReady,
   listSendingDomains,
   sendingDomains,
+  isEmptyStateEnabled,
 }) {
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
@@ -261,7 +263,7 @@ export function ReportBuilder({
         </Box>
       }
       empty={{
-        show: sendingDomains.length === 0,
+        show: sendingDomains.length === 0 && isEmptyStateEnabled,
       }}
       hibanaEmptyStateComponent={ReportBuilderEmptyState}
     >
@@ -386,6 +388,7 @@ const mapStateToProps = state => ({
   subaccountsReady: state.subaccounts.ready,
   subscription: state.billing.subscription,
   sendingDomains: selectVerifiedDomains(state),
+  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
 const mapDispatchToProps = {
