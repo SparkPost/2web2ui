@@ -654,7 +654,7 @@ function commonBeforeSteps() {
   cy.wait(['@accountReq', '@usageReq', '@alertsReq']);
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-dashboard-v2.json' } = {}) {
+function stubAccountsReq({ fixture = 'account/200.get.dashboard-v2.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/account**',
     fixture: fixture,
