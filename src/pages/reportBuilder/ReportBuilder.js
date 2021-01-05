@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Error } from '@sparkpost/matchbox-icons';
 import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { getSubscription } from 'src/actions/billing';
+import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
 import {
@@ -22,12 +23,14 @@ import {
 } from 'src/config/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { getFormattedDateRangeForAggregateData } from 'src/helpers/date';
+import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
 import {
   Charts,
   ReportOptions,
   GroupByTable,
   SaveReportModal,
   CompareByGroupByTable,
+  ReportBuilderEmptyState,
 } from './components';
 import {
   BounceReasonTab,
@@ -52,6 +55,8 @@ export function ReportBuilder({
   getReports,
   getSubaccountsList,
   subaccountsReady,
+  listSendingDomains,
+  sendingDomains,
 }) {
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
@@ -65,6 +70,10 @@ export function ReportBuilder({
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
+
+  useEffect(() => {
+    listSendingDomains();
+  }, [listSendingDomains]);
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
@@ -251,6 +260,10 @@ export function ReportBuilder({
           </Button>
         </Box>
       }
+      empty={{
+        show: sendingDomains.length === 0,
+      }}
+      hibanaEmptyStateComponent={ReportBuilderEmptyState}
     >
       <Panel>
         <ReportOptions
@@ -372,6 +385,7 @@ const mapStateToProps = state => ({
   reportsStatus: state.reports.status,
   subaccountsReady: state.subaccounts.ready,
   subscription: state.billing.subscription,
+  sendingDomains: selectVerifiedDomains(state),
 });
 
 const mapDispatchToProps = {
@@ -379,6 +393,7 @@ const mapDispatchToProps = {
   getSubscription,
   getReports,
   getSubaccountsList,
+  listSendingDomains,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportBuilder);
