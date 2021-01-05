@@ -19,8 +19,7 @@
         "notificationsLastSeenDate": "2019-12-09T21:51:49.488Z",
         "recipient_validation": true,
         "isHibanaBannerVisible": false,
-        "isHibanaEnabled": false,
-        "allow_dashboard_v2": true
+        "isHibanaEnabled": false
       }
     },
     "created": "2015-07-29T17:59:48.477Z",

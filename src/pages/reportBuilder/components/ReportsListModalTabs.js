@@ -28,13 +28,8 @@ const FilterBoxWrapper = props => (
   </Box>
 );
 
-const Icons = ({ report, pinnedReport, allowDashboardV2 }) => {
+const Icons = ({ report, pinnedReport }) => {
   let icons = [];
-
-  if (!allowDashboardV2) {
-    return icons;
-  }
-
   if (pinnedReport && pinnedReport.id === report.id) {
     icons.push(
       <Tooltip
@@ -86,15 +81,14 @@ const Actions = ({
             as={PageLink}
           />
         )}
-        {rest.allowDashboardV2 && (
-          <PinToDashboardAction
-            content="Pin to Dashboard"
-            is="button"
-            onClick={() => (reportIsPinned ? '' : handlePin(report, rest.pinnedReport))}
-            disabled={reportIsPinned}
-            tabIndex={reportIsPinned ? '-1' : 'false'}
-          />
-        )}
+
+        <PinToDashboardAction
+          content="Pin to Dashboard"
+          is="button"
+          onClick={() => (reportIsPinned ? '' : handlePin(report, rest.pinnedReport))}
+          disabled={reportIsPinned}
+          tabIndex={reportIsPinned ? '-1' : 'false'}
+        />
         {canEdit && <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />}
       </ActionList>
     </Popover>
@@ -132,7 +126,6 @@ export const MyReportsTab = ({
   handleDelete,
   handleEdit,
   pinnedReport,
-  allowDashboardV2,
 }) => {
   const myReports = reports.filter(({ creator }) => creator === currentUser);
 
@@ -155,11 +148,7 @@ export const MyReportsTab = ({
         {name}
       </ButtonLink>,
       <div>{formatDateTime(modified)}</div>,
-      <Icons
-        report={report}
-        pinnedReport={pinnedReport}
-        allowDashboardV2={allowDashboardV2}
-      ></Icons>,
+      <Icons report={report} pinnedReport={pinnedReport}></Icons>,
       <Actions
         isScheduledReportsEnabled={isScheduledReportsEnabled}
         id={`popover-myreports-${report.id}`}
@@ -168,7 +157,6 @@ export const MyReportsTab = ({
         handleEdit={handleEdit}
         report={report}
         pinnedReport={pinnedReport}
-        allowDashboardV2={allowDashboardV2}
         isLast={isLast}
         canEdit={true}
       />,
@@ -207,7 +195,6 @@ export const AllReportsTab = ({
   handleDelete,
   handleEdit,
   pinnedReport,
-  allowDashboardV2,
 }) => {
   const allReportColumnHeaders = [
     { label: 'Name', sortKey: 'name' },
@@ -238,11 +225,7 @@ export const AllReportsTab = ({
       <Tag>
         <Subaccount id={subaccount_id} master={subaccount_id === 0} shrinkLength={12} />
       </Tag>,
-      <Icons
-        report={report}
-        pinnedReport={pinnedReport}
-        allowDashboardV2={allowDashboardV2}
-      ></Icons>,
+      <Icons report={report} pinnedReport={pinnedReport}></Icons>,
       <Actions
         isScheduledReportsEnabled={isScheduledReportsEnabled}
         id={`popover-allreports-${report.id}`}
@@ -251,7 +234,6 @@ export const AllReportsTab = ({
         handleEdit={handleEdit}
         report={report}
         pinnedReport={pinnedReport}
-        allowDashboardV2={allowDashboardV2}
         isLast={isLast}
         canEdit={current_user_can_edit}
       />,

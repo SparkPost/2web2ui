@@ -301,42 +301,6 @@ if (IS_HIBANA_ENABLED) {
         });
       });
 
-      it("hides pin to dashboard if user doesn't have allow_dashboard_v2.", () => {
-        // by default the test suite doesn't have allow_dashboard_v2 set for the login mock
-        cy.visit(PAGE_URL);
-        cy.findByRole('button', { name: 'View All Reports' }).click();
-
-        // https://sparkpost.atlassian.net/browse/FE-1284
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(250);
-
-        cy.withinModal(() => {
-          cy.get('table').within(() => {
-            cy.findByText('My Bounce Report')
-              .closest('tr')
-              .within(() => {
-                cy.findByRole('button', { name: 'Open Menu' }).click({ force: true });
-                cy.findByRole('button', { name: 'Pin to Dashboard' }).should('not.exist');
-              });
-          });
-
-          cy.findByRole('tab', { name: 'All Reports' }).click();
-
-          // https://sparkpost.atlassian.net/browse/FE-1284
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(250);
-
-          cy.get('table').within(() => {
-            cy.findByText('My Bounce Report')
-              .closest('tr')
-              .within(() => {
-                cy.findByRole('button', { name: 'Open Menu' }).click({ force: true });
-                cy.findByRole('button', { name: 'Pin to Dashboard' }).should('not.exist');
-              });
-          });
-        });
-      });
-
       it('pins a saved report with unique verbiage for first time save vs overriding save', () => {
         stubAccountsReq();
         cy.visit(PAGE_URL);
@@ -553,7 +517,7 @@ if (IS_HIBANA_ENABLED) {
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-dashboard-v2.json' } = {}) {
+function stubAccountsReq({ fixture = 'account/200.get.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/account**',
     fixture: fixture,

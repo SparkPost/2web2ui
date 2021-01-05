@@ -1,53 +1,50 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import _ from 'lodash';
 import { Loading } from 'src/components/loading/Loading';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import selectAccessConditionState from 'src/selectors/accessConditionState';
+import { useHibana } from 'src/context/HibanaContext';
 import config from 'src/config';
 
-export class DefaultRedirect extends Component {
+export function DefaultRedirect({ currentUser, ready }) {
+  const [{ isHibanaEnabled }] = useHibana();
+  const location = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    const handleRedirect = () => {
+      const { state: routerState = {}, ...locationWithoutState } = location;
+      const allowedAccessLevels = isHibanaEnabled
+        ? ['subaccount_reporting', 'heroku', 'azure']
+        : ['subaccount_reporting', 'reporting', 'heroku', 'azure'];
 
-  componentDidMount() {
-    this.handleRedirect();
-  }
+      // if there is a redirect route set on state, we can
+      // redirect there before access condition state is ready
+      if (routerState.redirectAfterLogin) {
+        history.replace({ ...locationWithoutState, ...routerState.redirectAfterLogin });
+        return;
+      }
 
-  componentDidUpdate() {
-    this.handleRedirect();
-  }
+      // if access condition state hasn't loaded, we can't
+      // make a redirect decision yet
+      if (!ready) {
+        return;
+      }
 
-  handleRedirect() {
-    const { location, history, currentUser, ready } = this.props;
-    const { state: routerState = {}, ...locationWithoutState } = location;
-    const allowedAccessLevels = ['subaccount_reporting', 'reporting', 'heroku', 'azure'];
+      // users are sent to the summary report depending on whether hibana is enabled and allowedAccessLevels list
+      if (_.includes(allowedAccessLevels, currentUser.access_level)) {
+        history.replace({ ...location, pathname: '/reports/summary' });
+        return;
+      }
 
-    // if there is a redirect route set on state, we can
-    // redirect there before access condition state is ready
-    if (routerState.redirectAfterLogin) {
-      history.replace({ ...locationWithoutState, ...routerState.redirectAfterLogin });
-      return;
-    }
+      // everyone else is sent to the config.splashPage route
+      history.replace({ ...location, pathname: config.splashPage });
+    };
+    handleRedirect();
+  }, [currentUser.access_level, history, isHibanaEnabled, location, ready]);
 
-    // if access condition state hasn't loaded, we can't
-    // make a redirect decision yet
-    if (!ready) {
-      return;
-    }
-
-    // reporting users are all sent to the summary report
-    if (_.includes(allowedAccessLevels, currentUser.access_level)) {
-      history.replace({ ...location, pathname: '/reports/summary' });
-      return;
-    }
-
-    // everyone else is sent to the config.splashPage route
-    history.replace({ ...location, pathname: config.splashPage });
-  }
-
-  render() {
-    return <Loading />;
-  }
+  return <Loading />;
 }
 
-const mapStateToProps = (state) => selectAccessConditionState(state);
-export default withRouter(connect(mapStateToProps)(DefaultRedirect));
+const mapStateToProps = state => selectAccessConditionState(state);
+export default connect(mapStateToProps)(DefaultRedirect);

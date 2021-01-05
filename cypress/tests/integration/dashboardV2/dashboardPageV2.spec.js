@@ -1,7 +1,7 @@
 import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
 import { LINKS } from 'src/constants';
 
-const PAGE_URL = '/dashboardV2';
+const PAGE_URL = '/dashboard';
 
 describe('Version 2 of the dashboard page', () => {
   beforeEach(() => {
@@ -523,11 +523,10 @@ describe('Version 2 of the dashboard page', () => {
       ).should('not.exist');
     });
 
-    it('renders with a relevant page title, relevant headings, and links when the `allow_dashboard_v2` account flag is enabled', () => {
+    it('renders with a relevant page title, relevant headings, and links', () => {
       commonBeforeSteps();
       cy.title().should('include', 'Dashboard');
       cy.findByRole('heading', { name: 'Welcome, Ulysses!' }).should('be.visible');
-
       cy.findByRole('heading', { name: 'Setup Documentation' }).should('be.visible');
       cy.verifyLink({
         content: 'Integration Documentation',
@@ -560,13 +559,6 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
       cy.findByDataId('transmissions-usage-section').should('not.exist');
       cy.findByDataId('validations-usage-section').should('not.exist');
-    });
-
-    it('renders the 404 page if the user has Hibana enabled but does not have the `allow_dashboard_v2` account flag', () => {
-      cy.visit(PAGE_URL);
-
-      cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-      cy.url().should('include', '404');
     });
 
     describe('sidebar', () => {
@@ -651,15 +643,6 @@ describe('Version 2 of the dashboard page', () => {
       });
     });
   }
-
-  if (!IS_HIBANA_ENABLED) {
-    it('renders the 404 page when the user does not have Hibana enabled', () => {
-      cy.visit(PAGE_URL);
-
-      cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-      cy.url().should('include', '404');
-    });
-  }
 });
 
 function commonBeforeSteps() {
@@ -671,7 +654,7 @@ function commonBeforeSteps() {
   cy.wait(['@accountReq', '@usageReq', '@alertsReq']);
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-dashboard-v2.json' } = {}) {
+function stubAccountsReq({ fixture = 'account/200.get.dashboard-v2.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/account**',
     fixture: fixture,
@@ -695,7 +678,7 @@ function stubAlertsReq({ fixture = 'alerts/200.get.json' } = {}) {
   });
 }
 
-function stubApiKeyReq({ fixture = 'alerts/200.get.json' } = {}) {
+function stubApiKeyReq({ fixture = 'api-keys/200.get.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/api-keys**',
     fixture: fixture,
@@ -703,7 +686,7 @@ function stubApiKeyReq({ fixture = 'alerts/200.get.json' } = {}) {
   });
 }
 
-function stubSendingDomains({ fixture = 'alerts/200.get.json' } = {}) {
+function stubSendingDomains({ fixture = 'sending-domains/200.get.json' } = {}) {
   cy.stubRequest({
     url: '/api/v1/sending-domains**',
     fixture: fixture,

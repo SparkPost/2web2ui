@@ -7,7 +7,6 @@ import {
   apiKeys,
   AuthPage,
   billing,
-  DashboardPage,
   DashboardPageV2,
   domains,
   DefaultRedirect,
@@ -49,7 +48,6 @@ import {
   isCustomBilling,
   isEnterprise,
   isSelfServeBilling,
-  isAccountUiOptionSet,
 } from 'src/helpers/conditions/account';
 import {
   isAzure,
@@ -175,7 +173,7 @@ const appRoutes = [
 
   {
     path: '/dashboard',
-    component: DashboardPage,
+    component: DashboardPageV2,
     layout: App,
     title: 'Dashboard',
     condition: all(
@@ -186,18 +184,6 @@ const appRoutes = [
     // hide routes based on config, account/user settings, etc. without having to mess
     // around with grants in the web UI keys
     supportDocSearch: 'started',
-  },
-  {
-    path: '/dashboardV2',
-    component: DashboardPageV2,
-    layout: App,
-    title: 'Dashboard',
-    condition: all(
-      not(isSubaccountUser),
-      configEquals('splashPage', '/dashboard'), // want to hide if not a splash page https://jira.int.messagesystems.com/browse/FAD-6046
-      isAccountUiOptionSet('allow_dashboard_v2'),
-      isUserUiOptionSet('isHibanaEnabled'),
-    ),
   },
   {
     path: '/account/security',
