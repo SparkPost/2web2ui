@@ -94,6 +94,7 @@ const getInitialState = comparisons => {
   }
 
   return {
+    ...initialState,
     filterType: REPORT_BUILDER_FILTER_KEY_MAP[comparisons[0].type],
     filters: [...comparisons],
   };
