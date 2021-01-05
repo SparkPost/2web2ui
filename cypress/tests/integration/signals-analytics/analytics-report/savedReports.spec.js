@@ -8,12 +8,6 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
 
       cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-scheduled-reports',
-        requestAlias: 'accountReq',
-      });
-
-      cy.stubRequest({
         url: `/api/v1/users/${USERNAME}`,
         fixture: 'users/200.get.metrics-rollup.json',
         requestAlias: 'userReq',
@@ -35,7 +29,6 @@ if (IS_HIBANA_ENABLED) {
     it('loads a preset report in addition to relevant query params', () => {
       cy.visit(`${PAGE_URL}&report=engagement`);
       cy.wait([
-        '@accountReq',
         '@userReq',
         '@reportsReq',
         '@billingSubscriptionReq',
@@ -49,7 +42,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findAllByText('Opens').should('be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
-      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
@@ -60,7 +53,7 @@ if (IS_HIBANA_ENABLED) {
       cy.visit(
         `${PAGE_URL}&report=engagement&metrics%5B0%5D=count_policy_rejection&filters=Campaign:Christmas`,
       );
-      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
       // Additional params
       cy.findAllByText('Christmas').should('be.visible');
       cy.findByText('Policy Rejections').should('be.visible');
@@ -358,7 +351,9 @@ if (IS_HIBANA_ENABLED) {
               .closest('tr')
               .within(() => {
                 cy.get('td').should('have.length', 6);
-                cy.findAllByText('Open Menu').click({ force: true });
+                cy.findAllByText('Open Menu')
+                  .scrollIntoView()
+                  .click({ force: true });
                 cy.findAllByText('Pin to Dashboard').should('be.visible');
               });
           });
@@ -370,7 +365,9 @@ if (IS_HIBANA_ENABLED) {
               .closest('tr')
               .within(() => {
                 cy.findAllByText('Open Menu').click({ force: true });
-                cy.findAllByText('Pin to Dashboard').should('be.visible');
+                cy.findAllByText('Pin to Dashboard')
+                  .scrollIntoView()
+                  .should('be.visible');
                 cy.findAllByText('Pin to Dashboard').click({ force: true });
               });
           });
@@ -412,6 +409,7 @@ if (IS_HIBANA_ENABLED) {
 
                 cy.findByText('Open Menu').click({ force: true });
                 cy.findByText('Pin to Dashboard')
+                  .scrollIntoView()
                   .closest('button')
                   .should('be.disabled');
               });
@@ -420,7 +418,9 @@ if (IS_HIBANA_ENABLED) {
               .closest('tr')
               .within(() => {
                 cy.findAllByText('Open Menu').click({ force: true });
-                cy.findAllByText('Pin to Dashboard').click({ force: true });
+                cy.findAllByText('Pin to Dashboard')
+                  .scrollIntoView()
+                  .click({ force: true });
               });
           });
         });

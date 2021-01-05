@@ -79,13 +79,7 @@ const Actions = ({
     >
       <ActionList>
         {canEdit && <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />}
-        {rest.isScheduledReportsEnabled && (
-          <ActionList.Action
-            content="Schedule"
-            to={`/signals/schedule/${report.id}`}
-            as={PageLink}
-          />
-        )}
+        <ActionList.Action content="Schedule" to={`/signals/schedule/${report.id}`} as={PageLink} />
         {rest.allowDashboardV2 && (
           <PinToDashboardAction
             content="Pin to Dashboard"
@@ -127,7 +121,6 @@ export const MyReportsTab = ({
   reports,
   currentUser,
   handleReportChangeAndClose,
-  isScheduledReportsEnabled,
   handlePin,
   handleDelete,
   handleEdit,
@@ -161,7 +154,6 @@ export const MyReportsTab = ({
         allowDashboardV2={allowDashboardV2}
       ></Icons>,
       <Actions
-        isScheduledReportsEnabled={isScheduledReportsEnabled}
         id={`popover-myreports-${report.id}`}
         handlePin={handlePin}
         handleDelete={handleDelete}
@@ -202,7 +194,6 @@ export const MyReportsTab = ({
 export const AllReportsTab = ({
   reports,
   handleReportChangeAndClose,
-  isScheduledReportsEnabled,
   handlePin,
   handleDelete,
   handleEdit,
@@ -244,7 +235,6 @@ export const AllReportsTab = ({
         allowDashboardV2={allowDashboardV2}
       ></Icons>,
       <Actions
-        isScheduledReportsEnabled={isScheduledReportsEnabled}
         id={`popover-allreports-${report.id}`}
         handlePin={handlePin}
         handleDelete={handleDelete}
