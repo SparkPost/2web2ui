@@ -33,6 +33,8 @@ export const SEGMENT_TRAITS = {
   TENANT: 'tenant',
   USER_ID: 'user_id',
   USER_ROLE: 'user_role',
+  SSO_ENABLED: 'sso_enabled',
+  TFA_ENABLED: 'tfa_enabled',
 };
 
 /**
@@ -50,7 +52,7 @@ export const segmentIdentify = traits => {
     traits[SEGMENT_TRAITS.TENANT]
   ) {
     const filteredTraits = Object.values(SEGMENT_TRAITS).reduce((filtered, key) => {
-      if (traits[key]) {
+      if (traits[key] !== undefined) {
         filtered[key] = traits[key];
       }
       return filtered;
