@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel as OGPanel } from '@sparkpost/matchbox';
 import { Panel as HibanaPanel } from '@sparkpost/matchbox-hibana';
-import { Heading } from 'src/components/text';
 import { Box } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import { omitSystemProps } from 'src/helpers/hibana';
@@ -79,7 +78,13 @@ function Action(props) {
   return <HibanaPanel.Action {...props} />;
 }
 
-function Headline({ children, as = 'h3', paddingBottom = '400' }) {
+/**
+ * Used to consistently render a slightly larger heading font size and style within <Panel.Header /> component instances
+ *
+ * @param {children} React children to render the Headline content, typically a string though could also include <Panel.HeadlineIcon />
+ *
+ */
+function Headline({ children }) {
   const [{ isHibanaEnabled }] = useHibana();
 
   if (!isHibanaEnabled) {
@@ -87,12 +92,8 @@ function Headline({ children, as = 'h3', paddingBottom = '400' }) {
   }
 
   return (
-    <Box paddingBottom={paddingBottom}>
-      <Heading as={as}>
-        <Box as="span" fontWeight="medium" display="flex" alignItems="center">
-          {children}
-        </Box>
-      </Heading>
+    <Box as="span" fontSize="500" fontWeight="medium" display="flex" alignItems="center">
+      {children}
     </Box>
   );
 }
