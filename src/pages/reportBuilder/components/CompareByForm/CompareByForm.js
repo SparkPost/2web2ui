@@ -33,6 +33,7 @@ const initialState = {
   filterType: undefined,
   hasMinComparisonsError: false,
   hasMaxComparisonsError: false,
+  formChanged: false,
 };
 
 const StyledButton = styled(Button)`
