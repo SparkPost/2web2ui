@@ -71,7 +71,7 @@ describe('The recipient lists page', () => {
       cy.findByRole('heading', { name: 'Organize Recipients' }).should('be.visible');
       cy.verifyLink({
         content: 'Recipient Lists Documentation',
-        href: 'https://www.sparkpost.com/docs/user-guide/uploading-recipient-list/',
+        href: 'https://developers.sparkpost.com/api/recipient-lists/',
       });
     });
     it('renders the empty state when there are no recipient lists', () => {
@@ -89,7 +89,7 @@ describe('The recipient lists page', () => {
       });
       cy.verifyLink({
         content: 'Recipient Lists Documentation',
-        href: 'https://www.sparkpost.com/docs/user-guide/uploading-recipient-list/',
+        href: 'https://developers.sparkpost.com/api/recipient-lists/',
       });
     });
   }

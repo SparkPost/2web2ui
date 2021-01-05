@@ -75,7 +75,7 @@ export const LINKS = {
   AB_TESTING_DOCS: 'https://www.sparkpost.com/docs/tech-resources/a-b-testing-sparkpost/',
   TRANSMISSIONS_API:
     'https://developers.sparkpost.com/api/transmissions/#transmissions-post-send-an-a-b-test',
-  RECIP_DOCS: 'https://www.sparkpost.com/docs/user-guide/uploading-recipient-list/',
+  RECIP_DOCS: 'https://developers.sparkpost.com/api/recipient-lists/',
   API_KEYS_GUIDE: 'https://www.sparkpost.com/docs/getting-started/create-api-keys/',
   SNIPPETS_DOCS: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
 };
