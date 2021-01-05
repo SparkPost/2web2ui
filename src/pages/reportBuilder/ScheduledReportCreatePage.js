@@ -15,7 +15,6 @@ import { getLocalTimezone } from 'src/helpers/date';
 import { useForm } from 'react-hook-form';
 import { formatFormValues } from './helpers/scheduledReports';
 import { PageLink } from 'src/components/links';
-import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 
 export default function ScheduledReportCreatePage() {
   const { reportId } = useParams();
@@ -26,8 +25,6 @@ export default function ScheduledReportCreatePage() {
   const isPendingCreate = useSelector(
     ({ reports }) => reports.saveScheduledReportStatus === 'loading',
   );
-  const hasError = useSelector(({ reports }) => reports.errorGetReport);
-  const errorMessage = useSelector(({ reports }) => reports.errorGetReport?.message);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,19 +58,9 @@ export default function ScheduledReportCreatePage() {
     });
   };
 
-  if (hasError) {
-    return (
-      <RedirectAndAlert
-        to={`/signals/analytics?report=${report.id}`}
-        alert={{ type: 'error', message: errorMessage }}
-      />
-    );
-  }
-
   if (loading || usersLoading) {
     return <Loading />;
   }
-
   return (
     <Page
       title="Schedule Report"

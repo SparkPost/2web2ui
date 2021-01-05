@@ -12,6 +12,8 @@ import useModal from 'src/hooks/useModal';
 import ScheduledReportsModal from './ScheduledReportsModal';
 import { ConfirmationModal, DeleteModal } from 'src/components';
 import { showAlert } from 'src/actions/globalAlert';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import ReportsListModal from '../ReportsListModal';
 
@@ -27,7 +29,7 @@ export const SavedReportsSection = props => {
   const reports = props.reports.map(report => ({ ...report, key: report.id }));
   const { actions } = useReportBuilderContext();
   const { refreshReportOptions } = actions;
-  const { currentUser, handleReportChange, selectedReport } = props;
+  const { currentUser, handleReportChange, isScheduledReportsEnabled, selectedReport } = props;
 
   const onPinConfirm = () => {
     const { showAlert } = props;
@@ -139,7 +141,7 @@ export const SavedReportsSection = props => {
             <TranslatableText>Save Changes</TranslatableText>
             <Button.Icon as={Save} ml="100" />
           </Button>
-          {selectedReport?.id && (
+          {isScheduledReportsEnabled && selectedReport?.id && (
             <Button
               variant="tertiary"
               onClick={() => openModal({ type: 'scheduled', focusedReport: selectedReport })}
@@ -168,7 +170,7 @@ export const SavedReportsSection = props => {
         setReport={handleReportChange}
         onCancel={closeModal}
       />
-      {selectedReport?.id && (
+      {isScheduledReportsEnabled && selectedReport?.id && (
         <ScheduledReportsModal
           open={isModalOpen && type === 'scheduled'}
           onClose={closeModal}
@@ -248,6 +250,9 @@ const mapStateToProps = state => ({
   status: state.reports.status,
   isDeletePending: state.reports.deletePending,
   userOptionsPending: state.currentUser.userOptionsPending,
+  isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
+    state,
+  ),
 });
 
 export default connect(mapStateToProps, {

@@ -49,7 +49,7 @@ describe('getDefaultValues and ', () => {
       day: undefined,
       week: undefined,
       period: 'PM',
-      time: '12:30',
+      time: '1:30',
       timing: 'daily',
     };
     const apiValues = {
@@ -57,7 +57,7 @@ describe('getDefaultValues and ', () => {
       schedule: {
         day_of_month: '?',
         day_of_week: '*',
-        hour: 12,
+        hour: 13,
         minute: 30,
         month: '*',
         second: 0,

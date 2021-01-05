@@ -18,7 +18,6 @@ import { listUsers } from 'src/actions/users';
 import { formatFormValues, getDefaultValuesMemoized } from './helpers/scheduledReports';
 import ScheduledEditFormWrapper from './components/ScheduledEditFormWrapper';
 import { PageLink } from 'src/components/links';
-import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 
 export default function ScheduledReportEditPage() {
   const { reportId, scheduleId } = useParams();
@@ -28,12 +27,7 @@ export default function ScheduledReportEditPage() {
   const isPendingUpdate = useSelector(
     ({ reports }) => reports.updateScheduledReportStatus === 'loading',
   );
-  const hasError = useSelector(
-    ({ reports }) => reports.getScheduledReportStatus === 'error' || reports.errorGetReport,
-  );
-  const errorMessage = useSelector(
-    ({ reports }) => (reports.errorGetScheduledReport || reports.errorGetReport)?.message,
-  );
+
   const {
     deleteSchedulePending,
     getScheduledReportStatus,
@@ -91,14 +85,6 @@ export default function ScheduledReportEditPage() {
     return <Loading />;
   }
 
-  if (hasError) {
-    return (
-      <RedirectAndAlert
-        to={`/signals/analytics?report=${report.id}`}
-        alert={{ type: 'error', message: errorMessage }}
-      />
-    );
-  }
   return (
     <>
       <Page

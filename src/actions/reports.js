@@ -48,7 +48,6 @@ export function getReport(id) {
     meta: {
       method: 'GET',
       url: `/v1/reports/${id}`,
-      showErrorAlert: false
     },
   });
 }
@@ -80,7 +79,6 @@ export function getScheduledReport(reportId, scheduleId) {
     meta: {
       method: 'GET',
       url: `/v1/reports/${reportId}/schedules/${scheduleId}`,
-      showErrorAlert: false,
     },
   });
 }

@@ -49,15 +49,13 @@ export const getDefaultValues = (scheduledReport, users) => {
   //day_of_week will be in format mon#2 for 2nd monday or monl for last monday.
   const day = schedule_type === 'daily' ? undefined : day_of_week.slice(0, 3);
   const week = schedule_type === 'monthly' ? day_of_week.slice(3) : undefined;
-  const period = parseInt(hour) >= 12 ? 'PM' : 'AM';
+  const period = parseInt(hour) > 12 ? 'PM' : 'AM';
   const formattedHour = formatHourString(hour);
   const formattedMinute = formatMinuteString(minute);
   const time = `${formattedHour}:${formattedMinute}`;
-  const fullRecipients = recipients
-    .map(recipient => {
-      return users.find(({ name }) => name === recipient);
-    })
-    .filter(Boolean);
+  const fullRecipients = recipients.map(recipient => {
+    return users.find(({ name }) => name === recipient);
+  });
 
   return {
     ...rest,

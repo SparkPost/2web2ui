@@ -14,6 +14,7 @@ export function ReportsListModal({
   handlePin,
   handleDelete,
   handleEdit,
+  isScheduledReportsEnabled,
   allowDashboardV2,
   pinnedReportId,
   handleReportChange,
@@ -34,6 +35,7 @@ export function ReportsListModal({
       reports={reports}
       currentUser={currentUser}
       handleReportChangeAndClose={handleReportChangeAndClose}
+      isScheduledReportsEnabled={isScheduledReportsEnabled}
       handlePin={handlePin}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
@@ -43,6 +45,7 @@ export function ReportsListModal({
     <AllReportsTab
       reports={reports}
       handleReportChangeAndClose={handleReportChangeAndClose}
+      isScheduledReportsEnabled={isScheduledReportsEnabled}
       handlePin={handlePin}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
@@ -75,6 +78,9 @@ export function ReportsListModal({
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser.username,
+    isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
+      state,
+    ),
     pinnedReportId: selectCondition(isUserUiOptionSet('pinned_report_id'))(state),
     allowDashboardV2: selectCondition(isAccountUiOptionSet('allow_dashboard_v2'))(state),
   };

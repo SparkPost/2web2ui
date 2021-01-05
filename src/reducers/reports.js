@@ -1,15 +1,12 @@
 const initialState = {
-  //TODO rename variables to make it more clear its a constant vs function
   createPending: false,
-  deletePending: false,
-  errorGetReport: null,
-  errorGetScheduledReport: null,
-  getReportPending: false,
   list: [],
-  report: {},
+  status: 'idle',
   saveStatus: 'idle',
   saveScheduledReportStatus: 'idle',
-  status: 'idle',
+  report: {},
+  deletePending: false,
+  getReportPending: false,
   scheduledReports: [],
 };
 
@@ -43,11 +40,11 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, deletePending: false };
 
     case 'GET_REPORT_PENDING':
-      return { ...state, errorGetReport: null, report: {}, getReportPending: true };
+      return { ...state, report: {}, getReportPending: true };
     case 'GET_REPORT_SUCCESS':
       return { ...state, report: payload, getReportPending: false };
     case 'GET_REPORT_FAIL':
-      return { ...state, errorGetReport: payload, getReportPending: false };
+      return { ...state, getReportPending: false };
 
     case 'CREATE_SCHEDULED_REPORT_PENDING':
       return { ...state, saveScheduledReportStatus: 'loading' };
@@ -64,16 +61,11 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, getScheduledReportsStatus: 'error' };
 
     case 'GET_SCHEDULED_REPORT_PENDING':
-      return {
-        ...state,
-        errorGetScheduledReport: null,
-        scheduledReport: {},
-        getScheduledReportStatus: 'loading',
-      };
+      return { ...state, scheduledReport: {}, getScheduledReportStatus: 'loading' };
     case 'GET_SCHEDULED_REPORT_SUCCESS':
       return { ...state, scheduledReport: payload, getScheduledReportStatus: 'success' };
     case 'GET_SCHEDULED_REPORT_FAIL':
-      return { ...state, errorGetScheduledReport: payload, getScheduledReportStatus: 'error' };
+      return { ...state, getScheduledReportStatus: 'error' };
 
     case 'UPDATE_SCHEDULED_REPORT_PENDING':
       return { ...state, updateScheduledReportStatus: 'loading' };
