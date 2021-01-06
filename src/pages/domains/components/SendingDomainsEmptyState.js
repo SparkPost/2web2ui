@@ -1,6 +1,8 @@
 import React from 'react';
 import { EmptyState } from 'src/components/matchbox';
+import { Picture } from 'src/components/matchbox';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
+import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import { Box } from 'src/components/matchbox';
 import { Bold } from 'src/components/text';
 import { TranslatableText } from 'src/components/text';
@@ -40,12 +42,10 @@ export default function SendingDomainsEmptyState() {
           </li>
         </EmptyState.List>
       </EmptyState.Content>
-      <EmptyState.Image src={SendingMailWebp} />
-      {/* TODO: Adjust picture markup to have source element and img with src attribute */}
-      {/* <Dashboard.OnboardingPicture>
+      <Picture seeThrough>
         <source srcset={SendingMailWebp} type="image/webp" />
-        <OnboardingImg alt="" src={SendingMail} seeThrough />
-      </Dashboard.OnboardingPicture> */}
+        <EmptyState.Image src={SendingMail} />
+      </Picture>
       <EmptyState.Action to="/domains/create?type=sending">Add Sending Domain</EmptyState.Action>
       <EmptyState.Action variant="outline" to={LINKS.SENDING_DOMAIN_DOCS} external>
         Sending Domains Documentation
