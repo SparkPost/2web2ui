@@ -7,6 +7,8 @@ import useDomains from './hooks/useDomains';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
 import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
 import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
+import SendingInfoBanner from 'src/pages/sendingDomains/components/SendingInfoBanner.js';
+import BounceInfoBanner from 'src/pages/sendingDomains/components/BounceInfoBanner.js';
 
 function DomainsPageContent() {
   // trackingDomains,
@@ -45,40 +47,16 @@ function DomainsPageContent() {
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
-  const showSendingDomainsEmptyState =
-    !listPending &&
-    matchesSendingTab &&
-    isEmptyStateEnabled &&
-    sendingDomains.length === 0 &&
-    !sendingDomainsListError;
-
-  const showBounceDomainsEmptyState =
-    !listPending &&
-    matchesBounceTab &&
-    isEmptyStateEnabled &&
-    bounceDomains.length === 0 &&
-    !sendingDomainsListError;
-
-  const showSendingInfoBanner =
-    !listPending &&
-    !showSendingDomainsEmptyState &&
-    matchesSendingTab &&
-    isEmptyStateEnabled &&
-    sendingDomains.length > 0;
-
-  const showBounceInfoBanner =
-    !listPending &&
-    !showBounceDomainsEmptyState &&
-    matchesBounceTab &&
-    isEmptyStateEnabled &&
-    sendingDomains.length > 0;
-
   const renderInfoBanner = () => {
-    if (showSendingInfoBanner) {
+    // TODO: Add extra conditionals
+    // !error &&
+    // isEmptyStateEnabled &&
+    // isHibanaEnabled &&
+    if (matchesSendingTab) {
       return <SendingInfoBanner />;
     }
 
-    if (showBounceInfoBanner) {
+    if (matchesBounceTab) {
       return <BounceInfoBanner />;
     }
   };
@@ -134,6 +112,7 @@ function DomainsPageContent() {
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
         <div>
+          {renderInfoBanner()}
           <TabPanel>{renderTab()}</TabPanel>
         </div>
       </Stack>
