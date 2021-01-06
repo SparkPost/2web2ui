@@ -71,6 +71,7 @@ describe('UpdateReportModal', () => {
     isOwner: true,
     report: { id: 1 },
     setReport: jest.fn(),
+    getSubscription: jest.fn(),
   };
   const subject = props => {
     return shallow(<SaveReportModal {...defaults} {...props} />);

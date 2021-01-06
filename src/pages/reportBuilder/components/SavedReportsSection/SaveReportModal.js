@@ -95,6 +95,7 @@ export function SaveReportModal(props) {
     return saveAction({ ...data, id: report?.id }).then(response => {
       showAlert({ type: 'success', message: `You have successfully saved ${data.name}` });
       onCancel();
+
       if (report) {
         getReports().then(reports => {
           setReport(reports.find(({ id }) => id === report?.id));

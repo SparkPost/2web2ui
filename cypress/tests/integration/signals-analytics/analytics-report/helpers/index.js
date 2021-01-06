@@ -47,6 +47,14 @@ export function stubReports(requestAlias = 'getReports') {
   });
 }
 
+export function stubSubscription(requestAlias = 'getSubscription') {
+  cy.stubRequest({
+    url: '/api/v1/billing/subscription',
+    fixture: 'billing/subscription/200.get.json',
+    requestAlias,
+  });
+}
+
 export function commonBeforeSteps() {
   cy.stubAuth();
   cy.login({ isStubbed: true });
@@ -57,6 +65,7 @@ export function commonBeforeSteps() {
   stubTimeSeries();
   stubUTCDeliverability();
   stubUTCTimeSeries();
+  stubSubscription();
 }
 
 export function getFilterTags() {

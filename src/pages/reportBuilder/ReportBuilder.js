@@ -77,7 +77,8 @@ export function ReportBuilder({
 
   useEffect(() => {
     getSubscription();
-  }, [getSubscription]);
+    //Updates subscription with reports to make sure product count is up to date
+  }, [getSubscription, reports]);
 
   useEffect(() => {
     getSubaccountsList();

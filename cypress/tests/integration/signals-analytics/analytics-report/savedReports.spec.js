@@ -173,6 +173,7 @@ if (IS_HIBANA_ENABLED) {
       });
       cy.wait('@saveNewReport');
       cy.wait('@newGetSavedReports');
+      cy.wait('@billingSubscriptionReq');
 
       cy.findByLabelText('Report').should('have.value', 'Hello There');
 
@@ -433,6 +434,7 @@ if (IS_HIBANA_ENABLED) {
           );
           cy.findByRole('button', { name: 'Delete' }).click({ force: true });
         });
+        cy.wait('@billingSubscriptionReq');
         cy.wait('@deleteScheduledReport')
           .its('url')
           .should('include', '6d183f8b-8ea9-45e2-91de-235c30704bf9')
@@ -504,14 +506,92 @@ if (IS_HIBANA_ENABLED) {
 
       it('disabled creating new reports when limit is reached', () => {
         cy.stubRequest({
-          url: '/api/v1/billing/subscription',
-          fixture: 'billing/subscription/200.get.reports-limited',
-          requestAlias: 'getBillingSubscription',
+          method: 'POST',
+          url: '/api/v1/reports',
+          fixture: 'reports/200.post.json',
+          requestAlias: 'saveNewReport',
         });
+
         cy.visit(PAGE_URL);
         cy.wait('@getSavedReports');
+        cy.wait('@billingSubscriptionReq');
+
+        cy.stubRequest({
+          url: '/api/v1/billing/subscription',
+          fixture: 'billing/subscription/200.get.reports-limited',
+          requestAlias: 'getLimitedSubscription',
+        });
+
+        cy.findByRole('button', { name: 'Save New Report' })
+          .should('not.be.disabled')
+          .click();
+
+        cy.withinModal(() => {
+          cy.findByText('Save New Report').should('be.visible');
+
+          // Check validation
+          cy.findByRole('button', { name: 'Save Report' }).click();
+          cy.findAllByText('Required').should('have.length', 1);
+
+          cy.stubRequest({
+            url: '/api/v1/reports',
+            fixture: 'reports/200.get.new-report',
+            requestAlias: 'newGetSavedReports',
+          });
+
+          // Check submission
+          cy.findByLabelText('Name').type('Hello There');
+          cy.findByLabelText('Description').type('General Kenobi');
+          cy.findByLabelText('Allow others to edit report').check({ force: true });
+          cy.findByRole('button', { name: 'Save Report' }).click();
+        });
+
+        cy.wait('@getLimitedSubscription');
+
         cy.findByRole('button', { name: 'Save New Report' }).should('be.disabled');
         cy.findByDataId('reports-limit-tooltip-icon').should('exist');
+
+        cy.stubRequest({
+          url: '/api/v1/billing/subscription',
+          fixture: 'billing/subscription/200.get',
+          requestAlias: 'newGetSubscription',
+        });
+
+        cy.stubRequest({
+          url: '/api/v1/reports',
+          fixture: 'reports/200.get.deleted-report',
+          requestAlias: 'newGetSavedReports',
+        });
+
+        cy.findByRole('button', { name: 'View All Reports' }).click();
+
+        // https://sparkpost.atlassian.net/browse/FE-1284
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(250);
+
+        cy.withinModal(() => {
+          cy.get('table').within(() => {
+            cy.findByText('My Bounce Report')
+              .closest('tr')
+              .within(() => {
+                cy.findByRole('button', { name: 'Open Menu' }).click({ force: true }); // The content is visually hidden (intentionally!), so `force: true` is needed here
+                cy.findByRole('button', { name: 'Delete' }).click({ force: true });
+              });
+          });
+        });
+        cy.stubRequest({
+          method: 'DELETE',
+          url: '/api/v1/reports/d50d8475-d4e8-4df0-950f-b142f77df0bf',
+          fixture: 'blank.json',
+          requestAlias: 'deleteReport',
+        });
+        cy.withinModal(() => {
+          cy.findByText('Delete').click({ force: true });
+        });
+
+        cy.wait('@newGetSubscription');
+        cy.findByRole('button', { name: 'Save New Report' }).should('not.be.disabled');
+        cy.findByDataId('reports-limit-tooltip-icon').should('not.exist');
       });
     });
   });

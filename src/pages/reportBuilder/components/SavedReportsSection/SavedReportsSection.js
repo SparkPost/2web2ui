@@ -28,6 +28,7 @@ export const SavedReportsSection = props => {
 
   const reports = props.reports.map(report => ({ ...report, key: report.id }));
   const { actions } = useReportBuilderContext();
+
   const { refreshReportOptions } = actions;
   const { currentUser, handleReportChange, isScheduledReportsEnabled, selectedReport } = props;
 
@@ -44,6 +45,7 @@ export const SavedReportsSection = props => {
 
   const onDelete = () => {
     const { deleteReport, getReports, showAlert } = props;
+
     deleteReport(focusedReport.id).then(() => {
       closeModal();
       showAlert({
