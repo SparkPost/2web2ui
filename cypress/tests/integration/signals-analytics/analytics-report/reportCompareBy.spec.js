@@ -8,10 +8,6 @@ if (IS_HIBANA_ENABLED) {
   describe('Analytics Report - Compare By', () => {
     beforeEach(() => {
       commonBeforeSteps();
-      cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-compare-by.json',
-      });
       cy.visit(PAGE_URL);
     });
 
