@@ -63,6 +63,7 @@ function DomainsPageContent() {
 
   const renderTab = () => {
     if (matchesSendingTab) {
+      // TODO: add extra conditions for empty states - this.props.isEmptyStateEnabled && this.props.isHibanaEnabled &&
       if (sendingDomains.length === 0) {
         return <SendingDomainsEmptyState />;
       }
@@ -71,6 +72,7 @@ function DomainsPageContent() {
     }
 
     if (matchesBounceTab) {
+      // TODO: add extra conditions for empty states - this.props.isEmptyStateEnabled && this.props.isHibanaEnabled &&
       if (bounceDomains.length === 0 && sendingDomains.length === 0) {
         return <BounceDomainsEmptyState />;
       }
@@ -112,6 +114,7 @@ function DomainsPageContent() {
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
         <div>
+          {/* TODO: Only show banners if not showing empty states */}
           {renderInfoBanner()}
           <TabPanel>{renderTab()}</TabPanel>
         </div>

@@ -32,7 +32,7 @@ describe('The domains list page', () => {
 
       cy.verifyLink({
         content: 'Add a Domain',
-        href: '/domains/create',
+        href: '/domains/create?type=sending',
       });
     });
 
@@ -220,10 +220,26 @@ describe('The domains list page', () => {
         });
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
-
         cy.withinMainContent(() => {
           cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display').should('be.visible');
+          cy.get('p')
+            .contains(
+              'Sending domains are used to indicate who an email is from via the "From" header. DNS records can be configured for a sending domain, which allows recipient mail servers to authenticate messages sent from SparkPost.',
+            )
+            .should('be.visible');
+          cy.get('p')
+            .contains(
+              'At least one verified sending domain is required in order to start sending or enable analytics.',
+            )
+            .should('be.visible');
+          cy.findByText('Add a new sending domain.').should('be.visible');
+          cy.findByText('Configure the domain provider to send with SparkPost.').should(
+            'be.visible',
+          );
+          cy.findByText('Confirm that the sending domain was successfully verified.').should(
+            'be.visible',
+          );
+          cy.findByText('Sending Domains Documentation').should('have.length', 1);
         });
       });
 
