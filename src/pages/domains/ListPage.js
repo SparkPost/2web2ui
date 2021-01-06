@@ -93,7 +93,7 @@ function DomainsPageContent() {
     }
 
     if (matchesBounceTab) {
-      if (bounceDomains.length === 0) {
+      if (bounceDomains.length === 0 && sendingDomains.length === 0) {
         return <BounceDomainsEmptyState />;
       }
 
