@@ -23,7 +23,6 @@ export default function CreatePage() {
         return;
     }
   }
-  // console.log(type);
 
   return (
     <Domains.Container>
