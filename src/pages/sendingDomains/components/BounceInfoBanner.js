@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Banner, Picture } from 'src/components/matchbox';
 import EmailTemplateWebp from '@sparkpost/matchbox-media/images/Email-Template.webp';
+import { Bold, TranslatableText } from 'src/components/text';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { LINKS } from 'src/constants';
@@ -30,13 +31,16 @@ export default function InfoBanner() {
       mb="600"
     >
       <p>
-        Custom bounce domains override the default Return-Path value, also known as the envelope
-        FROM value, which denotes the destination for out-of-band bounces.
+        <TranslatableText>
+          Custom bounce domains override the default Return-Path value, also known as the envelope
+          FROM value, which denotes the destination for out-of-band bounces. Bounce domains can be
+          set up using an&nbsp;
+        </TranslatableText>
+        <Bold>existing Sending Domain&nbsp;</Bold>
+        <TranslatableText>or by adding a new domain specifically for bounce.</TranslatableText>
       </p>
-
-      {/* TODO: Update action... and everything in this file basically */}
-      <Banner.Action color="blue" to={LINKS.SNIPPETS_DOCS} external variant="outline">
-        Snippets Documentation
+      <Banner.Action color="blue" to={LINKS.BOUNCE_DOMAIN_DOCS} external variant="outline">
+        Bounce Domains Documentation
       </Banner.Action>
       <Banner.Media>
         <Picture seeThrough>

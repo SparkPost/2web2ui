@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Banner, Picture } from 'src/components/matchbox';
-import EmailTemplateWebp from '@sparkpost/matchbox-media/images/Email-Template.webp';
+import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { LINKS } from 'src/constants';
@@ -34,14 +34,12 @@ export default function InfoBanner() {
         configured for a sending domain, which allows recipient mail servers to authenticate
         messages sent from SparkPost.
       </p>
-
-      {/* TODO: Update action... and everything in this file basically */}
-      <Banner.Action color="blue" to={LINKS.SNIPPETS_DOCS} external variant="outline">
-        Snippets Documentation
+      <Banner.Action color="blue" to={LINKS.SENDING_DOMAIN_DOCS} external variant="outline">
+        Sending Domains Documentation
       </Banner.Action>
       <Banner.Media>
         <Picture seeThrough>
-          <Picture.Image alt="" src={EmailTemplateWebp} />
+          <Picture.Image alt="" src={SendingMailWebp} />
         </Picture>
       </Banner.Media>
     </Banner>

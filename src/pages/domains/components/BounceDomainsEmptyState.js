@@ -1,24 +1,26 @@
 import React from 'react';
 import { EmptyState } from 'src/components/matchbox';
 import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
+import { Bold } from 'src/components/text';
+import { Box } from 'src/components/matchbox';
 import { TranslatableText } from 'src/components/text';
-// import { ExternalLink, PageLink } from 'src/components/links';
-// import { useHistory } from 'react-router-dom';
 import { LINKS } from 'src/constants';
 
 export default function BounceDomainsEmptyState() {
-  // const history = useHistory();
   return (
     <EmptyState>
       <EmptyState.Header>Bounce Domains</EmptyState.Header>
       <EmptyState.Content>
+        <Box mb="400">
+          <p>
+            Custom bounce domains override the default Return-Path value, also known as the envelope
+            FROM value, which denotes the destination for out-of-band bounces.
+          </p>
+        </Box>
         <p>
-          Custom bounce domains override the default Return-Path value, also known as the envelope
-          FROM value, which denotes the destination for out-of-band bounces.
-        </p>
-        <p>
-          Bounce domains can be set up using an existing Sending Domain or by adding a new domain
-          specifically for bounce.
+          <TranslatableText>Bounce domains can be set up using an&nbsp;</TranslatableText>
+          <Bold>existing Sending Domain&nbsp;</Bold>
+          <TranslatableText>or by adding a new domain specifically for bounce.</TranslatableText>
         </p>
         <EmptyState.List>
           <li>
@@ -37,10 +39,13 @@ export default function BounceDomainsEmptyState() {
         </EmptyState.List>
       </EmptyState.Content>
       <EmptyState.Image src={ConfigurationWebp} />
-      <EmptyState.Action to="/domains/create">Add Bounce Domain</EmptyState.Action>
-
-      {/* TODO: Fix link */}
-      <EmptyState.Action variant="outline" to={LINKS.AB_TESTING_DOCS} external>
+      {/* TODO: Adjust picture markup to have source element and img with src attribute */}
+      {/* <Dashboard.OnboardingPicture>
+        <source srcset={SendingMailWebp} type="image/webp" />
+        <OnboardingImg alt="" src={SendingMail} seeThrough />
+      </Dashboard.OnboardingPicture> */}
+      <EmptyState.Action to="/domains/create?type=bounce">Add Bounce Domain</EmptyState.Action>
+      <EmptyState.Action variant="outline" to={LINKS.BOUNCE_DOMAIN_DOCS} external>
         Bounce Domains Documentation
       </EmptyState.Action>
     </EmptyState>
