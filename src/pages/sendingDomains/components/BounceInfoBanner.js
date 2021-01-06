@@ -24,7 +24,7 @@ export default function InfoBanner() {
       onDismiss={handleDismiss}
       size="large"
       status="muted"
-      title="Consistent Content, Easy"
+      title="Bounce Domains"
       backgroundColor="gray.100"
       borderWidth="100"
       borderStyle="solid"
