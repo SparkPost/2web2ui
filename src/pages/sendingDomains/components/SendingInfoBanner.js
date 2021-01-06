@@ -31,8 +31,8 @@ export default function InfoBanner() {
       mb="600"
     >
       <p>
-        Sending domains are used to indicate who an email is from via the "Form" records can be
-        configured for a sending domain, which allows recipient mail servers to authenticate
+        Sending domains are used to indicate who an email is from via the "From" header. DNS records
+        can be configured for a sending domain, which allows recipient mail servers to authenticate
         messages sent from SparkPost.
       </p>
       <Banner.Action color="blue" to={LINKS.SENDING_DOMAIN_DOCS} external variant="outline">
