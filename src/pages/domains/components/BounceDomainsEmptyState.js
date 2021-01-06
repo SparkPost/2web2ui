@@ -1,6 +1,5 @@
 import React from 'react';
 import { EmptyState } from 'src/components/matchbox';
-import { Picture } from 'src/components/matchbox';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import { Bold } from 'src/components/text';
@@ -40,10 +39,9 @@ export default function BounceDomainsEmptyState() {
           </li>
         </EmptyState.List>
       </EmptyState.Content>
-      <Picture seeThrough>
+      <EmptyState.Image src={SendingMail} seeThrough>
         <source srcset={SendingMailWebp} type="image/webp" />
-        <EmptyState.Image src={SendingMail} />
-      </Picture>
+      </EmptyState.Image>
       <EmptyState.Action to="/domains/create?type=bounce">Add Bounce Domain</EmptyState.Action>
       <EmptyState.Action variant="outline" to={LINKS.BOUNCE_DOMAIN_DOCS} external>
         Bounce Domains Documentation
