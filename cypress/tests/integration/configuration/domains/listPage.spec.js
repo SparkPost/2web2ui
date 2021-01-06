@@ -227,24 +227,6 @@ describe('The domains list page', () => {
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
           cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display');
-        });
-      });
-
-      it('renders an empty state when no results are returned and empty states is turned on', () => {
-        cy.stubRequest({
-          url: '/api/v1/sending-domains',
-          fixture: '200.get.no-results.json',
-          requestAlias: 'sendingDomainsReq',
-        });
-        stubAccountsReq();
-
-        cy.visit(PAGE_URL);
-        cy.wait('@sendingDomainsReq');
-        cy.withinMainContent(() => {
-          cy.findByRole('table').should('not.exist');
-
-          // Sending domain tab
           cy.get('p')
             .contains(
               'Sending domains are used to indicate who an email is from via the "From" header. DNS records can be configured for a sending domain, which allows recipient mail servers to authenticate messages sent from SparkPost.',
@@ -262,16 +244,6 @@ describe('The domains list page', () => {
           cy.findByText('Confirm that the sending domain was successfully verified.').should(
             'be.visible',
           );
-
-          cy.verifyLink({
-            content: 'Add Sending Domain',
-            href: '/domains/create?type=sending',
-          });
-
-          cy.verifyLink({
-            content: 'Sending Domains Documentation',
-            href: LINKS.SENDING_DOMAIN_DOCS,
-          });
           cy.findByText('Sending Domains Documentation').should('have.length', 1);
         });
       });
