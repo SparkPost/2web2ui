@@ -20,7 +20,7 @@ import useDomains from '../hooks/useDomains';
 import { DomainAlignmentModal } from './DomainAlignmentModal';
 import useModal from 'src/hooks/useModal';
 
-export default function CreateForm() {
+export default function CreateForm({ defaultType = 'sending' }) {
   const history = useHistory();
   const {
     createSendingDomain,
@@ -29,12 +29,14 @@ export default function CreateForm() {
     createPending,
     showAlert,
   } = useDomains();
+
   const { control, register, handleSubmit, errors, watch, setValue } = useForm({
     defaultValues: {
-      primaryUse: 'sending',
+      primaryUse: defaultType,
       assignTo: 'shared',
     },
   });
+
   const {
     closeModal,
     isModalOpen,
