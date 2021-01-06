@@ -6,38 +6,6 @@ const DEFAULT_PREVIEW_ERROR_HEADING = 'Oh no! An Error Occurred';
 const DEFAULT_PREVIEW_ERROR_DESCRIPTION =
   'If you notice this happens often, check your substitution data or code syntax as these are frequent causes of preview errors.';
 
-function openTemplateSettings() {
-  cy.findByText('Open Menu').click({ force: true }); // The content is visually hidden (intentionally!), so `force: true` is needed here
-}
-
-function testPreviewContent({ selector, content }) {
-  cy.get('iframe').then($iframe => {
-    const $body = $iframe.contents().find('body');
-
-    if (selector.length) {
-      cy.wrap($body.find(selector)).should('contain', content);
-    } else {
-      cy.wrap($body).should('contain', content);
-    }
-  });
-}
-
-function stubReportingUserGrants() {
-  cy.stubRequest({
-    url: '/api/v1/authenticate/grants**',
-    fixture: 'authenticate/grants/200.get.reporting.json',
-  });
-}
-
-// see, https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
-// todo, maybe replace testPreviewContent
-const getIframeBody = () =>
-  cy
-    .get('iframe')
-    .its('0.contentDocument.body')
-    .should('not.be.empty')
-    .then(cy.wrap);
-
 describe('The templates edit draft page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -780,3 +748,36 @@ describe('The templates edit draft page', () => {
     });
   });
 });
+
+function openTemplateSettings() {
+  cy.findByText('Open Menu').click({ force: true }); // The content is visually hidden (intentionally!), so `force: true` is needed here
+}
+
+function testPreviewContent({ selector, content }) {
+  cy.get('iframe').then($iframe => {
+    const $body = $iframe.contents().find('body');
+
+    if (selector.length) {
+      cy.wrap($body.find(selector)).should('contain', content);
+    } else {
+      cy.wrap($body).should('contain', content);
+    }
+  });
+}
+
+function stubReportingUserGrants() {
+  cy.stubRequest({
+    url: '/api/v1/authenticate/grants**',
+    fixture: 'authenticate/grants/200.get.reporting.json',
+  });
+}
+
+// see, https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
+// todo, maybe replace testPreviewContent
+function getIframeBody() {
+  return cy
+    .get('iframe')
+    .its('0.contentDocument.body')
+    .should('not.be.empty')
+    .then(cy.wrap);
+}

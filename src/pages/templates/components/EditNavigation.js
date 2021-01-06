@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { UnstyledLink } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 import links from '../constants/editNavigationLinks';
 import SavedIndicator from './SavedIndicator';
 import useEditorContext from '../hooks/useEditorContext';
@@ -16,20 +16,16 @@ const EditNavigation = ({ primaryArea }) => {
     <nav className={styles.Navigation} aria-label="Templates">
       <div className={styles.NavigationLinks}>
         {links.map(({ key, content }) => (
-          <UnstyledLink
+          <ButtonLink
+            key={key}
             className={classNames(styles.NavigationLink, {
               [styles.active]: key === currentNavigationKey,
             })}
-            key={key}
-            onClick={() => {
-              setNavigation(key);
-            }}
-            to="javascript:void(0)"
-            role="button"
+            onClick={() => setNavigation(key)}
             data-id={`subnav-link-${key}`}
           >
             {content}
-          </UnstyledLink>
+          </ButtonLink>
         ))}
       </div>
       <div className={styles.NavigationPrimaryArea}>

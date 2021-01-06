@@ -1,23 +1,23 @@
 import { useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { usePageFilters } from 'src/hooks';
 import links from '../constants/editNavigationLinks';
 import { routeNamespace } from '../constants/routes';
 import { setSubaccountQuery } from '../../../helpers/subaccounts';
 
 const initFilters = {
-  id: {},
-  version: {},
   navKey: { excludeFromRoute: true },
   subaccount: {},
 };
 
 const useEditorNavigation = () => {
   const history = useHistory();
+  const { id, version = 'draft', navKey = '' } = useParams();
   const {
-    filters: { id, version = 'draft', navKey = '', subaccount: subaccountId },
+    filters: { subaccount: subaccountId },
   } = usePageFilters(initFilters);
   const [navKeyTemp, setNavKeyTemp] = useState(navKey.toLowerCase());
+
   const setNavigation = nextNavigationKey => {
     setNavKeyTemp(nextNavigationKey.toLowerCase());
     history.push(

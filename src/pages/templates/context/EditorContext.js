@@ -1,4 +1,5 @@
 import React, { createContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { usePageFilters } from 'src/hooks';
 import useEditorAnnotations from '../hooks/useEditorAnnotations';
 import useEditorContent from '../hooks/useEditorContent';
@@ -12,15 +13,14 @@ const EditorContext = createContext();
 const chainHooks = (...hooks) => hooks.reduce((acc, hook) => ({ ...acc, ...hook(acc) }), {});
 
 const initFilters = {
-  id: {},
   subaccount: {},
-  version: {},
 };
 
 export const EditorContextProvider = ({
   children,
   value: { getDraft, getPublished, listDomains, listSubaccounts, ...value },
 }) => {
+  const { id, version } = useParams();
   const { filters } = usePageFilters(initFilters);
   const pageValue = chainHooks(
     () => value,
@@ -33,22 +33,14 @@ export const EditorContextProvider = ({
   );
 
   useEffect(() => {
-    getDraft(filters.id, filters.subaccount);
+    getDraft(id, filters.subaccount);
     listDomains();
     listSubaccounts();
 
-    if (filters.version === 'published') {
-      getPublished(filters.id, filters.subaccount);
+    if (version === 'published') {
+      getPublished(id, filters.subaccount);
     }
-  }, [
-    listSubaccounts,
-    listDomains,
-    getDraft,
-    getPublished,
-    filters.id,
-    filters.version,
-    filters.subaccount,
-  ]);
+  }, [listSubaccounts, listDomains, getDraft, getPublished, id, version, filters.subaccount]);
 
   return <EditorContext.Provider value={pageValue}>{children}</EditorContext.Provider>;
 };

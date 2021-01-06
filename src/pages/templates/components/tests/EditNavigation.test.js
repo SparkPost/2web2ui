@@ -19,16 +19,12 @@ describe('EditNavigation', () => {
     return shallow(<EditNavigation primaryArea={<button>Click Me</button>} {...props} />);
   };
 
-  it('renders navigation with primary area', () => {
-    expect(subject()).toMatchSnapshot();
-  });
-
   it('calls setNavigation when link is clicked', () => {
     const setNavigation = jest.fn();
     const wrapper = subject({ editorState: { setNavigation } });
 
     wrapper
-      .find('UnstyledLink')
+      .find('ButtonLink')
       .filterWhere(node => node.children().text() === 'Template Settings')
       .simulate('click');
 
