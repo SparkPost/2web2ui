@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Banner, Picture } from 'src/components/matchbox';
 import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
+import Configuration from '@sparkpost/matchbox-media/images/Configuration@medium.jpg';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { LINKS } from 'src/constants';
@@ -38,7 +39,8 @@ export default function InfoBanner() {
       </Banner.Action>
       <Banner.Media>
         <Picture seeThrough>
-          <Picture.Image alt="" src={ConfigurationWebp} />
+          <source srcset={ConfigurationWebp} type="image/webp" />
+          <Picture.Image alt="" src={Configuration} />
         </Picture>
       </Banner.Media>
     </Banner>
