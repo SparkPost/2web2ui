@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircleOutline } from '@sparkpost/matchbox-icons';
-import { Button, UnstyledLink } from 'src/components/matchbox';
+import { Button } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 
 const SaveAndPublish = props => {
   const { onClick, className, children } = props;
@@ -8,28 +9,17 @@ const SaveAndPublish = props => {
   return (
     <div className={className}>
       {children && (
-        <Button
-          variant="secondary"
-          onClick={onClick}
-          title="Opens a dialog"
-          data-id="action-save-and-publish"
-        >
+        <Button variant="secondary" onClick={onClick} data-id="action-save-and-publish">
           {children}
         </Button>
       )}
 
       {!children && (
-        <UnstyledLink
-          onClick={onClick}
-          role="button"
-          to="javascript:void(0);"
-          title="Opens a dialog"
-          data-id="action-save-and-publish"
-        >
+        <ButtonLink onClick={onClick} data-id="action-save-and-publish">
           <CheckCircleOutline />
 
           <span>Save and Publish</span>
-        </UnstyledLink>
+        </ButtonLink>
       )}
     </div>
   );

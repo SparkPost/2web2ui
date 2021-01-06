@@ -2,17 +2,14 @@
 
 exports[`SaveAndPublish Renders and icon and default content when no children are supplied 1`] = `
 <div>
-  <UnstyledLink
+  <ButtonLink
     data-id="action-save-and-publish"
-    role="button"
-    title="Opens a dialog"
-    to="javascript:void(0);"
   >
     <CheckCircleOutline />
     <span>
       Save and Publish
     </span>
-  </UnstyledLink>
+  </ButtonLink>
 </div>
 `;
 
@@ -20,16 +17,13 @@ exports[`SaveAndPublish renders SaveAndPublish action 1`] = `
 <div
   className="Foo"
 >
-  <UnstyledLink
+  <ButtonLink
     data-id="action-save-and-publish"
-    role="button"
-    title="Opens a dialog"
-    to="javascript:void(0);"
   >
     <CheckCircleOutline />
     <span>
       Save and Publish
     </span>
-  </UnstyledLink>
+  </ButtonLink>
 </div>
 `;

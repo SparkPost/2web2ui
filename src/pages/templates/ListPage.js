@@ -238,7 +238,7 @@ export default class ListPage extends Component {
               }}
               defaultSortColumn="last_update_time"
               defaultSortDirection="desc"
-              saveCsv={false}
+              saveCsv={true}
             />
           </>
         )}

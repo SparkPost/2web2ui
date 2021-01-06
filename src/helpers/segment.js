@@ -17,6 +17,7 @@ export const SEGMENT_EVENTS = {
   SENDING_DOMAIN_ADDED: 'Sending Domain Added',
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
   EMPTY_STATE_LOADED: 'Empty state loaded',
+  REPORT_BUILDER_COMPARISON_ADDED: 'Report Builder Comparison Added',
 };
 
 const UX_EVENTS = [SEGMENT_EVENTS.HIBANA_TOGGLED_ON, SEGMENT_EVENTS.HIBANA_TOGGLED_OFF];
@@ -33,6 +34,8 @@ export const SEGMENT_TRAITS = {
   TENANT: 'tenant',
   USER_ID: 'user_id',
   USER_ROLE: 'user_role',
+  SSO_ENABLED: 'sso_enabled',
+  TFA_ENABLED: 'tfa_enabled',
 };
 
 /**
@@ -50,7 +53,7 @@ export const segmentIdentify = traits => {
     traits[SEGMENT_TRAITS.TENANT]
   ) {
     const filteredTraits = Object.values(SEGMENT_TRAITS).reduce((filtered, key) => {
-      if (traits[key]) {
+      if (traits[key] !== undefined) {
         filtered[key] = traits[key];
       }
       return filtered;

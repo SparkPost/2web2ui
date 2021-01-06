@@ -1,0 +1,74 @@
+{
+  "results": [
+    {
+      "customer_id": 123,
+      "id": 101,
+      "name": "Fake Subaccount 1",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 102,
+      "name": "Fake Subaccount 2",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 103,
+      "name": "Fake Subaccount 3",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 104,
+      "name": "Fake Subaccount 4",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 105,
+      "name": "Fake Subaccount 5",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 106,
+      "name": "Fake Subaccount 6",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 107,
+      "name": "Fake Subaccount 7",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 108,
+      "name": "Fake Subaccount 8",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 109,
+      "name": "Fake Subaccount 9",
+      "compliance_status": "active",
+      "status": "active"
+    },
+    {
+      "customer_id": 123,
+      "id": 110,
+      "name": "Fake Subaccount 10",
+      "compliance_status": "active",
+      "status": "active"
+    }
+  ]
+}

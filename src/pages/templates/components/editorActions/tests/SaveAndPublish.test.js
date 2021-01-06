@@ -10,10 +10,14 @@ describe('SaveAndPublish', () => {
     useEditorContext.mockReturnValue({
       draft: { id: 'foo' },
       history: { push: jest.fn() },
-      ...editorState
+      ...editorState,
     });
 
-    return shallow(<SaveAndPublish className={'Foo'} {...props}>{children}</SaveAndPublish>);
+    return shallow(
+      <SaveAndPublish className="Foo" {...props}>
+        {children}
+      </SaveAndPublish>,
+    );
   };
 
   it('renders SaveAndPublish action', () => {
@@ -25,7 +29,7 @@ describe('SaveAndPublish', () => {
   });
 
   it('Renders and icon and default content when no children are supplied', () => {
-    const wrapper = shallow(<SaveAndPublish/>);
+    const wrapper = shallow(<SaveAndPublish />);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -34,7 +38,7 @@ describe('SaveAndPublish', () => {
     const mockFn = jest.fn();
     const wrapper = subject(undefined, null, { onClick: mockFn });
 
-    wrapper.find('UnstyledLink').simulate('click');
+    wrapper.find('ButtonLink').simulate('click');
 
     expect(mockFn).toHaveBeenCalled();
   });

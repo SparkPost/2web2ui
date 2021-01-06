@@ -26,6 +26,26 @@ describe('segment helpers', () => {
       expect(window.analytics.group).toBeCalledWith('tenant//123', { groupId: 'tenant//123' });
     });
 
+    it('passes valid boolean traits to segment', () => {
+      const traits = {
+        [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
+        [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
+        [SEGMENT_TRAITS.USER_ID]: 'username',
+        [SEGMENT_TRAITS.TENANT]: 'tenant',
+        [SEGMENT_TRAITS.SSO_ENABLED]: true,
+        [SEGMENT_TRAITS.TFA_ENABLED]: false,
+      };
+      segmentIdentify(traits);
+      expect(window.analytics.identify).toBeCalledWith('email@abc.com//123', {
+        [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
+        [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
+        [SEGMENT_TRAITS.USER_ID]: 'username',
+        [SEGMENT_TRAITS.TENANT]: 'tenant',
+        [SEGMENT_TRAITS.SSO_ENABLED]: true,
+        [SEGMENT_TRAITS.TFA_ENABLED]: false,
+      });
+    });
+
     it('does not call window.analytics.identify without user id/email', () => {
       const traits = {
         [SEGMENT_TRAITS.CUSTOMER_ID]: 123,

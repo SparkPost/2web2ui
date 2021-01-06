@@ -40,10 +40,6 @@ describe('ListPage', () => {
       />,
     );
 
-  it('renders correctly', () => {
-    expect(subject()).toMatchSnapshot();
-  });
-
   it('loads templates on load', () => {
     const listTemplates = jest.fn();
     subject({ listTemplates });

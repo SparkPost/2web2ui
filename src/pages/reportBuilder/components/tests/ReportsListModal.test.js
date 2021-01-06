@@ -9,7 +9,6 @@ describe('ReportsListModal', () => {
     handleDelete: jest.fn(),
     handleEdit: jest.fn(),
     isScheduledReportsEnabled: true,
-    allowDashboardV2: true,
     open: true,
     reports: [
       {

@@ -4,12 +4,12 @@ import _ from 'lodash';
 import { ApiErrorBanner, Loading } from 'src/components';
 import { Heading } from 'src/components/text';
 import { PageLink } from 'src/components/links';
-import { Page, Panel } from 'src/components/matchbox';
+import { Page, Panel, Stack } from 'src/components/matchbox';
 import { PanelLoading } from 'src/components/loading';
 import IpForm from './components/IpForm';
 import DeliveryHistoryLineChart from './components/DeliveryHistoryLineChart';
 import { showAlert } from 'src/actions/globalAlert';
-import { getRelativeDates } from 'src/helpers/date';
+import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import { listPools, updatePool } from 'src/actions/ipPools';
 import { getTimeSeries } from 'src/actions/metrics';
 import { updateSendingIp } from 'src/actions/sendingIps';
@@ -70,6 +70,7 @@ export function EditIpPage(props) {
       getTimeSeries({
         from,
         to,
+        timezone: getLocalTimezone(),
         precision: 'day',
         metrics: 'count_delivered',
         sending_ips: ip.external_ip,
@@ -133,11 +134,13 @@ function DeliveryHistoryPanel({ isLoading, error, chartData, handleReloadAfterEr
           {!_.isEmpty(chartData) && (
             <Panel.LEGACY title="Delivery History">
               <Panel.LEGACY.Section className={styles.LineChartSection}>
-                <Heading as="h3" looksLike="h5">
-                  Last 10 Days
-                </Heading>
+                <Stack>
+                  <Heading as="h3" looksLike="h5">
+                    Last 10 Days
+                  </Heading>
 
-                <DeliveryHistoryLineChart data={chartData} />
+                  <DeliveryHistoryLineChart data={chartData} />
+                </Stack>
               </Panel.LEGACY.Section>
             </Panel.LEGACY>
           )}

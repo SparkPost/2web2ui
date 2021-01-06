@@ -15,7 +15,6 @@ export function ReportsListModal({
   handleDelete,
   handleEdit,
   isScheduledReportsEnabled,
-  allowDashboardV2,
   pinnedReportId,
   handleReportChange,
 }) {
@@ -39,7 +38,6 @@ export function ReportsListModal({
       handlePin={handlePin}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
-      allowDashboardV2={allowDashboardV2}
       pinnedReport={reports.find(report => report.id === pinnedReportId)}
     />,
     <AllReportsTab
@@ -49,7 +47,6 @@ export function ReportsListModal({
       handlePin={handlePin}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
-      allowDashboardV2={allowDashboardV2}
       pinnedReport={reports.find(report => report.id === pinnedReportId)}
     />,
   ];
@@ -82,7 +79,6 @@ const mapStateToProps = state => {
       state,
     ),
     pinnedReportId: selectCondition(isUserUiOptionSet('pinned_report_id'))(state),
-    allowDashboardV2: selectCondition(isAccountUiOptionSet('allow_dashboard_v2'))(state),
   };
 };
 export default connect(mapStateToProps)(ReportsListModal);
