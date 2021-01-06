@@ -5,10 +5,8 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Domains from './components';
 import useDomains from './hooks/useDomains';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
-import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
-import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
-import SendingInfoBanner from 'src/pages/sendingDomains/components/SendingInfoBanner.js';
-import BounceInfoBanner from 'src/pages/sendingDomains/components/BounceInfoBanner.js';
+import BounceEmptyState from './components/BounceEmptyState';
+import SendingEmptyState from './components/SendingEmptyState';
 
 function DomainTabPages() {
   // trackingDomainsListError,
@@ -127,48 +125,33 @@ function DomainTabPages() {
     }
   };
 
-  const getTabType = () => {
+  const getHibanaEmptyState = () => {
     if (matchesSendingTab) {
-      return 'sending';
+      return SendingEmptyState;
     }
-
     if (matchesBounceTab) {
-      return 'bounce';
-    }
-
-    if (matchesTrackingTab) {
-      return 'tracking';
+      return BounceEmptyState;
     }
   };
 
   return (
-    <Page
-      title="Domains"
-      primaryAction={{
-        to: `/domains/create?type=${getTabType()}`,
-        content: 'Add a Domain',
-        component: PageLink,
-      }}
-      empty={{
-        trackingOnly: showSendingDomainsEmptyState || showBounceDomainsEmptyState,
-      }}
-      loading={listPending || isFirstRender}
-    >
-      <Stack>
-        <Tabs selected={tabIndex} tabs={TABS} />
-        <div>
-          {renderInfoBanner()}
-          <TabPanel>{renderTab()}</TabPanel>
-        </div>
-      </Stack>
-    </Page>
-  );
-}
-
-export default function ListPage() {
-  return (
     <Domains.Container>
-      <DomainTabPages />
+      <Page
+        title="Domains"
+        primaryAction={{
+          to: '/domains/create',
+          content: 'Add a Domain',
+          component: PageLink,
+        }}
+        hibanaEmptyStateComponent={getHibanaEmptyState()}
+      >
+        <Stack>
+          <Tabs selected={tabIndex} tabs={TABS} />
+          <div>
+            <TabPanel>{renderTab()}</TabPanel>
+          </div>
+        </Stack>
+      </Page>
     </Domains.Container>
   );
 }
