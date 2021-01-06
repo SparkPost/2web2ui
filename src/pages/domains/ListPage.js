@@ -158,6 +158,7 @@ export default function DomainsPage() {
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
         <div>
+          {/* TODO: Only show banners if not showing empty states */}
           {renderInfoBanner()}
           <TabPanel>{renderTab()}</TabPanel>
         </div>
