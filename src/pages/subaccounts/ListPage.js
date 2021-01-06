@@ -12,6 +12,7 @@ import InfoBanner from './components/InfoBanner';
 import SubaccountEmptyState from './components/SubaccountEmptyState';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { useHibana } from 'src/context/HibanaContext';
+import { CREATE_SUBACCOUNT } from 'src/constants';
 
 const columns = [
   { label: 'Name', width: '40%', sortKey: 'name' },
@@ -22,7 +23,7 @@ const columns = [
 const primaryAction = {
   content: 'Create Subaccount',
   Component: PageLink,
-  to: '/account/subaccounts/create',
+  to: CREATE_SUBACCOUNT,
 };
 
 export class ListPage extends Component {

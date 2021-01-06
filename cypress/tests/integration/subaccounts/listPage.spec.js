@@ -1,3 +1,4 @@
+import { CREATE_SUBACCOUNT } from 'src/constants';
 import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
 const SUBACCOUNT_API_URL = '/api/v1/subaccounts';
 const PAGE_URL = '/account/subaccounts';
@@ -52,7 +53,7 @@ describe('The subaccounts list page', () => {
       );
       cy.verifyLink({
         content: 'Create Subaccount',
-        href: '/account/subaccounts/create',
+        href: CREATE_SUBACCOUNT,
       });
       cy.verifyLink({
         content: 'Learn more',
@@ -113,7 +114,7 @@ describe('The subaccounts list page', () => {
       ).should('be.visible');
       cy.verifyLink({
         content: 'Create Subaccount',
-        href: '/account/subaccounts/create',
+        href: CREATE_SUBACCOUNT,
       });
       cy.verifyLink({
         content: 'Subaccounts Documentation',

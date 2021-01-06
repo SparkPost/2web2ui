@@ -62,6 +62,7 @@ import App from 'src/components/layout/App';
 import LargeForm from 'src/components/layout/LargeForm';
 
 import {
+  CREATE_SUBACCOUNT,
   AUTH_ROUTE,
   DEFAULT_REDIRECT_ROUTE,
   ENABLE_TFA_AUTH_ROUTE,
@@ -69,6 +70,7 @@ import {
   SSO_AUTH_ROUTE,
   TFA_ROUTE,
 } from 'src/constants';
+
 //route modules
 import { emailRedirects, emailVerificationRedirect } from './emailRoutes';
 import templateRoutes from './templates';
@@ -221,7 +223,7 @@ const appRoutes = [
     category: 'Account',
   },
   {
-    path: '/account/subaccounts/create',
+    path: CREATE_SUBACCOUNT,
     component: subaccounts.CreatePage,
     condition: hasGrants('subaccount/manage', 'api_keys/manage', 'sending_domains/manage'),
     layout: App,
