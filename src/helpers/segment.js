@@ -17,6 +17,7 @@ export const SEGMENT_EVENTS = {
   SENDING_DOMAIN_ADDED: 'Sending Domain Added',
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
   EMPTY_STATE_LOADED: 'Empty state loaded',
+  REPORT_BUILDER_COMPARISON_ADDED: 'Report Builder Comparison Added',
 };
 
 const UX_EVENTS = [SEGMENT_EVENTS.HIBANA_TOGGLED_ON, SEGMENT_EVENTS.HIBANA_TOGGLED_OFF];

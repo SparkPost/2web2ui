@@ -26,11 +26,14 @@ import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import Typeahead from './Typeahead';
 import styled from 'styled-components';
 
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
+
 const initialState = {
   filters: [null, null],
   filterType: undefined,
   hasMinComparisonsError: false,
   hasMaxComparisonsError: false,
+  formChanged: false,
 };
 
 const StyledButton = styled(Button)`
@@ -52,6 +55,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         filters: [...state.filters, null],
+        formChanged: true,
         hasMaxComparisonsError: Boolean(state.filters.length >= 9), //Will now be 10
       };
     case 'REMOVE_FILTER':
@@ -59,6 +63,7 @@ const reducer = (state, action) => {
         ...state,
         filters: state.filters.filter((_filter, filterIndex) => filterIndex !== action.index),
         hasMaxComparisonsError: false,
+        formChanged: true,
       };
     case 'SET_FILTER':
       const newFilters = state.filters;
@@ -71,11 +76,13 @@ const reducer = (state, action) => {
         hasMaxComparisonsError: false,
         filters: [null, null],
         filterType: action.filterType,
+        formChanged: true,
       };
-    case 'RESET_FORM':
-      return { ...initialState, filters: [null, null], filterType: undefined };
     case 'SET_MIN_COMPARE_ERROR':
-      return { ...state, hasMinComparisonsError: true };
+      return { ...state, hasMinComparisonsError: true, formChanged: true };
+    case 'RESET_FORM':
+      return { ...initialState, filters: [null, null], filterType: undefined, formChanged: true };
+
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -87,6 +94,7 @@ const getInitialState = comparisons => {
   }
 
   return {
+    ...initialState,
     filterType: REPORT_BUILDER_FILTER_KEY_MAP[comparisons[0].type],
     filters: [...comparisons],
   };
@@ -120,6 +128,12 @@ function CompareByForm({
         error: 'Select more than one item to compare',
       });
     }
+
+    segmentTrack(SEGMENT_EVENTS.REPORT_BUILDER_COMPARISON_ADDED, {
+      formChanged: state.formChanged,
+      comparisonType: state.filterType,
+      numberOfComparisons: formattedFilters.length,
+    });
 
     return handleSubmit({ comparisons: formattedFilters });
   }
