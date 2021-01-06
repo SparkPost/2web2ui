@@ -123,7 +123,6 @@ function DomainTabPages() {
     }
 
     if (matchesTrackingTab) {
-      // TODO: probably best to load data here and pass it into the tab, downside is sending, bounce, and tracking calls will always fire no matter what tab the user is on.
       return <Domains.TrackingDomainsTab />;
     }
   };
