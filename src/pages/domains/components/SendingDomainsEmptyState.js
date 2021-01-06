@@ -1,7 +1,6 @@
 import React from 'react';
 import { PageLink } from 'src/components/links';
 import { EmptyState } from 'src/components/matchbox';
-import { Picture } from 'src/components/matchbox';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import { Box } from 'src/components/matchbox';
