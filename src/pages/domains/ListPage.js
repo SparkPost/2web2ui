@@ -3,13 +3,14 @@ import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Domains from './components';
-// import useDomains from './hooks/useDomains';
+import useDomains from './hooks/useDomains';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
 import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
 import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
 
 function DomainsPageContent() {
-  // const { sendingDomains, bounceDomains, trackingDomains } = useDomains();
+  // , trackingDomains
+  const { sendingDomains, bounceDomains } = useDomains();
   const history = useHistory();
   const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
@@ -35,39 +36,34 @@ function DomainsPageContent() {
   ];
   const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
 
+  // TODO: load sending, bounce, and tracking domains list no matter what tab
+
   const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
   const renderTab = () => {
     if (matchesSendingTab) {
-      if (true) {
+      if (sendingDomains.length === 0) {
         return <SendingDomainsEmptyState />;
       }
 
-      // TODO: probably best to load data here and pass it into the tab, downside is sending, bounce, and tracking calls will always fire no matter what tab the user is on.
       return <Domains.SendingDomainsTab />;
     }
 
     if (matchesBounceTab) {
-      if (true) {
+      if (bounceDomains.lengh === 0) {
         return <BounceDomainsEmptyState />;
       }
 
-      // TODO: probably best to load data here and pass it into the tab, downside is sending, bounce, and tracking calls will always fire no matter what tab the user is on.
       return <Domains.SendingDomainsTab renderBounceOnly />;
     }
 
-    // TODO: Get this moved through and rebase FE-1241 with master after the merge/deploy
-    // https://sparkpost.atlassian.net/browse/FE-1241
-    // https://github.com/SparkPost/2web2ui/pull/1990
     if (matchesTrackingTab) {
-      // TODO: probably best to load data here and pass it into the tab, downside is sending, bounce, and tracking calls will always fire no matter what tab the user is on.
       return <Domains.TrackingDomainsTab />;
     }
   };
 
-  // todo: set trackingOnly prop assignment & make sure segment only gets call once, and only when the empty states are displaying
   return (
     <Page
       title="Domains"
