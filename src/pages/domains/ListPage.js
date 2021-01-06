@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
@@ -9,8 +9,8 @@ import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
 import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
 
 function DomainsPageContent() {
-  // , trackingDomains
-  const { sendingDomains, bounceDomains } = useDomains();
+  // trackingDomains,
+  const { listSendingDomains, sendingDomains, bounceDomains, listTrackingDomains } = useDomains();
   const history = useHistory();
   const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
@@ -36,7 +36,10 @@ function DomainsPageContent() {
   ];
   const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
 
-  // TODO: load sending, bounce, and tracking domains list no matter what tab
+  useEffect(() => {
+    listSendingDomains();
+    // listTrackingDomains();
+  }, [listSendingDomains, listTrackingDomains]);
 
   const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
@@ -52,7 +55,7 @@ function DomainsPageContent() {
     }
 
     if (matchesBounceTab) {
-      if (bounceDomains.lengh === 0) {
+      if (bounceDomains.length === 0) {
         return <BounceDomainsEmptyState />;
       }
 
@@ -64,11 +67,25 @@ function DomainsPageContent() {
     }
   };
 
+  const getTabType = () => {
+    if (matchesSendingTab) {
+      return 'sending';
+    }
+
+    if (matchesBounceTab) {
+      return 'bounce';
+    }
+
+    if (matchesTrackingTab) {
+      return 'tracking';
+    }
+  };
+
   return (
     <Page
       title="Domains"
       primaryAction={{
-        to: '/domains/create',
+        to: `/domains/create?type=${getTabType()}`,
         content: 'Add a Domain',
         component: PageLink,
       }}
