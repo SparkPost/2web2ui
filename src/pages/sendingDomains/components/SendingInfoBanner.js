@@ -9,12 +9,12 @@ import { LINKS } from 'src/constants';
 
 export default function InfoBanner() {
   const [dismissed, setDismissed] = useState(
-    useSelector(state => isUserUiOptionSet('onboardingV2.snippetsBannerDismissed')(state)),
+    useSelector(state => isUserUiOptionSet('onboardingV2.sendingBannerDismissed')(state)),
   );
   const dispatch = useDispatch();
   const handleDismiss = () => {
     setDismissed(true);
-    dispatch(updateUserUIOptions({ onboardingV2: { snippetsBannerDismissed: true } }));
+    dispatch(updateUserUIOptions({ onboardingV2: { sendingBannerDismissed: true } }));
   };
   if (dismissed) return null;
 
