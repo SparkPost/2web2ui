@@ -3,11 +3,12 @@ import { render, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TestApp from 'src/__testHelpers__/TestApp';
 import { EditIpPage } from '../EditIpPage';
-jest.mock('../components/IpForm');
+import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 
-// Mocking IP form implementation - testing Redux Form components
-// with React Testing Library (as of the time of writing)
-// isn't working as expected
+jest.mock('../components/IpForm');
+jest.mock('src/helpers/date');
+getRelativeDates.mockImplementation(() => ({ from: 'mock-from', to: 'mock-to' }));
+getLocalTimezone.mockImplementation(() => 'Mock/Timezone');
 
 describe('IP Edit Page', () => {
   const subject = props => {
@@ -135,6 +136,20 @@ describe('IP Edit Page', () => {
     userEvent.click(queryByText('Try Again'));
 
     expect(mockListPools).toHaveBeenCalled();
+  });
+
+  it('requests IP pool time series data on mount with relevant request parameters', () => {
+    const mockGetTimeSeries = jest.fn(() => Promise.resolve());
+    subject({ getTimeSeries: mockGetTimeSeries });
+
+    expect(mockGetTimeSeries).toHaveBeenCalledWith({
+      from: 'mock-from',
+      to: 'mock-to',
+      sending_ips: '1.1.1.1',
+      precision: 'day',
+      metrics: 'count_delivered',
+      timezone: 'Mock/Timezone',
+    });
   });
 
   it('renders the delivery history section in a loading state controlled via the `chartLoading` prop', () => {
