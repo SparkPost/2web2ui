@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Banner, Picture } from 'src/components/matchbox';
-import EmailTemplateWebp from '@sparkpost/matchbox-media/images/Email-Template.webp';
+import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
+import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import { Bold, TranslatableText } from 'src/components/text';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
@@ -44,7 +45,8 @@ export default function InfoBanner() {
       </Banner.Action>
       <Banner.Media>
         <Picture seeThrough>
-          <Picture.Image alt="" src={EmailTemplateWebp} />
+          <source srcset={SendingMailWebp} type="image/webp" />
+          <Picture.Image alt="" src={SendingMail} />
         </Picture>
       </Banner.Media>
     </Banner>
