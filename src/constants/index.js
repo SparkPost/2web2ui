@@ -87,6 +87,9 @@ export const LINKS = {
     'https://developers.sparkpost.com/api/metrics/#header-groupings-structure',
 };
 
+// TODO: Sending Domain Doc link?
+// TODO: Bounce Domain Doc link?
+
 export const ENTERPRISE_PLAN_CODES = ['ent1'];
 
 export const AWS_COOKIE_NAME = 'aws-mkt';
