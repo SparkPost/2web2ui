@@ -4,6 +4,8 @@ import { PageLink } from 'src/components/links';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Domains from './components';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
+import BounceEmptyState from './components/BounceEmptyState';
+import SendingEmptyState from './components/SendingEmptyState';
 
 export default function DomainsPage() {
   const history = useHistory();
@@ -47,6 +49,15 @@ export default function DomainsPage() {
     }
   };
 
+  const getHibanaEmptyState = () => {
+    if (matchesSendingTab) {
+      return SendingEmptyState;
+    }
+    if (matchesBounceTab) {
+      return BounceEmptyState;
+    }
+  };
+
   return (
     <Domains.Container>
       <Page
@@ -56,6 +67,7 @@ export default function DomainsPage() {
           content: 'Add a Domain',
           component: PageLink,
         }}
+        hibanaEmptyStateComponent={getHibanaEmptyState()}
       >
         <Stack>
           <Tabs selected={tabIndex} tabs={TABS} />
