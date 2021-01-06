@@ -30,10 +30,11 @@ export default function InfoBanner() {
       mb="600"
     >
       <p>
-        Snippets are modular, reusable content that can be imported into the HTML, Text, or AMP part
-        of any email template. Snippets make it easy to create and maintain consistent content like
-        footers and social share buttons across all emails.
+        Custom bounce domains override the default Return-Path value, also known as the envelope
+        FROM value, which denotes the destination for out-of-band bounces.
       </p>
+
+      {/* TODO: Update action... and everything in this file basically */}
       <Banner.Action color="blue" to={LINKS.SNIPPETS_DOCS} external variant="outline">
         Snippets Documentation
       </Banner.Action>
