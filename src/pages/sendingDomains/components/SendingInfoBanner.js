@@ -30,10 +30,12 @@ export default function InfoBanner() {
       mb="600"
     >
       <p>
-        Snippets are modular, reusable content that can be imported into the HTML, Text, or AMP part
-        of any email template. Snippets make it easy to create and maintain consistent content like
-        footers and social share buttons across all emails.
+        Sending domains are used to indicate who an email is from via the "Form" records can be
+        configured for a sending domain, which allows recipient mail servers to authenticate
+        messages sent from SparkPost.
       </p>
+
+      {/* TODO: Update action... and everything in this file basically */}
       <Banner.Action color="blue" to={LINKS.SNIPPETS_DOCS} external variant="outline">
         Snippets Documentation
       </Banner.Action>
