@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
@@ -10,18 +10,18 @@ import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
 import SendingInfoBanner from 'src/pages/sendingDomains/components/SendingInfoBanner.js';
 import BounceInfoBanner from 'src/pages/sendingDomains/components/BounceInfoBanner.js';
 
-function DomainsPageContent(props) {
-  // trackingDomains,
-  // listTrackingDomains,
-  // trackingDomainsListError
-  const { isEmptyStateEnabled } = props;
+function DomainTabPages() {
+  // trackingDomainsListError,
   const {
     listPending,
+    listTrackingDomains,
     listSendingDomains,
     sendingDomainsListError,
     sendingDomains,
     bounceDomains,
+    isEmptyStateEnabled,
   } = useDomains();
+  const isFirstRender = useRef(true);
   const history = useHistory();
   const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
@@ -49,7 +49,8 @@ function DomainsPageContent(props) {
 
   useEffect(() => {
     listSendingDomains();
-    // listTrackingDomains();
+    listTrackingDomains();
+    isFirstRender.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,28 +58,45 @@ function DomainsPageContent(props) {
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
+  const showSendingDomainsEmptyState =
+    matchesSendingTab &&
+    !listPending &&
+    isEmptyStateEnabled &&
+    sendingDomains.length === 0 &&
+    !sendingDomainsListError;
+
+  const showBounceDomainsEmptyState =
+    matchesBounceTab &&
+    !listPending &&
+    isEmptyStateEnabled &&
+    bounceDomains.length === 0 &&
+    sendingDomains.length === 0 &&
+    !sendingDomainsListError;
+
+  const showSendingInfoBanner = matchesSendingTab && sendingDomains.length > 0;
+  const showBounceInfoBanner = matchesBounceTab && sendingDomains.length > 0;
+
   const renderInfoBanner = () => {
     if (listPending || !isEmptyStateEnabled) {
       return;
     }
 
-    if (matchesSendingTab && sendingDomains.length > 0) {
+    if (showSendingInfoBanner) {
       return <SendingInfoBanner />;
     }
 
-    if (matchesBounceTab && sendingDomains.length > 0) {
+    if (showBounceInfoBanner) {
       return <BounceInfoBanner />;
     }
   };
 
   const renderTab = () => {
+    if (listPending) {
+      return;
+    }
+
     if (matchesSendingTab) {
-      if (
-        !listPending &&
-        isEmptyStateEnabled &&
-        sendingDomains.length === 0 &&
-        !sendingDomainsListError
-      ) {
+      if (showSendingDomainsEmptyState) {
         return <SendingDomainsEmptyState />;
       }
 
@@ -86,13 +104,7 @@ function DomainsPageContent(props) {
     }
 
     if (matchesBounceTab) {
-      if (
-        !listPending &&
-        isEmptyStateEnabled &&
-        bounceDomains.length === 0 &&
-        sendingDomains.length === 0 &&
-        !sendingDomainsListError
-      ) {
+      if (showBounceDomainsEmptyState) {
         return <BounceDomainsEmptyState />;
       }
 
@@ -127,8 +139,9 @@ function DomainsPageContent(props) {
         component: PageLink,
       }}
       empty={{
-        trackingOnly: true,
+        trackingOnly: showSendingDomainsEmptyState || showBounceDomainsEmptyState,
       }}
+      loading={listPending || isFirstRender.current}
     >
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
@@ -141,10 +154,10 @@ function DomainsPageContent(props) {
   );
 }
 
-export function ListPage(props) {
+export default function ListPage() {
   return (
     <Domains.Container>
-      <DomainsPageContent {...props} />
+      <DomainTabPages />
     </Domains.Container>
   );
 }

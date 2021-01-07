@@ -152,12 +152,6 @@ export default function TrackingDomainsTab() {
 
   const isEmpty = !listPending && rows?.length === 0;
 
-  // Make initial requests
-  useEffect(() => {
-    listTrackingDomains();
-    // eslint-disable-next-line
-  }, []);
-
   useEffect(() => {
     if (hasSubaccounts && subaccounts?.length === 0) {
       listSubaccounts();

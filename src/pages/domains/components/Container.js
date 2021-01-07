@@ -27,7 +27,7 @@ import { selectTrackingDomainCname } from 'src/selectors/account';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { DomainsProvider } from '../context/DomainsContext';
 import { selectCondition } from 'src/selectors/accessConditionState';
-import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
+import { hasAccountOptionEnabled, isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
 import {
   selectAllowDefaultBounceDomains,
@@ -60,6 +60,7 @@ function mapStateToProps(state) {
     verifyBounceLoading: state.sendingDomains.verifyBounceLoading,
     verifyingTrackingPending: state.trackingDomains.verifyingTrackingPending,
     trackingDomainCname: selectTrackingDomainCname(state),
+    isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
   };
 }
 
