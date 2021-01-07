@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
@@ -24,7 +24,7 @@ function DomainTabPages() {
     subaccounts,
     listSubaccounts,
   } = useDomains();
-  const isFirstRender = useRef(true);
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const history = useHistory();
   const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
@@ -53,7 +53,7 @@ function DomainTabPages() {
   useEffect(() => {
     listSendingDomains();
     listTrackingDomains();
-    isFirstRender.current = false;
+    setIsFirstRender(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -144,7 +144,7 @@ function DomainTabPages() {
       empty={{
         trackingOnly: showSendingDomainsEmptyState || showBounceDomainsEmptyState,
       }}
-      loading={listPending || isFirstRender.current}
+      loading={listPending || isFirstRender}
     >
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
