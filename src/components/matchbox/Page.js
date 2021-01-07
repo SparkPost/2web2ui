@@ -18,7 +18,6 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
   const emptyStateTrackingOnly = allowEmptyStates && props.empty?.trackingOnly; // dont look at show or HibanaEmptyStateComponent, just track with segment
 
   React.useEffect(() => {
-    // IMPORTANT - props.loading prevents multiple calls - SET isFirstRender from parent scope!
     if (isHibanaEnabled && (showHibanaEmptyState || emptyStateTrackingOnly) && !props.loading) {
       segmentTrack(SEGMENT_EVENTS.EMPTY_STATE_LOADED, {
         location: location,
