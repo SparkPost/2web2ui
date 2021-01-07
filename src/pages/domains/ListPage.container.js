@@ -3,12 +3,9 @@ import { showAlert } from 'src/actions/globalAlert';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { ListPage } from './ListPage';
 import React from 'react';
-import { useHibana } from 'src/context/HibanaContext';
 
 function ListPageContainer(props) {
-  const [{ isHibanaEnabled }] = useHibana();
-
-  return <ListPage isHibanaEnabled={isHibanaEnabled} {...props} />;
+  return <ListPage {...props} />;
 }
 
 const mapDispatchToProps = { showAlert };

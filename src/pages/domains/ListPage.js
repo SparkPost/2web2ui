@@ -14,7 +14,7 @@ function DomainsPageContent(props) {
   // trackingDomains,
   // listTrackingDomains,
   // trackingDomainsListError
-  const { isHibanaEnabled, isEmptyStateEnabled } = props;
+  const { isEmptyStateEnabled } = props;
   const {
     listPending,
     listSendingDomains,
@@ -58,7 +58,7 @@ function DomainsPageContent(props) {
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
   const renderInfoBanner = () => {
-    if (listPending || !isEmptyStateEnabled || !isHibanaEnabled) {
+    if (listPending || !isEmptyStateEnabled) {
       return;
     }
 
@@ -127,7 +127,6 @@ function DomainsPageContent(props) {
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
         <div>
-          {/* TODO: Only show banners if not showing empty states */}
           {renderInfoBanner()}
           <TabPanel>{renderTab()}</TabPanel>
         </div>
