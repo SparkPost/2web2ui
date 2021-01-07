@@ -45,7 +45,6 @@ const requireIsFirstRenderEmptyStateLoading = {
 
           if (emptyAttr) {
             if (!loadingAttr) {
-              // console.log('NO LOADING ATTR filepath! ', filePath);
               report({
                 node: node,
                 message: 'Page with empty state has no loading attribute.',
