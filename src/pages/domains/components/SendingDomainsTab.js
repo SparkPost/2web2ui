@@ -142,10 +142,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     sendingDomains,
     bounceDomains,
     sendingDomainsListError,
-    hasSubaccounts,
-    subaccounts,
     listPending,
-    listSubaccounts,
   } = useDomains();
 
   // eslint-disable-next-line no-unused-vars
@@ -226,12 +223,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { rows, setAllFilters, toggleSortBy, state, gotoPage, setPageSize } = tableInstance;
 
   const isEmpty = !listPending && rows?.length === 0;
-
-  useEffect(() => {
-    if (hasSubaccounts && subaccounts?.length === 0) {
-      listSubaccounts();
-    }
-  }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
   // synce query params -> page state
   const firstLoad = useRef(true);

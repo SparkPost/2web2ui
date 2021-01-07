@@ -20,6 +20,9 @@ function DomainTabPages() {
     sendingDomains,
     bounceDomains,
     isEmptyStateEnabled,
+    hasSubaccounts,
+    subaccounts,
+    listSubaccounts,
   } = useDomains();
   const isFirstRender = useRef(true);
   const history = useHistory();
@@ -54,34 +57,37 @@ function DomainTabPages() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (hasSubaccounts && subaccounts?.length === 0) {
+      listSubaccounts();
+    }
+  }, [hasSubaccounts, listSubaccounts, subaccounts]);
+
   const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
   const showSendingDomainsEmptyState =
-    matchesSendingTab &&
     !listPending &&
+    matchesSendingTab &&
     isEmptyStateEnabled &&
     sendingDomains.length === 0 &&
     !sendingDomainsListError;
 
   const showBounceDomainsEmptyState =
-    matchesBounceTab &&
     !listPending &&
+    matchesBounceTab &&
     isEmptyStateEnabled &&
     bounceDomains.length === 0 &&
     sendingDomains.length === 0 &&
     !sendingDomainsListError;
 
   const showSendingInfoBanner =
-    matchesSendingTab && isEmptyStateEnabled && sendingDomains.length > 0;
-  const showBounceInfoBanner = matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
+    !listPending && matchesSendingTab && isEmptyStateEnabled && sendingDomains.length > 0;
+  const showBounceInfoBanner =
+    !listPending && matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
 
   const renderInfoBanner = () => {
-    if (listPending) {
-      return;
-    }
-
     if (showSendingInfoBanner) {
       return <SendingInfoBanner />;
     }
@@ -92,10 +98,6 @@ function DomainTabPages() {
   };
 
   const renderTab = () => {
-    if (listPending) {
-      return;
-    }
-
     if (matchesSendingTab) {
       if (showSendingDomainsEmptyState) {
         return <SendingDomainsEmptyState />;

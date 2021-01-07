@@ -19,6 +19,7 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
 
   // IMPORTANT - props.loading needs to have a isFirstRender boolean set from the parent scope - see api-keys/ListPage.js
   React.useEffect(() => {
+    // IMPORTANT - props.loading prevents multiple calls - SET isFirstRender from parent scope!
     if (isHibanaEnabled && (showHibanaEmptyState || emptyStateTrackingOnly) && !props.loading) {
       segmentTrack(SEGMENT_EVENTS.EMPTY_STATE_LOADED, {
         location: location,
