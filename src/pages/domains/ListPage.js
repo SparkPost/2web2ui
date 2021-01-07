@@ -66,7 +66,7 @@ function DomainsPageContent(props) {
       return <SendingInfoBanner />;
     }
 
-    if (matchesBounceTab && bounceDomains.length > 0) {
+    if (matchesBounceTab && sendingDomains.length > 0) {
       return <BounceInfoBanner />;
     }
   };
