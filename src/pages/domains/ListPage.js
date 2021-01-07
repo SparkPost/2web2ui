@@ -73,11 +73,12 @@ function DomainTabPages() {
     sendingDomains.length === 0 &&
     !sendingDomainsListError;
 
-  const showSendingInfoBanner = matchesSendingTab && sendingDomains.length > 0;
-  const showBounceInfoBanner = matchesBounceTab && sendingDomains.length > 0;
+  const showSendingInfoBanner =
+    matchesSendingTab && isEmptyStateEnabled && sendingDomains.length > 0;
+  const showBounceInfoBanner = matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
 
   const renderInfoBanner = () => {
-    if (listPending || !isEmptyStateEnabled) {
+    if (listPending) {
       return;
     }
 
