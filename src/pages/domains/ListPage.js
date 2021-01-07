@@ -106,10 +106,6 @@ function DomainTabPages() {
   };
 
   const renderTab = () => {
-    if (listPending) {
-      return;
-    }
-
     if (matchesSendingTab) {
       if (showSendingDomainsEmptyState) {
         return <SendingDomainsEmptyState />;
