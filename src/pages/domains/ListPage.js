@@ -73,7 +73,12 @@ function DomainsPageContent(props) {
 
   const renderTab = () => {
     if (matchesSendingTab) {
-      if (isEmptyStateEnabled && sendingDomains.length === 0 && !sendingDomainsListError) {
+      if (
+        !listPending &&
+        isEmptyStateEnabled &&
+        sendingDomains.length === 0 &&
+        !sendingDomainsListError
+      ) {
         return <SendingDomainsEmptyState />;
       }
 
@@ -82,6 +87,7 @@ function DomainsPageContent(props) {
 
     if (matchesBounceTab) {
       if (
+        !listPending &&
         isEmptyStateEnabled &&
         bounceDomains.length === 0 &&
         sendingDomains.length === 0 &&
