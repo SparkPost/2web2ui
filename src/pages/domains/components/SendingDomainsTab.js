@@ -227,11 +227,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const isEmpty = !listPending && rows?.length === 0;
 
-  // Make initial requests
-  useEffect(() => {
-    listSendingDomains();
-  }, [listSendingDomains]);
-
   useEffect(() => {
     if (hasSubaccounts && subaccounts?.length === 0) {
       listSubaccounts();

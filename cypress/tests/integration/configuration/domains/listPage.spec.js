@@ -218,6 +218,8 @@ describe('The domains list page', () => {
           fixture: '200.get.no-results.json',
           requestAlias: 'sendingDomainsReq',
         });
+        stubAccountsReq();
+
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
@@ -1289,6 +1291,14 @@ function stubSendingDomains({
     fixture,
     requestAlias,
     statusCode,
+  });
+}
+
+function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/account**',
+    fixture: fixture,
+    requestAlias: 'accountReq',
   });
 }
 

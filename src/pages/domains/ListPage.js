@@ -10,9 +10,18 @@ import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
 import SendingInfoBanner from 'src/pages/sendingDomains/components/SendingInfoBanner.js';
 import BounceInfoBanner from 'src/pages/sendingDomains/components/BounceInfoBanner.js';
 
-function DomainsPageContent() {
+function DomainsPageContent(props) {
   // trackingDomains,
-  const { listSendingDomains, sendingDomains, bounceDomains, listTrackingDomains } = useDomains();
+  // listTrackingDomains,
+  // trackingDomainsListError
+  const { isHibanaEnabled, isEmptyStateEnabled } = props;
+  const {
+    listPending,
+    listSendingDomains,
+    sendingDomainsListError,
+    sendingDomains,
+    bounceDomains,
+  } = useDomains();
   const history = useHistory();
   const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
@@ -41,30 +50,30 @@ function DomainsPageContent() {
   useEffect(() => {
     listSendingDomains();
     // listTrackingDomains();
-  }, [listSendingDomains, listTrackingDomains]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
   const renderInfoBanner = () => {
-    // TODO: Add extra conditionals
-    // !error &&
-    // isEmptyStateEnabled &&
-    // isHibanaEnabled &&
-    if (matchesSendingTab) {
+    if (listPending || !isEmptyStateEnabled || !isHibanaEnabled) {
+      return;
+    }
+
+    if (matchesSendingTab && sendingDomains.length > 0) {
       return <SendingInfoBanner />;
     }
 
-    if (matchesBounceTab) {
+    if (matchesBounceTab && bounceDomains.length > 0) {
       return <BounceInfoBanner />;
     }
   };
 
   const renderTab = () => {
     if (matchesSendingTab) {
-      // TODO: add extra conditions for empty states - this.props.isEmptyStateEnabled && this.props.isHibanaEnabled &&
-      if (sendingDomains.length === 0) {
+      if (isEmptyStateEnabled && sendingDomains.length === 0 && !sendingDomainsListError) {
         return <SendingDomainsEmptyState />;
       }
 
@@ -72,8 +81,12 @@ function DomainsPageContent() {
     }
 
     if (matchesBounceTab) {
-      // TODO: add extra conditions for empty states - this.props.isEmptyStateEnabled && this.props.isHibanaEnabled &&
-      if (bounceDomains.length === 0 && sendingDomains.length === 0) {
+      if (
+        isEmptyStateEnabled &&
+        bounceDomains.length === 0 &&
+        sendingDomains.length === 0 &&
+        !sendingDomainsListError
+      ) {
         return <BounceDomainsEmptyState />;
       }
 
@@ -123,10 +136,10 @@ function DomainsPageContent() {
   );
 }
 
-export default function DomainsPage() {
+export function ListPage(props) {
   return (
     <Domains.Container>
-      <DomainsPageContent />
+      <DomainsPageContent {...props} />
     </Domains.Container>
   );
 }
