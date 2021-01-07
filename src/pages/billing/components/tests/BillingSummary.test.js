@@ -30,6 +30,27 @@ describe('Component: Billing Summary', () => {
       currentPlan: {
         isFree: true,
       },
+      subscription: {
+        bill_cycle_day: 5,
+        pending_downgrades: [],
+        products: [
+          {
+            plan: '100K-premier-0519',
+            product: 'messaging',
+          },
+
+          {
+            plan: 'ip-0519',
+            product: 'dedicated_ip',
+            quantity: 1,
+            limit: 14,
+            price: 20,
+            volume: 1,
+            billing_period: 'quarter',
+          },
+        ],
+        type: 'active',
+      },
       canChangePlan: true,
       canUpdateBillingInfo: true,
       canPurchaseIps: true,

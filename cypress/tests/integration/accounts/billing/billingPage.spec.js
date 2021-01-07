@@ -125,7 +125,7 @@ describe('Billing Page', () => {
     cy.findByText('Dedicated IPs').should('not.exist');
   });
 
-  it.skip('renders the manually billed transition banner when the user\'s subscription type is not "active", "inactive", or "none"', () => {
+  it('renders the manually billed transition banner when the user\'s subscription type is not "active", "inactive", or "none"', () => {
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/subscription`,
       fixture: 'billing/subscription/200.get.manually-billed.json',
@@ -179,6 +179,18 @@ describe('Billing Page', () => {
     cy.findByLabelText('Country').should('be.visible');
     cy.findByLabelText('State').should('be.visible');
     cy.findByLabelText('Zip Code').should('be.visible');
+  });
+
+  it(" 'Add Dedicated Ip' button is not disabled if the limit on the subscription is more that the quantity of dedicated Ips", () => {
+    cy.stubRequest({
+      url: `${BILLING_API_BASE_URL}/subscription`,
+      fixture: 'billing/subscription/200.get.premier-plan-with-dedicatedip-override.json',
+      requestAlias: 'dedicatedIpOverrideRequest',
+    });
+    cy.visit(PAGE_URL);
+    cy.wait('@dedicatedIpOverrideRequest');
+    cy.findByText('2 for $20.00 per quarter').should('be.visible');
+    cy.findByRole('button', { name: 'Add Dedicated IPs' }).should('not.be.disabled');
   });
 
   describe('the dedicated IPs modal', () => {
@@ -272,6 +284,19 @@ describe('Billing Page', () => {
       assignToExistingIpPool();
 
       cy.findByText('Successfully added 1 dedicated IPs!').should('be.visible');
+    });
+    it(' Renders the modal correctly when limit on the subscription is more that the quantity of dedicated Ips', () => {
+      cy.stubRequest({
+        url: `${BILLING_API_BASE_URL}/subscription`,
+        fixture: 'billing/subscription/200.get.premier-plan-with-dedicatedip-override.json',
+        requestAlias: 'dedicatedIpOverrideRequest',
+      });
+      cy.visit(PAGE_URL);
+      cy.wait('@dedicatedIpOverrideRequest');
+      cy.findByRole('button', { name: 'Add Dedicated IPs' }).click();
+      cy.findByText(
+        'You can add up to 14 total dedicated IPs to your plan for $20.00 per quarter each.',
+      ).should('be.visible');
     });
   });
 

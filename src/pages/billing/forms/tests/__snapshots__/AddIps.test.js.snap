@@ -107,10 +107,12 @@ exports[`AddIps renders correctly with default props 1`] = `
                total dedicated IPs to your plan for
                
               <DedicatedIpCost
-                plan={Object {}}
+                billingPeriodOfDedicatedIp="month"
+                priceOfEachDedicatedIp={20}
                 quantity="1"
               />
-               each.
+               
+              each.
             </span>
           }
           label="Quantity"
@@ -193,14 +195,12 @@ exports[`AddIps renders free ip elements when included in plan 1`] = `
                total dedicated IPs to your plan for
                
               <DedicatedIpCost
-                plan={
-                  Object {
-                    "includesIp": true,
-                  }
-                }
+                billingPeriodOfDedicatedIp="month"
+                priceOfEachDedicatedIp={20}
                 quantity="1"
               />
-               each.
+               
+              each.
             </span>
           }
           label="Quantity"

@@ -114,6 +114,9 @@ export default class BillingSummary extends Component {
       ?.limit;
     const priceOfEachDedicatedIp = _.find(billingSubscription.products, { product: 'dedicated_ip' })
       ?.price;
+    const billingPeriodOfDedicatedIp = _.find(billingSubscription.products, {
+      product: 'dedicated_ip',
+    })?.billing_period;
     // This is an extreme case to support manually billed accounts while transitioning to self serve
     const isTransitioningToSelfServe =
       billing !== null && !billing.credit_card && subscription.type === 'default';
@@ -149,6 +152,7 @@ export default class BillingSummary extends Component {
             isTransitioningToSelfServe={isTransitioningToSelfServe}
             limitOnDedicatedIps={limitOnDedicatedIps}
             priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+            billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
           />
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
         </Panel.LEGACY>
@@ -168,6 +172,7 @@ export default class BillingSummary extends Component {
               onClose={this.handleModal}
               limitOnDedicatedIps={limitOnDedicatedIps}
               priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+              billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
             />
           )}
         </Modal.LEGACY>

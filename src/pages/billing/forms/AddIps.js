@@ -79,6 +79,7 @@ export class AddIps extends Component {
       submitting,
       limitOnDedicatedIps,
       priceOfEachDedicatedIp,
+      billingPeriodOfDedicatedIp,
     } = this.props;
     const remainingCount =
       limitOnDedicatedIps - Math.min(this.props.sendingIps.length, limitOnDedicatedIps);
@@ -128,6 +129,7 @@ export class AddIps extends Component {
                       <DedicatedIpCost
                         priceOfEachDedicatedIp={priceOfEachDedicatedIp}
                         quantity="1"
+                        billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
                       />{' '}
                       each.
                     </span>

@@ -16,6 +16,7 @@ export default function DedicatedIpSummarySection({
   canPurchaseIps,
   limitOnDedicatedIps,
   priceOfEachDedicatedIp,
+  billingPeriodOfDedicatedIp,
 }) {
   const hasReachedMax = count >= limitOnDedicatedIps;
   const disabledPurchaseIP = hasReachedMax || plan.isFree;
@@ -54,7 +55,11 @@ export default function DedicatedIpSummarySection({
     ) : (
       <h6>
         {count} for{' '}
-        <DedicatedIpCost quantity={billableCount} priceOfEachDedicatedIp={priceOfEachDedicatedIp} />
+        <DedicatedIpCost
+          quantity={billableCount}
+          priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+          billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
+        />
       </h6>
     );
 

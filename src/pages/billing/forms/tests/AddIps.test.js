@@ -20,7 +20,10 @@ describe('AddIps', () => {
       currentPlan: plan,
       sendingIps: [],
       handleSubmit: jest.fn(),
-      account: {}
+      account: {},
+      limitOnDedicatedIps: 4,
+      priceOfEachDedicatedIp: 20,
+      billingPeriodOfDedicatedIp: 'month',
     };
 
     isAws.mockImplementation(() => false);
@@ -52,7 +55,7 @@ describe('AddIps', () => {
       additionalProps = {
         showAlert: jest.fn(),
         onClose: jest.fn(),
-        addDedicatedIps: jest.fn(() => Promise.resolve())
+        addDedicatedIps: jest.fn(() => Promise.resolve()),
       };
       wrapper.setProps(additionalProps);
     });
@@ -62,7 +65,7 @@ describe('AddIps', () => {
       expect(instance.props.addDedicatedIps).toHaveBeenCalledWith({
         ip_pool: 'pool_name',
         isAwsAccount: false,
-        quantity: 2
+        quantity: 2,
       });
       expect(additionalProps.showAlert).toHaveBeenCalledTimes(1);
       expect(additionalProps.onClose).toHaveBeenCalledTimes(1);
@@ -74,13 +77,15 @@ describe('AddIps', () => {
       expect(instance.props.addDedicatedIps).toHaveBeenCalledWith({
         ip_pool: 'pool_name',
         isAwsAccount: true,
-        quantity: 1
+        quantity: 1,
       });
     });
 
     it('throws on error', async () => {
       additionalProps.addDedicatedIps.mockReturnValue(Promise.reject());
-      await expect(instance.onSubmit({ ipPool: 'pool name', quantity: 1 })).rejects.toThrowError(SubmissionError);
+      await expect(instance.onSubmit({ ipPool: 'pool name', quantity: 1 })).rejects.toThrowError(
+        SubmissionError,
+      );
       expect(additionalProps.showAlert).toHaveBeenCalledTimes(0);
       expect(additionalProps.onClose).toHaveBeenCalledTimes(0);
     });
@@ -90,5 +95,4 @@ describe('AddIps', () => {
       expect(conversions.trackAddonPurchase).toHaveBeenCalledWith(constants.ANALYTICS_ADDON_IP);
     });
   });
-
 });

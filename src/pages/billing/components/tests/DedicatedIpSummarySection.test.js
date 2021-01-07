@@ -10,29 +10,25 @@ const TEST_CASES = {
     count: 0,
     canPurchaseIps: true,
     plan: { includesIp: true },
-    isAWSAccount: false,
+    limitOnDedicatedIps: 4,
+    priceOfEachDedicatedIp: 20,
+    billingPeriodOfDedicatedIp: 'month',
   },
   'renders count and zero cost': {
     count: 1,
     canPurchaseIps: true,
     plan: { includesIp: true },
-    isAWSAccount: false,
+    limitOnDedicatedIps: 4,
+    priceOfEachDedicatedIp: 20,
+    billingPeriodOfDedicatedIp: 'month',
   },
   'renders disabled add button, count, cost, and max plan notice': {
     count: 4, // configuration default
     canPurchaseIps: true,
     plan: {},
-    isAWSAccount: false,
-  },
-  'renders count and cost for aws customers': {
-    count: 2,
-    plan: {},
-    isAWSAccount: true,
-  },
-  'renders count and cost for aws customers with free ip': {
-    count: 3,
-    plan: { includesIp: true },
-    isAWSAccount: true,
+    limitOnDedicatedIps: 4,
+    priceOfEachDedicatedIp: 20,
+    billingPeriodOfDedicatedIp: 'month',
   },
 };
 
