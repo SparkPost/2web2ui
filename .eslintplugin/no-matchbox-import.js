@@ -1,3 +1,9 @@
+/**
+ * ESLint Docs:
+ *  - https://eslint.org/docs/developer-guide/working-with-plugins#create-a-plugin
+ *  - https://eslint.org/docs/developer-guide/working-with-rules
+ */
+
 const noMatchboxImport = {
   meta: {},
   create(context) {
