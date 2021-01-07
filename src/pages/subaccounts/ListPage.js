@@ -8,8 +8,11 @@ import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { selectSubaccounts } from 'src/selectors/subaccounts';
 import getRowData from './helpers/getRowData';
 import { LINKS } from 'src/constants';
-
-// const columns = ['Name', 'ID', 'Status', null];
+import InfoBanner from './components/InfoBanner';
+import SubaccountEmptyState from './components/SubaccountEmptyState';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import { useHibana } from 'src/context/HibanaContext';
+import { CREATE_SUBACCOUNT } from 'src/constants';
 
 const columns = [
   { label: 'Name', width: '40%', sortKey: 'name' },
@@ -20,11 +23,16 @@ const columns = [
 const primaryAction = {
   content: 'Create Subaccount',
   Component: PageLink,
-  to: '/account/subaccounts/create',
+  to: CREATE_SUBACCOUNT,
 };
 
 export class ListPage extends Component {
+  state = {
+    isFirstRender: true, //this is set to display loading on the first render
+  };
+
   componentDidMount() {
+    this.setState({ isFirstRender: false });
     this.props.listSubaccounts();
   }
 
@@ -82,7 +90,10 @@ export class ListPage extends Component {
             external: true,
           },
         }}
+        hibanaEmptyStateComponent={SubaccountEmptyState}
+        loading={loading || this.state.isFirstRender}
       >
+        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );
@@ -93,6 +104,12 @@ const mapStateToProps = state => ({
   subaccounts: selectSubaccounts(state),
   loading: state.subaccounts.listLoading,
   error: state.subaccounts.listError,
+  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
-export default connect(mapStateToProps, { listSubaccounts })(ListPage);
+function ListPageContainer(props) {
+  const [{ isHibanaEnabled }] = useHibana();
+  return <ListPage isHibanaEnabled={isHibanaEnabled} {...props} />;
+}
+
+export default connect(mapStateToProps, { listSubaccounts })(ListPageContainer);
