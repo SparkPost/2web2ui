@@ -1,4 +1,4 @@
-import ListPage from './ListPage.container';
+import ListPage from './ListPage';
 import CreatePage from './CreatePage';
 import DetailsPage from './DetailsPage';
 import VerifyBounceDomainPage from './VerifyBounceDomainPage';
