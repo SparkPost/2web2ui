@@ -149,12 +149,6 @@ export default function TrackingDomainsTab() {
 
   const isEmpty = !listPending && rows?.length === 0;
 
-  useEffect(() => {
-    if (hasSubaccounts && subaccounts?.length === 0) {
-      listSubaccounts();
-    }
-  }, [hasSubaccounts, listSubaccounts, subaccounts]);
-
   // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
