@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ApiErrorBanner, Loading, PanelLoading } from 'src/components';
-import { ExternalLink, PageLink } from 'src/components/links';
+import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
 import {
   Box,
   Button,
@@ -71,9 +71,11 @@ export const IncidentDetailsPage = ({
 
   const {
     blocklist_name = '',
+    display_name,
     resource = '',
     days_listed,
     resolved_at_timestamp,
+    occurred_at_formatted,
     occurred_at_timestamp,
     recommendation = {},
   } = incident || {};
@@ -194,46 +196,60 @@ export const IncidentDetailsPage = ({
             />
           </Layout.Section>
         </Layout>
-        <Layout>
-          <Layout.Section annotated>
-            <Layout.SectionTitle>Remediation Checklist</Layout.SectionTitle>
-            <Stack space="400">
-              <Text>
-                There could be a few different reasons why you got listed, take a look at our
-                recommendations to get you back up and running.
-              </Text>
-            </Stack>
-          </Layout.Section>
-          <Layout.Section>
-            <Panel data-id="remediation-steps">
-              <Panel.Header>
-                <Panel.Headline as="h6">{recommendation.title}</Panel.Headline>
-              </Panel.Header>
-              <Panel.Section>
-                <Stack>
-                  {(recommendation.check_list || []).map((item, count) => (
-                    <Columns key={count}>
-                      <Column width={1 / 100}>
-                        <Box fontWeight="semibold">{count + 1}.</Box>
-                      </Column>
-                      <Column>{item} </Column>
-                    </Columns>
-                  ))}
-                  <Inline>
-                    <ExternalLink as={Button} to={recommendation.action_link} variant="primary">
-                      {recommendation?.action_text}
-                    </ExternalLink>
-                    {recommendation?.info_text && (
-                      <ExternalLink as={Button} to={recommendation.info_url} variant="secondary">
-                        {recommendation?.info_text}
-                      </ExternalLink>
-                    )}
-                  </Inline>
-                </Stack>
-              </Panel.Section>
-            </Panel>
-          </Layout.Section>
-        </Layout>
+        {/*Resolved incidents will not have a recommendation value, but we set the default to {}*/}
+        {Object.keys(recommendation).length > 0 && (
+          <Layout>
+            <Layout.Section annotated>
+              <Layout.SectionTitle>Remediation Checklist</Layout.SectionTitle>
+              <Stack space="400">
+                <Text>
+                  There could be a few different reasons why you got listed, take a look at our
+                  recommendations to get you back up and running.
+                </Text>
+              </Stack>
+            </Layout.Section>
+            <Layout.Section>
+              <Panel data-id="remediation-steps">
+                <Panel.Header>
+                  <Panel.Headline as="h6">{recommendation.title}</Panel.Headline>
+                </Panel.Header>
+                <Panel.Section>
+                  <Stack>
+                    {(recommendation.check_list || []).map((item, count) => (
+                      <Columns key={count}>
+                        <Column width={1 / 100}>
+                          <Box fontWeight="semibold">{count + 1}.</Box>
+                        </Column>
+                        <Column>{item} </Column>
+                      </Columns>
+                    ))}
+                    <Inline>
+                      {recommendation.action_text === 'Contact Support' ? (
+                        <SupportTicketLink
+                          as={Button}
+                          variant="primary"
+                          issueId="blocklisting"
+                          message={`Listed Resource: ${resource}\n\nList: ${display_name} (${blocklist_name})\n\nListing Date: ${occurred_at_formatted}\n\nIn order to help us address this blocklisting as soon as possible, please specify the steps you have already taken to clean your list.`}
+                        >
+                          {recommendation.action_text}
+                        </SupportTicketLink>
+                      ) : (
+                        <ExternalLink as={Button} to={recommendation.action_link} variant="primary">
+                          {recommendation?.action_text}
+                        </ExternalLink>
+                      )}
+                      {recommendation?.info_text && (
+                        <ExternalLink as={Button} to={recommendation.info_url} variant="secondary">
+                          {recommendation?.info_text}
+                        </ExternalLink>
+                      )}
+                    </Inline>
+                  </Stack>
+                </Panel.Section>
+              </Panel>
+            </Layout.Section>
+          </Layout>
+        )}
         <Layout>
           <Layout.Section annotated>
             <Layout.SectionTitle>Other Incidents for this Resource</Layout.SectionTitle>
