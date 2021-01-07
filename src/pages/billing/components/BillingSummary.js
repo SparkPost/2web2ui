@@ -77,16 +77,6 @@ export default class BillingSummary extends Component {
     );
   };
 
-  renderDedicatedIpSummarySection = isTransitioningToSelfServe => (
-    <DedicatedIpSummarySection
-      count={this.props.sendingIps.length}
-      plan={this.props.currentPlan}
-      canPurchaseIps={this.props.canPurchaseIps}
-      onClick={this.handleIpModal}
-      isTransitioningToSelfServe={isTransitioningToSelfServe}
-    />
-  );
-
   renderRecipientValidationSection = ({ rvUsage }) => {
     const volumeUsed = _.get(rvUsage, 'recipient_validation.month.used', 0);
     const recipientValidationDate = _.get(rvUsage, 'recipient_validation.timestamp');
@@ -120,6 +110,10 @@ export default class BillingSummary extends Component {
     } = this.props;
     const { rvUsage, pending_cancellation, subscription, billing = {} } = account;
     const { show } = this.state;
+    const limitOnDedicatedIps = _.find(billingSubscription.products, { product: 'dedicated_ip' })
+      ?.limit;
+    const priceOfEachDedicatedIp = _.find(billingSubscription.products, { product: 'dedicated_ip' })
+      ?.price;
     // This is an extreme case to support manually billed accounts while transitioning to self serve
     const isTransitioningToSelfServe =
       billing !== null && !billing.credit_card && subscription.type === 'default';
@@ -147,7 +141,15 @@ export default class BillingSummary extends Component {
               <PlanSummary plan={account.subscription} pendingCancellation={pending_cancellation} />
             </LabelledValue>
           </Panel.LEGACY.Section>
-          {this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
+          <DedicatedIpSummarySection
+            count={this.props.sendingIps.length}
+            plan={this.props.currentPlan}
+            canPurchaseIps={this.props.canPurchaseIps}
+            onClick={this.handleIpModal}
+            isTransitioningToSelfServe={isTransitioningToSelfServe}
+            limitOnDedicatedIps={limitOnDedicatedIps}
+            priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+          />
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
         </Panel.LEGACY>
 
@@ -161,7 +163,13 @@ export default class BillingSummary extends Component {
         <Modal.LEGACY open={!!show} onClose={this.handleModal}>
           {show === PAYMENT_MODAL && <UpdatePaymentForm onCancel={this.handleModal} />}
           {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
-          {show === IP_MODAL && <AddIps onClose={this.handleModal} />}
+          {show === IP_MODAL && (
+            <AddIps
+              onClose={this.handleModal}
+              limitOnDedicatedIps={limitOnDedicatedIps}
+              priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+            />
+          )}
         </Modal.LEGACY>
         <RecipientValidationModal
           volumeUsed={volumeUsed}
