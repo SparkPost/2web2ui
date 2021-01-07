@@ -222,6 +222,7 @@ describe('The domains list page', () => {
           fixture: '200.get.no-results.json',
           requestAlias: 'sendingDomainsReq',
         });
+        stubAccountsReq();
 
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
@@ -1434,18 +1435,6 @@ function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } =
     url: '/api/v1/account**',
     fixture: fixture,
     requestAlias: 'accountReq',
-  });
-}
-
-// this is an override of the stub set by stubAuth
-function stubUsersRequest({
-  fixture = 'users/200.get.sending-domain-banner-dismissed.json',
-  requestAlias = 'stubbedUsersRequest',
-}) {
-  cy.stubRequest({
-    url: `/api/v1/users/${USERNAME}`,
-    fixture,
-    requestAlias,
   });
 }
 
