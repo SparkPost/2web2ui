@@ -47,6 +47,17 @@ function getBillingSubscription({
   });
 }
 
+function getInvoices({
+  fixture = 'billing/invoices/200.get.json',
+  requestAlias = 'invoicesReq',
+} = {}) {
+  cy.stubRequest({
+    url: `${BILLING_API_BASE_URL}/invoices`,
+    fixture: fixture,
+    requestAlias: requestAlias,
+  });
+}
+
 describe('Billing Page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -56,10 +67,7 @@ describe('Billing Page', () => {
     getBillingPlans();
     getBillingBundles();
     getSendingIps();
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/invoices`,
-      fixture: 'billing/invoices/200.get.json',
-    });
+    getInvoices();
 
     cy.stubRequest({
       url: '/api/v1/usage',
