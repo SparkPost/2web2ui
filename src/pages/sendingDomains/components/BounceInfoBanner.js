@@ -10,12 +10,12 @@ import { LINKS } from 'src/constants';
 
 export default function InfoBanner() {
   const [dismissed, setDismissed] = useState(
-    useSelector(state => isUserUiOptionSet('onboardingV2.bounceBannerDismissed')(state)),
+    useSelector(state => isUserUiOptionSet('onboardingV2.bounceDomainBannerDismissed')(state)),
   );
   const dispatch = useDispatch();
   const handleDismiss = () => {
     setDismissed(true);
-    dispatch(updateUserUIOptions({ onboardingV2: { bounceBannerDismissed: true } }));
+    dispatch(updateUserUIOptions({ onboardingV2: { bounceDomainBannerDismissed: true } }));
   };
   if (dismissed) return null;
 
