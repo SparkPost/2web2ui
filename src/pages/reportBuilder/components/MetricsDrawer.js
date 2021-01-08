@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Button, Checkbox, Drawer, Expandable, Stack, Tooltip } from 'src/components/matchbox';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Drawer,
+  Expandable,
+  Grid,
+  Tooltip,
+  Stack,
+} from 'src/components/matchbox';
 
 import { categorizedMetricsList, list } from 'src/config/metrics';
 import _ from 'lodash';
@@ -59,7 +68,7 @@ export default function MetricsDrawer(props) {
   const renderMetrics = metrics =>
     metrics.map(metric => {
       return (
-        <div key={metric.key}>
+        <Grid.Column xs={6} key={metric.key}>
           <Tooltip id={metric.key} content={metric.description} portalID="tooltip-portal">
             <Box marginRight="300" width="200px" paddingLeft="100">
               <Checkbox
@@ -70,7 +79,7 @@ export default function MetricsDrawer(props) {
               />
             </Box>
           </Tooltip>
-        </div>
+        </Grid.Column>
       );
     });
 
