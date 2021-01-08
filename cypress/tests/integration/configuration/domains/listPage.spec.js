@@ -981,7 +981,7 @@ describe('The domains list page', () => {
           ).should('be.visible');
 
           cy.get('p').contains(
-            'Bounce domains can be set up using an existing Sending Domain or by adding a new domain specifically for bounce.',
+            'Bounce domains can be set up using an existing sending domain or by adding a new domain specifically for bounces. Only verified domains can be used for bounce domains. Unverified bounce domains will appear under Sending Domains.',
           );
 
           cy.findByText('Add a new bounce domain.').should('be.visible');
@@ -1005,8 +1005,8 @@ describe('The domains list page', () => {
         // bounce domain tab
         cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
 
-        // banner content
         cy.findByRole('heading', { name: 'Bounce Domains' }).should('be.visible');
+
         cy.get('p').contains(
           'Custom bounce domains override the default Return-Path value, also known as the envelope FROM value, which denotes the destination for out-of-band bounces. Bounce domains can be set up using an existing Sending Domain or by adding a new domain specifically for bounce.',
         );
