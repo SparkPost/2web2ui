@@ -1,0 +1,39 @@
+{
+  "results": {
+    "username": "mockuser",
+    "first_name": "UpdateAppTest",
+    "last_name": "TeamName",
+    "email": "mockuser@example.com",
+    "customer": 107,
+    "cookie_consent": "2018-03-28T18:12:32.615Z",
+    "tfa_enabled": false,
+    "tou_auto_accept": false,
+    "is_sso": false,
+    "email_verified": true,
+    "access_level": "admin",
+    "options": {
+      "ui": {
+        "isHibanaBannerVisible": false,
+        "isHibanaEnabled": true,
+        "onboardingV2": {
+          "sendingDomainBannerDismissed": true
+        }
+      }
+    },
+    "created": "2015-07-29T17:59:48.477Z",
+    "updated": "2019-12-13T16:34:20.358Z",
+    "has_subaccounts": true,
+    "tokens": [],
+    "tou": {
+      "state": "accepted",
+      "updated_date": "2014-10-15T00:00+00:00",
+      "must_accept_date": null
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "/api/v1/users/appteam"
+    }
+  ]
+}

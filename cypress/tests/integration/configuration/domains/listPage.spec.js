@@ -1,4 +1,4 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
+import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
 import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/domains';
@@ -274,6 +274,36 @@ describe('The domains list page', () => {
           });
           cy.findByText('Sending Domains Documentation').should('have.length', 1);
         });
+      });
+
+      it('renders an empty state banner above the table after requesting sending domains.', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+        stubAccountsReq();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq']);
+        // banner content
+        cy.findByRole('heading', { name: 'Sending Domains' }).should('be.visible');
+        cy.findByText(
+          'Sending domains are used to indicate who an email is from via the "From" header. DNS records can be configured for a sending domain, which allows recipient mail servers to authenticate messages sent from SparkPost.',
+        ).should('be.visible');
+        cy.verifyLink({
+          content: 'Sending Domains Documentation',
+          href: LINKS.SENDING_DOMAIN_DOCS,
+        });
+      });
+
+      it('does not render an empty state banner above the table after requesting sending domains if the user dismissed it.', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+        stubAccountsReq();
+        stubUsersRequest({});
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq']);
+        // banner content
+        cy.findByRole('heading', { name: 'Sending Domains' }).should('not.exist');
+        cy.findByText(
+          'Sending domains are used to indicate who an email is from via the "From" header. DNS records can be configured for a sending domain, which allows recipient mail servers to authenticate messages sent from SparkPost.',
+        ).should('not.exist');
+        cy.findByRole('button', { name: 'Sending Domains Documentation' }).should('not.exist');
       });
 
       it('renders an error message when an error is returned from the server', () => {
@@ -966,6 +996,41 @@ describe('The domains list page', () => {
         });
       });
 
+      it('renders an empty state banner above the table after requesting sending domains.', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+        stubAccountsReq();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq']);
+
+        // bounce domain tab
+        cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+
+        // banner content
+        cy.findByRole('heading', { name: 'Bounce Domains' }).should('be.visible');
+        cy.get('p').contains(
+          'Custom bounce domains override the default Return-Path value, also known as the envelope FROM value, which denotes the destination for out-of-band bounces. Bounce domains can be set up using an existing Sending Domain or by adding a new domain specifically for bounce.',
+        );
+        cy.verifyLink({
+          content: 'Bounce Domains Documentation',
+          href: LINKS.BOUNCE_DOMAIN_DOCS,
+        });
+      });
+
+      it('does not render an empty state banner above the table after requesting sending domains if the user dismissed it.', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+        stubAccountsReq();
+        stubUsersRequest({ fixture: 'users/200.get.bounce-domain-banner-dismissed.json' });
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq']);
+
+        // bounce domain tab
+        cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+
+        // banner content
+        cy.findByRole('heading', { name: 'Bounce Domains' }).should('not.exist');
+        cy.findByRole('button', { name: 'Bounce Domains Documentation' }).should('not.exist');
+      });
+
       it('renders an error message when an error is returned from the server', () => {
         stubSendingDomains({ fixture: '400.json', statusCode: 400 });
         cy.visit(`${PAGE_URL}/list/bounce`);
@@ -1397,6 +1462,18 @@ function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } =
     url: '/api/v1/account**',
     fixture: fixture,
     requestAlias: 'accountReq',
+  });
+}
+
+// this is an override of the stub set by stubAuth
+function stubUsersRequest({
+  fixture = 'users/200.get.sending-domain-banner-dismissed.json',
+  requestAlias = 'stubbedUsersRequest',
+}) {
+  cy.stubRequest({
+    url: `/api/v1/users/${USERNAME}`,
+    fixture,
+    requestAlias,
   });
 }
 
