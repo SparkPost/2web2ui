@@ -20,8 +20,15 @@ export default function BounceDomainsEmptyState() {
         </Box>
         <p>
           <TranslatableText>Bounce domains can be set up using an&nbsp;</TranslatableText>
-          <Bold>existing Sending Domain&nbsp;</Bold>
-          <TranslatableText>or by adding a new domain specifically for bounce.</TranslatableText>
+          <Bold>existing sending domain&nbsp;</Bold>
+          <TranslatableText>
+            or by adding a new domain specifically for bounces.&nbsp;
+          </TranslatableText>
+          <Bold>Only verified domains&nbsp;</Bold>
+          <TranslatableText>
+            can be used for bounce domains. Unverified bounce domains will appear under Sending
+            Domains.
+          </TranslatableText>
         </p>
         <EmptyState.List>
           <li>
