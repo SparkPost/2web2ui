@@ -54,7 +54,7 @@ export function ReportOptions(props) {
       const { filters } = reportOptions;
 
       if (Boolean(filters.length)) {
-        update.query_filters = encodeURI(JSON.stringify(dehydrateFilters(filters)));
+        update.query_filters = JSON.stringify(dehydrateFilters(filters));
       }
 
       updateFilters({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });

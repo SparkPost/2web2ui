@@ -88,10 +88,10 @@ export function SaveReportModal(props) {
   }, [report, reset]);
 
   const onSubmit = data => {
-    const { filters: selectedFilters, ...update } = selectSummaryChartSearchOptions;
-
-    if (Boolean(selectedFilters.length)) {
-      update.query_filters = encodeURI(JSON.stringify(dehydrateFilters(selectedFilters)));
+    const { filters: _selectedFilters, ...update } = selectSummaryChartSearchOptions;
+    const { filters } = reportOptions;
+    if (Boolean(filters.length)) {
+      update.query_filters = JSON.stringify(dehydrateFilters(filters));
     }
 
     const query_string = qs.stringify(update, { arrayFormat: 'indices' });
