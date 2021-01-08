@@ -35,7 +35,7 @@ export default function ActiveMetrics({ metrics, removeMetric }) {
   );
 }
 
-function MetricTag({ metric, uniqueLabel, onRemove }) {
+export function MetricTag({ metric, uniqueLabel, onRemove }) {
   return (
     <Tag key={metric.name} onRemove={onRemove} data-id="metric-tag">
       <Box as="span" display="inline-flex" alignItems="center">
