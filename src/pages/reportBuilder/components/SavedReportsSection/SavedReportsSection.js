@@ -51,7 +51,7 @@ export const SavedReportsSection = props => {
         message: `Successfully deleted ${focusedReport.name}.`,
       });
       // Unsets the report if it's the report that's deleted.
-      if (focusedReport.id === selectedReport.id) {
+      if (selectedReport && focusedReport.id === selectedReport.id) {
         refreshReportOptions({
           metrics: undefined,
           filters: [],
