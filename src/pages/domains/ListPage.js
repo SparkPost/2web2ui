@@ -5,16 +5,21 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Domains from './components';
 import useDomains from './hooks/useDomains';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
+
 import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
 import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
-import SendingInfoBanner from 'src/pages/sendingDomains/components/SendingInfoBanner.js';
-import BounceInfoBanner from 'src/pages/sendingDomains/components/BounceInfoBanner.js';
+import TrackingDomainsEmptyState from './components/TrackingDomainsEmptyState';
+
+import SendingDomainInfoBanner from 'src/pages/sendingDomains/components/SendingDomainInfoBanner.js';
+import BounceDomainInfoBanner from 'src/pages/sendingDomains/components/BounceDomainInfoBanner.js';
+import TrackingDomainInfoBanner from 'src/pages/sendingDomains/components/TrackingDomainInfoBanner';
 
 function DomainTabPages() {
-  // trackingDomainsListError,
   const {
     listPending,
+    trackingDomains,
     listTrackingDomains,
+    trackingDomainsListError,
     listSendingDomains,
     sendingDomainsListError,
     sendingDomains,
@@ -96,12 +101,16 @@ function DomainTabPages() {
     sendingDomains.length > 0;
 
   const renderInfoBanner = () => {
-    if (showSendingInfoBanner) {
-      return <SendingInfoBanner />;
+    if (showSendingDomainInfoBanner) {
+      return <SendingDomainInfoBanner />;
     }
 
-    if (showBounceInfoBanner) {
-      return <BounceInfoBanner />;
+    if (showBounceDomainInfoBanner) {
+      return <BounceDomainInfoBanner />;
+    }
+
+    if (showTrackingDomainInfoBanner) {
+      return <TrackingDomainInfoBanner />;
     }
   };
 
@@ -123,6 +132,10 @@ function DomainTabPages() {
     }
 
     if (matchesTrackingTab) {
+      if (showTrackingDomainsEmptyState) {
+        return <TrackingDomainsEmptyState />;
+      }
+
       return <Domains.TrackingDomainsTab />;
     }
   };
@@ -151,7 +164,10 @@ export default function DomainsPage() {
         component: PageLink,
       }}
       empty={{
-        trackingOnly: showSendingDomainsEmptyState || showBounceDomainsEmptyState,
+        trackingOnly:
+          showSendingDomainsEmptyState ||
+          showBounceDomainsEmptyState ||
+          showTrackingDomainsEmptyState,
       }}
       loading={listPending || isFirstRender}
     >

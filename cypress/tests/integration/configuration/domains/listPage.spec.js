@@ -962,8 +962,9 @@ describe('The domains list page', () => {
         cy.withinMainContent(() => {
           cy.findByRole('table').should('exist');
 
-          // bounce domain tab
           cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+
+          cy.findByRole('heading', { name: 'Bounce Domains' });
 
           cy.verifyLink({
             content: 'Add Bounce Domain',
@@ -1194,16 +1195,43 @@ describe('The domains list page', () => {
         });
       });
 
-      // TODO: Turn into empty state test on FE-1241
       it('renders an empty table when no results are returned and empty states is turned on', () => {
         stubTrackingDomains({ fixture: '200.get.no-results.json' });
+        stubAccountsReq();
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
-        stubAccountsReq();
+
+        cy.findByRole('tab', { name: 'Tracking Domains' }).click({ force: true });
 
         cy.withinMainContent(() => {
           cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display').should('be.visible');
+
+          cy.findByRole('heading', { name: 'Tracking Domains' });
+
+          cy.verifyLink({
+            content: 'Add Tracking Domain',
+            href: '/domains/create?type=tracking',
+          });
+
+          cy.verifyLink({
+            content: 'Tracking Domains Documentation',
+            href: LINKS.TRACKING_DOMAIN_DOCS,
+          });
+          cy.findByText('Tracking Domains Documentation').should('have.length', 1);
+
+          cy.findByText(
+            'Tracking domains are used in engagement tracking to report email opens and link clicks. Custom tracking domains will replace the domain portion of the URL.',
+          ).should('be.visible');
+
+          cy.findByText('Add a new tracking domain.').should('be.visible');
+
+          cy.findByText('Configure the CNAME record with your domain provider.').should(
+            'be.visible',
+          );
+
+          cy.findByText('Confirm that the tracking domain was successfully verified.').should(
+            'be.visible',
+          );
         });
       });
 
