@@ -50,6 +50,8 @@ export const LINKS = {
     'https://www.sparkpost.com/docs/tech-resources/enabling-multiple-custom-tracking-domains',
   SENDING_REQS: 'https://www.sparkpost.com/docs/getting-started/requirements-for-sending-domains',
   SENDING_SETUP: 'https://www.sparkpost.com/docs/getting-started/setting-up-domains/',
+  TRACKING_DOMAIN_DOCS:
+    'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#tracking-domain',
   SENDING_DOMAIN_DOCS: 'https://www.sparkpost.com/docs/user-guide/managing-sending-domains/',
   BOUNCE_DOMAIN_DOCS:
     'https://www.sparkpost.com/docs/tech-resources/custom-bounce-domain/#using-the-sparkpost-ui',
