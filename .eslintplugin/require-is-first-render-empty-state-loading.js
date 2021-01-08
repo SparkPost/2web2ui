@@ -27,7 +27,7 @@ const requireIsFirstRenderEmptyStateLoading = {
 
     // pseudocode
     // 1. Find JSX instances of <Page />
-    //   2. Look for empty= prop, if there is one
+    //   2. Look for hibanaEmptyStateComponent= prop, if there is one
     //     3. Look for loading= prop
     //       4a. no loading at all - report
     //       4b. loading but no isFirstRender - report
@@ -35,8 +35,8 @@ const requireIsFirstRenderEmptyStateLoading = {
     return {
       JSXElement: (node) => {
         if (node.openingElement.name.name === 'Page') {
-          const emptyAttr = node.openingElement.attributes.find(attr => {
-            if (attr && attr.name && attr.name.name && attr.name.name === 'empty') {
+          const hibanaEmptyStateComponentAttr = node.openingElement.attributes.find(attr => {
+            if (attr && attr.name && attr.name.name && attr.name.name === 'hibanaEmptyStateComponent') {
               return attr;
             }
           });
@@ -47,11 +47,11 @@ const requireIsFirstRenderEmptyStateLoading = {
             }
           });
 
-          if (emptyAttr) {
+          if (hibanaEmptyStateComponentAttr) {
             if (!loadingAttr) {
               report({
                 node: node,
-                message: 'Page with empty state has no loading attribute.',
+                message: 'Page with hibanaEmptyStateComponentAttr has no loading attribute.',
               });
             } else {
               if (fs.existsSync(filePath)) {
@@ -71,7 +71,7 @@ const requireIsFirstRenderEmptyStateLoading = {
                 if (!foundIsFirstRender) {
                   report({
                     node: node,
-                    message: 'Page with empty state & loading attribute missing isFirstRender.',
+                    message: 'Page with hibanaEmptyStateComponentAttr & loading attribute missing isFirstRender in the assignment expression.',
                   });
                 }
               }
