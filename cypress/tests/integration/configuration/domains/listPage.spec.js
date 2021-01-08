@@ -1,4 +1,5 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
+import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/domains';
 
@@ -63,6 +64,9 @@ describe('The domains list page', () => {
       cy.url().should('include', `${PAGE_URL}/list/sending`);
     });
 
+    /**
+     * SENDING DOMAINS TABLE
+     */
     describe('sending domains table', () => {
       function verifyTableRow({ rowIndex, domainName, creationDate, subaccount, statusTags }) {
         cy.get('tbody tr')
@@ -212,7 +216,22 @@ describe('The domains list page', () => {
         verifyMultipleResults();
       });
 
-      it('renders an empty state when no results are returned', () => {
+      it('renders an empty table when no results are returned and empty states is turned off', () => {
+        cy.stubRequest({
+          url: '/api/v1/sending-domains',
+          fixture: '200.get.no-results.json',
+          requestAlias: 'sendingDomainsReq',
+        });
+
+        cy.visit(PAGE_URL);
+        cy.wait('@sendingDomainsReq');
+        cy.withinMainContent(() => {
+          cy.findByRole('table').should('not.exist');
+          cy.findByText('There is no data to display');
+        });
+      });
+
+      it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
           fixture: '200.get.no-results.json',
@@ -224,6 +243,8 @@ describe('The domains list page', () => {
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
           cy.findByRole('table').should('not.exist');
+
+          // Sending domain tab
           cy.get('p')
             .contains(
               'Sending domains are used to indicate who an email is from via the "From" header. DNS records can be configured for a sending domain, which allows recipient mail servers to authenticate messages sent from SparkPost.',
@@ -241,6 +262,16 @@ describe('The domains list page', () => {
           cy.findByText('Confirm that the sending domain was successfully verified.').should(
             'be.visible',
           );
+
+          cy.verifyLink({
+            content: 'Add Sending Domain',
+            href: '/domains/create?type=sending',
+          });
+
+          cy.verifyLink({
+            content: 'Sending Domains Documentation',
+            href: LINKS.SENDING_DOMAIN_DOCS,
+          });
           cy.findByText('Sending Domains Documentation').should('have.length', 1);
         });
       });
@@ -831,6 +862,9 @@ describe('The domains list page', () => {
       });
     });
 
+    /**
+     * TRACKING DOMAINS TABLE
+     */
     describe('bounce domains table', () => {
       it('renders a table after requesting sending domains - and renders only bounce domains', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
@@ -858,6 +892,7 @@ describe('The domains list page', () => {
               });
           });
       });
+
       it('renders correct status checkbox in domain status filter', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
@@ -874,7 +909,7 @@ describe('The domains list page', () => {
         cy.findByLabelText('DKIM Signing').should('be.visible');
       });
 
-      it('renders an empty state when no results are returned', () => {
+      it('renders an empty state when no results are returned and empty states is turned off', () => {
         stubSendingDomains({ fixture: '200.get.no-results.json' });
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/bounce`);
@@ -882,6 +917,53 @@ describe('The domains list page', () => {
 
         cy.get('table').should('not.exist');
         cy.findByText('There is no data to display').should('be.visible');
+      });
+
+      it('renders an empty state when no results are returned and empty states is turned on', () => {
+        cy.stubRequest({
+          url: '/api/v1/sending-domains',
+          fixture: '200.get.no-results.json',
+          requestAlias: 'sendingDomainsReq',
+        });
+        stubAccountsReq();
+
+        cy.visit(PAGE_URL);
+        cy.wait('@sendingDomainsReq');
+        cy.withinMainContent(() => {
+          cy.findByRole('table').should('not.exist');
+
+          // bounce domain tab
+          cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+
+          cy.verifyLink({
+            content: 'Add Bounce Domain',
+            href: '/domains/create?type=bounce',
+          });
+
+          cy.verifyLink({
+            content: 'Bounce Domains Documentation',
+            href: LINKS.BOUNCE_DOMAIN_DOCS,
+          });
+          cy.findByText('Bounce Domains Documentation').should('have.length', 1);
+
+          cy.findByText(
+            'Custom bounce domains override the default Return-Path value, also known as the envelope FROM value, which denotes the destination for out-of-band bounces.',
+          ).should('be.visible');
+
+          cy.get('p').contains(
+            'Bounce domains can be set up using an existing Sending Domain or by adding a new domain specifically for bounce.',
+          );
+
+          cy.findByText('Add a new bounce domain.').should('be.visible');
+
+          cy.findByText('Configure the CNAME record with the domain provider.').should(
+            'be.visible',
+          );
+
+          cy.findByText('Confirm that the bounce domain was successfully verified.').should(
+            'be.visible',
+          );
+        });
       });
 
       it('renders an error message when an error is returned from the server', () => {
@@ -915,6 +997,9 @@ describe('The domains list page', () => {
       // NOTE: Filtering/sorting is not tested for this table here as this particular set of UI is using the same component as the sending domains table.
     });
 
+    /**
+     * TRACKING DOMAINS TABLE
+     */
     describe('tracking domains table', () => {
       function verifyTableRow({ rowIndex, domainName, subaccount, status }) {
         cy.get('tbody tr')
@@ -1033,10 +1118,23 @@ describe('The domains list page', () => {
         verifyMultipleResults();
       });
 
-      it('renders an empty state when no results are returned', () => {
+      it('renders an empty table when no results are returned and empty states is turned off', () => {
         stubTrackingDomains({ fixture: '200.get.no-results.json' });
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
+
+        cy.withinMainContent(() => {
+          cy.findByRole('table').should('not.exist');
+          cy.findByText('There is no data to display').should('be.visible');
+        });
+      });
+
+      // TODO: Turn into empty state test on FE-1241
+      it('renders an empty table when no results are returned and empty states is turned on', () => {
+        stubTrackingDomains({ fixture: '200.get.no-results.json' });
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+        stubAccountsReq();
 
         cy.withinMainContent(() => {
           cy.findByRole('table').should('not.exist');
