@@ -1,6 +1,12 @@
 const fs = require('fs');
 
 /**
+ * Note:
+ *  src/components/matchbox/Page.js - calls segmentTrack, and we need to make sure that call only fires the once on page load
+ *  isFirstRender state variable should be part of the assignment expression for the loading attribute when empty attribute is present.
+ */
+
+/**
  * ESLint Docs:
  *  - https://eslint.org/docs/developer-guide/working-with-plugins#create-a-plugin
  *  - https://eslint.org/docs/developer-guide/working-with-rules
