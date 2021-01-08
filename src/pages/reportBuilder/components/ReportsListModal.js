@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Modal, Tabs } from 'src/components/matchbox';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { MyReportsTab, AllReportsTab } from './ReportsListModalTabs';
 
 export function ReportsListModal({
@@ -14,7 +13,6 @@ export function ReportsListModal({
   handlePin,
   handleDelete,
   handleEdit,
-  isScheduledReportsEnabled,
   pinnedReportId,
   handleReportChange,
 }) {
@@ -34,7 +32,6 @@ export function ReportsListModal({
       reports={reports}
       currentUser={currentUser}
       handleReportChangeAndClose={handleReportChangeAndClose}
-      isScheduledReportsEnabled={isScheduledReportsEnabled}
       handlePin={handlePin}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
@@ -43,7 +40,6 @@ export function ReportsListModal({
     <AllReportsTab
       reports={reports}
       handleReportChangeAndClose={handleReportChangeAndClose}
-      isScheduledReportsEnabled={isScheduledReportsEnabled}
       handlePin={handlePin}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
@@ -75,9 +71,6 @@ export function ReportsListModal({
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser.username,
-    isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
-      state,
-    ),
     pinnedReportId: selectCondition(isUserUiOptionSet('pinned_report_id'))(state),
   };
 };

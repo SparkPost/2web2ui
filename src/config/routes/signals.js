@@ -1,7 +1,7 @@
 import { reportBuilder, reports, signals } from 'src/pages';
 import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
-import { hasAccountOptionEnabled, isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
 const reportsRoutes = [
   {
@@ -126,7 +126,6 @@ const hibanaReportsRoutes = [
   {
     path: '/signals/schedule/:reportId/',
     component: reportBuilder.ScheduledReportCreatePage,
-    condition: isAccountUiOptionSet('allow_scheduled_reports'),
     layout: App,
     category: 'Signals Analytics',
     subcategory: 'Analytics Report',
@@ -135,7 +134,6 @@ const hibanaReportsRoutes = [
   {
     path: '/signals/schedule/:reportId/:scheduleId',
     component: reportBuilder.ScheduledReportEditPage,
-    condition: isAccountUiOptionSet('allow_scheduled_reports'),
     layout: App,
     category: 'Signals Analytics',
     subcategory: 'Analytics Report',

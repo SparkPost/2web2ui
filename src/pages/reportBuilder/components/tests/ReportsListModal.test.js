@@ -8,7 +8,6 @@ describe('ReportsListModal', () => {
     currentUser: 'Sparky McSparkFace',
     handleDelete: jest.fn(),
     handleEdit: jest.fn(),
-    isScheduledReportsEnabled: true,
     open: true,
     reports: [
       {
