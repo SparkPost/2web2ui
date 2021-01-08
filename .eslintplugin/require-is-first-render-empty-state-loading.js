@@ -21,8 +21,6 @@ const requireIsFirstRenderEmptyStateLoading = {
     const withinSrcPages = /2web2ui\/src\/pages/.test(filePath);
     const isTestFile = /.test.js$/.test(filePath);
 
-    // Question: is it better to return early here, or down lower ?
-    // return early...
     if (!withinSrcPages || isTestFile) {
       return {};
     }
