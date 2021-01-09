@@ -8,7 +8,6 @@
     "jest/valid-expect-in-promise": "off",
     "jest/valid-expect": "off",
     // Does not apply to Cypress tests
-    "testing-library/await-async-query": "off",
-    "no-matchbox-import": "off"
+    "testing-library/await-async-query": "off"
   }
 }
