@@ -14,7 +14,7 @@ export default function InfoBanner() {
   const dispatch = useDispatch();
   const handleDismiss = () => {
     setDismissed(true);
-    dispatch(updateUserUIOptions({ onboardingV2: { bounceDomainBannerDismissed: true } }));
+    dispatch(updateUserUIOptions({ onboardingV2: { trackingDomainsBannerDismissed: true } }));
   };
   if (dismissed) return null;
 
