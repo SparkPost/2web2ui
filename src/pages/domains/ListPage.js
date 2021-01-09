@@ -96,10 +96,12 @@ function DomainTabPages() {
 
   const showSendingDomainInfoBanner =
     !listPending && matchesSendingTab && isEmptyStateEnabled && sendingDomains.length > 0;
+
   const showBounceDomainInfoBanner =
     !listPending && matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
+
   const showTrackingDomainInfoBanner =
-    !listPending && matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
+    !listPending && matchesTrackingTab && isEmptyStateEnabled && trackingDomains.length > 0;
 
   const renderInfoBanner = () => {
     if (showSendingDomainInfoBanner) {
