@@ -11,6 +11,9 @@ import {
   verifyMailbox,
   verifyAbuse,
   verifyPostmaster,
+  verifyMailboxToken,
+  verifyAbuseToken,
+  verifyPostmasterToken,
 } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { showAlert } from 'src/actions/globalAlert';
@@ -48,6 +51,8 @@ function mapStateToProps(state) {
     updateTrackingPending: state.trackingDomains.updating,
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
+    subaccountsPending: state.subaccounts.listLoading,
+    tokenStatus: state.sendingDomains.verifyTokenStatus,
     trackingDomains: selectTrackingDomainsRows(state),
     trackingDomainsListError: state.trackingDomains.error,
     userName: state.currentUser.username,
@@ -82,6 +87,9 @@ const mapDispatchToProps = {
   updateTrackingDomain,
   deleteTrackingDomain,
   verifyTrackingDomain,
+  verifyMailboxToken,
+  verifyAbuseToken,
+  verifyPostmasterToken,
 };
 
 export default connect(
