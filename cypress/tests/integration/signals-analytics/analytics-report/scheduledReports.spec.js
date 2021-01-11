@@ -305,7 +305,7 @@ if (IS_HIBANA_ENABLED) {
         .its('requestBody')
         .should('deep.equal', {
           name: 'My Second Report',
-          recipients: ['mockuser', 'whoami'],
+          recipients: ['mockuser', 'fakeuser'],
           schedule: {
             hour: 0,
             month: '*',

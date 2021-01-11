@@ -64,7 +64,7 @@ export const ScheduledReportDetailsForm = ({
       testScheduledReport({
         reportId: report.id,
         name: name,
-        recipients: testSendRecipients.map(({ name }) => name),
+        recipients: testSendRecipients.map(({ username }) => username),
         subject: subject,
       }),
     ).then(() => {

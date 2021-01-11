@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export const formatFormValues = formValues => {
   const { name, subject, period, timing, timezone, ...rest } = formValues;
-  const recipients = rest.recipients.map(({ name }) => name);
+  const recipients = rest.recipients.map(({ username }) => username);
   const [hour, minute] = rest.time.split(':');
 
   /*
@@ -55,7 +55,7 @@ export const getDefaultValues = (scheduledReport, users) => {
   const time = `${formattedHour}:${formattedMinute}`;
   const fullRecipients = recipients
     .map(recipient => {
-      return users.find(({ name }) => name === recipient);
+      return users.find(({ username }) => username === recipient);
     })
     .filter(Boolean);
 

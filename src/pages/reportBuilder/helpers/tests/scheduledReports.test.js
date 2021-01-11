@@ -1,20 +1,20 @@
 import { formatFormValues, getDefaultValues } from '../scheduledReports';
 
 const users = [
-  { name: 'bob', email: 'bob@theBuilder.com' },
-  { name: 'bob2', email: 'bob2@theBuilder.com' },
+  { name: 'bob', email: 'bob@theBuilder.com', username: 'bob-123' },
+  { name: 'bob2', email: 'bob2@theBuilder.com', username: 'bob2-456' },
 ];
 
 describe('getDefaultValues and ', () => {
   const formValuesBase = {
     name: 'test',
-    recipients: [{ name: 'bob', email: 'bob@theBuilder.com' }],
+    recipients: [{ name: 'bob', email: 'bob@theBuilder.com', username: 'bob-123' }],
     subject: 'meh',
     timezone: 'America/New_York',
   };
   const apiValuesBase = {
     name: 'test',
-    recipients: ['bob'],
+    recipients: ['bob-123'],
     subject: 'meh',
     timezone: 'America/New_York',
   };
