@@ -893,7 +893,7 @@ describe('The domains list page', () => {
     });
 
     /**
-     * TRACKING DOMAINS TABLE
+     * BOUNCE DOMAINS TABLE
      */
     describe('bounce domains table', () => {
       it('renders a table after requesting sending domains - and renders only bounce domains', () => {
@@ -952,7 +952,7 @@ describe('The domains list page', () => {
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
-          fixture: '200.get.no-results.json',
+          fixture: 'sending-domains/200.get.unverified-sending.json',
           requestAlias: 'sendingDomainsReq',
         });
         stubAccountsReq();
@@ -960,7 +960,7 @@ describe('The domains list page', () => {
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
-          cy.findByRole('table').should('not.exist');
+          cy.findByRole('table').should('exist');
 
           // bounce domain tab
           cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });

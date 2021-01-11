@@ -79,13 +79,21 @@ function DomainTabPages() {
     matchesBounceTab &&
     isEmptyStateEnabled &&
     bounceDomains.length === 0 &&
-    sendingDomains.length === 0 &&
     !sendingDomainsListError;
 
   const showSendingInfoBanner =
-    !listPending && matchesSendingTab && isEmptyStateEnabled && sendingDomains.length > 0;
+    !listPending &&
+    !showSendingDomainsEmptyState &&
+    matchesSendingTab &&
+    isEmptyStateEnabled &&
+    sendingDomains.length > 0;
+
   const showBounceInfoBanner =
-    !listPending && matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
+    !listPending &&
+    !showBounceDomainsEmptyState &&
+    matchesBounceTab &&
+    isEmptyStateEnabled &&
+    sendingDomains.length > 0;
 
   const renderInfoBanner = () => {
     if (showSendingInfoBanner) {
