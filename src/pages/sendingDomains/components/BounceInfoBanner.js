@@ -45,7 +45,7 @@ export default function InfoBanner() {
       </Banner.Action>
       <Banner.Media>
         <Picture seeThrough>
-          <source srcset={SendingMailWebp} type="image/webp" />
+          <source srcSet={SendingMailWebp} type="image/webp" />
           <Picture.Image alt="" src={SendingMail} />
         </Picture>
       </Banner.Media>

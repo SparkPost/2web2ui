@@ -43,7 +43,7 @@ export default function SubaccountEmptyState() {
           </EmptyState.List>
         </EmptyState.Content>
         <EmptyState.Image src={Configuration}>
-          <source srcset={ConfigurationWebp} type="image/webp"></source>
+          <source srcSet={ConfigurationWebp} type="image/webp"></source>
         </EmptyState.Image>
         <EmptyState.Action component={PageLink} to={CREATE_SUBACCOUNT}>
           Create Subaccount

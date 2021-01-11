@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageLink } from 'src/components/links';
 import { EmptyState } from 'src/components/matchbox';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
@@ -42,9 +43,9 @@ export default function SendingDomainsEmptyState() {
         </EmptyState.List>
       </EmptyState.Content>
       <EmptyState.Image src={SendingMail} seeThrough>
-        <source srcset={SendingMailWebp} type="image/webp" />
+        <source srcSet={SendingMailWebp} type="image/webp" />
       </EmptyState.Image>
-      <EmptyState.Action to="/domains/create?type=sending">Add Sending Domain</EmptyState.Action>
+      <EmptyState.Action component={PageLink} to="/domains/create?type=sending">Add Sending Domain</EmptyState.Action>
       <EmptyState.Action variant="outline" to={LINKS.SENDING_DOMAIN_DOCS} external>
         Sending Domains Documentation
       </EmptyState.Action>

@@ -21,7 +21,7 @@ export default function ApiKeysEmptyState() {
           </p>
         </EmptyState.Content>
         <EmptyState.Image src={MailJpg}>
-          <source srcset={MailWebp} type="image/webp"></source>
+          <source srcSet={MailWebp} type="image/webp"></source>
         </EmptyState.Image>
         <EmptyState.Action component={PageLink} to="/account/api-keys/create">
           Create API Key
