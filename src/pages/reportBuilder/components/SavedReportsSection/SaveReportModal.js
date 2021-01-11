@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import qs from 'qs';
+
 import {
   Box,
   Button,
@@ -13,7 +15,6 @@ import {
 } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import { Heading } from 'src/components/text';
-import { useLocation } from 'react-router-dom';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
@@ -21,6 +22,7 @@ import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import ActiveFilters from 'src/components/reportBuilder/ActiveFilters';
 import { formatDateTime, relativeDateOptionsIndexed } from 'src/helpers/date';
 import ActiveComparisons from '../ActiveComparisons';
+import { dehydrateFilters } from '../../helpers';
 
 const DateRange = ({ to, from, relativeRange }) => {
   if (relativeRange === 'custom') {
@@ -73,8 +75,9 @@ export function SaveReportModal(props) {
       is_editable: false,
     },
   });
-  const { search = '' } = useLocation();
-  const { state: reportOptions } = useReportBuilderContext();
+  const { state: reportOptions, selectors } = useReportBuilderContext();
+  const { selectSummaryChartSearchOptions } = selectors;
+
   const hasFilters = Boolean(reportOptions.filters.length);
   const hasComparisons = Boolean(reportOptions.comparisons.length);
 
@@ -85,8 +88,13 @@ export function SaveReportModal(props) {
   }, [report, reset]);
 
   const onSubmit = data => {
-    const query_string = search.charAt(0) === '?' ? search.substring(1) : search;
+    const { filters: _selectedFilters, ...update } = selectSummaryChartSearchOptions;
+    const { filters } = reportOptions;
+    if (Boolean(filters.length)) {
+      update.query_filters = JSON.stringify(dehydrateFilters(filters));
+    }
 
+    const query_string = qs.stringify(update, { arrayFormat: 'indices' });
     if (saveQuery || create) {
       data.query_string = query_string;
     }

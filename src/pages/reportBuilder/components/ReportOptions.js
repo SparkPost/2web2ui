@@ -53,7 +53,10 @@ export function ReportOptions(props) {
       const { filters: selectedFilters, ...update } = selectSummaryChartSearchOptions;
       const { filters } = reportOptions;
 
-      update.query_filters = encodeURI(JSON.stringify(dehydrateFilters(filters)));
+      if (Boolean(filters.length)) {
+        update.query_filters = JSON.stringify(dehydrateFilters(filters));
+      }
+
       updateFilters({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });
     }
   }, [
