@@ -15,9 +15,7 @@ import { fetch as fetchAccount } from 'src/actions/account';
  *
  */
 export function useSparkPostQuery(queryFn, config = {}) {
-  const queryClient = useQueryClient();
-  const auth = useSelector(state => state.auth);
-  const dispatch = useDispatch();
+  const { queryClient, auth, dispatch } = usePrepareQuery();
   const { method } = queryFn();
 
   return useQuery({
@@ -38,9 +36,7 @@ export function useSparkPostQuery(queryFn, config = {}) {
  *
  */
 export function useSparkPostQueries(queryFns, config = {}) {
-  const queryClient = useQueryClient();
-  const auth = useSelector(state => state.auth);
-  const dispatch = useDispatch();
+  const { queryClient, auth, dispatch } = usePrepareQuery();
 
   // Generate array of query keys based on each passed in query function
   const derivedQueryFns = queryFns.map(queryFn => {
@@ -54,6 +50,21 @@ export function useSparkPostQueries(queryFns, config = {}) {
   });
 
   return useQueries(derivedQueryFns);
+}
+
+/**
+ * Common preparation steps derived from other hooks
+ */
+function usePrepareQuery() {
+  const queryClient = useQueryClient();
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  return {
+    queryClient,
+    auth,
+    dispatch,
+  };
 }
 
 /**
