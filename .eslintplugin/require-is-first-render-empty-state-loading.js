@@ -10,7 +10,7 @@ const fs = require('fs');
  *    ...
  *    empty={ show={EXPRESSION_HERE} }
  *    hibanaEmptyStateComponent={SubaccountEmptyState}
- *    loading={loading || this.state.isFirstRender}
+ *    loading={loading || ...isFirstRender...}
  *    ...
  *  }
  *
@@ -19,7 +19,7 @@ const fs = require('fs');
  * {
  *    ...
  *    empty={ trackingOnly={EXPRESSION_HERE} }
- *    loading={loading || this.state.isFirstRender}
+ *    loading={loading || ...isFirstRender...}
  *    ...
  *  }
  */
