@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery, useQueryCache } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { refresh, logout } from 'src/actions/auth';
 import { useRefreshToken } from 'src/helpers/http';
 import { showAlert } from 'src/actions/globalAlert';
@@ -8,7 +8,7 @@ import { fetch as fetchAccount } from 'src/actions/account';
 import { defaultQuery } from 'src/helpers/api';
 
 export function useSparkPostQueries(queries, config = {}, queryKey) {
-  const queryCache = useQueryCache();
+  const queryClient = useQueryClient();
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -30,14 +30,14 @@ export function useSparkPostQueries(queries, config = {}, queryKey) {
     queryKey,
     config: {
       ...config,
-      onError: error => handleError({ error, queryCache, auth, dispatch }),
+      onError: error => handleError({ error, queryClient, auth, dispatch }),
     },
     queryFn,
   });
 }
 
 export function useSparkPostQuery(queryFn, config = {}) {
-  const queryCache = useQueryCache();
+  const queryClient = useQueryClient();
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const { url, method, params, headers } = queryFn();
@@ -50,7 +50,7 @@ export function useSparkPostQuery(queryFn, config = {}) {
     queryKey,
     config: {
       // Pass in a custom handler for handling errors
-      onError: error => handleError({ error, method, queryCache, auth, dispatch }),
+      onError: error => handleError({ error, method, queryClient, auth, dispatch }),
       // Allow config overriding on a case-by-case basis, for any value not manually updated,
       // `react-query` defaults are used.
       ...config,
@@ -58,12 +58,12 @@ export function useSparkPostQuery(queryFn, config = {}) {
   });
 }
 
-function handleError({ error, method, queryCache, auth, dispatch }) {
+function handleError({ error, method, queryClient, auth, dispatch }) {
   const { response = {} } = error;
 
   if (response.status === 401 && auth.refreshToken) {
     // Invalidate any in-progress queries
-    queryCache.invalidateQueries();
+    queryClient.invalidateQueries();
 
     return (
       // This isn't actually a hook 🤔
@@ -78,8 +78,8 @@ function handleError({ error, method, queryCache, auth, dispatch }) {
           // refresh token request succeeded
           async () => {
             // Refetch queries when the refresh token is successful
-            // See: https://react-query.tanstack.com/docs/api/#querycacherefetchqueries
-            return await queryCache.refetchQueries();
+            // See: https://react-query.tanstack.com/docs/api/#queryClientrefetchqueries
+            return await queryClient.refetchQueries();
           },
           // refresh token request failed
           err => {
