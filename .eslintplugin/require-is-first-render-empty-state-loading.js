@@ -8,7 +8,17 @@ const fs = require('fs');
  *  Required Page Prop format:
  *  {
  *    ...
+ *    empty={ show={EXPRESSION_HERE} }
  *    hibanaEmptyStateComponent={SubaccountEmptyState}
+ *    loading={loading || this.state.isFirstRender}
+ *    ...
+ *  }
+ *
+ *  or
+ *
+ * {
+ *    ...
+ *    empty={ trackingOnly={EXPRESSION_HERE} }
  *    loading={loading || this.state.isFirstRender}
  *    ...
  *  }
@@ -50,7 +60,7 @@ const requireIsFirstRenderEmptyStateLoading = {
             }
           });
 
-          let emptyTrackingOnly;
+          let emptyTrackingOnlyAttr;
           const empty = node.openingElement.attributes.find(attr => {
             if (attr && attr.name && attr.name.name && attr.name.name === 'empty') {
               return attr;
@@ -59,7 +69,7 @@ const requireIsFirstRenderEmptyStateLoading = {
           if (empty) {
             empty.value.expression.properties.forEach(node => {
               if (node.key.name === 'trackingOnly') {
-                emptyTrackingOnly = true;
+                emptyTrackingOnlyAttr = true;
               }
             });
           }
@@ -70,7 +80,7 @@ const requireIsFirstRenderEmptyStateLoading = {
             }
           });
 
-          if (hibanaEmptyStateComponentAttr || emptyTrackingOnly) {
+          if (hibanaEmptyStateComponentAttr || emptyTrackingOnlyAttr) {
             if (!loadingAttr) {
               report({
                 node: node,
