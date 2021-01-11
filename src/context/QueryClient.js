@@ -4,10 +4,11 @@ import { QueryClient, QueryClientProvider as ReactQueryClientProvider } from 're
 import { defaultQuery } from 'src/helpers/api';
 
 const queryClient = new QueryClient({
-  defaultConfig: {
+  defaultOptions: {
     queries: {
       queryFn: defaultQuery,
     },
+    mutations: {}, // TODO: Will be fleshed out when `useMutation` is incorporated
   },
 });
 
