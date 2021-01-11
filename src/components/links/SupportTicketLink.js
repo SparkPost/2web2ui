@@ -10,6 +10,7 @@ export const SupportTicketLink = ({
   children,
   component: _component, // ignore
   issueId, // see, src/config/supportIssues for a complete list
+  onClick,
   message,
   openSupportTicketForm,
   to: _to, // ignore
@@ -27,7 +28,10 @@ export const SupportTicketLink = ({
     <Component
       {...props}
       {...componentSpecificProps[Component]}
-      onClick={() => openSupportTicketForm({ issueId, message })}
+      onClick={() => {
+        openSupportTicketForm({ issueId, message });
+        onClick && onClick();
+      }}
     >
       {children}
     </Component>
@@ -38,6 +42,7 @@ SupportTicketLink.propTypes = {
   as: PropTypes.oneOf([Button, UnstyledLink]),
   children: PropTypes.node.isRequired,
   issueId: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
   message: PropTypes.string,
 };
 

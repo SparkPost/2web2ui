@@ -5,12 +5,15 @@ import TestApp from 'src/__testHelpers__/TestApp';
 import { IncidentDetailsPage } from '../IncidentDetailsPage';
 import RelatedIncidents from '../components/RelatedIncidents';
 import IncidentDetails from '../components/IncidentDetails';
+import * as segmentHelpers from 'src/helpers/segment';
 
 jest.mock('../components/IncidentDetails');
 IncidentDetails.mockImplementation(() => <div className="mock-incident-details"></div>);
 
 jest.mock('../components/RelatedIncidents');
 RelatedIncidents.mockImplementation(() => <div className="mock-related-incidents"></div>);
+
+segmentHelpers.segmentTrack = jest.fn();
 
 const recommendation = {
   title: 'Fix This',
@@ -74,6 +77,9 @@ describe('IncidentDetailsPage', () => {
     const defaults = {
       id: mockIncident.id,
       getIncident: mockGetIncident,
+      incidentsForBlocklist: mockIncidentsForBlocklist,
+      incidentsForResource: mockIncidentsForResource,
+      historicalIncidents: mockHistoricalIncidents,
       listIncidentsForResource: mockListIncidentsForResource,
       listIncidentsForBlocklist: mockListIncidentsForBlocklist,
       listHistoricalResolvedIncidents: mockListHistoricalResolvedIncidents,
@@ -107,9 +113,6 @@ describe('IncidentDetailsPage', () => {
     const wrapper = subject({
       loading: false,
       incident: mockIncident,
-      incidentsForBlocklist: mockIncidentsForBlocklist,
-      incidentsForResource: mockIncidentsForResource,
-      historicalIncidents: mockHistoricalIncidents,
     });
 
     wrapper.update();
@@ -122,9 +125,6 @@ describe('IncidentDetailsPage', () => {
     const props = {
       loading: false,
       incident: mockIncident,
-      incidentsForBlocklist: mockIncidentsForBlocklist,
-      incidentsForResource: mockIncidentsForResource,
-      historicalIncidents: mockHistoricalIncidents,
     };
 
     subject(props, render, true);
@@ -152,14 +152,50 @@ describe('IncidentDetailsPage', () => {
         ...mockIncident,
         recommendation: { ...recommendation, info_text: '', info_url: '' },
       },
-      incidentsForBlocklist: mockIncidentsForBlocklist,
-      incidentsForResource: mockIncidentsForResource,
-      historicalIncidents: mockHistoricalIncidents,
     };
 
     subject(props, render, true);
     const recommendations = screen.getByTestId('remediation-steps');
 
     expect(within(recommendations).getAllByRole('link')).toHaveLength(1);
+  });
+
+  it('tracks user interaction with remediation steps in Segment for external url actions', () => {
+    const props = {
+      loading: false,
+      incident: mockIncident,
+    };
+
+    subject(props, render, true);
+
+    screen.getByText('Request Removal').click();
+    expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+      segmentHelpers.SEGMENT_EVENTS.BLOCKLIST_INCIDENT_ACTION_CLICKED,
+    );
+    screen.getByText('Learn More').click();
+    expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+      segmentHelpers.SEGMENT_EVENTS.BLOCKLIST_INCIDENT_INFO_CLICKED,
+    );
+  });
+
+  it('tracks user interaction with remediation steps in Segment for Contact Support actions', () => {
+    const props = {
+      loading: false,
+      incident: {
+        ...mockIncident,
+        recommendation: {
+          ...recommendation,
+          action_text: 'Contact Support',
+          action_link: undefined,
+        },
+      },
+    };
+
+    subject(props, render, true);
+
+    screen.getByText('Contact Support').click();
+    expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+      segmentHelpers.SEGMENT_EVENTS.BLOCKLIST_INCIDENT_ACTION_CLICKED,
+    );
   });
 });

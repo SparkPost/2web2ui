@@ -16,6 +16,7 @@ import {
   Text,
 } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 import {
   getIncident,
   listIncidentsForResource,
@@ -229,17 +230,34 @@ export const IncidentDetailsPage = ({
                           as={Button}
                           variant="primary"
                           issueId="blocklisting"
+                          onClick={() =>
+                            segmentTrack(SEGMENT_EVENTS.BLOCKLIST_INCIDENT_ACTION_CLICKED)
+                          }
                           message={`Listed Resource: ${resource}\n\nList: ${display_name} (${blocklist_name})\n\nListing Date: ${occurred_at_formatted}\n\nIn order to help us address this blocklisting as soon as possible, please specify the steps you have already taken to clean your list.`}
                         >
                           {recommendation.action_text}
                         </SupportTicketLink>
                       ) : (
-                        <ExternalLink as={Button} to={recommendation.action_link} variant="primary">
+                        <ExternalLink
+                          as={Button}
+                          onClick={() =>
+                            segmentTrack(SEGMENT_EVENTS.BLOCKLIST_INCIDENT_ACTION_CLICKED)
+                          }
+                          to={recommendation.action_link}
+                          variant="primary"
+                        >
                           {recommendation?.action_text}
                         </ExternalLink>
                       )}
                       {recommendation?.info_text && (
-                        <ExternalLink as={Button} to={recommendation.info_url} variant="secondary">
+                        <ExternalLink
+                          as={Button}
+                          onClick={() =>
+                            segmentTrack(SEGMENT_EVENTS.BLOCKLIST_INCIDENT_INFO_CLICKED)
+                          }
+                          to={recommendation.info_url}
+                          variant="secondary"
+                        >
                           {recommendation?.info_text}
                         </ExternalLink>
                       )}

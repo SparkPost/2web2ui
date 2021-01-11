@@ -42,6 +42,25 @@ describe('SupportTicketLink', () => {
     });
   });
 
+  it('also calls passed in onClick function if available.', () => {
+    const openSupportTicketForm = jest.fn();
+    const mockOnClick = jest.fn();
+    const wrapper = subject({
+      issueId: 'my_issue',
+      message: 'Help me!',
+      onClick: mockOnClick,
+      openSupportTicketForm,
+    });
+
+    wrapper.simulate('click');
+
+    expect(openSupportTicketForm).toHaveBeenCalledWith({
+      issueId: 'my_issue',
+      message: 'Help me!',
+    });
+    expect(mockOnClick).toHaveBeenCalled();
+  });
+
   it('renders a button', () => {
     const wrapper = subject({ as: Button });
     expect(wrapper).toHaveDisplayName('Button');
