@@ -5,7 +5,7 @@ import { refresh, logout } from 'src/actions/auth';
 import { useRefreshToken } from 'src/helpers/http';
 import { showAlert } from 'src/actions/globalAlert';
 import { fetch as fetchAccount } from 'src/actions/account';
-import { defaultQuery } from 'src/helpers/api';
+import { defaultQueryFn } from 'src/helpers/api';
 
 export function useSparkPostQueries(queries, config = {}, queryKey) {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ export function useSparkPostQueries(queries, config = {}, queryKey) {
   const queryRequests = () =>
     queries.map(queryFn => {
       const { url, method, params, headers } = queryFn();
-      return defaultQuery(url, { method, params, headers, auth });
+      return defaultQueryFn(url, { method, params, headers, auth });
     });
 
   //Joins queries as single promise
