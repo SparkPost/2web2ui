@@ -50,7 +50,7 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, getError: payload, getLoading: false };
 
     case 'CLEAR_SENDING_DOMAIN':
-      return { ...state, ...initialDomainState };
+      return { ...state, ...initialDomainState, verifyTokenStatus: null };
 
     case 'VERIFY_SENDING_DOMAIN_CNAME_PENDING':
     case 'VERIFY_SENDING_DOMAIN_MX_PENDING':
