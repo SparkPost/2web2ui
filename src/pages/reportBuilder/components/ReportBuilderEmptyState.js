@@ -1,7 +1,7 @@
 import React from 'react';
 import { EmptyState, Tabs, Page } from 'src/components/matchbox';
 import useTabs from 'src/hooks/useTabs';
-import { Rocket } from '@sparkpost/matchbox-icons';
+// import { Rocket } from '@sparkpost/matchbox-icons';
 import AnalyticsWebp from '@sparkpost/matchbox-media/images/Analytics.webp';
 import { useHistory, useLocation } from 'react-router-dom';
 import { LINKS } from 'src/constants';
@@ -20,15 +20,16 @@ const TABS = [
     trackingUrl: '/empty/investigating-problems',
     onClick: function noRefCheck() {},
   },
-  {
-    content: (
-      <>
-        Deliverability Metrics <Rocket color="#fa6423" size="25" />
-      </>
-    ),
-    trackingUrl: '/empty/deliverability-metrics',
-    onClick: function noRefCheck() {},
-  },
+  // Enable when SD is launched
+  // {
+  //   content: (
+  //     <>
+  //       Deliverability Metrics <Rocket color="#fa6423" size="25" />
+  //     </>
+  //   ),
+  //   trackingUrl: '/empty/deliverability-metrics',
+  //   onClick: function noRefCheck() {},
+  // },
 ];
 
 export default function ReportBuilderEmptyState() {

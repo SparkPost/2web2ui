@@ -26,8 +26,8 @@ function InvestigatingProblemsTab() {
     <div>
       <Box as="p" maxWidth="600px" py={500}>
         This example demonstrates how an Analytics Report can be used to diagnose sending issues to
-        a particular recipient domain. By uncovering what types of bounces are occuring, corrective
-        action can be taken to address this particular problem.
+        a particular <strong>recipient domain</strong>. By uncovering what types of bounces are
+        occuring, corrective action can be taken to address this particular problem.
       </Box>
       <Panel>
         <Panel.Header>Metrics</Panel.Header>

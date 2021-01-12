@@ -55,6 +55,19 @@ export function stubSubscription(requestAlias = 'getSubscription') {
   });
 }
 
+export function stubSendingDomains({
+  fixture = '200.get.no-results.json',
+  requestAlias = 'sendingDomainsReq',
+  statusCode = 200,
+} = {}) {
+  cy.stubRequest({
+    url: '/api/v1/sending-domains',
+    fixture,
+    requestAlias,
+    statusCode,
+  });
+}
+
 export function commonBeforeSteps() {
   cy.stubAuth();
   cy.login({ isStubbed: true });
@@ -66,6 +79,7 @@ export function commonBeforeSteps() {
   stubUTCDeliverability();
   stubUTCTimeSeries();
   stubSubscription();
+  stubSendingDomains();
 }
 
 export function getFilterTags() {
