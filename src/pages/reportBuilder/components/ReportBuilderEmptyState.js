@@ -7,7 +7,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { LINKS } from 'src/constants';
 import { Heading } from 'src/components/text';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
-import { TrackingEngagementTab } from './emptyTabs';
+import { TrackingEngagementTab, InvestigatingProblemsTab } from './emptyTabs';
 
 const TABS = [
   {
@@ -71,9 +71,9 @@ export default function ReportBuilderEmptyState() {
       </EmptyState>
       <Heading as="h2">Example Analytics</Heading>
       <Tabs selected={selectedTabIndex} tabs={tabs} keyboardActivation="auto" />
-      {selectedTabIndex === 0 && <div>Tracking Engagement</div>}
-      {selectedTabIndex === 1 && <TrackingEngagementTab />}
-      {selectedTabIndex === 2 && <div>Deliverability Metrics Content</div>}
+      {selectedTabIndex === 0 && <TrackingEngagementTab />}
+      {selectedTabIndex === 1 && <InvestigatingProblemsTab />}
+      {/* {selectedTabIndex === 2 && <DeliverabilityMetricsTab />} */}
     </Page>
   );
 }

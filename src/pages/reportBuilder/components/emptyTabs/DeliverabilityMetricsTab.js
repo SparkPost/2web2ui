@@ -1,28 +1,34 @@
 import React from 'react';
 import { Panel, Box, Inline, LabelValue, Text } from 'src/components/matchbox';
-import LineChart from 'src/components/charts/LineChart';
+import { ChartGroups } from 'src/components/reportBuilder';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { ActiveMetrics } from '../index';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
-import { formatYAxisPercent } from 'src/helpers/chart';
-import SampleLabel from './SampleLabel';
 
-import { trackingEngagementChartData } from '../../constants/emptyState';
+const metrics = ['accepted_rate', 'spam_complaint_rate'];
 
-const metrics = ['accepted_rate', 'open_rate_approx', 'click_through_rate_approx'];
+const filters = [{ AND: { domains: { eq: [{ value: 'gmail.com', type: 'Recipient Domain' }] } } }];
 
-const filters = [{ AND: { campaigns: { eq: [{ value: 'My Campaign', type: 'Campaign' }] } } }];
+const data = {
+  filters: [{ AND: { domains: { eq: [{ value: 'gmail.com', type: 'Recipient Domain' }] } } }],
+  comparisons: [],
+  metrics: ['accepted_rate', 'spam_complaint_rate'],
+  from: '2019-01-01T18:00:00.000Z',
+  to: '2019-03-31T18:17:11.196Z',
+  relativeRange: '7days',
+  precision: 'day',
+  timezone: 'America/Chicago',
+  isReady: true,
+};
 
-function TrackingEngagementTab() {
+function DeliverabilityMetricsTab() {
   const processedMetrics = getMetricsFromKeys(metrics);
 
   return (
     <div>
       <Box as="p" maxWidth="600px" py={500}>
-        This example shows how <strong>Acceptance Rate</strong>, <strong>Open Rate</strong>, and{' '}
-        <strong>Click-Through Rate</strong> can be combined with a <strong>campaign</strong> to
-        reveal the engagement performance of a particular campaign{' '}
-        <strong>sent through SparkPost</strong>.
+        Gain insights directly from the inbox with SparkPost’s Deliverability Metrics. Uncover when
+        spam issues are detected via near real-time feedback from actual customers.
       </Box>
       <Panel>
         <Panel.Header>Metrics</Panel.Header>
@@ -34,27 +40,7 @@ function TrackingEngagementTab() {
           <ActiveFilters filters={filters} handleFilterRemove={() => {}} />
         </Panel.Section>
         <Panel.Section>
-          <Box position="relative">
-            <SampleLabel />
-            <LineChart
-              height={300}
-              syncId="trackingEngagementSampleChart"
-              data={trackingEngagementChartData}
-              precision="day"
-              // showTooltip={true}
-              lines={processedMetrics.map(({ name, label, stroke }) => ({
-                key: name,
-                dataKey: name,
-                name: label,
-                stroke,
-              }))}
-              // {...formatters}
-              yTickFormatter={formatYAxisPercent}
-              tooltipValueFormatter={formatYAxisPercent}
-              // showXAxis={index === charts.length - 1}
-              // tooltip={CustomTooltip}
-            />
-          </Box>
+          <ChartGroups reportOptions={data} />
         </Panel.Section>
         <Panel.Section p="0">
           <Box padding="500" backgroundColor="gray.1000">
@@ -99,4 +85,4 @@ function TrackingEngagementTab() {
   );
 }
 
-export default TrackingEngagementTab;
+export default DeliverabilityMetricsTab;

@@ -1,28 +1,33 @@
 import React from 'react';
 import { Panel, Box, Inline, LabelValue, Text } from 'src/components/matchbox';
 import LineChart from 'src/components/charts/LineChart';
+import { formatNumber } from 'src/helpers/units';
+import { getTimeTickFormatter } from 'src/helpers/chart.js';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { ActiveMetrics } from '../index';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
-import { formatYAxisPercent } from 'src/helpers/chart';
 import SampleLabel from './SampleLabel';
 
-import { trackingEngagementChartData } from '../../constants/emptyState';
+import { investigatingProblemsChartData } from '../../constants/emptyState';
 
-const metrics = ['accepted_rate', 'open_rate_approx', 'click_through_rate_approx'];
+const metrics = [
+  'count_block_bounce',
+  'count_hard_bounce',
+  'count_soft_bounce',
+  'count_undetermined_bounce',
+];
 
-const filters = [{ AND: { campaigns: { eq: [{ value: 'My Campaign', type: 'Campaign' }] } } }];
+const filters = [{ AND: { domains: { eq: [{ value: 'gmail.com', type: 'Recipient Domain' }] } } }];
 
-function TrackingEngagementTab() {
+function InvestigatingProblemsTab() {
   const processedMetrics = getMetricsFromKeys(metrics);
 
   return (
     <div>
       <Box as="p" maxWidth="600px" py={500}>
-        This example shows how <strong>Acceptance Rate</strong>, <strong>Open Rate</strong>, and{' '}
-        <strong>Click-Through Rate</strong> can be combined with a <strong>campaign</strong> to
-        reveal the engagement performance of a particular campaign{' '}
-        <strong>sent through SparkPost</strong>.
+        This example demonstrates how an Analytics Report can be used to diagnose sending issues to
+        a particular recipient domain. By uncovering what types of bounces are occuring, corrective
+        action can be taken to address this particular problem.
       </Box>
       <Panel>
         <Panel.Header>Metrics</Panel.Header>
@@ -38,21 +43,20 @@ function TrackingEngagementTab() {
             <SampleLabel />
             <LineChart
               height={300}
-              syncId="trackingEngagementSampleChart"
-              data={trackingEngagementChartData}
+              syncId="investigatingProblemsSampleChart"
+              data={investigatingProblemsChartData}
               precision="day"
               // showTooltip={true}
+              showXAxis
+              tooltipValueFormatter={formatNumber}
               lines={processedMetrics.map(({ name, label, stroke }) => ({
                 key: name,
                 dataKey: name,
                 name: label,
                 stroke,
               }))}
-              // {...formatters}
-              yTickFormatter={formatYAxisPercent}
-              tooltipValueFormatter={formatYAxisPercent}
-              // showXAxis={index === charts.length - 1}
-              // tooltip={CustomTooltip}
+              xTickFormatter={getTimeTickFormatter('day')}
+              yTickFormatter={formatNumber}
             />
           </Box>
         </Panel.Section>
@@ -99,4 +103,4 @@ function TrackingEngagementTab() {
   );
 }
 
-export default TrackingEngagementTab;
+export default InvestigatingProblemsTab;
