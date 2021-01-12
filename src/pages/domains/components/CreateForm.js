@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { usePageFilters } from 'src/hooks';
 import { useForm, useWatch, Controller } from 'react-hook-form';
 import { LINKS } from 'src/constants';
 import { Abbreviation } from 'src/components';
@@ -20,8 +21,26 @@ import useDomains from '../hooks/useDomains';
 import { DomainAlignmentModal } from './DomainAlignmentModal';
 import useModal from 'src/hooks/useModal';
 
+const initFilters = {
+  type: { defaultValue: 'sending' },
+};
+
 export default function CreateForm() {
   const history = useHistory();
+  const { filters } = usePageFilters(initFilters);
+  const { type } = filters;
+
+  function getDomainCreateType(type) {
+    switch (type) {
+      case 'sending':
+      case 'bounce':
+      case 'tracking':
+        return type;
+      default:
+        return;
+    }
+  }
+
   const {
     createSendingDomain,
     createTrackingDomain,
@@ -29,12 +48,14 @@ export default function CreateForm() {
     createPending,
     showAlert,
   } = useDomains();
+
   const { control, register, handleSubmit, errors, watch, setValue } = useForm({
     defaultValues: {
-      primaryUse: 'sending',
+      primaryUse: getDomainCreateType(type),
       assignTo: 'shared',
     },
   });
+
   const {
     closeModal,
     isModalOpen,

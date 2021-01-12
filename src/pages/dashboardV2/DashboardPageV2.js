@@ -194,7 +194,7 @@ export default function DashboardPageV2() {
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
                       <Dashboard.OnboardingPicture>
-                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <source srcSet={ConfigurationWebp} type="image/webp" />
                         <OnboardingImg alt="" src={Configuration} seeThrough />
                       </Dashboard.OnboardingPicture>
                     </Box>
@@ -226,7 +226,7 @@ export default function DashboardPageV2() {
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
                       <Dashboard.OnboardingPicture>
-                        <source srcset={SendingMailWebp} type="image/webp" />
+                        <source srcSet={SendingMailWebp} type="image/webp" />
                         <OnboardingImg alt="" src={SendingMail} seeThrough />
                       </Dashboard.OnboardingPicture>
                     </Box>
@@ -261,7 +261,7 @@ export default function DashboardPageV2() {
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
                       <Dashboard.OnboardingPicture>
-                        <source srcset={SendingMailWebp} type="image/webp" />
+                        <source srcSet={SendingMailWebp} type="image/webp" />
                         <OnboardingImg alt="" src={SendingMail} seeThrough />
                       </Dashboard.OnboardingPicture>
                     </Box>
@@ -299,7 +299,7 @@ export default function DashboardPageV2() {
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
                       <Dashboard.OnboardingPicture>
-                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <source srcSet={ConfigurationWebp} type="image/webp" />
                         <OnboardingImg alt="" src={Configuration} seeThrough />
                       </Dashboard.OnboardingPicture>
                     </Box>
@@ -342,7 +342,7 @@ export default function DashboardPageV2() {
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
                       <Dashboard.OnboardingPicture>
-                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <source srcSet={ConfigurationWebp} type="image/webp" />
                         <OnboardingImg alt="" src={Configuration} seeThrough />
                       </Dashboard.OnboardingPicture>
                     </Box>

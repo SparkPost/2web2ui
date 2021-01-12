@@ -39,7 +39,7 @@ export default function InfoBanner() {
       </Banner.Action>
       <Banner.Media>
         <Picture seeThrough>
-          <source srcset={ConfigurationWebp} type="image/webp" />
+          <source srcSet={ConfigurationWebp} type="image/webp" />
           <Picture.Image alt="" src={Configuration} />
         </Picture>
       </Banner.Media>

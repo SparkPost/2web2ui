@@ -50,6 +50,9 @@ export const LINKS = {
     'https://www.sparkpost.com/docs/tech-resources/enabling-multiple-custom-tracking-domains',
   SENDING_REQS: 'https://www.sparkpost.com/docs/getting-started/requirements-for-sending-domains',
   SENDING_SETUP: 'https://www.sparkpost.com/docs/getting-started/setting-up-domains/',
+  SENDING_DOMAIN_DOCS: 'https://www.sparkpost.com/docs/user-guide/managing-sending-domains/',
+  BOUNCE_DOMAIN_DOCS:
+    'https://www.sparkpost.com/docs/tech-resources/custom-bounce-domain/#using-the-sparkpost-ui',
   TFA_BACKUP_CODES: 'https://support.sparkpost.com/customer/portal/articles/1948449',
   IP_WARM_UP: 'https://support.sparkpost.com/customer/portal/articles/1972209-ip-warm-up-overview',
   DAILY_USAGE: 'https://www.sparkpost.com/docs/getting-started/what-counts-daily-monthly-usage',
