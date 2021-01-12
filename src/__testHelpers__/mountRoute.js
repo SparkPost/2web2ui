@@ -3,14 +3,15 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import Providers from 'src/Providers';
-
 import configureStore from 'src/store';
-
 import App from 'src/App';
 import { authenticate } from 'src/actions/auth';
 import { initializeAccessControl } from 'src/actions/accessControl';
-
 import asyncFlush from 'src/__testHelpers__/asyncFlush';
+
+jest.mock('react-query/devtools', () => ({
+  ReactQueryDevtools: () => null,
+}));
 
 const forceUpdate = async wrapper => {
   await asyncFlush();
