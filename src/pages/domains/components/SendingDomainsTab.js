@@ -107,6 +107,15 @@ const initFiltersForSending = {
       return val === 'true' || val === 'false' || typeof val === 'boolean';
     },
   },
+  domain: {
+    defaultValue: undefined,
+  },
+  token: {
+    defaultValue: undefined,
+  },
+  mailbox: {
+    defaultValue: undefined,
+  },
 };
 
 const options = [

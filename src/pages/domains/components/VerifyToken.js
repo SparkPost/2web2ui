@@ -1,28 +1,35 @@
 import React, { useEffect } from 'react';
-import useDomains from '../hooks/useDomains';
+import { useHistory } from 'react-router-dom';
 import { usePrevious } from 'src/hooks';
+import _ from 'lodash';
+import useDomains from '../hooks/useDomains';
 
 export function VerifyToken({
+  domains,
   isTracking,
   queryParams,
-  sendingDomainsGetError,
-  sendingDomainsPending,
+  sendingDomainsListError,
+  listPending,
 }) {
+  const history = useHistory();
   const {
-    showAlert,
     verifyMailboxToken,
     verifyAbuseToken,
     verifyPostmasterToken,
+    showAlert,
     tokenStatus,
-    subaccountsPending,
   } = useDomains();
   const prevTokenStatus = usePrevious(tokenStatus);
+
   useEffect(() => {
-    if (!isTracking && !sendingDomainsGetError && !sendingDomainsPending && !subaccountsPending) {
-      function verifyDomain({ domain, mailbox, token }) {
-        if (mailbox && domain && token) {
-          const subaccount = !isNaN(parseInt(domain.subaccount_id))
-            ? domain.subaccount_id
+    if (!isTracking && !sendingDomainsListError && !listPending) {
+      function verifyDomain({ mailbox, domain, token }) {
+        // Find the domain to inject subaccount
+        const sendingDomain = _.find(domains, { domainName: domain });
+
+        if (sendingDomain && mailbox && domain && token) {
+          const subaccount = !isNaN(parseInt(sendingDomain.subaccount_id))
+            ? sendingDomain.subaccount_id
             : undefined;
           let verifyAction = verifyMailboxToken;
 
@@ -34,18 +41,18 @@ export function VerifyToken({
             verifyAction = verifyPostmasterToken;
           }
 
-          return verifyAction({ id: domain.id, token, subaccount });
+          return verifyAction({ id: domain, token, subaccount });
         }
       }
 
       verifyDomain(queryParams);
     }
   }, [
+    domains,
     isTracking,
+    listPending,
     queryParams,
-    sendingDomainsGetError,
-    sendingDomainsPending,
-    subaccountsPending,
+    sendingDomainsListError,
     verifyAbuseToken,
     verifyMailboxToken,
     verifyPostmasterToken,
@@ -59,9 +66,10 @@ export function VerifyToken({
         showAlert({ type: 'error', message: `Unable to verify ${tokenStatus.domain}` });
       } else {
         showAlert({ type: 'success', message: `${tokenStatus.domain} has been verified` });
+        history.push(`/domains/details/sending-bounce/${tokenStatus.domain}`);
       }
     }
-  }, [prevTokenStatus, showAlert, tokenStatus]);
+  }, [history, prevTokenStatus, showAlert, tokenStatus]);
 
   return <></>;
 }

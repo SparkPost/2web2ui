@@ -9,10 +9,11 @@ import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from '.
 import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
 import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
 import TrackingDomainsEmptyState from './components/TrackingDomainsEmptyState';
-
 import SendingDomainInfoBanner from './components/SendingDomainInfoBanner.js';
 import BounceDomainInfoBanner from './components/BounceDomainInfoBanner.js';
 import TrackingDomainInfoBanner from './components/TrackingDomainInfoBanner';
+import { VerifyToken } from './components/VerifyToken';
+import qs from 'query-string';
 
 function DomainTabPages() {
   const {
@@ -167,7 +168,7 @@ function DomainTabPages() {
       return 'tracking';
     }
   };
-
+  const queryParams = qs.parse(useLocation().search);
   return (
     <Page
       title="Domains"
@@ -184,6 +185,13 @@ function DomainTabPages() {
       }}
       loading={listPending && isFirstRender}
     >
+      <VerifyToken
+        isTracking={matchesTrackingTab}
+        sendingDomainsListError={sendingDomainsListError}
+        domains={sendingDomains}
+        loading={listPending}
+        queryParams={queryParams}
+      />
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
         <div>
