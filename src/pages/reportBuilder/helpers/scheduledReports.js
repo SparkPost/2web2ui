@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export const formatFormValues = formValues => {
   const { name, subject, period, timing, timezone, ...rest } = formValues;
-  const recipients = rest.recipients.map(({ name }) => name);
+  const recipients = rest.recipients.map(({ username }) => username);
   const [hour, minute] = rest.time.split(':');
 
   /*
@@ -49,13 +49,15 @@ export const getDefaultValues = (scheduledReport, users) => {
   //day_of_week will be in format mon#2 for 2nd monday or monl for last monday.
   const day = schedule_type === 'daily' ? undefined : day_of_week.slice(0, 3);
   const week = schedule_type === 'monthly' ? day_of_week.slice(3) : undefined;
-  const period = parseInt(hour) > 12 ? 'PM' : 'AM';
+  const period = parseInt(hour) >= 12 ? 'PM' : 'AM';
   const formattedHour = formatHourString(hour);
   const formattedMinute = formatMinuteString(minute);
   const time = `${formattedHour}:${formattedMinute}`;
-  const fullRecipients = recipients.map(recipient => {
-    return users.find(({ name }) => name === recipient);
-  });
+  const fullRecipients = recipients
+    .map(recipient => {
+      return users.find(({ username }) => username === recipient);
+    })
+    .filter(Boolean);
 
   return {
     ...rest,

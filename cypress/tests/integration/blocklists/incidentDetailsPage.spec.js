@@ -82,6 +82,23 @@ if (IS_HIBANA_ENABLED) {
       cy.findByText('Hey look, an error').should('be.visible');
     });
 
+    it('Opens support panel when clicking on "Contact Support" action in remediation steps', () => {
+      cy.visit(PAGE_URL);
+      cy.findByText('Contact Support').click();
+      cy.withinModal(() => {
+        cy.findByText('Submit A Ticket').should('be.visible');
+        cy.findByLabelText('Tell us more about your issue').contains(
+          'Listed Resource: sparkpost.io',
+        );
+        cy.findByLabelText('Tell us more about your issue').contains(
+          'List: AbuseAt CBL (abuseat.org (CBL))',
+        );
+        cy.findByLabelText('Tell us more about your issue').contains(
+          'Listing Date: Dec 25 2019, 2:30am',
+        );
+      });
+    });
+
     describe('Incident Details', () => {
       it('displays alternative text when there are no historical incidents', () => {
         cy.stubRequest({

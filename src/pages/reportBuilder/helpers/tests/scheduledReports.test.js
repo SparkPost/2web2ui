@@ -1,20 +1,20 @@
 import { formatFormValues, getDefaultValues } from '../scheduledReports';
 
 const users = [
-  { name: 'bob', email: 'bob@theBuilder.com' },
-  { name: 'bob2', email: 'bob2@theBuilder.com' },
+  { name: 'bob', email: 'bob@theBuilder.com', username: 'bob-123' },
+  { name: 'bob2', email: 'bob2@theBuilder.com', username: 'bob2-456' },
 ];
 
 describe('getDefaultValues and ', () => {
   const formValuesBase = {
     name: 'test',
-    recipients: [{ name: 'bob', email: 'bob@theBuilder.com' }],
+    recipients: [{ name: 'bob', email: 'bob@theBuilder.com', username: 'bob-123' }],
     subject: 'meh',
     timezone: 'America/New_York',
   };
   const apiValuesBase = {
     name: 'test',
-    recipients: ['bob'],
+    recipients: ['bob-123'],
     subject: 'meh',
     timezone: 'America/New_York',
   };
@@ -49,7 +49,7 @@ describe('getDefaultValues and ', () => {
       day: undefined,
       week: undefined,
       period: 'PM',
-      time: '1:30',
+      time: '12:30',
       timing: 'daily',
     };
     const apiValues = {
@@ -57,7 +57,7 @@ describe('getDefaultValues and ', () => {
       schedule: {
         day_of_month: '?',
         day_of_week: '*',
-        hour: 13,
+        hour: 12,
         minute: 30,
         month: '*',
         second: 0,

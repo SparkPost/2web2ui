@@ -22,6 +22,7 @@ describe('Action Creator: Reports', () => {
       meta: {
         method: 'GET',
         url: `/v1/reports/abc123`,
+        showErrorAlert: false,
       },
     });
   });
@@ -81,6 +82,7 @@ describe('Action Creator: Reports', () => {
       meta: {
         method: 'GET',
         url: `/v1/reports/foo/schedules/bar`,
+        showErrorAlert: false,
       },
     });
   });

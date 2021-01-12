@@ -8,12 +8,6 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
 
       cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-scheduled-reports',
-        requestAlias: 'accountReq',
-      });
-
-      cy.stubRequest({
         url: `/api/v1/users/${USERNAME}`,
         fixture: 'users/200.get.metrics-rollup.json',
         requestAlias: 'userReq',
@@ -35,7 +29,6 @@ if (IS_HIBANA_ENABLED) {
     it('loads a preset report in addition to relevant query params', () => {
       cy.visit(`${PAGE_URL}&report=engagement`);
       cy.wait([
-        '@accountReq',
         '@userReq',
         '@reportsReq',
         '@billingSubscriptionReq',
@@ -49,7 +42,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findAllByText('Opens').should('be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
-      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
@@ -60,7 +53,7 @@ if (IS_HIBANA_ENABLED) {
       cy.visit(
         `${PAGE_URL}&report=engagement&metrics%5B0%5D=count_policy_rejection&filters=Campaign:Christmas`,
       );
-      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
       // Additional params
       cy.findAllByText('Christmas').should('be.visible');
       cy.findByText('Policy Rejections').should('be.visible');
@@ -178,6 +171,50 @@ if (IS_HIBANA_ENABLED) {
       cy.findByLabelText('Report').should('have.value', 'Hello There');
 
       cy.findByText('You have successfully saved Hello There').click();
+    });
+
+    it('removes report id if saving a new report using an existing report', () => {
+      cy.visit(`${PAGE_URL}&report=d50d8475-d4e8-4df0-950f-b142f77df0bf`);
+      cy.wait([
+        '@accountReq',
+        '@userReq',
+        '@reportsReq',
+        '@billingSubscriptionReq',
+        '@getTimeSeries',
+        '@getDeliverability',
+      ]);
+
+      cy.findByRole('button', { name: 'Save New Report' }).click();
+
+      cy.withinModal(() => {
+        cy.findByText('Save New Report').should('be.visible');
+
+        // Check validation
+        cy.findByRole('button', { name: 'Save Report' }).click();
+
+        cy.stubRequest({
+          url: '/api/v1/reports',
+          fixture: 'reports/200.get.new-report',
+          requestAlias: 'newGetSavedReports',
+        });
+
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/reports',
+          fixture: 'reports/200.post.json',
+          requestAlias: 'saveNewReport',
+        });
+
+        // Check submission
+        cy.findByLabelText('Name').type('Hello There');
+        cy.findByLabelText('Description').type('General Kenobi');
+        cy.findByLabelText('Allow others to edit report').check({ force: true });
+        cy.findByRole('button', { name: 'Save Report' }).click();
+      });
+
+      cy.wait('@saveNewReport').then(xhr => {
+        cy.wrap(xhr.url).should('not.include', 'report=d50d8475-d4e8-4df0-950f-b142f77df0bf');
+      });
     });
 
     describe('with saved reports', () => {
@@ -323,7 +360,9 @@ if (IS_HIBANA_ENABLED) {
               .closest('tr')
               .within(() => {
                 cy.get('td').should('have.length', 6);
-                cy.findAllByText('Open Menu').click({ force: true });
+                cy.findAllByText('Open Menu')
+                  .scrollIntoView()
+                  .click({ force: true });
                 cy.findAllByText('Pin to Dashboard').should('be.visible');
               });
           });
@@ -335,7 +374,9 @@ if (IS_HIBANA_ENABLED) {
               .closest('tr')
               .within(() => {
                 cy.findAllByText('Open Menu').click({ force: true });
-                cy.findAllByText('Pin to Dashboard').should('be.visible');
+                cy.findAllByText('Pin to Dashboard')
+                  .scrollIntoView()
+                  .should('be.visible');
                 cy.findAllByText('Pin to Dashboard').click({ force: true });
               });
           });
@@ -377,6 +418,7 @@ if (IS_HIBANA_ENABLED) {
 
                 cy.findByText('Open Menu').click({ force: true });
                 cy.findByText('Pin to Dashboard')
+                  .scrollIntoView()
                   .closest('button')
                   .should('be.disabled');
               });
@@ -385,7 +427,9 @@ if (IS_HIBANA_ENABLED) {
               .closest('tr')
               .within(() => {
                 cy.findAllByText('Open Menu').click({ force: true });
-                cy.findAllByText('Pin to Dashboard').click({ force: true });
+                cy.findAllByText('Pin to Dashboard')
+                  .scrollIntoView()
+                  .click({ force: true });
               });
           });
         });

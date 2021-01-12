@@ -3,7 +3,16 @@
     "id": "7",
     "resource": "sparkpost.io",
     "blocklist_name": "abuseat.org (CBL)",
+    "display_name": "AbuseAt CBL",
     "occurred_at": "2019-12-25T07:30:57.892Z",
+    "recommendation": {
+      "title": "Fix This",
+      "check_list": ["If you are happy", "And you know it", "Clap your hands"],
+      "action_text": "Contact Support",
+      "action_link": "https://www.foo.com",
+      "info_text": "Learn More",
+      "info_url": "https://www.bar.com"
+    },
     "resolved_at": null,
     "status": "flagged"
   }

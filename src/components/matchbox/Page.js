@@ -15,16 +15,16 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
   const location = useLocation();
   const allowEmptyStates = useSelector(isAccountUiOptionSet('allow_empty_states'));
   const showHibanaEmptyState = allowEmptyStates && HibanaEmptyStateComponent && props.empty?.show;
+  const emptyStateTrackingOnly = allowEmptyStates && props.empty?.trackingOnly; // dont look at show or HibanaEmptyStateComponent, just track with segment
 
-  // this is to prevent duplicates, but we still have to be careful if this component is unmounted and remounted
   React.useEffect(() => {
-    if (isHibanaEnabled && showHibanaEmptyState && !props.loading) {
+    if (isHibanaEnabled && (showHibanaEmptyState || emptyStateTrackingOnly) && !props.loading) {
       segmentTrack(SEGMENT_EVENTS.EMPTY_STATE_LOADED, {
         location: location,
         // ...segmentMetaData,
       });
     }
-  }, [isHibanaEnabled, location, props.loading, showHibanaEmptyState]);
+  }, [emptyStateTrackingOnly, isHibanaEnabled, location, props.loading, showHibanaEmptyState]);
 
   if (props.loading) return <Loading />;
 
@@ -32,11 +32,12 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
     return <OGPage {...omitSystemProps(props)} />;
   }
 
-  if (showHibanaEmptyState) {
+  if (showHibanaEmptyState && !emptyStateTrackingOnly) {
     return <HibanaEmptyStateComponent />;
   }
 
   return <HibanaPage {...props} />;
 }
+
 OGPage.displayName = 'OGPage';
 HibanaPage.displayName = 'HibanaPage';

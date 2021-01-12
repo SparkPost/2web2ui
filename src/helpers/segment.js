@@ -11,6 +11,8 @@ export const SEGMENT_EVENTS = {
   ACCOUNT_UPGRADED: 'Account Upgraded',
   ALERT_CREATED: 'Alert Created',
   API_KEY_CREATED: 'API Key Created',
+  BLOCKLIST_INCIDENT_ACTION_CLICKED: 'Blocklist Incident Action Button Clicked',
+  BLOCKLIST_INCIDENT_INFO_CLICKED: 'Blocklist Incident Info Button Clicked',
   HIBANA_TOGGLED_ON: 'Hibana Toggled On',
   HIBANA_TOGGLED_OFF: 'Hibana Toggled Off',
   INVITE_SENT: 'Invite Sent',

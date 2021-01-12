@@ -8,6 +8,7 @@
   },
   "engineStrict": true,
   "scripts": {
+    "lint": "npx eslint src/",
     "start": "FORCE_COLOR=true nf start --port 3100",
     "start-app": "REACT_APP_VERSION=local-$USER-$(git rev-parse HEAD) node scripts/start.js",
     "start-app-hibana": "REACT_APP_DEFAULT_TO_HIBANA=true npm run start-app",
@@ -67,11 +68,11 @@
   "dependencies": {
     "@css-modules-theme/core": "^2.2.0",
     "@sparkpost/boomerang": "^1.0.6",
-    "@sparkpost/design-tokens-hibana": "npm:@sparkpost/design-tokens@~4.6.0",
+    "@sparkpost/design-tokens-hibana": "npm:@sparkpost/design-tokens@~4.7.2",
     "@sparkpost/matchbox": "^3.9.1",
-    "@sparkpost/matchbox-hibana": "npm:@sparkpost/matchbox@~4.6.0",
-    "@sparkpost/matchbox-icons": "~4.6.0",
-    "@sparkpost/matchbox-media": "~4.6.0",
+    "@sparkpost/matchbox-hibana": "npm:@sparkpost/matchbox@~4.7.2",
+    "@sparkpost/matchbox-icons": "~4.7.2",
+    "@sparkpost/matchbox-media": "~4.7.2",
     "@styled-system/props": "^5.1.5",
     "axios": "^0.19.2",
     "bowser": "2.1.2",
@@ -119,7 +120,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "source-map-explorer": "^1.6.0",
-    "styled-components": "^5.1.1",
+    "styled-components": "^5.2.1",
     "use-debounce": "^3.0.1",
     "uuid": "^3.2.1",
     "validator": "^10.2.0"

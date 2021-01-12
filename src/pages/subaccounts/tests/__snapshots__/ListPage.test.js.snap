@@ -17,6 +17,8 @@ exports[`renders correctly 1`] = `
       "title": "Manage your subaccounts",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -108,6 +110,8 @@ exports[`renders empty state 1`] = `
       "title": "Manage your subaccounts",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],
@@ -177,6 +181,8 @@ exports[`renders errors when present 1`] = `
       "title": "Manage your subaccounts",
     }
   }
+  hibanaEmptyStateComponent={[Function]}
+  loading={false}
   primaryAction={
     Object {
       "Component": [Function],

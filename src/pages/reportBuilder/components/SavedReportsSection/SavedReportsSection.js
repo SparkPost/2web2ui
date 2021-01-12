@@ -12,8 +12,6 @@ import useModal from 'src/hooks/useModal';
 import ScheduledReportsModal from './ScheduledReportsModal';
 import { ConfirmationModal, DeleteModal } from 'src/components';
 import { showAlert } from 'src/actions/globalAlert';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import ReportsListModal from '../ReportsListModal';
 
@@ -30,7 +28,7 @@ export const SavedReportsSection = props => {
   const { actions } = useReportBuilderContext();
 
   const { refreshReportOptions } = actions;
-  const { currentUser, handleReportChange, isScheduledReportsEnabled, selectedReport } = props;
+  const { currentUser, handleReportChange, selectedReport } = props;
 
   const onPinConfirm = () => {
     const { showAlert } = props;
@@ -53,7 +51,7 @@ export const SavedReportsSection = props => {
         message: `Successfully deleted ${focusedReport.name}.`,
       });
       // Unsets the report if it's the report that's deleted.
-      if (focusedReport.id === selectedReport.id) {
+      if (selectedReport && focusedReport.id === selectedReport.id) {
         refreshReportOptions({
           metrics: undefined,
           filters: [],
@@ -143,7 +141,7 @@ export const SavedReportsSection = props => {
             <TranslatableText>Save Changes</TranslatableText>
             <Button.Icon as={Save} ml="100" />
           </Button>
-          {isScheduledReportsEnabled && selectedReport?.id && (
+          {selectedReport?.id && (
             <Button
               variant="tertiary"
               onClick={() => openModal({ type: 'scheduled', focusedReport: selectedReport })}
@@ -172,7 +170,7 @@ export const SavedReportsSection = props => {
         setReport={handleReportChange}
         onCancel={closeModal}
       />
-      {isScheduledReportsEnabled && selectedReport?.id && (
+      {selectedReport?.id && (
         <ScheduledReportsModal
           open={isModalOpen && type === 'scheduled'}
           onClose={closeModal}
@@ -252,9 +250,6 @@ const mapStateToProps = state => ({
   status: state.reports.status,
   isDeletePending: state.reports.deletePending,
   userOptionsPending: state.currentUser.userOptionsPending,
-  isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
-    state,
-  ),
 });
 
 export default connect(mapStateToProps, {

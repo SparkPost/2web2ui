@@ -9,10 +9,6 @@ if (IS_HIBANA_ENABLED) {
   describe('Analytics Report Scheduled Reports', () => {
     beforeEach(() => {
       commonBeforeSteps();
-      cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-scheduled-reports',
-      });
 
       cy.stubRequest({
         url: `/api/v1/users`,
@@ -309,7 +305,7 @@ if (IS_HIBANA_ENABLED) {
         .its('requestBody')
         .should('deep.equal', {
           name: 'My Second Report',
-          recipients: ['mockuser', 'whoami'],
+          recipients: ['mockuser', 'fakeuser'],
           schedule: {
             hour: 0,
             month: '*',
@@ -372,6 +368,45 @@ if (IS_HIBANA_ENABLED) {
       });
       cy.url().should('include', '/signals/analytics');
       cy.findByText('Successfully deleted My Scheduled Report').should('be.visible');
+    });
+
+    it('Redirects when the report is not found (Create Page)', () => {
+      cy.stubRequest({
+        method: 'GET',
+        statusCode: 404,
+        url: '/api/v1/reports/*',
+        fixture: '404.json',
+        requestAlias: 'getReport404',
+      });
+      cy.visit('/signals/schedule/foo');
+      cy.wait('@getReport404');
+      cy.url().should('include', '/signals/analytics');
+      cy.findByText('Resource could not be found').should('be.visible');
+    });
+
+    it('Redirects when the report/scheduled report is not found (Edit Page)', () => {
+      cy.stubRequest({
+        method: 'GET',
+        statusCode: 404,
+        url: 'api/v1/reports/**/schedules/**',
+        fixture: '404.json',
+        requestAlias: 'getScheduledReport404',
+      });
+      cy.visit('/signals/schedule/foo/bar');
+      cy.wait('@getScheduledReport404');
+      cy.url().should('include', '/signals/analytics');
+      cy.findByText('Resource could not be found').should('be.visible');
+
+      cy.stubRequest({
+        method: 'GET',
+        statusCode: 404,
+        url: '/api/v1/reports/*',
+        fixture: '404.json',
+        requestAlias: 'getReport404',
+      });
+      cy.visit('/signals/schedule/foo/bar');
+      cy.wait('@getReport404');
+      cy.url().should('include', '/signals/analytics');
     });
   });
 }

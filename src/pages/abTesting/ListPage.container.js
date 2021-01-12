@@ -1,6 +1,4 @@
 import { connect } from 'react-redux';
-import _ from 'lodash';
-// Actions
 import { listAbTests, deleteAbTest, cancelAbTest } from 'src/actions/abTesting';
 import { showAlert } from 'src/actions/globalAlert';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';

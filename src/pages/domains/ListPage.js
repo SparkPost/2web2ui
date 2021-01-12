@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Domains from './components';
+import useDomains from './hooks/useDomains';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
+import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
+import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
+import SendingInfoBanner from 'src/pages/sendingDomains/components/SendingInfoBanner.js';
+import BounceInfoBanner from 'src/pages/sendingDomains/components/BounceInfoBanner.js';
 
-export default function DomainsPage() {
+function DomainTabPages() {
+  // trackingDomainsListError,
+  const {
+    listPending,
+    listTrackingDomains,
+    listSendingDomains,
+    sendingDomainsListError,
+    sendingDomains,
+    bounceDomains,
+    isEmptyStateEnabled,
+    hasSubaccounts,
+    subaccounts,
+    listSubaccounts,
+  } = useDomains();
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const history = useHistory();
   const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
@@ -31,39 +50,125 @@ export default function DomainsPage() {
   ];
   const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
 
+  useEffect(() => {
+    listSendingDomains();
+    listTrackingDomains();
+    setIsFirstRender(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (hasSubaccounts && subaccounts?.length === 0) {
+      listSubaccounts();
+    }
+  }, [hasSubaccounts, listSubaccounts, subaccounts]);
+
   const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
+  const showSendingDomainsEmptyState =
+    !listPending &&
+    matchesSendingTab &&
+    isEmptyStateEnabled &&
+    sendingDomains.length === 0 &&
+    !sendingDomainsListError;
+
+  const showBounceDomainsEmptyState =
+    !listPending &&
+    matchesBounceTab &&
+    isEmptyStateEnabled &&
+    bounceDomains.length === 0 &&
+    !sendingDomainsListError;
+
+  const showSendingInfoBanner =
+    !listPending &&
+    !showSendingDomainsEmptyState &&
+    matchesSendingTab &&
+    isEmptyStateEnabled &&
+    sendingDomains.length > 0;
+
+  const showBounceInfoBanner =
+    !listPending &&
+    !showBounceDomainsEmptyState &&
+    matchesBounceTab &&
+    isEmptyStateEnabled &&
+    sendingDomains.length > 0;
+
+  const renderInfoBanner = () => {
+    if (showSendingInfoBanner) {
+      return <SendingInfoBanner />;
+    }
+
+    if (showBounceInfoBanner) {
+      return <BounceInfoBanner />;
+    }
+  };
+
   const renderTab = () => {
     if (matchesSendingTab) {
+      if (showSendingDomainsEmptyState) {
+        return <SendingDomainsEmptyState />;
+      }
+
       return <Domains.SendingDomainsTab />;
     }
+
     if (matchesBounceTab) {
+      if (showBounceDomainsEmptyState) {
+        return <BounceDomainsEmptyState />;
+      }
+
       return <Domains.SendingDomainsTab renderBounceOnly />;
     }
+
     if (matchesTrackingTab) {
       return <Domains.TrackingDomainsTab />;
     }
   };
 
+  const getTabType = () => {
+    if (matchesSendingTab) {
+      return 'sending';
+    }
+
+    if (matchesBounceTab) {
+      return 'bounce';
+    }
+
+    if (matchesTrackingTab) {
+      return 'tracking';
+    }
+  };
+
+  return (
+    <Page
+      title="Domains"
+      primaryAction={{
+        to: `/domains/create?type=${getTabType()}`,
+        content: 'Add a Domain',
+        component: PageLink,
+      }}
+      empty={{
+        trackingOnly: showSendingDomainsEmptyState || showBounceDomainsEmptyState,
+      }}
+      loading={listPending || isFirstRender}
+    >
+      <Stack>
+        <Tabs selected={tabIndex} tabs={TABS} />
+        <div>
+          {renderInfoBanner()}
+          <TabPanel>{renderTab()}</TabPanel>
+        </div>
+      </Stack>
+    </Page>
+  );
+}
+
+export default function ListPage() {
   return (
     <Domains.Container>
-      <Page
-        title="Domains"
-        primaryAction={{
-          to: '/domains/create',
-          content: 'Add a Domain',
-          component: PageLink,
-        }}
-      >
-        <Stack>
-          <Tabs selected={tabIndex} tabs={TABS} />
-          <div>
-            <TabPanel>{renderTab()}</TabPanel>
-          </div>
-        </Stack>
-      </Page>
+      <DomainTabPages />
     </Domains.Container>
   );
 }
