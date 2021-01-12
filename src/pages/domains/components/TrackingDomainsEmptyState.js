@@ -33,7 +33,7 @@ function TrackingDomainsEmptyState() {
         Tracking Domains Documentation
       </EmptyState.Action>
       <EmptyState.Image src={MailJpg}>
-        <source srcset={MailWebp} type="image/webp"></source>
+        <source srcSet={MailWebp} type="image/webp"></source>
       </EmptyState.Image>
     </EmptyState>
   );

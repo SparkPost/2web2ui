@@ -21,7 +21,11 @@ import useDomains from '../hooks/useDomains';
 import { DomainAlignmentModal } from './DomainAlignmentModal';
 import useModal from 'src/hooks/useModal';
 
-export default function CreateForm({ defaultType = 'sending' }) {
+const initFilters = {
+  type: { defaultValue: 'sending' },
+};
+
+export default function CreateForm() {
   const history = useHistory();
   const { filters } = usePageFilters(initFilters);
   const { type } = filters;
@@ -47,7 +51,7 @@ export default function CreateForm({ defaultType = 'sending' }) {
 
   const { control, register, handleSubmit, errors, watch, setValue } = useForm({
     defaultValues: {
-      primaryUse: defaultType,
+      primaryUse: getDomainCreateType(type),
       assignTo: 'shared',
     },
   });

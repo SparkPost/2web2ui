@@ -8,8 +8,18 @@ const fs = require('fs');
  *  Required Page Prop format:
  *  {
  *    ...
+ *    empty={ show={EXPRESSION_HERE} }
  *    hibanaEmptyStateComponent={SubaccountEmptyState}
- *    loading={loading || this.state.isFirstRender}
+ *    loading={loading || ...isFirstRender...}
+ *    ...
+ *  }
+ *
+ *  or
+ *
+ * {
+ *    ...
+ *    empty={ trackingOnly={EXPRESSION_HERE} }
+ *    loading={loading || ...isFirstRender...}
  *    ...
  *  }
  */
@@ -35,7 +45,8 @@ const requireIsFirstRenderEmptyStateLoading = {
 
     // pseudocode
     // 1. Find JSX instances of <Page />
-    //   2. Look for hibanaEmptyStateComponent= prop, if there is one
+    //   2a. Look for hibanaEmptyStateComponent= prop, if there is one
+    //   2b. or... Look for empty?.trackingOnly= prop, if there is one
     //     3. Look for loading= prop
     //       4a. no loading at all - report
     //       4b. loading but no isFirstRender - report
@@ -49,13 +60,27 @@ const requireIsFirstRenderEmptyStateLoading = {
             }
           });
 
+          let emptyTrackingOnlyAttr;
+          const empty = node.openingElement.attributes.find(attr => {
+            if (attr && attr.name && attr.name.name && attr.name.name === 'empty') {
+              return attr;
+            }
+          });
+          if (empty) {
+            empty.value.expression.properties.forEach(node => {
+              if (node.key.name === 'trackingOnly') {
+                emptyTrackingOnlyAttr = true;
+              }
+            });
+          }
+
           const loadingAttr = node.openingElement.attributes.find(attr => {
             if (attr && attr.name && attr.name.name && attr.name.name === 'loading') {
               return attr;
             }
           });
 
-          if (hibanaEmptyStateComponentAttr) {
+          if (hibanaEmptyStateComponentAttr || emptyTrackingOnlyAttr) {
             if (!loadingAttr) {
               report({
                 node: node,
@@ -66,10 +91,10 @@ const requireIsFirstRenderEmptyStateLoading = {
                 const file = fs.readFileSync(filePath, {});
                 const start = loadingAttr.loc.start.line - 1;
                 const end = loadingAttr.loc.end.line - 1;
-                const lines = file.toString().split(/(?:\r\n|\r|\n)/g);
+                const allLinesInFile = file.toString().split(/(?:\r\n|\r|\n)/g);
                 let foundIsFirstRender;
                 for (let index = start; index <= end; index++) {
-                  const line = lines[index];
+                  const line = allLinesInFile[index];
                   if (/isFirstRender/.test(line)) {
                     foundIsFirstRender = true;
                     break;
