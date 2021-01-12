@@ -1,34 +1,32 @@
 import React from 'react';
-import { EmptyState, Tabs, Page } from 'src/components/matchbox';
+import { EmptyState, Tabs, Page, Stack } from 'src/components/matchbox';
 import useTabs from 'src/hooks/useTabs';
-// import { Rocket } from '@sparkpost/matchbox-icons';
 import AnalyticsWebp from '@sparkpost/matchbox-media/images/Analytics.webp';
 import { useHistory, useLocation } from 'react-router-dom';
 import { LINKS } from 'src/constants';
-import { Heading } from 'src/components/text';
+import { Heading, Bold } from 'src/components/text';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
-import { TrackingEngagementTab, InvestigatingProblemsTab } from './emptyTabs';
+import { TrackingEngagementTab, InvestigatingProblemsTab } from './EmptyTabs';
+// import { Rocket } from '@sparkpost/matchbox-icons';
+// import { tokens } from '@sparkpost/design-tokens-hibana';
 
 const TABS = [
   {
     content: 'Tracking Engagement',
     trackingUrl: '/empty/tracking-engagement',
-    onClick: function noRefCheck() {},
   },
   {
     content: 'Investigating Problems',
     trackingUrl: '/empty/investigating-problems',
-    onClick: function noRefCheck() {},
   },
-  // Enable when SD is launched
+  // Enable when SD is released
   // {
   //   content: (
   //     <>
-  //       Deliverability Metrics <Rocket color="#fa6423" size="25" />
+  //       Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
   //     </>
   //   ),
-  //   trackingUrl: '/empty/deliverability-metrics',
-  //   onClick: function noRefCheck() {},
+  //   trackingUrl: '/empty/deliverability-metrics'
   // },
 ];
 
@@ -56,11 +54,14 @@ export default function ReportBuilderEmptyState() {
       <EmptyState>
         <EmptyState.Header>Analytics Report</EmptyState.Header>
         <EmptyState.Content>
-          <p>
-            Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited
-            metrics across delivery and deliverability data. To learn how to unlock the full
-            potential of SparkPost's Analytics Report, visit the documentation link below.
-          </p>
+          <Stack>
+            <p>
+              Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited
+              metrics across delivery and deliverability data. To learn how to unlock the full
+              potential of SparkPost's Analytics Report, visit the documentation link below.
+            </p>
+            <Bold>A sending domain is required to start generating analytics.</Bold>
+          </Stack>
         </EmptyState.Content>
         <EmptyState.Image src={AnalyticsWebp} />
         <EmptyState.Action onClick={() => history.push('/domains/create')}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Panel, Box, Inline, LabelValue, Text } from 'src/components/matchbox';
+import { Bold } from 'src/components/text';
 import LineChart from 'src/components/charts/LineChart';
 import { formatNumber } from 'src/helpers/units';
 import { getTimeTickFormatter } from 'src/helpers/chart.js';
@@ -26,7 +27,7 @@ function InvestigatingProblemsTab() {
     <div>
       <Box as="p" maxWidth="600px" py={500}>
         This example demonstrates how an Analytics Report can be used to diagnose sending issues to
-        a particular <strong>recipient domain</strong>. By uncovering what types of bounces are
+        a particular <Bold>recipient domain</Bold>. By uncovering what types of bounces are
         occuring, corrective action can be taken to address this particular problem.
       </Box>
       <Panel>

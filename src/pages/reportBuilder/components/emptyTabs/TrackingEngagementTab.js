@@ -1,5 +1,6 @@
 import React from 'react';
 import { Panel, Box, Inline, LabelValue, Text } from 'src/components/matchbox';
+import { Bold } from 'src/components/text';
 import LineChart from 'src/components/charts/LineChart';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { ActiveMetrics } from '../index';
@@ -19,10 +20,9 @@ function TrackingEngagementTab() {
   return (
     <div>
       <Box as="p" maxWidth="600px" py={500}>
-        This example shows how <strong>Acceptance Rate</strong>, <strong>Open Rate</strong>, and{' '}
-        <strong>Click-Through Rate</strong> can be combined with a <strong>campaign</strong> to
-        reveal the engagement performance of a particular campaign{' '}
-        <strong>sent through SparkPost</strong>.
+        This example shows how <Bold>Acceptance Rate</Bold>, <Bold>Open Rate</Bold>, and{' '}
+        <Bold>Click-Through Rate</Bold> can be combined with a <Bold>campaign</Bold> to reveal the
+        engagement performance of a particular campaign <Bold>sent through SparkPost</Bold>.
       </Box>
       <Panel>
         <Panel.Header>Metrics</Panel.Header>
