@@ -128,20 +128,6 @@ describe('Panel Matchbox component wrapper: ', () => {
       expect(wrapper).toHaveTextContent('Hello!');
     });
 
-    it('renders with the default "as" value of "h3"', () => {
-      mockHibanaIsEnabled();
-      const wrapper = subject();
-
-      expect(wrapper.find('Heading')).toHaveProp('as', 'h3');
-    });
-
-    it('renders with the passed in "as" prop', () => {
-      mockHibanaIsEnabled();
-      const wrapper = subject({ as: 'h4' });
-
-      expect(wrapper.find('Heading')).toHaveProp('as', 'h4');
-    });
-
     it('throws an error when Hibana is not enabled', () => {
       mockHibanaIsDisabled();
 

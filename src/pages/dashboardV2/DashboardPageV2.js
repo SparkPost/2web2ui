@@ -147,13 +147,16 @@ export default function DashboardPageV2() {
                 <Dashboard.Panel>
                   <Panel.Header>
                     <Panel.Headline>{pinnedReport.name}</Panel.Headline>
+
                     <Panel.Action onClick={() => history.push(pinnedReport.linkToReportBuilder)}>
                       <TranslatableText>View Report</TranslatableText> <ShowChart size={25} />
                     </Panel.Action>
+
                     <Panel.Action onClick={() => openModal({ name: 'Change Report' })}>
                       <TranslatableText>Change Report</TranslatableText> <Sync size={25} />
                     </Panel.Action>
                   </Panel.Header>
+
                   {!pinnedReport.loading && (
                     <ChartGroups reportOptions={pinnedReport.options} p="0" small={true} />
                   )}
@@ -178,8 +181,11 @@ export default function DashboardPageV2() {
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
-                      <Panel.Section>
+                      <Panel.Header>
                         <Panel.Headline>Analytics Report</Panel.Headline>
+                      </Panel.Header>
+
+                      <Panel.Section>
                         <Stack>
                           <Text>
                             Build custom analytics, track engagement, diagnose errors, and more.
@@ -206,8 +212,11 @@ export default function DashboardPageV2() {
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
-                      <Panel.Section>
+                      <Panel.Header>
                         <Panel.Headline>Get Started!</Panel.Headline>
+                      </Panel.Header>
+
+                      <Panel.Section>
                         <Stack>
                           <Text>
                             <TranslatableText>At least one&nbsp;</TranslatableText>
@@ -238,8 +247,11 @@ export default function DashboardPageV2() {
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
-                      <Panel.Section>
+                      <Panel.Header>
                         <Panel.Headline>Get Started!</Panel.Headline>
+                      </Panel.Header>
+
+                      <Panel.Section>
                         <Stack>
                           <Text>
                             <TranslatableText>
@@ -273,8 +285,11 @@ export default function DashboardPageV2() {
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
-                      <Panel.Section>
+                      <Panel.Header>
                         <Panel.Headline>Start Sending!</Panel.Headline>
+                      </Panel.Header>
+
+                      <Panel.Section>
                         <Stack>
                           <Text>
                             <TranslatableText>Create an&nbsp;</TranslatableText>
@@ -311,8 +326,11 @@ export default function DashboardPageV2() {
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
-                      <Panel.Section>
+                      <Panel.Header>
                         <Panel.Headline>Start Sending!</Panel.Headline>
+                      </Panel.Header>
+
+                      <Panel.Section>
                         <Stack>
                           <Text>
                             <TranslatableText>
@@ -352,12 +370,14 @@ export default function DashboardPageV2() {
 
               <div data-id="dashboard-helpful-shortcuts">
                 <Dashboard.Panel>
-                  <Panel.Section>
+                  <Panel.Header>
                     <Panel.Headline>
                       <Panel.HeadlineIcon as={LightbulbOutline} />
                       <TranslatableText>Helpful Shortcuts</TranslatableText>
                     </Panel.Headline>
+                  </Panel.Header>
 
+                  <Panel.Section>
                     <Columns collapseBelow="md">
                       {isAnAdmin && (
                         <Dashboard.Tip>
@@ -401,13 +421,15 @@ export default function DashboardPageV2() {
                 {hasSetupDocumentationPanel && (
                   <Column>
                     <Dashboard.Panel>
-                      <Panel.Section>
+                      <Panel.Header>
                         <Panel.Headline>
                           <Panel.HeadlineIcon as={Code} />
 
                           <TranslatableText>Setup Documentation</TranslatableText>
                         </Panel.Headline>
+                      </Panel.Header>
 
+                      <Panel.Section>
                         <ExternalLink to="/">Integration Documentation</ExternalLink>
                       </Panel.Section>
                     </Dashboard.Panel>
@@ -416,12 +438,15 @@ export default function DashboardPageV2() {
 
                 <Column>
                   <Dashboard.Panel>
-                    <Panel.Section>
+                    <Panel.Header>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={ChatBubble} />
+
                         <TranslatableText>Need Help?</TranslatableText>
                       </Panel.Headline>
+                    </Panel.Header>
 
+                    <Panel.Section>
                       <SupportTicketLink>Contact our Support Team</SupportTicketLink>
                     </Panel.Section>
                   </Dashboard.Panel>
