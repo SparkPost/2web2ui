@@ -176,7 +176,6 @@ if (IS_HIBANA_ENABLED) {
     it('removes report id if saving a new report using an existing report', () => {
       cy.visit(`${PAGE_URL}&report=d50d8475-d4e8-4df0-950f-b142f77df0bf`);
       cy.wait([
-        '@accountReq',
         '@userReq',
         '@reportsReq',
         '@billingSubscriptionReq',
