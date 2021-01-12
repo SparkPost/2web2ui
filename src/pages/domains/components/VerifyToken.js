@@ -4,8 +4,6 @@ import { usePrevious } from 'src/hooks';
 
 export function VerifyToken({
   isTracking,
-  domain,
-  id,
   queryParams,
   sendingDomainsGetError,
   sendingDomainsPending,
@@ -20,14 +18,8 @@ export function VerifyToken({
   } = useDomains();
   const prevTokenStatus = usePrevious(tokenStatus);
   useEffect(() => {
-    if (
-      !isTracking &&
-      !sendingDomainsGetError &&
-      !sendingDomainsPending &&
-      !subaccountsPending &&
-      domain.id === id
-    ) {
-      function verifyDomain({ mailbox, token }) {
+    if (!isTracking && !sendingDomainsGetError && !sendingDomainsPending && !subaccountsPending) {
+      function verifyDomain({ domain, mailbox, token }) {
         if (mailbox && domain && token) {
           const subaccount = !isNaN(parseInt(domain.subaccount_id))
             ? domain.subaccount_id
@@ -42,15 +34,13 @@ export function VerifyToken({
             verifyAction = verifyPostmasterToken;
           }
 
-          return verifyAction({ id, token, subaccount });
+          return verifyAction({ id: domain.id, token, subaccount });
         }
       }
 
       verifyDomain(queryParams);
     }
   }, [
-    domain,
-    id,
     isTracking,
     queryParams,
     sendingDomainsGetError,
@@ -71,7 +61,7 @@ export function VerifyToken({
         showAlert({ type: 'success', message: `${tokenStatus.domain} has been verified` });
       }
     }
-  }, [id, prevTokenStatus, showAlert, tokenStatus]);
+  }, [prevTokenStatus, showAlert, tokenStatus]);
 
   return <></>;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Page, Banner, Button, Box } from 'src/components/matchbox';
-import { useRouteMatch, useParams, useLocation } from 'react-router-dom';
+import { useRouteMatch, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
@@ -18,8 +18,6 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import Domains from './components';
 import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
-import qs from 'query-string';
-import { VerifyToken } from './components/VerifyToken';
 
 const StyledBox = styled(Box)`
   max-width: 600px;
@@ -55,8 +53,6 @@ function DetailsPage(props) {
 
     return history.push('/domains/list/sending');
   };
-
-  const queryParams = qs.parse(useLocation().search);
 
   useEffect(() => {
     if (!isTracking) getDomain(id);
@@ -174,14 +170,6 @@ function DetailsPage(props) {
             </Banner.Actions>
           </Banner>
         )}
-        <VerifyToken
-          domain={domain}
-          id={id}
-          isTracking={isTracking}
-          queryParams={queryParams}
-          sendingDomainsGetError={sendingDomainsGetError}
-          sendingDomainsPending={sendingDomainsPending}
-        />
         <Domains.DomainStatusSection domain={domain} id={id} isTracking={isTracking} />
 
         <Domains.SetupForSending
