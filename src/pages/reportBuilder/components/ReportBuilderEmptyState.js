@@ -1,11 +1,11 @@
 import React from 'react';
-import { EmptyState, Tabs } from 'src/components/matchbox';
+import { EmptyState, Stack, Tabs } from 'src/components/matchbox';
 import { Rocket } from '@sparkpost/matchbox-icons';
 import AnalyticsWebp from '@sparkpost/matchbox-media/images/Analytics.webp';
 import { Page } from 'src/components/matchbox';
 import { useHistory } from 'react-router-dom';
 import { LINKS } from 'src/constants';
-import { Heading } from 'src/components/text';
+import { Heading, Bold } from 'src/components/text';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 
 export default function ReportBuilderEmptyState() {
@@ -15,11 +15,14 @@ export default function ReportBuilderEmptyState() {
       <EmptyState>
         <EmptyState.Header>Analytics Report</EmptyState.Header>
         <EmptyState.Content>
-          <p>
-            Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited
-            metrics across delivery and deliverability data. To learn how to unlock the full
-            potential of SparkPost's Analytics Report, visit the documentation link below.
-          </p>
+          <Stack>
+            <p>
+              Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited
+              metrics across delivery and deliverability data. To learn how to unlock the full
+              potential of SparkPost's Analytics Report, visit the documentation link below.
+            </p>
+            <Bold>A sending domain is required to start generating analytics.</Bold>
+          </Stack>
         </EmptyState.Content>
         <EmptyState.Image src={AnalyticsWebp} />
         <EmptyState.Action onClick={() => history.push('/domains/create')}>
