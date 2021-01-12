@@ -37,6 +37,24 @@ if (IS_HIBANA_ENABLED) {
       cy.findByLabelText('Break Down By').should('be.visible');
     });
 
+    it('should render the Empty State when there are no sending domains and allow_empty_state is enabled', () => {
+      commonBeforeSteps();
+      stubAccountsReq();
+      stubSendingDomains();
+      cy.visit(PAGE_URL);
+      cy.wait(['@accountReq', '@sendingDomainsReq']);
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+      cy.findAllByText(
+        "Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited metrics across delivery and deliverability data. To learn how to unlock the full potential of SparkPost's Analytics Report, visit the documentation link below.",
+      ).should('be.visible');
+      cy.findByRole('button', { name: 'Add Sending Domain' }).should('be.visible');
+      cy.verifyLink({
+        content: 'Analytics Documentation',
+        href: 'https://www.sparkpost.com/docs/reporting/signals-analytics/#',
+      });
+      cy.findByRole('heading', { name: 'Example Analytics' }).should('be.visible');
+    });
+
     it('should render error state for charts', () => {
       commonBeforeSteps();
       cy.stubRequest({
@@ -293,4 +311,25 @@ if (IS_HIBANA_ENABLED) {
 
 function getFirstRemoveButton() {
   return cy.findAllByRole('button', { name: 'Remove' }).eq(0);
+}
+
+function stubSendingDomains({
+  fixture = '200.get.no-results.json',
+  requestAlias = 'sendingDomainsReq',
+  statusCode = 200,
+} = {}) {
+  cy.stubRequest({
+    url: '/api/v1/sending-domains',
+    fixture,
+    requestAlias,
+    statusCode,
+  });
+}
+
+function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/account**',
+    fixture: fixture,
+    requestAlias: 'accountReq',
+  });
 }

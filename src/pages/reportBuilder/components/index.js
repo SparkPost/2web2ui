@@ -8,3 +8,4 @@ export { default as ReportOptions } from './ReportOptions';
 export { default as SaveReportModal } from './SavedReportsSection/SaveReportModal';
 export { default as GroupByTable } from './GroupByTable/GroupByTable';
 export { default as CompareByGroupByTable } from './GroupByTable/CompareByGroupByTable';
+export { default as ReportBuilderEmptyState } from './ReportBuilderEmptyState';
