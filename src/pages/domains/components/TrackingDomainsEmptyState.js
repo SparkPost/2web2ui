@@ -1,17 +1,10 @@
 import React from 'react';
-// import { PageLink } from 'src/components/links';
+import { PageLink } from 'src/components/links';
 import { EmptyState } from 'src/components/matchbox';
 import { LINKS } from 'src/constants';
 import MailJpg from '@sparkpost/matchbox-media/images/Sending-Mail.jpg';
 import MailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 
-// TODO: Ask Jon about PageLink usage
-// <EmptyState.Action
-//         component={PageLink}
-//         to={{ pathname: '/domains/create?type=tracking', state: { defaultDomainType: 'tracking' } }}
-//       >
-//         Add Tracking Domain
-//       </EmptyState.Action>
 function TrackingDomainsEmptyState() {
   return (
     <EmptyState>
@@ -28,7 +21,9 @@ function TrackingDomainsEmptyState() {
           <li>Confirm that the tracking domain was successfully verified.</li>
         </EmptyState.List>
       </EmptyState.Content>
-      <EmptyState.Action to="/domains/create?type=tracking">Add Tracking Domain</EmptyState.Action>
+      <EmptyState.Action component={PageLink} to="/domains/create?type=tracking">
+        Add Tracking Domain
+      </EmptyState.Action>
       <EmptyState.Action variant="outline" external to={LINKS.TRACKING_DOMAIN_DOCS}>
         Tracking Domains Documentation
       </EmptyState.Action>
