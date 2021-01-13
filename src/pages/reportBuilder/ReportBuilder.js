@@ -7,9 +7,9 @@ import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { getSubscription } from 'src/actions/billing';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
-// Question: Should this hook work with onClick attributes?
-// import useTabs from 'src/hooks/useTabs';
 import { getReports } from 'src/actions/reports';
+// QUESTION: What's the difference between the src/components Tabs and src/components/matchbox Tabs?
+// Should one be used over the other?
 import {
   Empty,
   Tabs,
@@ -17,7 +17,6 @@ import {
   AggregatedMetrics,
   CompareByAggregatedMetrics,
 } from 'src/components';
-// QUESTION: What's the difference between the src/components Tabs and src/components/matchbox Tabs?
 import { Box, Button, Tabs as MatchboxTabs, Page, Panel, Tooltip } from 'src/components/matchbox';
 import {
   bounceTabMetrics,
@@ -60,7 +59,7 @@ import { Heading } from 'src/components/text';
 //     </>
 //   ),
 // queryParamKey: 'deliverability',
-// onClick: () => {},
+// onClick: () => { updateFilter here },
 // },
 
 const initFilters = {
@@ -115,8 +114,6 @@ export function ReportBuilder({
     },
   ];
 
-  // NOTE: NOT WORKING with EMPTY_STATE_TABS click event attributes!
-  // const [selectedEmptyStateTab, emptyStateTabs] = useTabs(EMPTY_STATE_TABS, 0);
   const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.queryParamKey === filters.tab);
 
   useEffect(() => {
