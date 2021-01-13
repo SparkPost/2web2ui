@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { usePageFilters } from 'src/hooks';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Error } from '@sparkpost/matchbox-icons';
@@ -6,7 +7,8 @@ import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { getSubscription } from 'src/actions/billing';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
-import useTabs from 'src/hooks/useTabs';
+// Question: Should this hook work with onClick attributes?
+// import useTabs from 'src/hooks/useTabs';
 import { getReports } from 'src/actions/reports';
 import {
   Empty,
@@ -50,25 +52,20 @@ import { PRESET_REPORT_CONFIGS } from './constants';
 import { TrackingEngagementTab, InvestigatingProblemsTab } from './components/EmptyTabs';
 import { Heading } from 'src/components/text';
 
-const EMPTY_STATE_TABS = [
-  {
-    content: 'Tracking Engagement',
-    trackingUrl: '/empty/tracking-engagement',
-  },
-  {
-    content: 'Investigating Problems',
-    trackingUrl: '/empty/investigating-problems',
-  },
-  // Enable when SD is released
-  // {
-  //   content: (
-  //     <>
-  //       Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
-  //     </>
-  //   ),
-  //   trackingUrl: '/empty/deliverability-metrics'
-  // },
-];
+// Enable for EMPTY_STATE_TABS when SD is released
+// {
+//   content: (
+//     <>
+//       Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
+//     </>
+//   ),
+// queryParamKey: 'deliverability',
+// onClick: () => {},
+// },
+
+const initFilters = {
+  tab: { defaultValue: 'tracking' },
+};
 
 export function ReportBuilder({
   chart,
@@ -98,7 +95,29 @@ export function ReportBuilder({
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
-  const [selectedEmptyStateTab, emptyStateTabs] = useTabs(EMPTY_STATE_TABS, 0);
+
+  const { filters, updateFilters } = usePageFilters(initFilters);
+
+  const EMPTY_STATE_TABS = [
+    {
+      content: 'Tracking Engagement',
+      queryParamKey: 'tracking',
+      onClick: () => {
+        updateFilters({ tab: 'tracking' });
+      },
+    },
+    {
+      content: 'Investigating Problems',
+      queryParamKey: 'investigating',
+      onClick: () => {
+        updateFilters({ tab: 'investigating' });
+      },
+    },
+  ];
+
+  // NOTE: NOT WORKING with EMPTY_STATE_TABS click event attributes!
+  // const [selectedEmptyStateTab, emptyStateTabs] = useTabs(EMPTY_STATE_TABS, 0);
+  const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.queryParamKey === filters.tab);
 
   useEffect(() => {
     listSendingDomains();
@@ -291,7 +310,7 @@ export function ReportBuilder({
     );
   }
 
-  // THOUGHTS/NOTE: isEmpty already exists, might be able to use that instead of this?
+  // NOTE: isEmpty already exists, but using this because we have a feature flag - isEmptyStateEnabled
   const showReportBuilderEmptyState = sendingDomains.length === 0 && isEmptyStateEnabled;
   return (
     <Page
@@ -302,24 +321,21 @@ export function ReportBuilder({
       }}
       loading={sendingDomainsListLoading || isFirstRender}
     >
+      {/* EMPTY STATE */}
       {showReportBuilderEmptyState && (
         <>
           <ReportBuilderEmptyState />
           <Heading as="h2" mb="400" mt="100">
             Example Analytics
           </Heading>
-          {/* THOUGHT/TODO: Important, these tab change events update the url and that re-renders the <Page /> instance, calling segment for each tab change */}
-          <MatchboxTabs
-            selected={selectedEmptyStateTab}
-            tabs={emptyStateTabs}
-            keyboardActivation="auto"
-          />
-          {selectedEmptyStateTab === 0 && <TrackingEngagementTab />}
-          {selectedEmptyStateTab === 1 && <InvestigatingProblemsTab />}
+          <MatchboxTabs selected={tabIndex} tabs={EMPTY_STATE_TABS} keyboardActivation="auto" />
+          {tabIndex === 0 && <TrackingEngagementTab />}
+          {tabIndex === 1 && <InvestigatingProblemsTab />}
           {/* {selectedEmptyStateTab === 2 && <DeliverabilityMetricsTab />} */}
         </>
       )}
 
+      {/* NON-EMPTY STATE */}
       {!showReportBuilderEmptyState && (
         <>
           <Panel>
