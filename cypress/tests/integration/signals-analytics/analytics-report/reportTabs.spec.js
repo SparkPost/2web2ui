@@ -949,10 +949,6 @@ function commonBeforeSteps() {
     fixture: '/subaccounts/200.get.json',
     requestAlias: 'getSubaccounts',
   });
-  cy.stubRequest({
-    url: '/api/v1/account',
-    fixture: 'account/200.get.has-compare-by.json',
-  });
   stubDeliverability();
   stubTimeSeries();
   cy.visit(PAGE_URL);

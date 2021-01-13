@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Box, Button, Drawer, Expandable, Inline, Panel, Stack } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
@@ -6,7 +6,6 @@ import { ActiveFilters } from 'src/components/reportBuilder';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import {
   ActiveMetrics,
   ActiveComparisons,
@@ -17,10 +16,9 @@ import {
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import { usePageFilters } from 'src/hooks';
-import { selectCondition } from 'src/selectors/accessConditionState';
 import { dehydrateFilters } from '../helpers';
 
-const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
+const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }, { content: 'Compare' }];
 const initFilters = {
   from: {},
   to: {},
@@ -35,10 +33,7 @@ const initFilters = {
 };
 
 export function ReportOptions(props) {
-  const { reportLoading, isCompareByEnabled, selectedReport, setReport } = props;
-  const drawerTabsFeatureFlag = useMemo(() => {
-    return isCompareByEnabled ? [...drawerTabs, { content: 'Compare' }] : drawerTabs;
-  }, [isCompareByEnabled]);
+  const { reportLoading, selectedReport, setReport } = props;
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
   const { refreshReportOptions, removeFilter, removeComparisonFilter } = actions;
   const {
@@ -142,18 +137,16 @@ export function ReportOptions(props) {
       <Drawer {...getDrawerProps()} portalId="drawer-portal">
         <Drawer.Header showCloseButton />
         <Drawer.Content p="0">
-          <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabsFeatureFlag}>
+          <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabs}>
             <Tabs.Item>
               <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
             </Tabs.Item>
             <Tabs.Item>
               <FiltersForm handleSubmit={handleSubmit} />
             </Tabs.Item>
-            {isCompareByEnabled && (
-              <Tabs.Item>
-                <CompareByForm handleSubmit={handleSubmit} />
-              </Tabs.Item>
-            )}
+            <Tabs.Item>
+              <CompareByForm handleSubmit={handleSubmit} />
+            </Tabs.Item>
           </Tabs>
         </Drawer.Content>
       </Drawer>
@@ -214,43 +207,40 @@ export function ReportOptions(props) {
         </Expandable>
       </Panel.Section>
 
-      {isCompareByEnabled && (
-        <Panel.Section p="0">
-          <Expandable
-            id="report-options-comparisons-expandable"
-            defaultOpen
-            title="Comparisons"
-            variant="borderless"
-          >
-            <Stack>
-              {Boolean(reportOptions.comparisons.length) && (
-                <ActiveComparisons
-                  comparisons={reportOptions.comparisons}
-                  handleFilterRemove={handleComparisonRemove}
-                />
-              )}
-              <Box>
-                <Button
-                  {...getActivatorProps()}
-                  onClick={() => {
-                    handleDrawerOpen(2);
-                  }}
-                  variant="secondary"
-                >
-                  Add Comparison
-                </Button>
-              </Box>
-            </Stack>
-          </Expandable>
-        </Panel.Section>
-      )}
+      <Panel.Section p="0">
+        <Expandable
+          id="report-options-comparisons-expandable"
+          defaultOpen
+          title="Comparisons"
+          variant="borderless"
+        >
+          <Stack>
+            {Boolean(reportOptions.comparisons.length) && (
+              <ActiveComparisons
+                comparisons={reportOptions.comparisons}
+                handleFilterRemove={handleComparisonRemove}
+              />
+            )}
+            <Box>
+              <Button
+                {...getActivatorProps()}
+                onClick={() => {
+                  handleDrawerOpen(2);
+                }}
+                variant="secondary"
+              >
+                Add Comparison
+              </Button>
+            </Box>
+          </Stack>
+        </Expandable>
+      </Panel.Section>
     </div>
   );
 }
 
 const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
-  isCompareByEnabled: selectCondition(isAccountUiOptionSet('allow_compare_by'))(state), //Comparing different filters
 });
 
 export default connect(mapStateToProps)(ReportOptions);
