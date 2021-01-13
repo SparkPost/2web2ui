@@ -1,12 +1,11 @@
-/* eslint-disable max-lines */
 import { rate, average } from '../helpers/metrics';
 
 const injection = 'Injection';
 const delivery = 'Delivery';
-//const d12y = 'Deliverability';
+const deliverability = 'Deliverability';
 const engagement = 'Engagement';
 
-export const categories = [injection, delivery, engagement];
+export const categories = [injection, delivery, deliverability, engagement];
 
 export const list = [
   {
@@ -492,6 +491,61 @@ export const list = [
     type: 'total',
     unit: 'number',
     description: 'Total number of messages which had at least one link selected one or more times.',
+  },
+  {
+    key: 'count_inbox',
+    label: 'Inbox Folder Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+  },
+  {
+    key: 'count_spam',
+    label: 'Inbox Folder Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+  },
+  {
+    key: 'inbox_panel_rate',
+    label: 'Inbox Folder Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    calculateKeys: ['count_inbox_panel', 'count_spam_panel'],
+  },
+  // {
+  //   key: 'inbox_rate',
+  //   label: 'Moved to Inbox Rate',
+  //   category: deliverability,
+  //   calculateKeys: ['count_moved_to_inbox', 'count_spam_panel'],
+  // },
+  // {
+  //   label: 'Moved to Spam Rate',
+  //   category: 'deliverability',
+  //   calculateKeys: ['count_moved_to_spam', 'count_inbox_panel'],
+  // },
+  // {
+  //   key: 'count_inbox_seed',
+  //   label: 'Inbox Folder Count',
+  //   type: 'total',
+  //   unit: 'number',
+  //   category: deliverability,
+  // },
+  // {
+  //   key: 'count_spam_seed',
+  //   label: 'Inbox Folder Count',
+  //   type: 'total',
+  //   unit: 'number',
+  //   category: deliverability,
+  // },
+  {
+    key: 'inbox_seed_rate',
+    label: 'Inbox Folder Rate',
+    unit: 'percent',
+    type: 'percentage',
+    calculateKeys: ['count_inbox_seed', 'count_spam_panel'],
+    category: deliverability,
   },
 ];
 
