@@ -1,57 +1,29 @@
 import React from 'react';
-import { EmptyState, Tabs, Page, Stack } from 'src/components/matchbox';
-import useTabs from 'src/hooks/useTabs';
+import { EmptyState, Stack } from 'src/components/matchbox';
+import AnalyticsJpg from '@sparkpost/matchbox-media/images/Analytics.jpg';
 import AnalyticsWebp from '@sparkpost/matchbox-media/images/Analytics.webp';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { LINKS } from 'src/constants';
-import { Heading, Bold } from 'src/components/text';
-import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
-import { TrackingEngagementTab, InvestigatingProblemsTab } from './EmptyTabs';
-// import { Rocket } from '@sparkpost/matchbox-icons';
-// import { tokens } from '@sparkpost/design-tokens-hibana';
+import { Bold } from 'src/components/text';
+import styled from 'styled-components';
 
-const TABS = [
-  {
-    content: 'Tracking Engagement',
-    trackingUrl: '/empty/tracking-engagement',
-  },
-  {
-    content: 'Investigating Problems',
-    trackingUrl: '/empty/investigating-problems',
-  },
-  // Enable when SD is released
-  // {
-  //   content: (
-  //     <>
-  //       Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
-  //     </>
-  //   ),
-  //   trackingUrl: '/empty/deliverability-metrics'
-  // },
-];
+const TempImageContainerForMaxSize = styled.div`
+  figure {
+    padding-left: 5rem;
+
+    img {
+      max-width: 300px;
+    }
+  }
+`;
 
 export default function ReportBuilderEmptyState() {
   const history = useHistory();
-  const location = useLocation();
-
-  const [selectedTabIndex, tabs] = useTabs(TABS, 0);
-
-  React.useEffect(() => {
-    const trackingUrl = location.pathname + TABS[selectedTabIndex].trackingUrl;
-
-    const trackingLocation = {
-      ...location,
-      pathname: trackingUrl,
-    };
-
-    segmentTrack(SEGMENT_EVENTS.EMPTY_STATE_LOADED, {
-      location: trackingLocation,
-    });
-  }, [location, selectedTabIndex]);
 
   return (
-    <Page>
+    <TempImageContainerForMaxSize>
       <EmptyState>
+        {/* QUESTION: Use <Page /> Header prop instead? */}
         <EmptyState.Header>Analytics Report</EmptyState.Header>
         <EmptyState.Content>
           <Stack>
@@ -63,7 +35,11 @@ export default function ReportBuilderEmptyState() {
             <Bold>A sending domain is required to start generating analytics.</Bold>
           </Stack>
         </EmptyState.Content>
-        <EmptyState.Image src={AnalyticsWebp} />
+        <EmptyState.Image src={AnalyticsJpg}>
+          <source srcSet={AnalyticsWebp} type="image/webp"></source>
+        </EmptyState.Image>
+        {/* Comment: component={PageLink here} */}
+        {/* Question: Do we need to pass in ?type at all here? */}
         <EmptyState.Action onClick={() => history.push('/domains/create')}>
           Add Sending Domain
         </EmptyState.Action>
@@ -71,11 +47,6 @@ export default function ReportBuilderEmptyState() {
           Analytics Documentation
         </EmptyState.Action>
       </EmptyState>
-      <Heading as="h2">Example Analytics</Heading>
-      <Tabs selected={selectedTabIndex} tabs={tabs} keyboardActivation="auto" />
-      {selectedTabIndex === 0 && <TrackingEngagementTab />}
-      {selectedTabIndex === 1 && <InvestigatingProblemsTab />}
-      {/* {selectedTabIndex === 2 && <DeliverabilityMetricsTab />} */}
-    </Page>
+    </TempImageContainerForMaxSize>
   );
 }

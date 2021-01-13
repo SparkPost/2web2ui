@@ -10,6 +10,9 @@ import { omitSystemProps } from 'src/helpers/hibana';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 import Loading from 'src/components/loading';
 
+// REMOVE LATER
+const { log } = console;
+
 export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateComponent, ...props }) {
   const [{ isHibanaEnabled }] = useHibana();
   const location = useLocation();
@@ -19,6 +22,8 @@ export default function Page({ hibanaEmptyStateComponent: HibanaEmptyStateCompon
 
   React.useEffect(() => {
     if (isHibanaEnabled && (showHibanaEmptyState || emptyStateTrackingOnly) && !props.loading) {
+      log('call segment from <Page />', location);
+      // Thought: Location.Search already has the ? query params being sent in, so if we update the url on tab change, that info should track?
       segmentTrack(SEGMENT_EVENTS.EMPTY_STATE_LOADED, {
         location: location,
         // ...segmentMetaData,
