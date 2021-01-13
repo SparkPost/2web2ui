@@ -81,7 +81,7 @@ export function ReportBuilder({
   sendingDomainsListLoading,
   isEmptyStateEnabled,
 }) {
-  const [isFirstRender, setIsFirstRender] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false); // TODO: Incorporate in to the context reducer due to state interaction
