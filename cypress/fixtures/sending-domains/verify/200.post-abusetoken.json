@@ -1,0 +1,17 @@
+{
+  "results": {
+    "mx_status": "unverified",
+    "spf_status": "unverified",
+    "dns": {
+      "dkim_record": "v=DKIM1; k=rsa; h=sha256; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCo7qGacXAjV3kl/nOeCkXBGFfhYiKQ0PUFuQPJpn3Me8oawfTpJvAM+5tlCMk/w8B1dpPqcXpbaSXE2EaRnPa6ECb2lavRgcQ3ZO8InD1J+j9p6WP2v9TrUj3r/yD5eOYDcHz2vrP3AErqu5LkLRGki2JCIc1EPIRbGuynR+aafQIDAQAB"
+    },
+    "ownership_verified": true,
+    "cname_status": "valid",
+    "abuse_at_status": "valid",
+    "dkim_status": "valid",
+    "compliance_status": "valid",
+    "verification_mailbox_status": "valid",
+    "verification_mailbox": "me",
+    "postmaster_at_status": "unverified"
+  }
+}

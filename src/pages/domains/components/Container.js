@@ -64,8 +64,10 @@ function mapStateToProps(state) {
     verifyEmailLoading: state.sendingDomains.verifyEmailLoading,
     verifyBounceLoading: state.sendingDomains.verifyBounceLoading,
     verifyingTrackingPending: state.trackingDomains.verifyingTrackingPending,
+    verifyTokenError: state.sendingDomains.verifyTokenError,
     trackingDomainCname: selectTrackingDomainCname(state),
     isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
+    verifyTokenLoading: state.sendingDomains.verifyTokenLoading,
   };
 }
 

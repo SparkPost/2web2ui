@@ -29,6 +29,7 @@ function DomainTabPages() {
     hasSubaccounts,
     subaccounts,
     listSubaccounts,
+    verifyTokenLoading,
   } = useDomains();
   const [isFirstRender, setIsFirstRender] = useState(true);
   const history = useHistory();
@@ -189,7 +190,7 @@ function DomainTabPages() {
         isTracking={matchesTrackingTab}
         sendingDomainsListError={sendingDomainsListError}
         domains={sendingDomains}
-        loading={listPending}
+        loading={listPending || verifyTokenLoading}
         queryParams={queryParams}
       />
       <Stack>

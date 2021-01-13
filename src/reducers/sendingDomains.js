@@ -50,7 +50,7 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, getError: payload, getLoading: false };
 
     case 'CLEAR_SENDING_DOMAIN':
-      return { ...state, ...initialDomainState, verifyTokenStatus: null };
+      return { ...state, ...initialDomainState };
 
     case 'VERIFY_SENDING_DOMAIN_CNAME_PENDING':
     case 'VERIFY_SENDING_DOMAIN_MX_PENDING':
@@ -104,7 +104,7 @@ export default (state = initialState, { type, payload, meta }) => {
     case 'VERIFY_TOKEN_PENDING':
       return {
         ...state,
-        verifyTokenLoading: false,
+        verifyTokenLoading: true,
         verifyTokenStatus: null,
         verifyTokenError: null,
       };
