@@ -11,7 +11,7 @@ export default function ReportBuilderEmptyState() {
   const history = useHistory();
 
   return (
-    <EmptyState>
+    <EmptyState mb="750">
       <EmptyState.Header>Analytics Report</EmptyState.Header>
       <EmptyState.Content>
         <Stack>
