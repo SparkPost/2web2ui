@@ -4,7 +4,7 @@ import { ExternalLink, PageLink, SubduedLink } from 'src/components/links';
 import { Heading, SubduedText } from 'src/components/text';
 import { formatDate } from 'src/helpers/date';
 import config from 'src/config';
-import { LINKS } from 'src/constants';
+import { LINKS, UNLIMITED_PLAN_VOLUME } from 'src/constants';
 import { LabelAndKeyPair } from '.';
 import MessagingUsageChart from './MessagingUsageChart';
 
@@ -17,7 +17,8 @@ export default function MessagingUsageSection({
   startOfBillingPeriod,
 }) {
   const remaining = usage && subscription && subscription.plan_volume - usage.month.used;
-  const overage = remaining < 0 ? Math.abs(remaining) : 0;
+  const overage =
+    remaining < 0 && subscription.plan_volume !== UNLIMITED_PLAN_VOLUME ? Math.abs(remaining) : 0;
   const hasDailyLimit = usage && usage.day.limit && usage.day.limit > 0;
   const hasMonthlyLimit = usage && usage.month.limit && usage.month.limit > 0;
   const isNearingMonthlyLimit =
@@ -100,17 +101,20 @@ export default function MessagingUsageSection({
             <Box padding="400" backgroundColor="gray.1000">
               <Stack>
                 <Grid>
-                  <Grid.Column sm={3}>
-                    <Box id="date">
-                      <LabelAndKeyPair
-                        label="Billing Cycle"
-                        value={`${formatDate(
-                          startOfBillingPeriod,
-                          config.dateFormat,
-                        )} - ${formatDate(endOfBillingPeriod, config.dateFormat)}`}
-                      ></LabelAndKeyPair>
-                    </Box>
-                  </Grid.Column>
+                  {subscription.period === 'month' && (
+                    //hiding it since the billing cycle will not be correct for users on annual messaging plans
+                    <Grid.Column sm={3}>
+                      <Box id="date">
+                        <LabelAndKeyPair
+                          label="Billing Cycle"
+                          value={`${formatDate(
+                            startOfBillingPeriod,
+                            config.dateFormat,
+                          )} - ${formatDate(endOfBillingPeriod, config.dateFormat)}`}
+                        ></LabelAndKeyPair>
+                      </Box>
+                    </Grid.Column>
+                  )}
                   <Grid.Column sm={9}>
                     <Inline space="400">
                       <Box>
@@ -131,9 +135,11 @@ export default function MessagingUsageSection({
                   </Grid.Column>
                 </Grid>
                 <Grid>
-                  <Grid.Column sm={3}>
-                    <Box></Box>
-                  </Grid.Column>
+                  {subscription.period === 'month' && (
+                    <Grid.Column sm={3}>
+                      <Box></Box>
+                    </Grid.Column>
+                  )}
                   <Grid.Column sm={9}>
                     <Inline space="400">
                       <Box>
@@ -142,12 +148,14 @@ export default function MessagingUsageSection({
                           value={usage.month.used.toLocaleString()}
                         ></LabelAndKeyPair>
                       </Box>
-                      <Box>
-                        <LabelAndKeyPair
-                          label="Monthly Allotment"
-                          value={subscription.plan_volume.toLocaleString()}
-                        ></LabelAndKeyPair>
-                      </Box>
+                      {subscription.plan_volume !== UNLIMITED_PLAN_VOLUME && (
+                        <Box>
+                          <LabelAndKeyPair
+                            label="Monthly Allotment"
+                            value={subscription.plan_volume.toLocaleString()}
+                          ></LabelAndKeyPair>
+                        </Box>
+                      )}
                       {overage > 0 && (
                         <Box>
                           <LabelAndKeyPair

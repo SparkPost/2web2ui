@@ -6,6 +6,7 @@ import { formatNumber } from 'src/helpers/units';
 import { fillByDate } from 'src/helpers/date';
 import { cumulativeSum } from 'src/helpers/chart';
 import { getTimeTickFormatter, getTooltipLabelFormatter } from 'src/helpers/chart.js';
+import { UNLIMITED_PLAN_VOLUME } from 'src/constants';
 
 function MessagingUsageChart(props) {
   const { data = [], planVolume, overage, dailyLimit, start, end } = props;
@@ -21,7 +22,9 @@ function MessagingUsageChart(props) {
   });
 
   const thresholdPercentage =
-    thresholdIndex === -1 ? 100 : (thresholdIndex / cumulativeData.length) * 100;
+    thresholdIndex === -1 || planVolume === UNLIMITED_PLAN_VOLUME
+      ? 100
+      : (thresholdIndex / cumulativeData.length) * 100;
 
   const CustomTooltip = ({ showTooltip, payload, label }) => {
     if (!showTooltip) {

@@ -1,0 +1,35 @@
+{
+  "results": {
+    "anniversary_date": "2019-09-10T00:00:00.000Z",
+    "company_name": "somecompany",
+    "country_code": "US",
+    "created": "2017-01-31T20:28:09.163Z",
+    "customer_id": 1,
+    "service_level": "enterprise",
+    "status": "active",
+    "status_reason_category": "",
+    "status_updated": "2017-01-31T20:28:09.163Z",
+    "tfa_required": false,
+    "updated": "2020-11-09T20:25:55.784Z",
+    "subscription": {
+      "code": "ent1",
+      "name": "Enterprise",
+      "period": "month",
+      "plan_volume": -1,
+      "recurring_charge": 0,
+      "type": "manual",
+      "self_serve": false,
+      "plan_volume_per_period": -1
+    },
+    "options": {
+      "initial_open_pixel_tracking": false,
+      "allow_anyone_at_domain_verification": true,
+      "ui": {
+        "hibana": {
+          "hasThemeControls": true
+        }
+      },
+      "tracking_domain_cname": "fake.email.com"
+    }
+  }
+}
