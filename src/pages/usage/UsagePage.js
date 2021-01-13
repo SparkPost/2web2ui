@@ -3,8 +3,8 @@ import { Page, Layout } from 'src/components/matchbox';
 import { ApiErrorBanner, Loading } from 'src/components';
 import { useSparkPostQuery } from 'src/hooks';
 import {
-  selectEndOfBillingPeriod,
-  selectStartOfBillingPeriod,
+  selectEndOfMonthlyUsage,
+  selectStartOfMonthlyUsage,
 } from 'src/selectors/accountBillingInfo';
 import { getAccount, getUsage, getUsageHistory } from 'src/helpers/api/account';
 import { getSubscription } from 'src/helpers/api/billing';
@@ -12,8 +12,8 @@ import { MessagingUsageSection, FeatureUsageSection, RVUsageSection } from './co
 
 export default function UsagePage() {
   // API Requests
-  const { data: account, status: accountStatus, refetch: accountRefetch } = useSparkPostQuery(() =>
-    getAccount({ include: 'usage' }),
+  const { data: account, status: accountStatus, refetch: accountRefetch } = useSparkPostQuery(
+    getAccount,
   );
   const { data: usage, status: usageStatus, refetch: usageRefetch } = useSparkPostQuery(getUsage);
   const {
@@ -55,9 +55,8 @@ export default function UsagePage() {
 
   // Merging data so existing selectors can work together to grab from a common object
   const data = { account, subscription, usage, usageHistory };
-  const endOfBillingPeriod = selectEndOfBillingPeriod(data);
-  const startOfBillingPeriod = selectStartOfBillingPeriod(data);
-  const accountUsage = data.account.usage;
+  const endOfBillingPeriod = selectEndOfMonthlyUsage(data);
+  const startOfBillingPeriod = selectStartOfMonthlyUsage(data);
   const accountSubscription = data.account.subscription;
   const billingSubscription = data.subscription;
   const rvUsage = data.usage.recipient_validation;
@@ -68,7 +67,7 @@ export default function UsagePage() {
     <Page title="Usage">
       <Layout>
         <MessagingUsageSection
-          usage={accountUsage}
+          usage={usage?.messaging}
           messagingUsageHistory={messagingUsageHistory}
           messagingUsageHistoryStatus={usageHistoryStatus}
           subscription={accountSubscription}
