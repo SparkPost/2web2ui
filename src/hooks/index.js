@@ -11,4 +11,4 @@ export { default as usePrevious } from './usePrevious';
 export { default as useProvidedContext } from './useProvidedContext';
 export { default as useTabs } from './useTabs';
 export { default as useUniqueId } from './useUniqueId';
-export { useSparkPostQueries, useSparkPostQuery } from './api';
+export { useSparkPostQueries, useSparkPostQuery, useMergedSparkPostQueries } from './api';

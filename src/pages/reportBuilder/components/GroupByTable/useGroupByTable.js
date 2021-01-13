@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { getDeliverability } from 'src/helpers/api/metrics';
-import { useSparkPostQueries } from 'src/hooks';
+import { useMergedSparkPostQueries } from 'src/hooks';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
@@ -45,10 +45,10 @@ export default function useGroupByTable() {
       getDeliverability(getQueryFromOptions({ ...options, metrics: formattedMetrics }), groupBy);
   });
 
-  const { data = [], status, refetch } = useSparkPostQueries(
+  const { data = [], status, refetch } = useMergedSparkPostQueries(
     [...separatedRequests],
     {
-      enabled: reportOptions.isReady && groupBy,
+      enabled: Boolean(reportOptions.isReady && groupBy),
       refetchOnWindowFocus: false,
     },
     [groupBy, reportOptions],
