@@ -17,14 +17,6 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
     });
 
-    it('allows the user to add a list of grouped filters and apply them by submitting the form', () => {
-      navigateToForm();
-
-      cy.withinDrawer(() => {
-        fillOutForm();
-      });
-    });
-
     it('clears current filter values when the user swaps between "compare by" values', () => {
       navigateToForm();
 
@@ -380,7 +372,110 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('applies the form and adds appropriate query params for API requests', () => {
+    describe('duplicate filter error banner', () => {
+      it('renders when the user selects multiple filters of the exact same "Type" and "Compare By" value within any grouping within the form', () => {
+        navigateToForm();
+        causeDuplicationError();
+
+        cy.withinDrawer(() => {
+          cy.findByRole('alert')
+            .should('be.visible')
+            .should('contain', 'Duplicate filters are not allowed within a group.')
+            .should('have.focus');
+
+          cy.verifyLink({
+            content: 'API Docs',
+            href: 'https://developers.sparkpost.com/api/metrics/#header-groupings-structure',
+          });
+        });
+      });
+
+      it('renders an error within each group that contains a violation', () => {
+        navigateToForm();
+        causeDuplicationError();
+        cy.findByRole('button', { name: 'Add And Grouping' }).click();
+
+        getGroupingByIndex(1).within(() => {
+          getFilterByIndex(0).within(() => {
+            cy.findByLabelText(TYPE_LABEL).select('Recipient Domain');
+            cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+            cy.findByLabelText('Recipient Domain').type('hello-there{enter}');
+            cy.findByRole('button', { name: 'Add And Filter' }).click();
+          });
+
+          getFilterByIndex(1).within(() => {
+            cy.findByLabelText(TYPE_LABEL).select('Recipient Domain');
+            cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+          });
+        });
+
+        cy.withinDrawer(() => {
+          cy.findByRole('button', { name: 'Apply Filters' }).click();
+        });
+
+        cy.findAllByRole('alert')
+          .should('have.length', 2)
+          .first()
+          .should('have.focus');
+      });
+
+      it('does not render after the user clears invalid, duplicated filters', () => {
+        navigateToForm();
+        causeDuplicationError();
+        cy.withinDrawer(() => {
+          cy.findByRole('alert').should('exist');
+        });
+
+        // Fix the error by changing the "Type" on one of the offending filters
+        getGroupingByIndex(0).within(() => {
+          getFilterByIndex(2).within(() => {
+            cy.findByLabelText(TYPE_LABEL).select('Recipient Domain');
+          });
+        });
+        cy.withinDrawer(() => {
+          cy.findByRole('alert').should('not.exist');
+        });
+
+        // Reset the form
+        cy.withinDrawer(() => {
+          cy.findByRole('button', { name: 'Clear Filters' }).click();
+        });
+
+        causeDuplicationError();
+        cy.withinDrawer(() => {
+          cy.findByRole('alert').should('exist');
+        });
+
+        // Fix the error by changing the "Compare By" on one of the offending filters
+        getGroupingByIndex(0).within(() => {
+          getFilterByIndex(2).within(() => {
+            cy.findByLabelText(COMPARE_BY_LABEL).select('is equal to');
+          });
+        });
+        cy.withinDrawer(() => {
+          cy.findByRole('alert').should('not.exist');
+        });
+      });
+
+      it('does not render after the user clears the form entirely', () => {
+        navigateToForm();
+        causeDuplicationError();
+        cy.withinDrawer(() => {
+          cy.findByRole('alert')
+            .scrollIntoView()
+            .should('exist');
+        });
+        cy.withinDrawer(() => {
+          cy.findByRole('button', { name: 'Clear Filters' }).click();
+        });
+
+        cy.withinDrawer(() => {
+          cy.findByRole('alert').should('not.exist');
+        });
+      });
+    });
+
+    it('submits the form and adds appropriate query params for API requests', () => {
       navigateToForm();
       stubDeliverability('nextGetDeliverability');
       stubTimeSeries('nextGetTimeSeries');
@@ -474,4 +569,36 @@ function getGroupingByIndex(index) {
 function getFilterByIndex(index) {
   // `role="group"` maps to the `<fieldset />` element
   return cy.findAllByRole('group', { name: 'Filter By' }).eq(index);
+}
+
+/**
+ * Causes a duplication error by adding multiple filters of the same "Type" and "Compare By" value within a grouping
+ */
+function causeDuplicationError() {
+  getGroupingByIndex(0).within(() => {
+    getFilterByIndex(0).within(() => {
+      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+      cy.findByLabelText('Campaign').type('hello{enter}');
+      cy.findByRole('button', { name: 'Add And Filter' }).click();
+    });
+
+    // Adds a filter that is *not* a duplicate
+    getFilterByIndex(1).within(() => {
+      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
+      cy.findByLabelText('Campaign').type('hello{enter}');
+      cy.findByRole('button', { name: 'Add And Filter' }).click();
+    });
+
+    // Adds a filter that is a duplicate
+    getFilterByIndex(2).within(() => {
+      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+    });
+  });
+
+  cy.withinDrawer(() => {
+    cy.findByRole('button', { name: 'Apply Filters' }).click();
+  });
 }
