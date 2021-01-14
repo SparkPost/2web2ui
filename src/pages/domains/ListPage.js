@@ -84,7 +84,6 @@ function DomainTabPages() {
     matchesBounceTab &&
     isEmptyStateEnabled &&
     bounceDomains.length === 0 &&
-    sendingDomains.length === 0 &&
     !sendingDomainsListError;
 
   const showTrackingDomainsEmptyState =
