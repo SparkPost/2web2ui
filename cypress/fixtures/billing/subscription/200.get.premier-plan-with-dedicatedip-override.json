@@ -32,10 +32,10 @@
         "plan": "ip-0519",
         "product": "dedicated_ip",
         "quantity": 1,
-        "limit": 4,
+        "limit": 14,
         "price": 20,
         "volume": 1,
-        "billing_period": "month"
+        "billing_period": "quarter"
       },
       {
         "plan": "reports",

@@ -20,6 +20,28 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -70,15 +92,18 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": false,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -184,6 +209,28 @@ exports[`Component: Billing Summary should render correctly for a standard free 
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -234,15 +281,18 @@ exports[`Component: Billing Summary should render correctly for a standard free 
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={false}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -308,6 +358,28 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -358,15 +430,18 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={false}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -472,6 +547,28 @@ exports[`Component: Billing Summary should render correctly if you can't change 
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -513,15 +610,18 @@ exports[`Component: Billing Summary should render correctly if you can't change 
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -627,6 +727,28 @@ exports[`Component: Billing Summary should render correctly if you can't update 
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -677,15 +799,18 @@ exports[`Component: Billing Summary should render correctly if you can't update 
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -751,6 +876,28 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -801,15 +948,18 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -888,7 +1038,10 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
     open={true}
   >
     <AddIpsForm
+      billingPeriodOfDedicatedIp="quarter"
+      limitOnDedicatedIps={14}
       onClose={[Function]}
+      priceOfEachDedicatedIp={20}
     />
   </Modal.LEGACY>
   <RecipientValidationModalWrapper
@@ -917,6 +1070,28 @@ exports[`Component: Billing Summary should render with the billing contact modal
         "subscription": Object {
           "plan_volume": 15000,
         },
+      }
+    }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
       }
     }
   />
@@ -969,15 +1144,18 @@ exports[`Component: Billing Summary should render with the billing contact modal
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -1087,6 +1265,28 @@ exports[`Component: Billing Summary should render with the payment info modal op
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -1137,15 +1337,18 @@ exports[`Component: Billing Summary should render with the payment info modal op
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue
@@ -1255,6 +1458,28 @@ exports[`Component: Billing Summary should show the invoice history if there are
         },
       }
     }
+    subscription={
+      Object {
+        "bill_cycle_day": 5,
+        "pending_downgrades": Array [],
+        "products": Array [
+          Object {
+            "plan": "100K-premier-0519",
+            "product": "messaging",
+          },
+          Object {
+            "billing_period": "quarter",
+            "limit": 14,
+            "plan": "ip-0519",
+            "price": 20,
+            "product": "dedicated_ip",
+            "quantity": 1,
+            "volume": 1,
+          },
+        ],
+        "type": "active",
+      }
+    }
   />
   <FreePlanWarningBanner
     account={
@@ -1305,15 +1530,18 @@ exports[`Component: Billing Summary should show the invoice history if there are
       </LabelledValue>
     </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
+      billingPeriodOfDedicatedIp="quarter"
       canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
+      limitOnDedicatedIps={14}
       onClick={[Function]}
       plan={
         Object {
           "isFree": true,
         }
       }
+      priceOfEachDedicatedIp={20}
     />
     <Panel.LEGACY.Section>
       <LabelledValue

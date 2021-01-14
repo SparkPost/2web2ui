@@ -17,21 +17,17 @@ exports[`ManuallyBilledBanner renders banner 1`] = `
     </Component>
     .
   </p>
-  <Box
-    marginTop="400"
-  >
-    <p>
-      Enable automatic billing to self-manage your plan and add-ons.
-    </p>
-    <Banner.Actions>
-      <PageLink
-        as={[Function]}
-        to="/account/billing/enable-automatic"
-      >
-        Enable Automatic Billing
-      </PageLink>
-    </Banner.Actions>
-  </Box>
+  <p>
+    Enable automatic billing to self-manage your plan and add-ons.
+  </p>
+  <Banner.Actions>
+    <PageLink
+      as={[Function]}
+      to="/account/billing/enable-automatic"
+    >
+      Enable Automatic Billing
+    </PageLink>
+  </Banner.Actions>
 </Banner>
 `;
 
@@ -52,21 +48,17 @@ exports[`ManuallyBilledBanner with custom subscription and plan in Zuora 1`] = `
     </Component>
     .
   </p>
-  <Box
-    marginTop="400"
-  >
-    <p>
-      Enable automatic billing to self-manage your plan and add-ons.
-    </p>
-    <Banner.Actions>
-      <PageLink
-        as={[Function]}
-        to="/account/billing/enable-automatic"
-      >
-        Enable Automatic Billing
-      </PageLink>
-    </Banner.Actions>
-  </Box>
+  <p>
+    Enable automatic billing to self-manage your plan and add-ons.
+  </p>
+  <Banner.Actions>
+    <PageLink
+      as={[Function]}
+      to="/account/billing/enable-automatic"
+    >
+      Enable Automatic Billing
+    </PageLink>
+  </Banner.Actions>
 </Banner>
 `;
 

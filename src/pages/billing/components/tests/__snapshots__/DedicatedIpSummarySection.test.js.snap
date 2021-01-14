@@ -1,77 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DedicatedIpSummarySection renders count and cost for aws customers 1`] = `
-<Panel.LEGACY.Section
-  actions={
-    Array [
-      Object {
-        "Component": [Function],
-        "color": "orange",
-        "content": "Manage Your IPs",
-        "to": "/account/ip-pools",
-        "visible": true,
-      },
-      Object {
-        "Component": [Function],
-        "color": "orange",
-        "content": "Upgrade Now",
-        "to": "/account/billing/plan",
-        "visible": true,
-      },
-    ]
-  }
->
-  <LabelledValue
-    label="Dedicated IPs"
-  >
-    <h6>
-      2
-       for 
-      <DedicatedIpCost
-        isAWSAccount={true}
-        quantity={2}
-      />
-    </h6>
-  </LabelledValue>
-</Panel.LEGACY.Section>
-`;
-
-exports[`DedicatedIpSummarySection renders count and cost for aws customers with free ip 1`] = `
-<Panel.LEGACY.Section
-  actions={
-    Array [
-      Object {
-        "Component": [Function],
-        "color": "orange",
-        "content": "Manage Your IPs",
-        "to": "/account/ip-pools",
-        "visible": true,
-      },
-      Object {
-        "Component": [Function],
-        "color": "orange",
-        "content": "Upgrade Now",
-        "to": "/account/billing/plan",
-        "visible": true,
-      },
-    ]
-  }
->
-  <LabelledValue
-    label="Dedicated IPs"
-  >
-    <h6>
-      3
-       for 
-      <DedicatedIpCost
-        isAWSAccount={true}
-        quantity={2}
-      />
-    </h6>
-  </LabelledValue>
-</Panel.LEGACY.Section>
-`;
-
 exports[`DedicatedIpSummarySection renders count and zero cost 1`] = `
 <Panel.LEGACY.Section
   actions={
@@ -97,20 +25,26 @@ exports[`DedicatedIpSummarySection renders count and zero cost 1`] = `
     label="Dedicated IPs"
   >
     <h6>
-      1
-       for 
+      <TranslatableText>
+        1
+         
+      </TranslatableText>
+       for
+       
       <DedicatedIpCost
-        isAWSAccount={false}
+        billingPeriodOfDedicatedIp="month"
+        priceOfEachDedicatedIp={20}
         quantity={0}
       />
     </h6>
+    <p>
+      Your plan includes one free dedicated IP address.
+    </p>
   </LabelledValue>
 </Panel.LEGACY.Section>
 `;
 
-exports[
-  `DedicatedIpSummarySection renders disabled add button, count, cost, and max plan notice 1`
-] = `
+exports[`DedicatedIpSummarySection renders disabled add button, count, cost, and max plan notice 1`] = `
 <Panel.LEGACY.Section
   actions={
     Array [
@@ -135,10 +69,15 @@ exports[
     label="Dedicated IPs"
   >
     <h6>
-      4
-       for 
+      <TranslatableText>
+        4
+         
+      </TranslatableText>
+       for
+       
       <DedicatedIpCost
-        isAWSAccount={false}
+        billingPeriodOfDedicatedIp="month"
+        priceOfEachDedicatedIp={20}
         quantity={4}
       />
     </h6>

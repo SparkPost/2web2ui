@@ -1,9 +1,9 @@
 import React from 'react';
 import { Panel } from 'src/components/matchbox';
 
-import config from 'src/config';
 import { LabelledValue } from 'src/components';
 import { PageLink } from 'src/components/links';
+import { TranslatableText } from 'src/components/text';
 import DedicatedIpCost from './DedicatedIpCost';
 
 function noop() {}
@@ -12,11 +12,13 @@ export default function DedicatedIpSummarySection({
   count = 0,
   plan = {},
   onClick = noop,
-  isAWSAccount,
   isTransitioningToSelfServe,
   canPurchaseIps,
+  limitOnDedicatedIps,
+  priceOfEachDedicatedIp,
+  billingPeriodOfDedicatedIp,
 }) {
-  const hasReachedMax = count >= config.sendingIps.maxPerAccount;
+  const hasReachedMax = count >= limitOnDedicatedIps;
   const disabledPurchaseIP = hasReachedMax || plan.isFree;
 
   // There are some paid accounts that do not allow dedicated IPs
@@ -47,14 +49,21 @@ export default function DedicatedIpSummarySection({
 
   // Decrement count if plan includes one free IP
   const billableCount = count > 0 && plan.includesIp ? count - 1 : count;
-
   const summary =
     count === 0 ? (
       <h6>0</h6>
     ) : (
-      <h6>
-        {count} for <DedicatedIpCost quantity={billableCount} isAWSAccount={isAWSAccount} />
-      </h6>
+      <>
+        <h6>
+          <TranslatableText>{count} </TranslatableText> for{' '}
+          <DedicatedIpCost
+            quantity={billableCount}
+            priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+            billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
+          />
+        </h6>
+        {plan.includesIp && <p>Your plan includes one free dedicated IP address.</p>}
+      </>
     );
 
   return (

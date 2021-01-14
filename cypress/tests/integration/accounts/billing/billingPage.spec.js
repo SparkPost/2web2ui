@@ -4,53 +4,86 @@ const PAGE_URL = '/account/billing';
 const ACCOUNT_API_BASE_URL = '/api/v1/account';
 const BILLING_API_BASE_URL = '/api/v1/billing';
 
+function getBillingInformation({ fixture = 'billing/200.get.json' } = {}) {
+  cy.stubRequest({
+    url: BILLING_API_BASE_URL,
+    fixture: fixture,
+    requestAlias: 'accountBillingRequest',
+  });
+}
+
+function getBillingPlans({ fixture = 'billing/plans/200.get.json' } = {}) {
+  cy.stubRequest({
+    url: `${BILLING_API_BASE_URL}/plans`,
+    fixture: fixture,
+    requestAlias: 'plansGet',
+  });
+}
+
+function getBillingBundles({ fixture = 'billing/bundles/200.get.json' } = {}) {
+  cy.stubRequest({
+    url: `${BILLING_API_BASE_URL}/bundles`,
+    fixture: fixture,
+    requestAlias: 'bundlesGet',
+  });
+}
+
+function getSendingIps({ fixture = 'sending-ips/200.get.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/sending-ips',
+    fixture: fixture,
+    requestAlias: 'sendingIpsRequest',
+  });
+}
+
+function getBillingSubscription({
+  fixture = 'billing/subscription/200.get.json',
+  requestAlias = 'billingsubscription',
+} = {}) {
+  cy.stubRequest({
+    url: `${BILLING_API_BASE_URL}/subscription`,
+    fixture: fixture,
+    requestAlias: requestAlias,
+  });
+}
+
+function getInvoices({
+  fixture = 'billing/invoices/200.get.json',
+  requestAlias = 'invoicesReq',
+} = {}) {
+  cy.stubRequest({
+    url: `${BILLING_API_BASE_URL}/invoices`,
+    fixture: fixture,
+    requestAlias: requestAlias,
+  });
+}
+
 describe('Billing Page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
 
-    cy.stubRequest({
-      url: BILLING_API_BASE_URL,
-      fixture: 'billing/200.get.json',
-    });
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/plans`,
-      fixture: 'billing/plans/200.get.json',
-      requestAlias: 'plansGet',
-    });
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/bundles`,
-      fixture: 'billing/bundles/200.get.json',
-      requestAlias: 'bundlesGet',
-    });
-    cy.stubRequest({
-      url: '/api/v1/sending-ips',
-      fixture: 'sending-ips/200.get.json',
-    });
-
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/invoices`,
-      fixture: 'billing/invoices/200.get.json',
-    });
+    getBillingInformation();
+    getBillingPlans();
+    getBillingBundles();
+    getSendingIps();
+    getInvoices();
 
     cy.stubRequest({
       url: '/api/v1/usage',
       fixture: 'usage/200.get.json',
     });
-
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/subscription`,
-      fixture: 'billing/subscription/200.get.json',
-    });
   });
 
   it('renders with a relevant page title', () => {
+    getBillingSubscription();
     cy.visit(PAGE_URL);
 
     cy.title().should('include', 'Billing');
   });
 
   it("renders with the user's currently selected plan", () => {
+    getBillingSubscription();
     cy.visit(PAGE_URL);
 
     cy.findByText('50,000 emails for $20 per month').should('be.visible');
@@ -59,6 +92,7 @@ describe('Billing Page', () => {
 
   if (!IS_HIBANA_ENABLED) {
     it('opens a modal when clicking "How was this calculated?" breaking down Recipient Validation costs', () => {
+      getBillingSubscription();
       cy.visit(PAGE_URL);
 
       cy.findByText('How was this calculated?').click();
@@ -71,6 +105,7 @@ describe('Billing Page', () => {
 
   if (IS_HIBANA_ENABLED) {
     it('opens a modal when clicking "How was this calculated?" breaking down Recipient Validation costs in hibana', () => {
+      getBillingSubscription();
       cy.visit(PAGE_URL);
 
       cy.findByText('How was this calculated?').click();
@@ -83,16 +118,14 @@ describe('Billing Page', () => {
   }
 
   it('displays a pending plan change banner whenever a plan is downgraded and no longer displays the "Change Plan" link', () => {
+    getBillingSubscription({
+      fixture: 'billing/subscription/200.get.include-pending-downgrades.json',
+      fixtureAlias: 'subscriptionPendingDowngradeGet',
+    });
     cy.stubRequest({
       url: `${ACCOUNT_API_BASE_URL}`,
       fixture: 'account/200.get.include-pending-subscription.json',
       fixtureAlias: 'accountPendingDowngradeGet',
-    });
-
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/subscription`,
-      fixture: 'billing/subscription/200.get.include-pending-downgrades.json',
-      fixtureAlias: 'subscriptionPendingDowngradeGet',
     });
 
     cy.visit(PAGE_URL);
@@ -102,12 +135,14 @@ describe('Billing Page', () => {
   });
 
   it('renders with a link to the change plan page', () => {
+    getBillingSubscription();
     cy.visit(PAGE_URL);
 
     cy.verifyLink({ content: 'Change Plan', href: '/account/billing/plan' });
   });
 
   it('renders with the dedicated IPs section if the user is able to purchase IPs', () => {
+    getBillingSubscription();
     cy.visit(PAGE_URL);
 
     cy.findByText('Dedicated IPs').should('be.visible');
@@ -115,6 +150,7 @@ describe('Billing Page', () => {
   });
 
   it('does not render the dedicated IPs section if the user is unable to purchase IPs', () => {
+    getBillingSubscription();
     cy.stubRequest({
       url: ACCOUNT_API_BASE_URL,
       fixture: 'account/200.get.cannot-purchase-ips.json',
@@ -125,16 +161,10 @@ describe('Billing Page', () => {
     cy.findByText('Dedicated IPs').should('not.exist');
   });
 
-  it.skip('renders the manually billed transition banner when the user\'s subscription type is not "active", "inactive", or "none"', () => {
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/subscription`,
+  it('renders the manually billed transition banner when the user\'s subscription type is not "active", "inactive", or "none"', () => {
+    getBillingSubscription({
       fixture: 'billing/subscription/200.get.manually-billed.json',
       requestAlias: 'manuallyBilledSubsReq',
-    });
-    cy.stubRequest({
-      url: `${BILLING_API_BASE_URL}/plans`,
-      fixture: 'billing/plans/200.get.json',
-      requestAlias: 'plansGet',
     });
 
     cy.visit(PAGE_URL);
@@ -154,6 +184,7 @@ describe('Billing Page', () => {
   });
 
   it('renders the suspended account banner when the user\'s account type is "suspended" along with the update payment information form', () => {
+    getBillingSubscription();
     cy.stubRequest({
       url: ACCOUNT_API_BASE_URL,
       fixture: 'account/200.get.suspended.json',
@@ -179,6 +210,17 @@ describe('Billing Page', () => {
     cy.findByLabelText('Country').should('be.visible');
     cy.findByLabelText('State').should('be.visible');
     cy.findByLabelText('Zip Code').should('be.visible');
+  });
+
+  it(" 'Add Dedicated Ip' button is not disabled if the limit on the subscription is more that the quantity of dedicated Ips", () => {
+    getBillingSubscription({
+      fixture: 'billing/subscription/200.get.premier-plan-with-dedicatedip-override.json',
+      requestAlias: 'dedicatedIpOverrideRequest',
+    });
+    cy.visit(PAGE_URL);
+    cy.wait('@dedicatedIpOverrideRequest');
+    cy.findByRole('heading', { name: '2 for $20.00 per quarter' }).should('be.visible');
+    cy.findByRole('button', { name: 'Add Dedicated IPs' }).should('not.be.disabled');
   });
 
   describe('the dedicated IPs modal', () => {
@@ -227,6 +269,7 @@ describe('Billing Page', () => {
     });
 
     it('renders "Required" validation messages when the "Quantity" and "Name your new IP Pool" fields are skipped', () => {
+      getBillingSubscription();
       cy.findAllByText('Add Dedicated IPs')
         .last()
         .click();
@@ -235,12 +278,14 @@ describe('Billing Page', () => {
     });
 
     it('successfully assigns a dedicated IP to a new IP pool', () => {
+      getBillingSubscription();
       assignToNewIpPool();
 
       cy.findByText('Successfully added 1 dedicated IPs!');
     });
 
     it('renders errors when the IP pools API returns an error', () => {
+      getBillingSubscription();
       cy.stubRequest({
         statusCode: 400,
         method: 'POST',
@@ -255,6 +300,7 @@ describe('Billing Page', () => {
     });
 
     it('renders errors when the dedicated IPs API returns an error', () => {
+      getBillingSubscription();
       cy.stubRequest({
         statusCode: 400,
         method: 'POST',
@@ -269,14 +315,28 @@ describe('Billing Page', () => {
     });
 
     it('successfully assigns a dedicated IP to an existing IP pool', () => {
+      getBillingSubscription();
       assignToExistingIpPool();
 
       cy.findByText('Successfully added 1 dedicated IPs!').should('be.visible');
+    });
+    it(' Renders the modal correctly when limit on the subscription is more that the quantity of dedicated Ips', () => {
+      getBillingSubscription({
+        fixture: 'billing/subscription/200.get.premier-plan-with-dedicatedip-override.json',
+        requestAlias: 'dedicatedIpOverrideRequest',
+      });
+      cy.visit(PAGE_URL);
+      cy.wait('@dedicatedIpOverrideRequest');
+      cy.findByRole('button', { name: 'Add Dedicated IPs' }).click();
+      cy.contains(
+        'You can add up to 14 total dedicated IPs to your plan for $20.00 per quarter each.',
+      ).should('be.visible');
     });
   });
 
   describe('the billing panel', () => {
     it("renders with the user's current active credit card", () => {
+      getBillingSubscription();
       cy.visit(PAGE_URL);
 
       cy.get('[data-id="billing-panel"]').within(() => {
@@ -286,6 +346,7 @@ describe('Billing Page', () => {
     });
 
     it('renders with the current billing contact', () => {
+      getBillingSubscription();
       cy.visit(PAGE_URL);
 
       cy.get('[data-id="billing-panel"').within(() => {
@@ -315,6 +376,7 @@ describe('Billing Page', () => {
       });
 
       it('closes the modal when clicking "Cancel"', () => {
+        getBillingSubscription();
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
           cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
@@ -323,6 +385,7 @@ describe('Billing Page', () => {
       });
 
       it('renders "Required" validation errors when skipping the "Credit Card Number", "Cardholder Name", "Expiration Date", "Security Code", and "Zip Code" fields', () => {
+        getBillingSubscription();
         cy.withinModal(() => {
           cy.findByRole('button', { name: 'Update Payment Information' }).click({ force: true });
           cy.findAllByText(/Required/i).should('have.length', 5);
@@ -330,6 +393,7 @@ describe('Billing Page', () => {
       });
 
       it('renders a success message when successfully updating payment information', () => {
+        getBillingSubscription();
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/cors-data*`,
@@ -385,6 +449,7 @@ describe('Billing Page', () => {
       });
 
       it('renders an error when the server returns an error when updating payment information', () => {
+        getBillingSubscription();
         cy.stubRequest({
           method: 'POST',
           statusCode: 400,
@@ -409,6 +474,7 @@ describe('Billing Page', () => {
 
       describe('reports errors to sentry', () => {
         it('sends zuora error codes to sentry when zuora errors with 200', () => {
+          getBillingSubscription();
           cy.stubRequest({
             method: 'POST',
             url: `${BILLING_API_BASE_URL}/cors-data*`,
@@ -451,6 +517,7 @@ describe('Billing Page', () => {
         });
 
         it('reports error to sentry when zuora errors with 4xx or 5xx', () => {
+          getBillingSubscription();
           cy.stubRequest({
             method: 'POST',
             url: `${BILLING_API_BASE_URL}/cors-data*`,
@@ -508,6 +575,7 @@ describe('Billing Page', () => {
           url: `${ACCOUNT_API_BASE_URL}/countries*`,
           fixture: 'account/countries/200.get.billing-filter.json',
         });
+        getBillingSubscription();
 
         cy.visit(PAGE_URL);
         cy.findByRole('button', { name: 'Update Billing Contact' }).click();
@@ -619,6 +687,7 @@ describe('Billing Page', () => {
     }
 
     it("renders the user's prior invoices in table rows", () => {
+      getBillingSubscription();
       cy.visit(PAGE_URL);
 
       cy.findByText('Invoice History')
@@ -648,6 +717,7 @@ describe('Billing Page', () => {
     });
 
     it('does not render the "Invoice History" table when no results are returned', () => {
+      getBillingSubscription();
       cy.stubRequest({
         url: `${BILLING_API_BASE_URL}/invoices`,
         fixture: '200.get.no-results',
@@ -660,6 +730,7 @@ describe('Billing Page', () => {
     });
 
     it('does not render the "Invoice History" table when the server returns an error', () => {
+      getBillingSubscription();
       cy.stubRequest({
         status: 400,
         url: `${BILLING_API_BASE_URL}/invoices`,
@@ -672,6 +743,7 @@ describe('Billing Page', () => {
     });
 
     it('has a download button in each table row that requests an individual invoice', () => {
+      getBillingSubscription();
       cy.visit(PAGE_URL);
 
       cy.findByText('Invoice History').scrollIntoView();
@@ -696,6 +768,7 @@ describe('Billing Page', () => {
   });
 
   it('renders with a "Premium Addon Plan" banner with a "Contact Us" link', () => {
+    getBillingSubscription();
     cy.visit(PAGE_URL);
 
     cy.findByText('Premium Addon Plan')
@@ -709,6 +782,7 @@ describe('Billing Page', () => {
   });
 
   it('renders with an "Enterprise" banner with a "Contact Us" link', () => {
+    getBillingSubscription();
     cy.visit(PAGE_URL);
 
     cy.findByText('Enterprise')

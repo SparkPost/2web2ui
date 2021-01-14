@@ -7,13 +7,13 @@ import { addDedicatedIps } from 'src/actions/billing';
 import { showAlert } from 'src/actions/globalAlert';
 import { createPool } from 'src/actions/ipPools';
 import { ButtonWrapper, TextFieldWrapper } from 'src/components';
-import config from 'src/config';
 import IpPoolSelect from './fields/IpPoolSelect';
 import ErrorTracker from 'src/helpers/errorTracker';
 import { required, integer, minNumber, maxNumber } from 'src/helpers/validation';
 import * as conversions from 'src/helpers/conversionTracking';
 import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
 import DedicatedIpCost from '../components/DedicatedIpCost';
+import { TranslatableText } from 'src/components/text';
 import { isAws } from 'src/helpers/conditions/account';
 import { ANALYTICS_ADDON_IP } from 'src/constants';
 import styles from './Forms.module.scss';
@@ -72,9 +72,18 @@ export class AddIps extends Component {
   };
 
   render() {
-    const { currentPlan, error, handleSubmit, onClose, submitting } = this.props;
-    const { maxPerAccount } = config.sendingIps;
-    const remainingCount = maxPerAccount - Math.min(this.props.sendingIps.length, maxPerAccount);
+    const {
+      currentPlan,
+      error,
+      handleSubmit,
+      onClose,
+      submitting,
+      limitOnDedicatedIps,
+      priceOfEachDedicatedIp,
+      billingPeriodOfDedicatedIp,
+    } = this.props;
+    const remainingCount =
+      limitOnDedicatedIps - Math.min(this.props.sendingIps.length, limitOnDedicatedIps);
 
     // This form should not be rendered if the account has no remaining IP addresses
     const isDisabled = submitting || remainingCount === 0;
@@ -117,8 +126,14 @@ export class AddIps extends Component {
                     <span>You cannot currently add any more IPs</span>
                   ) : (
                     <span>
-                      You can add up to {maxPerAccount} total dedicated IPs to your plan for{' '}
-                      <DedicatedIpCost plan={currentPlan} quantity="1" /> each.
+                      You can add up to <TranslatableText>{limitOnDedicatedIps}</TranslatableText>{' '}
+                      total dedicated IPs to your plan for{' '}
+                      <DedicatedIpCost
+                        priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+                        quantity="1"
+                        billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
+                      />{' '}
+                      each.
                     </span>
                   )
                 }
