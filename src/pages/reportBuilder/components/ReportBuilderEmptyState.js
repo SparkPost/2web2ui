@@ -20,7 +20,7 @@ export default function ReportBuilderEmptyState() {
             metrics across delivery and deliverability data. To learn how to unlock the full
             potential of SparkPost's Analytics Report, visit the documentation link below.
           </p>
-          <Bold>A sending domain is required to start generating analytics.</Bold>
+          <Bold>A verified sending domain is required to start generating analytics.</Bold>
         </Stack>
       </EmptyState.Content>
       <EmptyState.Image src={AnalyticsJpg}>
