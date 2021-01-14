@@ -103,8 +103,11 @@ exports[`AddIps renders correctly with default props 1`] = `
           helpText={
             <span>
               You can add up to 
-              4
-               total dedicated IPs to your plan for
+              <TranslatableText>
+                4
+              </TranslatableText>
+               
+              total dedicated IPs to your plan for
                
               <DedicatedIpCost
                 billingPeriodOfDedicatedIp="month"
@@ -191,8 +194,11 @@ exports[`AddIps renders free ip elements when included in plan 1`] = `
           helpText={
             <span>
               You can add up to 
-              4
-               total dedicated IPs to your plan for
+              <TranslatableText>
+                4
+              </TranslatableText>
+               
+              total dedicated IPs to your plan for
                
               <DedicatedIpCost
                 billingPeriodOfDedicatedIp="month"

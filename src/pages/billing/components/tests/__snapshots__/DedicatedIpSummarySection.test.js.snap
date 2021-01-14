@@ -25,7 +25,10 @@ exports[`DedicatedIpSummarySection renders count and zero cost 1`] = `
     label="Dedicated IPs"
   >
     <h6>
-      1
+      <TranslatableText>
+        1
+         
+      </TranslatableText>
        for
        
       <DedicatedIpCost
@@ -34,6 +37,9 @@ exports[`DedicatedIpSummarySection renders count and zero cost 1`] = `
         quantity={0}
       />
     </h6>
+    <p>
+      Your plan includes one free dedicated IP address.
+    </p>
   </LabelledValue>
 </Panel.LEGACY.Section>
 `;
@@ -63,7 +69,10 @@ exports[`DedicatedIpSummarySection renders disabled add button, count, cost, and
     label="Dedicated IPs"
   >
     <h6>
-      4
+      <TranslatableText>
+        4
+         
+      </TranslatableText>
        for
        
       <DedicatedIpCost
