@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Error } from '@sparkpost/matchbox-icons';
 import { refreshReportBuilder } from 'src/actions/summaryChart';
@@ -76,8 +77,9 @@ export function ReportBuilder({
   sendingDomainsListLoading,
   isEmptyStateEnabled,
 }) {
-  const [isFirstRender, setIsFirstRender] = useState(true);
+  const history = useHistory();
   const showReportBuilderEmptyState = sendingDomains.length === 0 && isEmptyStateEnabled;
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false); // TODO: Incorporate in to the context reducer due to state interaction
@@ -91,25 +93,38 @@ export function ReportBuilder({
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
-  const [emptyStateTab, setEmptyStateTab] = useState('tracking');
+  const emptyStateUrlHash = location.hash.replace('#', '');
+  let emptyStateTabFromUrl;
+  switch (emptyStateUrlHash) {
+    case 'empty-tab-tracking':
+    case 'empty-tab-investigating':
+      emptyStateTabFromUrl = emptyStateUrlHash;
+      break;
+    default:
+      emptyStateTabFromUrl = 'empty-tab-tracking';
+      break;
+  } // safety net for invalid hash values
+  const [emptyStateTab, setEmptyStateTab] = useState(emptyStateTabFromUrl);
   const EMPTY_STATE_TABS = [
     {
       content: 'Tracking Engagement',
-      queryParamKey: 'tracking',
+      hashKey: 'empty-tab-tracking',
       onClick: () => {
-        setEmptyStateTab('tracking');
+        setEmptyStateTab('empty-tab-tracking');
+        history.push('/signals/analytics#empty-tab-tracking'); // NOTE: Forces the <Page /> to re-render and segment gets called with the # param for the empty state
       },
     },
     {
       content: 'Investigating Problems',
-      queryParamKey: 'investigating',
+      hashKey: 'empty-tab-investigating',
       onClick: () => {
-        setEmptyStateTab('investigating');
+        setEmptyStateTab('empty-tab-investigating');
+        history.push('/signals/analytics#empty-tab-investigating'); // NOTE: Forces the <Page /> to re-render and segment gets called with the # param for the empty state
       },
     },
   ];
-
-  const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.queryParamKey === emptyStateTab);
+  const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.hashKey === emptyStateTab);
+  // console.log(emptyStateTabFromUrl, emptyStateTab, tabIndex);
 
   useEffect(() => {
     listSendingDomains();
