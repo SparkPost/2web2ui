@@ -893,7 +893,7 @@ describe('The domains list page', () => {
     });
 
     /**
-     * TRACKING DOMAINS TABLE
+     * BOUNCE DOMAINS TABLE
      */
     describe('bounce domains table', () => {
       it('renders a table after requesting sending domains - and renders only bounce domains', () => {

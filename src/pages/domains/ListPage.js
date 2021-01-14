@@ -10,9 +10,9 @@ import BounceDomainsEmptyState from './components/BounceDomainsEmptyState';
 import SendingDomainsEmptyState from './components/SendingDomainsEmptyState';
 import TrackingDomainsEmptyState from './components/TrackingDomainsEmptyState';
 
-import SendingDomainInfoBanner from 'src/pages/sendingDomains/components/SendingDomainInfoBanner.js';
-import BounceDomainInfoBanner from 'src/pages/sendingDomains/components/BounceDomainInfoBanner.js';
-import TrackingDomainInfoBanner from 'src/pages/sendingDomains/components/TrackingDomainInfoBanner';
+import SendingDomainInfoBanner from './components/SendingDomainInfoBanner.js';
+import BounceDomainInfoBanner from './components/BounceDomainInfoBanner.js';
+import TrackingDomainInfoBanner from './components/TrackingDomainInfoBanner';
 
 function DomainTabPages() {
   const {
