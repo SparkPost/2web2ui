@@ -58,8 +58,11 @@ import { Heading } from 'src/components/text';
 //       Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
 //     </>
 //   ),
-// queryParamKey: 'deliverability',
-// onClick: () => { updateFilter here },
+//   hashKey: 'empty-tab-deliverability',
+//   onClick: () => {
+//     setEmptyStateTab('empty-tab-deliverability');
+//     history.push('/signals/analytics#empty-tab-deliverability'); // NOTE: Forces the <Page /> to re-render and segment gets called with the # param for the empty state
+//   },
 // },
 
 export function ReportBuilder({
