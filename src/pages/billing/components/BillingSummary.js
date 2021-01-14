@@ -110,13 +110,8 @@ export default class BillingSummary extends Component {
     } = this.props;
     const { rvUsage, pending_cancellation, subscription, billing = {} } = account;
     const { show } = this.state;
-    const limitOnDedicatedIps = _.find(billingSubscription.products, { product: 'dedicated_ip' })
-      ?.limit;
-    const priceOfEachDedicatedIp = _.find(billingSubscription.products, { product: 'dedicated_ip' })
-      ?.price;
-    const billingPeriodOfDedicatedIp = _.find(billingSubscription.products, {
-      product: 'dedicated_ip',
-    })?.billing_period;
+    const dedicatedIpProduct =
+      billingSubscription.products.find(({ product }) => product === 'dedicated_ip') || {};
     // This is an extreme case to support manually billed accounts while transitioning to self serve
     const isTransitioningToSelfServe =
       billing !== null && !billing.credit_card && subscription.type === 'default';
@@ -150,9 +145,9 @@ export default class BillingSummary extends Component {
             canPurchaseIps={this.props.canPurchaseIps}
             onClick={this.handleIpModal}
             isTransitioningToSelfServe={isTransitioningToSelfServe}
-            limitOnDedicatedIps={limitOnDedicatedIps}
-            priceOfEachDedicatedIp={priceOfEachDedicatedIp}
-            billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
+            limitOnDedicatedIps={dedicatedIpProduct.limit}
+            priceOfEachDedicatedIp={dedicatedIpProduct.price}
+            billingPeriodOfDedicatedIp={dedicatedIpProduct.billing_period}
           />
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
         </Panel.LEGACY>
@@ -170,9 +165,9 @@ export default class BillingSummary extends Component {
           {show === IP_MODAL && (
             <AddIps
               onClose={this.handleModal}
-              limitOnDedicatedIps={limitOnDedicatedIps}
-              priceOfEachDedicatedIp={priceOfEachDedicatedIp}
-              billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
+              limitOnDedicatedIps={dedicatedIpProduct.limit}
+              priceOfEachDedicatedIp={dedicatedIpProduct.price}
+              billingPeriodOfDedicatedIp={dedicatedIpProduct.billing_period}
             />
           )}
         </Modal.LEGACY>

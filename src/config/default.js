@@ -133,11 +133,6 @@ const config = identifier => ({
     localpart: 'sandbox',
     domain: 'sparkpostbox.com',
   },
-  sendingIps: {
-    maxPerAccount: 4,
-    pricePerIp: 20.0,
-    awsPricePerIp: 0.028,
-  },
   splashPage: '/reports/summary',
   summaryChart: {
     defaultMetrics: ['count_targeted', 'count_rendered', 'count_accepted', 'count_bounce'],

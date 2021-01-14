@@ -3,8 +3,8 @@ import { Panel } from 'src/components/matchbox';
 
 import { LabelledValue } from 'src/components';
 import { PageLink } from 'src/components/links';
+import { TranslatableText } from 'src/components/text';
 import DedicatedIpCost from './DedicatedIpCost';
-import _ from 'lodash';
 
 function noop() {}
 
@@ -53,14 +53,17 @@ export default function DedicatedIpSummarySection({
     count === 0 ? (
       <h6>0</h6>
     ) : (
-      <h6>
-        {count} for{' '}
-        <DedicatedIpCost
-          quantity={billableCount}
-          priceOfEachDedicatedIp={priceOfEachDedicatedIp}
-          billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
-        />
-      </h6>
+      <>
+        <h6>
+          <TranslatableText>{count} </TranslatableText> for{' '}
+          <DedicatedIpCost
+            quantity={billableCount}
+            priceOfEachDedicatedIp={priceOfEachDedicatedIp}
+            billingPeriodOfDedicatedIp={billingPeriodOfDedicatedIp}
+          />
+        </h6>
+        {plan.includesIp && <p>Your plan includes one free dedicated IP address.</p>}
+      </>
     );
 
   return (

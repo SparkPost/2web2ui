@@ -13,6 +13,7 @@ import { required, integer, minNumber, maxNumber } from 'src/helpers/validation'
 import * as conversions from 'src/helpers/conversionTracking';
 import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
 import DedicatedIpCost from '../components/DedicatedIpCost';
+import { TranslatableText } from 'src/components/text';
 import { isAws } from 'src/helpers/conditions/account';
 import { ANALYTICS_ADDON_IP } from 'src/constants';
 import styles from './Forms.module.scss';
@@ -125,7 +126,8 @@ export class AddIps extends Component {
                     <span>You cannot currently add any more IPs</span>
                   ) : (
                     <span>
-                      You can add up to {limitOnDedicatedIps} total dedicated IPs to your plan for{' '}
+                      You can add up to <TranslatableText>{limitOnDedicatedIps}</TranslatableText>{' '}
+                      total dedicated IPs to your plan for{' '}
                       <DedicatedIpCost
                         priceOfEachDedicatedIp={priceOfEachDedicatedIp}
                         quantity="1"
