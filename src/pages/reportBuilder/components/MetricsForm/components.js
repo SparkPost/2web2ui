@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Banner, Inline, Box, UnstyledLink } from 'src/components/matchbox';
+import { Banner, Inline, Box } from 'src/components/matchbox';
+import { ExternalLink } from 'src/components/links';
 import { Rocket } from '@sparkpost/matchbox-icons';
 
 import { useSelector } from 'react-redux';
@@ -23,7 +24,12 @@ export const DeliverabilityBanner = () => {
           </Box>
           <Box>
             <span>Gain access to </span>
-            <UnstyledLink>deliverability metrics</UnstyledLink>
+            <ExternalLink
+              showIcon={false}
+              to="https://www.sparkpost.com/features/email-deliverability/"
+            >
+              deliverability metrics
+            </ExternalLink>
           </Box>
         </Inline>
       </Banner>
