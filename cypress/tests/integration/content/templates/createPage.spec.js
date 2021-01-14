@@ -212,6 +212,7 @@ describe('The create template page', () => {
     cy.withinModal(() => {
       cy.findByRole('button', { name: 'Save and Publish' }).click();
     });
+    cy.wait('@publishTemplate');
     cy.findByRole('button', { name: 'Open Menu' }).click();
     cy.findByRole('button', { name: 'Duplicate' }).click();
 

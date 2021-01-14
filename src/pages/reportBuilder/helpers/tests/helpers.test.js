@@ -1,4 +1,9 @@
-import { getApiFormattedGroupings, getGroupingFields, getIterableFormattedGroupings } from '../';
+import {
+  getApiFormattedGroupings,
+  getGroupingFields,
+  getIterableFormattedGroupings,
+  getHasDuplicateFilters,
+} from '../';
 import * as helpers from '../';
 
 const EXAMPLE_GROUPINGS = [
@@ -45,7 +50,7 @@ const EXAMPLE_GROUPINGS = [
 ];
 
 describe('Report Builder helpers', () => {
-  describe('hydrate filters', () => {
+  describe('hydrateFilters', () => {
     it('should hydrate filters properly', () => {
       const hydratedFilters = helpers.hydrateFilters([{ AND: { templates: { eq: ['thing'] } } }]);
       expect(hydratedFilters).toMatchSnapshot();
@@ -59,7 +64,7 @@ describe('Report Builder helpers', () => {
     });
   });
 
-  describe('dehydrate filters', () => {
+  describe('dehydrateFilters', () => {
     it('should dehydrate filters properly', () => {
       const dehydratedFilters = helpers.dehydrateFilters([
         {
@@ -448,6 +453,63 @@ describe('Report Builder helpers', () => {
       );
 
       expect(data).toStrictEqual(EXAMPLE_GROUPINGS);
+    });
+  });
+
+  describe('getHasDuplicateFilters', () => {
+    it('returns `false` when there are no duplicate filters in the passed in array', () => {
+      const filters = [
+        {
+          type: 'sending_domains',
+          compareBy: 'contains',
+        },
+        {
+          type: 'sending_domains',
+          compareBy: 'eq',
+        },
+        {
+          type: 'subaccounts',
+          compareBy: 'eq',
+        },
+      ];
+
+      expect(getHasDuplicateFilters(filters)).toBe(false);
+    });
+
+    it('returns `true` when there are duplicate filters in the array', () => {
+      const filters = [
+        {
+          type: 'sending_domains',
+          compareBy: 'contains',
+        },
+        {
+          type: 'sending_domains',
+          compareBy: 'contains',
+        },
+        {
+          type: 'subaccounts',
+          compareBy: 'eq',
+        },
+      ];
+
+      expect(getHasDuplicateFilters(filters)).toBe(true);
+    });
+
+    it('ignores any object properties that are irrelevant to the UI', () => {
+      const filters = [
+        {
+          type: 'sending_domains',
+          compareBy: 'contains',
+          random: 'stuff',
+        },
+        {
+          type: 'sending_domains',
+          compareBy: 'contains',
+          what: 'is-going-on',
+        },
+      ];
+
+      expect(getHasDuplicateFilters(filters)).toBe(true);
     });
   });
 });

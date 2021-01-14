@@ -1,13 +1,15 @@
-import { useReducer, useCallback } from 'react';
+import { useReducer, useCallback, useEffect } from 'react';
 import {
   getInitialGroupState,
   getInitialFilterState,
   getIterableFormattedGroupings,
+  getGroupingFields,
 } from '../../helpers';
 
 const initialGroupingsState = [{ AND: {} }];
 
 const initialState = {
+  status: 'idle', // 'idle' | 'editing' | 'submitting' | 'success' | 'error'
   groupings: getIterableFormattedGroupings(initialGroupingsState),
 };
 
@@ -18,25 +20,42 @@ function reducer(state, action) {
       const targetGroup = groupings[action.groupingIndex];
       targetGroup.type = action.groupingType;
 
-      return { ...state, groupings };
+      return {
+        ...state,
+        groupings,
+      };
     }
 
     case 'SET_FILTER_TYPE': {
-      const { groupings } = state;
+      const { groupings, status: prevStatus } = state;
       const targetFilter = groupings[action.groupingIndex].filters[action.filterIndex];
       targetFilter.type = action.filterType;
       targetFilter.values = [];
+      // Only show the error if coming from the error state post submission
+      const nextStatus =
+        hasDuplicateError(groupings) && prevStatus === 'error' ? 'error' : 'editing';
 
-      return { ...state, groupings };
+      return {
+        ...state,
+        groupings,
+        status: nextStatus,
+      };
     }
 
     case 'SET_FILTER_COMPARE_BY': {
-      const { groupings } = state;
+      const { groupings, status: prevStatus } = state;
       const targetFilter = groupings[action.groupingIndex].filters[action.filterIndex];
       targetFilter.compareBy = action.compareBy;
       targetFilter.values = [];
+      // Only show the error if coming from the error state post submission
+      const nextStatus =
+        hasDuplicateError(groupings) && prevStatus === 'error' ? 'error' : 'editing';
 
-      return { ...state, groupings };
+      return {
+        ...state,
+        groupings,
+        status: nextStatus,
+      };
     }
 
     case 'SET_FILTER_VALUES': {
@@ -44,7 +63,10 @@ function reducer(state, action) {
       const targetFilter = groupings[action.groupingIndex].filters[action.filterIndex];
       targetFilter.values = action.values;
 
-      return { ...state, groupings };
+      return {
+        ...state,
+        groupings,
+      };
     }
 
     case 'ADD_GROUPING': {
@@ -62,7 +84,10 @@ function reducer(state, action) {
       const targetFilters = groupings[action.groupingIndex].filters;
       targetFilters.push(getInitialFilterState());
 
-      return { ...state, groupings };
+      return {
+        ...state,
+        groupings,
+      };
     }
 
     case 'REMOVE_FILTER': {
@@ -100,7 +125,11 @@ function reducer(state, action) {
         updatedGroupings = getIterableFormattedGroupings(initialGroupingsState);
       }
 
-      return { ...state, groupings: updatedGroupings };
+      return {
+        ...state,
+        groupings: updatedGroupings,
+        status: hasDuplicateError(updatedGroupings) ? 'error' : 'editing',
+      };
     }
 
     case 'SET_FILTERS': {
@@ -116,6 +145,32 @@ function reducer(state, action) {
       return {
         ...state,
         groupings: getIterableFormattedGroupings(initialGroupingsState),
+        status: 'idle',
+      };
+    }
+
+    case 'SUBMIT': {
+      return {
+        ...state,
+        status: 'submitting', // This seems like an extraneous step but it introduces a state change to ensure the user does not remain in "error" constantly
+      };
+    }
+
+    case 'VALIDATE': {
+      const { groupings } = state;
+
+      // If a duplicate error exists in the groupings, update the form status to "error"
+      if (hasDuplicateError(groupings)) {
+        return {
+          ...state,
+          status: 'error',
+        };
+      }
+
+      // Otherwise, the final, success state is entered
+      return {
+        ...state,
+        status: 'success',
       };
     }
 
@@ -211,6 +266,15 @@ export default function useFiltersForm() {
 
   const clearFilters = () => dispatch({ type: 'CLEAR_FILTERS' });
 
+  const submit = () => dispatch({ type: 'SUBMIT' });
+
+  // On status change, immediately transition states after submitting
+  useEffect(() => {
+    if (state.status === 'submitting') {
+      return dispatch({ type: 'VALIDATE' });
+    }
+  }, [state.status]);
+
   return {
     state,
     actions: {
@@ -223,6 +287,13 @@ export default function useFiltersForm() {
       removeFilter,
       clearFilters,
       setFilters,
+      submit,
     },
   };
+}
+
+function hasDuplicateError(groupings) {
+  return getGroupingFields(groupings).some(grouping => {
+    return grouping.hasDuplicateFilters;
+  });
 }

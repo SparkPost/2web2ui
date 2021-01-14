@@ -339,7 +339,6 @@ if (IS_HIBANA_ENABLED) {
       });
 
       it('pins a saved report with unique verbiage for first time save vs overriding save', () => {
-        stubAccountsReq();
         cy.visit(PAGE_URL);
         cy.findByRole('button', { name: 'View All Reports' }).click();
 
@@ -637,13 +636,5 @@ if (IS_HIBANA_ENABLED) {
         cy.findByDataId('reports-limit-tooltip-icon').should('not.exist');
       });
     });
-  });
-}
-
-function stubAccountsReq({ fixture = 'account/200.get.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
   });
 }

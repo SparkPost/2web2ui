@@ -83,6 +83,8 @@ export const LINKS = {
   API_KEYS_GUIDE: 'https://www.sparkpost.com/docs/getting-started/create-api-keys/',
   SNIPPETS_DOCS: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
   ANALYTICS_DOCS: 'https://www.sparkpost.com/docs/reporting/signals-analytics/#',
+  METRICS_GROUPINGS_STRUCTURE_DOCS:
+    'https://developers.sparkpost.com/api/metrics/#header-groupings-structure',
 };
 
 export const ENTERPRISE_PLAN_CODES = ['ent1'];
