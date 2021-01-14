@@ -99,13 +99,17 @@ export function getGroupingFields(iterableGroupings) {
     return {
       ...grouping,
 
-      // Renders below all groups *except* the last one in the list
-      hasAndBetweenGroups: groupingIndex + 1 < groupings.length,
+      // Renders an "AND" below all groups *except* the last one in the list
+      hasAndBetweenGroups: Boolean(groupingIndex + 1 < groupings.length),
 
       // Renders below the last group in the list when one of the filters has values
-      hasAndButton:
+      hasAndButton: Boolean(
         groupingIndex + 1 === groupings.length &&
-        groupings[groupingIndex].filters.find(filter => filter.values.length > 0),
+          groupings[groupingIndex].filters.find(filter => filter.values.length > 0),
+      ),
+
+      // Whether or not this particular group has duplicate filters
+      hasDuplicateFilters: getHasDuplicateFilters(grouping.filters),
 
       filters: grouping.filters.map((filter, filterIndex) => {
         return {
@@ -159,6 +163,7 @@ export function getGroupingFields(iterableGroupings) {
  * and are well tested by integration tests.
  *
  * @param {array} remappedGroupings
+ *
  */
 export function getActiveFilterTagGroups(iterableGroupings) {
   const groupings = iterableGroupings;
@@ -346,4 +351,25 @@ export function dehydrateFilters(groupings) {
       }, {}),
     };
   });
+}
+
+/**
+ * Within a filter grouping, this function returns `true` when duplicate filters are present.
+ * Only the "type" and "compareBy" keys are relevant when making this comparison.
+ *
+ * @param {array} filters - iterable array of filter objects derived from `getIterableFormattedGroupings`
+ *
+ */
+export function getHasDuplicateFilters(filters) {
+  // Simplifies filters according to relevant keys
+  const formattedFilters = filters.map(({ type, compareBy }) => {
+    return {
+      type,
+      compareBy,
+    };
+  });
+  const uniqueFilters = _.uniqWith(formattedFilters, _.isEqual); // Generates an array of unique filters
+
+  // If there are more filters than unique filters, then there must be a duplicate present
+  return filters.length > uniqueFilters.length;
 }

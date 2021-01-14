@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Add, Close } from '@sparkpost/matchbox-icons';
-import { Button, ScreenReaderOnly, Select } from 'src/components/matchbox';
+import { LINKS } from 'src/constants';
+import { Banner, Button, ScreenReaderOnly, Select, Stack } from 'src/components/matchbox';
+import { ExternalLink } from 'src/components/links';
 import { useMultiEntry } from 'src/hooks';
 
 const COMPARE_BY_OPTIONS = [
@@ -114,5 +116,27 @@ export function RemoveButton({ onClick }) {
       <ScreenReaderOnly>Remove Filter</ScreenReaderOnly>
       <Button.Icon as={Close} />
     </StyledRemoveButton>
+  );
+}
+
+export function DuplicateErrorBanner(props) {
+  return (
+    <>
+      {/* alert role used to inform screen reader users of the presence of the error since it renders before interactive content in the DOM */}
+      {/* negative tabIndex used to allow programmatic focus handling */}
+      <div role="alert" tabIndex="-1" data-id={props['data-id']}>
+        <Banner size="small" status="danger">
+          <Stack space="200">
+            {/* eslint-disable no-restricted-syntax */}
+            <p>
+              Duplicate filters are not allowed within a group. See the{' '}
+              <ExternalLink to={LINKS.METRICS_GROUPINGS_STRUCTURE_DOCS}>API Docs</ExternalLink> for
+              more information.
+            </p>
+            {/* eslint-enable no-restricted-syntax */}
+          </Stack>
+        </Banner>
+      </div>
+    </>
   );
 }

@@ -28,13 +28,16 @@ import { getGroupingFields, getApiFormattedGroupings } from '../../helpers';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import Typeahead from '../Typeahead';
 import {
-  TypeSelect,
-  CompareBySelect,
-  MultiEntryController,
   AddButton,
+  CompareBySelect,
+  DuplicateErrorBanner,
+  MultiEntryController,
   RemoveButton,
+  TypeSelect,
 } from './components';
 import useFiltersForm from './useFiltersForm';
+
+const FILTER_VALUE_PLACEHOLDER_TEXT = 'e.g. resource_01 or resource_02';
 
 function FiltersForm({
   handleSubmit,
@@ -48,6 +51,7 @@ function FiltersForm({
   typeaheadCache,
 }) {
   const { state, actions } = useFiltersForm();
+  const { status } = state;
   const {
     setGroupingType,
     setFilterType,
@@ -58,6 +62,7 @@ function FiltersForm({
     removeFilter,
     clearFilters,
     setFilters,
+    submit,
   } = actions;
   const groupings = getGroupingFields(state.groupings);
   const { state: reportOptions } = useReportBuilderContext();
@@ -65,10 +70,26 @@ function FiltersForm({
 
   function handleFormSubmit(e) {
     e.preventDefault(); // Prevents page refresh
-    const formattedGroupings = getApiFormattedGroupings(groupings);
-
-    return handleSubmit({ filters: formattedGroupings });
+    submit();
   }
+
+  useEffect(() => {
+    if (status === 'error') {
+      // Using refs to manage focus is a *huge* pain with multiple elements - this isn't pretty but gets the job done and eliminates a *lot* of complexity
+      // that comes with using a ref callback to store refs in an array.
+      const errorBanners = document.querySelectorAll('[data-id="error-banner"]');
+
+      errorBanners[0].focus();
+    }
+
+    // If the status changes to "success" (only possible via form submission) then call the passed in submit handler
+    if (status === 'success') {
+      handleSubmit({ filters: getApiFormattedGroupings(groupings) });
+    }
+
+    // For this effect, only care about the status changing, so not using an exhaustive dependency check here
+    // eslint-disable-next-line
+  }, [status]);
 
   useEffect(() => {
     setFilters(filters);
@@ -141,6 +162,14 @@ function FiltersForm({
                           position="relative"
                           key={`filters-${groupingIndex}-${filterIndex}`}
                         >
+                          {status === 'error' &&
+                          filterIndex === 0 &&
+                          grouping.hasDuplicateFilters ? (
+                            <Box marginY="400">
+                              <DuplicateErrorBanner data-id="error-banner" />
+                            </Box>
+                          ) : null}
+
                           <Box as="fieldset" border="0" padding="0">
                             <ScreenReaderOnly as="legend">Filter By</ScreenReaderOnly>
 
@@ -192,6 +221,7 @@ function FiltersForm({
                                   type={filterLabel}
                                   label={filterLabel}
                                   results={typeaheadCache[filterLabel]}
+                                  placeholder={FILTER_VALUE_PLACEHOLDER_TEXT}
                                 />
                               ) : null}
 
@@ -215,6 +245,7 @@ function FiltersForm({
                                         error={props.error}
                                         selectedItems={props.valueList}
                                         itemToString={item => (item ? item : '')}
+                                        placeholder={FILTER_VALUE_PLACEHOLDER_TEXT}
                                       />
                                     );
                                   }}

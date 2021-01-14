@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Report Builder helpers dehydrate filters should dehydrate filters properly 1`] = `
+exports[`Report Builder helpers dehydrateFilters should dehydrate filters properly 1`] = `
 Array [
   Object {
     "AND": Object {
@@ -19,7 +19,7 @@ Array [
 ]
 `;
 
-exports[`Report Builder helpers hydrate filters should hydrate filters properly 1`] = `
+exports[`Report Builder helpers hydrateFilters should hydrate filters properly 1`] = `
 Array [
   Object {
     "AND": Object {
@@ -36,7 +36,7 @@ Array [
 ]
 `;
 
-exports[`Report Builder helpers hydrate filters should hydrate subaccount filters correctly 1`] = `
+exports[`Report Builder helpers hydrateFilters should hydrate subaccount filters correctly 1`] = `
 Array [
   Object {
     "AND": Object {
