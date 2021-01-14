@@ -77,7 +77,7 @@ export class SendingDomainsTab extends Component {
                   getRowData={row => getRowData(row, value.isHibanaEnabled)}
                   pagination={true}
                   rows={this.props.domains}
-                />{' '}
+                />
               </>
             )}
           </>

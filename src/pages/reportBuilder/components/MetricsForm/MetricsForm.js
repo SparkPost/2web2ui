@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Button, Checkbox, Drawer, Expandable, Tooltip, Stack } from 'src/components/matchbox';
-
+import { Box, Button, Checkbox, Drawer, Expandable, Stack, Tooltip } from 'src/components/matchbox';
+import { DeliverabilityBanner } from './components';
 import { categorizedMetricsList, list } from 'src/config/metrics';
 import _ from 'lodash';
 import styled from 'styled-components';
@@ -26,7 +26,7 @@ const DESCRIPTIONS = {
   Engagement: 'Interaction in messages in the inbox',
 };
 
-export default function MetricsDrawer(props) {
+export default function MetricsForm(props) {
   const getStateFromProps = useCallback(() => {
     return props.selectedMetrics.reduce(
       (accumulator, current) => {
@@ -110,6 +110,7 @@ export default function MetricsDrawer(props) {
   const { DrawerFooter = Drawer.Footer } = props;
   return (
     <>
+      <DeliverabilityBanner />
       <Box padding="500" paddingBottom="100px">
         <MetricsCategories />
       </Box>

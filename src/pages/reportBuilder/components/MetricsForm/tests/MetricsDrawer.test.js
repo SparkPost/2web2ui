@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import MetricsDrawer from '../MetricsDrawer';
+import MetricsForm from '../MetricsForm';
 
 //Even though Hibana will be enabled, there seems to be issues with using styled props.
 //This should only affect formatting but not the actual content
@@ -19,7 +19,7 @@ describe('Component: Summary Chart Metrics Modal', () => {
     DrawerFooter: mockDrawerFooter,
   };
 
-  const subject = props => render(<MetricsDrawer {...defaultProps} {...props} />);
+  const subject = props => render(<MetricsForm {...defaultProps} {...props} />);
 
   it('should render with no set metrics', () => {
     const { queryByLabelText } = subject();
