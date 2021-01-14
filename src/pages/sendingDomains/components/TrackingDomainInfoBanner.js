@@ -19,17 +19,7 @@ export default function InfoBanner() {
   if (dismissed) return null;
 
   return (
-    <Banner
-      onDismiss={handleDismiss}
-      size="large"
-      status="muted"
-      title="Tracking Domains"
-      backgroundColor="gray.100"
-      borderWidth="100"
-      borderStyle="solid"
-      borderColor="gray.400"
-      mb="600"
-    >
+    <Banner onDismiss={handleDismiss} size="large" status="muted" title="Tracking Domains" mb="600">
       <p>
         Tracking domains are used in engagement tracking to report email opens and link clicks.
         Custom tracking domains will replace the domain portion of the URL.
