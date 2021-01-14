@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { usePageFilters } from 'src/hooks';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Error } from '@sparkpost/matchbox-icons';
@@ -62,10 +61,6 @@ import { Heading } from 'src/components/text';
 // onClick: () => { updateFilter here },
 // },
 
-const initFilters = {
-  tab: { defaultValue: 'tracking' },
-};
-
 export function ReportBuilder({
   chart,
   getSubscription,
@@ -82,6 +77,7 @@ export function ReportBuilder({
   isEmptyStateEnabled,
 }) {
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const showReportBuilderEmptyState = sendingDomains.length === 0 && isEmptyStateEnabled;
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false); // TODO: Incorporate in to the context reducer due to state interaction
@@ -95,26 +91,25 @@ export function ReportBuilder({
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
-  const { filters, updateFilters } = usePageFilters(initFilters);
-
+  const [emptyStateTab, setEmptyStateTab] = useState('tracking');
   const EMPTY_STATE_TABS = [
     {
       content: 'Tracking Engagement',
       queryParamKey: 'tracking',
       onClick: () => {
-        updateFilters({ tab: 'tracking' });
+        setEmptyStateTab('tracking');
       },
     },
     {
       content: 'Investigating Problems',
       queryParamKey: 'investigating',
       onClick: () => {
-        updateFilters({ tab: 'investigating' });
+        setEmptyStateTab('investigating');
       },
     },
   ];
 
-  const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.queryParamKey === filters.tab);
+  const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.queryParamKey === emptyStateTab);
 
   useEffect(() => {
     listSendingDomains();
@@ -307,8 +302,6 @@ export function ReportBuilder({
     );
   }
 
-  // NOTE: isEmpty already exists, but using this because we have a feature flag - isEmptyStateEnabled
-  const showReportBuilderEmptyState = sendingDomains.length === 0 && isEmptyStateEnabled;
   return (
     <Page
       title={!showReportBuilderEmptyState ? 'Analytics Report' : null}
