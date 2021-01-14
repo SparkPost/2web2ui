@@ -94,13 +94,25 @@ function DomainTabPages() {
     !trackingDomainsListError;
 
   const showSendingDomainInfoBanner =
-    !listPending && matchesSendingTab && isEmptyStateEnabled && sendingDomains.length > 0;
+    !listPending &&
+    !showSendingDomainsEmptyState &&
+    matchesSendingTab &&
+    isEmptyStateEnabled &&
+    sendingDomains.length > 0;
 
   const showBounceDomainInfoBanner =
-    !listPending && matchesBounceTab && isEmptyStateEnabled && sendingDomains.length > 0;
+    !listPending &&
+    !showBounceDomainsEmptyState &&
+    matchesBounceTab &&
+    isEmptyStateEnabled &&
+    bounceDomains.length > 0; // We might want to add sendingDomains.length > 0 too
 
   const showTrackingDomainInfoBanner =
-    !listPending && matchesTrackingTab && isEmptyStateEnabled && trackingDomains.length > 0;
+    !listPending &&
+    !showTrackingDomainsEmptyState &&
+    matchesTrackingTab &&
+    isEmptyStateEnabled &&
+    trackingDomains.length > 0;
 
   const renderInfoBanner = () => {
     if (showSendingDomainInfoBanner) {
