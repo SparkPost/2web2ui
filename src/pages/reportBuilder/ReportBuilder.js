@@ -95,6 +95,7 @@ export function ReportBuilder({
 
   const emptyStateUrlHash = location.hash.replace('#', '');
   let emptyStateTabFromUrl;
+
   switch (emptyStateUrlHash) {
     case 'empty-tab-tracking':
     case 'empty-tab-investigating':
@@ -124,7 +125,6 @@ export function ReportBuilder({
     },
   ];
   const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.hashKey === emptyStateTab);
-  // console.log(emptyStateTabFromUrl, emptyStateTab, tabIndex);
 
   useEffect(() => {
     listSendingDomains();
