@@ -22,6 +22,7 @@ import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { getReports } from 'src/actions/reports';
 import OGDashbaordPage from 'src/pages/dashboard';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 function mapStateToProps(state) {
   const isAnAdmin = isAdmin(state);
@@ -64,6 +65,12 @@ function mapStateToProps(state) {
       onboarding = 'startSending';
   } else if (lastUsageDate === null && (isTemplatesUser || isReportingUser)) {
     onboarding = 'analyticsReportPromo';
+  }
+
+  if (onboarding !== 'done') {
+    segmentTrack(SEGMENT_EVENTS.ONBOARDING, {
+      onboarding,
+    });
   }
 
   if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {
