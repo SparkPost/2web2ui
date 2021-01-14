@@ -219,7 +219,7 @@ describe('Billing Page', () => {
     });
     cy.visit(PAGE_URL);
     cy.wait('@dedicatedIpOverrideRequest');
-    cy.findByText('2 for $20.00 per quarter').should('be.visible');
+    cy.findByRole('heading', { name: '2 for $20.00 per quarter' }).should('be.visible');
     cy.findByRole('button', { name: 'Add Dedicated IPs' }).should('not.be.disabled');
   });
 
@@ -328,7 +328,7 @@ describe('Billing Page', () => {
       cy.visit(PAGE_URL);
       cy.wait('@dedicatedIpOverrideRequest');
       cy.findByRole('button', { name: 'Add Dedicated IPs' }).click();
-      cy.findByText(
+      cy.contains(
         'You can add up to 14 total dedicated IPs to your plan for $20.00 per quarter each.',
       ).should('be.visible');
     });
