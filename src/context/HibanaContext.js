@@ -17,7 +17,7 @@ function Provider(props) {
 function mapStateToProps(state) {
   return {
     isCurrentUserPending: state.currentUser.loading,
-    isHibanaEnabled: selectCondition(isUserUiOptionSet('isHibanaEnabled'))(state),
+    isHibanaEnabled: true,
     isBannerVisible: selectCondition(isUserUiOptionSet('isHibanaBannerVisible'))(state),
   };
 }
