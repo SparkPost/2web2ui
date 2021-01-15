@@ -1,4 +1,5 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
+import { LINKS } from 'src/constants';
+import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
 import { PAGE_URL, METRICS } from './constants';
 import {
   stubDeliverability,
@@ -10,6 +11,15 @@ import {
 
 const ENCODED_QUERY_FILTERS =
   '%255B%257B%2522AND%2522%3A%257B%2522campaigns%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%2C%2522world%2522%255D%257D%2C%2522templates%2522%3A%257B%2522eq%2522%3A%255B%2522greg-hackathon%2522%255D%2C%2522notEq%2522%3A%255B%2522gregs-test%2522%255D%257D%257D%257D%2C%257B%2522AND%2522%3A%257B%2522sending_ips%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%255D%2C%2522notLike%2522%3A%255B%2522hello-again%2522%255D%257D%257D%257D%255D';
+
+// this is an override of the stub set by stubAuth
+function stubUsersRequest() {
+  cy.stubRequest({
+    url: `/api/v1/users/${USERNAME}`,
+    fixture: `users/200.get.report-builder-banner-dismissed.json`,
+    requestAlias: 'stubbedUsersRequest',
+  });
+}
 
 if (IS_HIBANA_ENABLED) {
   describe('Analytics Report', () => {
@@ -53,6 +63,48 @@ if (IS_HIBANA_ENABLED) {
         href: 'https://www.sparkpost.com/docs/reporting/signals-analytics/#',
       });
       cy.findByRole('heading', { name: 'Example Analytics' }).should('be.visible');
+    });
+
+    it('does not render the banner when the banner has been dismissed', () => {
+      commonBeforeSteps();
+      stubAccountsReq(); // has_empty_states - check
+      stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1 verified sending domain - check
+      stubUsersRequest(); // banner already dismissed - check
+      cy.visit(PAGE_URL);
+      cy.wait(['@stubbedUsersRequest']);
+      cy.title().should('include', 'Analytics Report');
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+      cy.findByRole('button', { name: 'Save New Report' }).should('be.visible');
+      // EMPTY STATE TEXT - not exists
+      cy.findByText('A verified sending domain is required to start generating analytics.').should(
+        'not.exist',
+      );
+      cy.findByRole('heading', { name: 'All the Metrics in One Place' }).should('not.exist');
+      cy.findByText(
+        "Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited metrics across delivery and deliverability data. To learn how to unlock the full potential of SparkPost's Analytics Report, visit the documentation below.",
+      ).should('not.exist');
+      cy.findByRole('button', { name: 'View All Reports' }).should('be.visible');
+    });
+
+    it('renders the banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+      commonBeforeSteps();
+      stubAccountsReq(); // has_empty_states - check
+      stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1+ verified sending domain - check
+      cy.visit(PAGE_URL); //
+      cy.wait(['@stubbedUsersRequest']);
+      cy.title().should('include', 'Analytics Report');
+      // EMPTY STATE TEXT
+      cy.findByText('A verified sending domain is required to start generating analytics.').should(
+        'not.exist',
+      );
+      cy.findByRole('heading', { name: 'All the Metrics in One Place' }).should('be.visible');
+      cy.findByText(
+        "Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited metrics across delivery and deliverability data. To learn how to unlock the full potential of SparkPost's Analytics Report, visit the documentation below.",
+      ).should('be.visible');
+      cy.verifyLink({
+        content: 'Analytics Documentation',
+        href: LINKS.ANALYTICS_DOCS,
+      });
     });
 
     it('should render error state for charts', () => {

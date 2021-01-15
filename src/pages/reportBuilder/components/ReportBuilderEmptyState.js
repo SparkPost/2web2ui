@@ -1,62 +1,37 @@
 import React from 'react';
-import { EmptyState, Stack, Tabs } from 'src/components/matchbox';
-import { Rocket } from '@sparkpost/matchbox-icons';
+import { PageLink } from 'src/components/links';
+import { EmptyState, Stack } from 'src/components/matchbox';
+import AnalyticsJpg from '@sparkpost/matchbox-media/images/Analytics.jpg';
 import AnalyticsWebp from '@sparkpost/matchbox-media/images/Analytics.webp';
-import { Page } from 'src/components/matchbox';
 import { useHistory } from 'react-router-dom';
 import { LINKS } from 'src/constants';
-import { Heading, Bold } from 'src/components/text';
-import { tokens } from '@sparkpost/design-tokens-hibana';
+import { Bold } from 'src/components/text';
 
 export default function ReportBuilderEmptyState() {
   const history = useHistory();
+
   return (
-    <Page>
-      <EmptyState>
-        <EmptyState.Header>Analytics Report</EmptyState.Header>
-        <EmptyState.Content>
-          <Stack>
-            <p>
-              Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited
-              metrics across delivery and deliverability data. To learn how to unlock the full
-              potential of SparkPost's Analytics Report, visit the documentation link below.
-            </p>
-            <Bold>A sending domain is required to start generating analytics.</Bold>
-          </Stack>
-        </EmptyState.Content>
-        <EmptyState.Image src={AnalyticsWebp} />
-        <EmptyState.Action onClick={() => history.push('/domains/create')}>
-          Add Sending Domain
-        </EmptyState.Action>
-        <EmptyState.Action variant="outline" to={LINKS.ANALYTICS_DOCS} external>
-          Analytics Documentation
-        </EmptyState.Action>
-      </EmptyState>
-      <Heading as="h2">Example Analytics</Heading>
-      <Tabs
-        keyboardActivation="auto"
-        mb="800"
-        onSelect={function noRefCheck() {}}
-        selected={0}
-        tabs={[
-          {
-            content: 'Tracking Engagement',
-            onClick: function noRefCheck() {},
-          },
-          {
-            content: 'Investigating Problems',
-            onClick: function noRefCheck() {},
-          },
-          {
-            content: (
-              <>
-                Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
-              </>
-            ),
-            onClick: function noRefCheck() {},
-          },
-        ]}
-      />
-    </Page>
+    <EmptyState mb="750">
+      <EmptyState.Header>Analytics Report</EmptyState.Header>
+      <EmptyState.Content>
+        <Stack>
+          <p>
+            Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited
+            metrics across delivery and deliverability data. To learn how to unlock the full
+            potential of SparkPost's Analytics Report, visit the documentation link below.
+          </p>
+          <Bold>A verified sending domain is required to start generating analytics.</Bold>
+        </Stack>
+      </EmptyState.Content>
+      <EmptyState.Image src={AnalyticsJpg}>
+        <source srcSet={AnalyticsWebp} type="image/webp"></source>
+      </EmptyState.Image>
+      <EmptyState.Action component={PageLink} onClick={() => history.push('/domains/create')}>
+        Add Sending Domain
+      </EmptyState.Action>
+      <EmptyState.Action variant="outline" to={LINKS.ANALYTICS_DOCS} external>
+        Analytics Documentation
+      </EmptyState.Action>
+    </EmptyState>
   );
 }

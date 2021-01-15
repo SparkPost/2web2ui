@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Error } from '@sparkpost/matchbox-icons';
 import { refreshReportBuilder } from 'src/actions/summaryChart';
@@ -7,6 +8,8 @@ import { getSubscription } from 'src/actions/billing';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
+// QUESTION: What's the difference between the src/components Tabs and src/components/matchbox Tabs?
+// Should one be used over the other?
 import {
   Empty,
   Tabs,
@@ -14,7 +17,7 @@ import {
   AggregatedMetrics,
   CompareByAggregatedMetrics,
 } from 'src/components';
-import { Box, Button, Page, Panel, Tooltip } from 'src/components/matchbox';
+import { Box, Button, Tabs as MatchboxTabs, Page, Panel, Tooltip } from 'src/components/matchbox';
 import {
   bounceTabMetrics,
   rejectionTabMetrics,
@@ -45,6 +48,23 @@ import {
 } from './components/tabs';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants';
+import { TrackingEngagementTab, InvestigatingProblemsTab } from './components/EmptyTabs';
+import { InfoBanner } from './components';
+import { Heading } from 'src/components/text';
+
+// Enable for EMPTY_STATE_TABS when SD is released
+// {
+//   content: (
+//     <>
+//       Deliverability Metrics <Rocket color={tokens.color_brand_orange} size="25" />
+//     </>
+//   ),
+//   hashKey: 'empty-tab-deliverability',
+//   onClick: () => {
+//     setEmptyStateTab('empty-tab-deliverability');
+//     history.push('/signals/analytics#empty-tab-deliverability'); // NOTE: Forces the <Page /> to re-render and segment gets called with the # param for the empty state
+//   },
+// },
 
 export function ReportBuilder({
   chart,
@@ -58,8 +78,12 @@ export function ReportBuilder({
   subaccountsReady,
   listSendingDomains,
   sendingDomains,
+  sendingDomainsListLoading,
   isEmptyStateEnabled,
 }) {
+  const history = useHistory();
+  const showReportBuilderEmptyState = sendingDomains.length === 0 && isEmptyStateEnabled;
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false); // TODO: Incorporate in to the context reducer due to state interaction
@@ -73,8 +97,43 @@ export function ReportBuilder({
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
+  const showInfoBanner = !showReportBuilderEmptyState && isEmptyStateEnabled;
+  const emptyStateUrlHash = location.hash.replace('#', '');
+  let emptyStateTabFromUrl;
+
+  switch (emptyStateUrlHash) {
+    case 'empty-tab-tracking':
+    case 'empty-tab-investigating':
+      emptyStateTabFromUrl = emptyStateUrlHash;
+      break;
+    default:
+      emptyStateTabFromUrl = 'empty-tab-tracking';
+      break;
+  } // safety net for invalid hash values
+  const [emptyStateTab, setEmptyStateTab] = useState(emptyStateTabFromUrl);
+  const EMPTY_STATE_TABS = [
+    {
+      content: 'Tracking Engagement',
+      hashKey: 'empty-tab-tracking',
+      onClick: () => {
+        setEmptyStateTab('empty-tab-tracking');
+        history.push('/signals/analytics#empty-tab-tracking'); // NOTE: Forces the <Page /> to re-render and segment gets called with the # param for the empty state
+      },
+    },
+    {
+      content: 'Investigating Problems',
+      hashKey: 'empty-tab-investigating',
+      onClick: () => {
+        setEmptyStateTab('empty-tab-investigating');
+        history.push('/signals/analytics#empty-tab-investigating'); // NOTE: Forces the <Page /> to re-render and segment gets called with the # param for the empty state
+      },
+    },
+  ];
+  const tabIndex = EMPTY_STATE_TABS.findIndex(tab => tab.hashKey === emptyStateTab);
+
   useEffect(() => {
     listSendingDomains();
+    setIsFirstRender(false);
   }, [listSendingDomains]);
 
   useEffect(() => {
@@ -238,139 +297,162 @@ export function ReportBuilder({
     return <Loading />;
   }
 
+  function getPrimaryArea() {
+    return (
+      <Box display="flex" alignItems="center">
+        {isMaxReports && (
+          <Tooltip
+            id="reports_limit_tooltip"
+            content="Your account has reached its limit on custom saved reports. You either need to delete a report or upgrade your plan."
+          >
+            <div tabIndex="0" data-id="reports-limit-tooltip-icon">
+              <Error color="gray.700" />
+            </div>
+          </Tooltip>
+        )}
+        <Button
+          ml="300"
+          disabled={isMaxReports}
+          variant="primary"
+          onClick={() => setShowSaveNewReportModal(true)}
+        >
+          Save New Report
+        </Button>
+      </Box>
+    );
+  }
+
   return (
     <Page
-      title="Analytics Report"
-      primaryArea={
-        <Box display="flex" alignItems="center">
-          {isMaxReports && (
-            <Tooltip
-              id="reports_limit_tooltip"
-              content="Your account has reached its limit on custom saved reports. You either need to delete a report or upgrade your plan."
-            >
-              <div tabIndex="0" data-id="reports-limit-tooltip-icon">
-                <Error color="gray.700" />
-              </div>
-            </Tooltip>
-          )}
-          <Button
-            ml="300"
-            disabled={isMaxReports}
-            variant="primary"
-            onClick={() => setShowSaveNewReportModal(true)}
-          >
-            Save New Report
-          </Button>
-        </Box>
-      }
+      title={!showReportBuilderEmptyState ? 'Analytics Report' : null}
+      primaryArea={!showReportBuilderEmptyState ? getPrimaryArea() : null}
       empty={{
-        show: sendingDomains.length === 0 && isEmptyStateEnabled,
+        trackingOnly: showReportBuilderEmptyState,
       }}
-      hibanaEmptyStateComponent={ReportBuilderEmptyState}
+      loading={sendingDomainsListLoading || isFirstRender}
     >
-      <Panel>
-        <ReportOptions
-          selectedReport={selectedReport}
-          setReport={setReport}
-          reportLoading={chart.chartLoading}
-          searchOptions={summarySearchOptions}
-        />
-      </Panel>
-      <Panel>
-        {isEmpty ? (
-          <Empty message="No Data" description="Must select at least one metric." />
-        ) : (
-          <div data-id="summary-chart">
-            <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
-              <Tabs.Item>
-                <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
+      {/* EMPTY STATE */}
+      {showReportBuilderEmptyState && (
+        <>
+          <ReportBuilderEmptyState />
+          <Heading as="h2" mb="400" mt="100">
+            Example Analytics
+          </Heading>
+          <MatchboxTabs selected={tabIndex} tabs={EMPTY_STATE_TABS} keyboardActivation="auto" />
+          {tabIndex === 0 && <TrackingEngagementTab />}
+          {tabIndex === 1 && <InvestigatingProblemsTab />}
+          {/* {selectedEmptyStateTab === 2 && <DeliverabilityMetricsTab />} */}
+        </>
+      )}
 
-                {hasActiveComparisons ? (
-                  <CompareByAggregatedMetrics date={dateValue} reportOptions={reportOptions} />
-                ) : (
-                  <AggregatedMetrics
-                    date={dateValue}
-                    processedMetrics={selectors.selectSummaryMetricsProcessed}
-                  />
-                )}
-              </Tabs.Item>
+      {showInfoBanner && <InfoBanner />}
 
-              {hasBounceTab && (
-                <Tabs.Item>
-                  <BounceReasonTab />
-                </Tabs.Item>
-              )}
+      {/* NON-EMPTY STATE */}
+      {!showReportBuilderEmptyState && (
+        <>
+          <Panel>
+            <ReportOptions
+              selectedReport={selectedReport}
+              setReport={setReport}
+              reportLoading={chart.chartLoading}
+              searchOptions={summarySearchOptions}
+            />
+          </Panel>
+          <Panel>
+            {isEmpty ? (
+              <Empty message="No Data" description="Must select at least one metric." />
+            ) : (
+              <div data-id="summary-chart">
+                <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
+                  <Tabs.Item>
+                    <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
 
-              {hasRejectionTab && (
-                <Tabs.Item>
-                  <RejectionReasonsTab />
-                </Tabs.Item>
-              )}
+                    {hasActiveComparisons ? (
+                      <CompareByAggregatedMetrics date={dateValue} reportOptions={reportOptions} />
+                    ) : (
+                      <AggregatedMetrics
+                        date={dateValue}
+                        processedMetrics={selectors.selectSummaryMetricsProcessed}
+                      />
+                    )}
+                  </Tabs.Item>
 
-              {hasDelayTab && (
-                <Tabs.Item>
-                  <DelayReasonsTab />
-                </Tabs.Item>
-              )}
-
-              {hasLinksTab && (
-                <Tabs.Item>
-                  <LinksTab />
-                </Tabs.Item>
-              )}
-
-              {hasBounceMetrics &&
-                hasActiveComparisons &&
-                reportOptions.comparisons.map((comparison, index) => {
-                  return (
-                    <Tabs.Item key={`tab-bounce-${comparison.value}-${index}`}>
-                      <BounceReasonComparisonTab comparison={comparison} />
+                  {hasBounceTab && (
+                    <Tabs.Item>
+                      <BounceReasonTab />
                     </Tabs.Item>
-                  );
-                })}
+                  )}
 
-              {hasLinksMetrics &&
-                hasActiveComparisons &&
-                reportOptions.comparisons.map((comparison, index) => {
-                  return (
-                    <Tabs.Item key={`tab-links-${comparison.value}-${index}`}>
-                      <LinksComparisonTab comparison={comparison} />
+                  {hasRejectionTab && (
+                    <Tabs.Item>
+                      <RejectionReasonsTab />
                     </Tabs.Item>
-                  );
-                })}
+                  )}
 
-              {hasDelayMetrics &&
-                hasActiveComparisons &&
-                reportOptions.comparisons.map((comparison, index) => {
-                  return (
-                    <Tabs.Item key={`tab-delay-${comparison.value}-${index}`}>
-                      <DelayReasonsComparisonTab comparison={comparison} />
+                  {hasDelayTab && (
+                    <Tabs.Item>
+                      <DelayReasonsTab />
                     </Tabs.Item>
-                  );
-                })}
+                  )}
 
-              {hasRejectionMetrics &&
-                hasActiveComparisons &&
-                reportOptions.comparisons.map((comparison, index) => {
-                  return (
-                    <Tabs.Item key={`tab-rejection-${comparison.value}-${index}`}>
-                      <RejectionReasonsComparisonTab comparison={comparison} />
+                  {hasLinksTab && (
+                    <Tabs.Item>
+                      <LinksTab />
                     </Tabs.Item>
-                  );
-                })}
+                  )}
 
-              {/* TODO: compare by rejections, delays, and links tabs can go here */}
-            </Tabs>
-          </div>
-        )}
-      </Panel>
+                  {hasBounceMetrics &&
+                    hasActiveComparisons &&
+                    reportOptions.comparisons.map((comparison, index) => {
+                      return (
+                        <Tabs.Item key={`tab-bounce-${comparison.value}-${index}`}>
+                          <BounceReasonComparisonTab comparison={comparison} />
+                        </Tabs.Item>
+                      );
+                    })}
 
-      {showTable && (
+                  {hasLinksMetrics &&
+                    hasActiveComparisons &&
+                    reportOptions.comparisons.map((comparison, index) => {
+                      return (
+                        <Tabs.Item key={`tab-links-${comparison.value}-${index}`}>
+                          <LinksComparisonTab comparison={comparison} />
+                        </Tabs.Item>
+                      );
+                    })}
+
+                  {hasDelayMetrics &&
+                    hasActiveComparisons &&
+                    reportOptions.comparisons.map((comparison, index) => {
+                      return (
+                        <Tabs.Item key={`tab-delay-${comparison.value}-${index}`}>
+                          <DelayReasonsComparisonTab comparison={comparison} />
+                        </Tabs.Item>
+                      );
+                    })}
+
+                  {hasRejectionMetrics &&
+                    hasActiveComparisons &&
+                    reportOptions.comparisons.map((comparison, index) => {
+                      return (
+                        <Tabs.Item key={`tab-rejection-${comparison.value}-${index}`}>
+                          <RejectionReasonsComparisonTab comparison={comparison} />
+                        </Tabs.Item>
+                      );
+                    })}
+
+                  {/* TODO: compare by rejections, delays, and links tabs can go here */}
+                </Tabs>
+              </div>
+            )}
+          </Panel>
+        </>
+      )}
+      {!showReportBuilderEmptyState && showTable && (
         <div data-id="summary-table">
           {hasActiveComparisons ? <CompareByGroupByTable /> : <GroupByTable />}
         </div>
       )}
-
       <SaveReportModal
         create
         open={showSaveNewReportModal}
@@ -381,7 +463,7 @@ export function ReportBuilder({
   );
 }
 
-//Redux
+// Redux
 const mapStateToProps = state => ({
   chart: state.summaryChart,
   reports: state.reports.list,
@@ -389,6 +471,7 @@ const mapStateToProps = state => ({
   subaccountsReady: state.subaccounts.ready,
   subscription: state.billing.subscription,
   sendingDomains: selectVerifiedDomains(state),
+  sendingDomainsListLoading: state.sendingDomains.listLoading,
   isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
