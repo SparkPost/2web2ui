@@ -49,6 +49,7 @@ import {
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants';
 import { TrackingEngagementTab, InvestigatingProblemsTab } from './components/EmptyTabs';
+import { InfoBanner } from './components';
 import { Heading } from 'src/components/text';
 
 // Enable for EMPTY_STATE_TABS when SD is released
@@ -342,6 +343,8 @@ export function ReportBuilder({
           {/* {selectedEmptyStateTab === 2 && <DeliverabilityMetricsTab />} */}
         </>
       )}
+
+      {!showReportBuilderEmptyState && <InfoBanner />}
 
       {/* NON-EMPTY STATE */}
       {!showReportBuilderEmptyState && (
