@@ -212,7 +212,7 @@ const ReportOptionsContextProvider = props => {
     [dispatch],
   );
 
-  //Not currently used but I am leaving them here for now.
+  // Not currently used but I am leaving them here for now.
   const setFilters = useCallback(
     payload => {
       return dispatch({
@@ -223,7 +223,7 @@ const ReportOptionsContextProvider = props => {
     [dispatch],
   );
 
-  //Not currently used but I am leaving them here for now.
+  // Not currently used but I am leaving them here for now.
   const clearFilters = useCallback(() => {
     return dispatch({
       type: 'CLEAR_FILTERS',

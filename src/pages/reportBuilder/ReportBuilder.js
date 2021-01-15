@@ -49,6 +49,7 @@ import {
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants';
 import { TrackingEngagementTab, InvestigatingProblemsTab } from './components/EmptyTabs';
+import { InfoBanner } from './components';
 import { Heading } from 'src/components/text';
 
 // Enable for EMPTY_STATE_TABS when SD is released
@@ -96,6 +97,7 @@ export function ReportBuilder({
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
+  const showInfoBanner = !showReportBuilderEmptyState && isEmptyStateEnabled;
   const emptyStateUrlHash = location.hash.replace('#', '');
   let emptyStateTabFromUrl;
 
@@ -342,6 +344,8 @@ export function ReportBuilder({
           {/* {selectedEmptyStateTab === 2 && <DeliverabilityMetricsTab />} */}
         </>
       )}
+
+      {showInfoBanner && <InfoBanner />}
 
       {/* NON-EMPTY STATE */}
       {!showReportBuilderEmptyState && (
