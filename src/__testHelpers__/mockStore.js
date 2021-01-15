@@ -8,5 +8,5 @@ export const createMockStore = configureMockStore([thunk]);
 
 // Export a singleton with blank initial state as default.
 export default createMockStore({
-  auth: {}
+  auth: {},
 });

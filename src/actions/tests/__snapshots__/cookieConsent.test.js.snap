@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Action Creator: cookie consent  setConsentCookie should set the cookie 1`] = `
-Object {
-  "type": "GIVE_COOKIE_CONSENT",
-}
-`;
