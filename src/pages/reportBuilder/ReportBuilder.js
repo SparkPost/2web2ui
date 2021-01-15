@@ -97,6 +97,7 @@ export function ReportBuilder({
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
+  const showInfoBanner = !showReportBuilderEmptyState && isEmptyStateEnabled;
   const emptyStateUrlHash = location.hash.replace('#', '');
   let emptyStateTabFromUrl;
 
@@ -344,7 +345,7 @@ export function ReportBuilder({
         </>
       )}
 
-      {!showReportBuilderEmptyState && <InfoBanner />}
+      {showInfoBanner && <InfoBanner />}
 
       {/* NON-EMPTY STATE */}
       {!showReportBuilderEmptyState && (
