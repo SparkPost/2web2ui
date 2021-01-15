@@ -31,10 +31,10 @@ export default function InfoBanner() {
         metrics across delivery and deliverability data. To learn how to unlock the full potential
         of SparkPost's Analytics Report, visit the documentation below.
       </p>
-      {/* TODO: VIEW SEEDLIST TO LINK */}
-      <Banner.Action color="blue" to="/inbox-placement/seedlist">
+      {/* TODO: Show View Seedlist button when Signals Deliverability is live and the route is available */}
+      {/* <Banner.Action color="blue" to="/inbox-placement/seedlist">
         View Seedlist
-      </Banner.Action>
+      </Banner.Action> */}
       <Banner.Action color="blue" to={LINKS.ANALYTICS_DOCS} external variant="outline">
         Analytics Documentation
       </Banner.Action>
