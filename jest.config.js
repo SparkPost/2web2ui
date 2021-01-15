@@ -24,7 +24,7 @@ module.exports = {
     '<rootDir>/(eslint-rules|src|scripts)/**/*.test.js?(x)',
   ],
   testEnvironment: 'node',
-  testURL: 'http://phoenix.test',
+  testURL: 'http://api.sparkpost.test',
   transform: {
     '^.+\\.(js|jsx)$': '<rootDir>/node_modules/babel-jest',
     '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',

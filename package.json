@@ -198,6 +198,7 @@
     "mocha": "^7.1.2",
     "mocha-junit-reporter": "^1.23.3",
     "moment-timezone": "^0.5.14",
+    "nock": "^13.0.5",
     "node-sass": "^5.0.0",
     "object-assign": "^4.1.1",
     "optimize-css-assets-webpack-plugin": "5.0.1",
