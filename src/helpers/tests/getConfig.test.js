@@ -2,7 +2,7 @@ import getConfig from '../getConfig';
 
 describe('getConfig', () => {
   it('returns config value', () => {
-    expect(getConfig('apiBase')).toEqual('http://fake-api-test-host.com');
+    expect(getConfig('apiBase')).toEqual('http://api.sparkpost.test');
   });
 
   it('returns nested config value', () => {
