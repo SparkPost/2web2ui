@@ -64,7 +64,7 @@ exports[`Page: A/B Test Details should render correctly and create shared props 
 `;
 
 exports[`Page: A/B Test Details should render error 1`] = `
-<Component
+<Connect(RedirectAndAlert)
   alert={
     Object {
       "details": "an error",

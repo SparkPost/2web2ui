@@ -82,7 +82,7 @@ exports[`Component: EditBounce does not show root domain warning for 3rd level d
     </SubduedText>
   </Left>
   <Right>
-    <Component
+    <Connect(BounceSetupInstructionPanel)
       domain={
         Object {
           "is_default_bounce_domain": false,
@@ -135,7 +135,7 @@ exports[`Component: EditBounce renders not ready correctly 1`] = `
         </PageLink>
       </Banner.Actions>
     </Banner>
-    <Component
+    <Connect(BounceSetupInstructionPanel)
       domain={
         Object {
           "is_default_bounce_domain": false,
@@ -179,7 +179,7 @@ exports[`Component: EditBounce renders ready correctly 1`] = `
         </PageLink>
       </Banner.Actions>
     </Banner>
-    <Component
+    <Connect(BounceSetupInstructionPanel)
       domain={
         Object {
           "status": Object {
