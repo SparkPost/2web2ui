@@ -6,9 +6,7 @@ import { get as getCurrentUser } from 'src/actions/currentUser';
 import { confirmPassword } from 'src/actions/auth';
 import { Loading } from 'src/components';
 import VerifyEmailBanner from 'src/components/verifyEmailBanner/VerifyEmailBanner';
-import { useHibana } from 'src/context/HibanaContext';
 import NameForm from './components/NameForm';
-import ThemeToggleForm from './components/ThemeToggleForm';
 import PasswordForm from './components/PasswordForm';
 import TfaManager from './components/TfaManager';
 import { AccessControl } from 'src/components/auth';
@@ -18,14 +16,6 @@ import { all, not } from 'src/helpers/conditions';
 import { isHeroku, isAzure, isSso } from 'src/helpers/conditions/user';
 
 export function ProfilePage(props) {
-  const [{ isHibanaEnabled, setIsHibanaEnabled, showAlert }] = useHibana();
-
-  const updateTheme = () => {
-    setIsHibanaEnabled(!isHibanaEnabled).then(() => {
-      showAlert({ type: 'success', message: 'App design updated.' });
-    });
-  };
-
   const updateProfile = values => {
     const { username } = props.currentUser;
     const data = { first_name: values.firstName, last_name: values.lastName };
@@ -61,12 +51,6 @@ export function ProfilePage(props) {
         <Panel.LEGACY.Section>
           <LabelledValue label="Username" value={username} />
           <LabelledValue label="Email Address" value={email} />
-        </Panel.LEGACY.Section>
-      </Panel.LEGACY>
-
-      <Panel.LEGACY>
-        <Panel.LEGACY.Section>
-          <ThemeToggleForm onChange={updateTheme} />
         </Panel.LEGACY.Section>
       </Panel.LEGACY>
 
