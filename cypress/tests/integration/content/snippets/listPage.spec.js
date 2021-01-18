@@ -1,4 +1,3 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
 const PAGE_URL = '/snippets';
 const API_URL = '/api/labs/snippets';
 
@@ -48,31 +47,29 @@ describe('The Snippets list page', () => {
     cy.wait('@snippetsReq');
     cy.get('table').should('be.visible');
   });
-  if (IS_HIBANA_ENABLED) {
-    it('renders the empty state banner when the banner has not been dismissed', () => {
-      stubSnippets();
-      cy.visit(PAGE_URL);
-      cy.wait('@snippetsReq');
+  it('renders the empty state banner when the banner has not been dismissed', () => {
+    stubSnippets();
+    cy.visit(PAGE_URL);
+    cy.wait('@snippetsReq');
 
-      cy.findByRole('heading', { name: 'Consistent Content, Easy' }).should('be.visible');
-      cy.verifyLink({
-        content: 'Snippets Documentation',
-        href: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
-      });
+    cy.findByRole('heading', { name: 'Consistent Content, Easy' }).should('be.visible');
+    cy.verifyLink({
+      content: 'Snippets Documentation',
+      href: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
     });
-    it('renders the empty state when there are no ab tests', () => {
-      stubSnippets({ fixture: '200.get.no-results.json' });
-      cy.visit(PAGE_URL);
-      cy.wait('@snippetsReq');
-      cy.findByRole('heading', { name: 'Snippets' }).should('be.visible');
-      cy.findByText(
-        'Snippets are modular, reusable content that can be imported into the HTML, Text, or AMP part of any email template. Snippets make it easy to create and maintain consistent content like footers and social share buttons across all emails.',
-      ).should('be.visible');
-      cy.findByRole('button', { name: 'Create Snippet' });
-      cy.verifyLink({
-        content: 'Snippets Documentation',
-        href: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
-      });
+  });
+  it('renders the empty state when there are no ab tests', () => {
+    stubSnippets({ fixture: '200.get.no-results.json' });
+    cy.visit(PAGE_URL);
+    cy.wait('@snippetsReq');
+    cy.findByRole('heading', { name: 'Snippets' }).should('be.visible');
+    cy.findByText(
+      'Snippets are modular, reusable content that can be imported into the HTML, Text, or AMP part of any email template. Snippets make it easy to create and maintain consistent content like footers and social share buttons across all emails.',
+    ).should('be.visible');
+    cy.findByRole('button', { name: 'Create Snippet' });
+    cy.verifyLink({
+      content: 'Snippets Documentation',
+      href: 'https://developers.sparkpost.com/api/template-language/#header-snippets',
     });
-  }
+  });
 });

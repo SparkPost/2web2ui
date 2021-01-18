@@ -1,4 +1,4 @@
-import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
+import { USERNAME } from 'cypress/constants';
 import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/domains';
@@ -15,7 +15,7 @@ describe('The domains list page', () => {
     });
   });
 
-  if (IS_HIBANA_ENABLED) {
+
     it('renders with a relevant page title and redirects to the sending domain view', () => {
       cy.visit(PAGE_URL);
 
@@ -1477,15 +1477,8 @@ describe('The domains list page', () => {
         cy.findByLabelText('Blocked').should('be.checked');
       });
     });
-  }
+  
 
-  if (!IS_HIBANA_ENABLED) {
-    it('renders the 404 page when the user does not have Hibana enabled', () => {
-      cy.visit(PAGE_URL);
-
-      cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-    });
-  }
 });
 
 function stubSendingDomains({

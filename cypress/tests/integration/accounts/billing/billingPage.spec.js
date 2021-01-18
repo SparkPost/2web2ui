@@ -1,5 +1,3 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
-
 const PAGE_URL = '/account/billing';
 const ACCOUNT_API_BASE_URL = '/api/v1/account';
 const BILLING_API_BASE_URL = '/api/v1/billing';
@@ -90,32 +88,17 @@ describe('Billing Page', () => {
     cy.findByText('$1.00 per thousand extra emails').should('be.visible');
   });
 
-  if (!IS_HIBANA_ENABLED) {
-    it('opens a modal when clicking "How was this calculated?" breaking down Recipient Validation costs', () => {
-      getBillingSubscription();
-      cy.visit(PAGE_URL);
+  it('opens a modal when clicking "How was this calculated?" breaking down Recipient Validation costs in hibana', () => {
+    getBillingSubscription();
+    cy.visit(PAGE_URL);
 
-      cy.findByText('How was this calculated?').click();
+    cy.findByText('How was this calculated?').click();
 
-      cy.withinModal(() => {
-        cy.findByText('How was this calculated?').should('be.visible');
-      });
+    cy.withinModal(() => {
+      cy.findByText('Recipient Validation Expense Calculation').should('be.visible');
+      cy.findAllByText('$0.50').should('have.length', 2);
     });
-  }
-
-  if (IS_HIBANA_ENABLED) {
-    it('opens a modal when clicking "How was this calculated?" breaking down Recipient Validation costs in hibana', () => {
-      getBillingSubscription();
-      cy.visit(PAGE_URL);
-
-      cy.findByText('How was this calculated?').click();
-
-      cy.withinModal(() => {
-        cy.findByText('Recipient Validation Expense Calculation').should('be.visible');
-        cy.findAllByText('$0.50').should('have.length', 2);
-      });
-    });
-  }
+  });
 
   it('displays a pending plan change banner whenever a plan is downgraded and no longer displays the "Change Plan" link', () => {
     getBillingSubscription({

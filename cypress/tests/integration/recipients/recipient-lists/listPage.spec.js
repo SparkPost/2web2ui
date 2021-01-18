@@ -53,34 +53,32 @@ describe('The recipient lists page', () => {
     cy.get('table').should('be.visible');
   });
 
-  if (IS_HIBANA_ENABLED) {
-    it('renders the empty state banner when the banner has not been dismissed', () => {
-      stubRecipientLists();
-      cy.visit(PAGE_URL);
-      cy.wait('@recipientLists');
+  it('renders the empty state banner when the banner has not been dismissed', () => {
+    stubRecipientLists();
+    cy.visit(PAGE_URL);
+    cy.wait('@recipientLists');
 
-      cy.findByRole('heading', { name: 'Organize Recipients' }).should('be.visible');
-      cy.verifyLink({
-        content: 'Recipient Lists Documentation',
-        href: 'https://developers.sparkpost.com/api/recipient-lists/',
-      });
+    cy.findByRole('heading', { name: 'Organize Recipients' }).should('be.visible');
+    cy.verifyLink({
+      content: 'Recipient Lists Documentation',
+      href: 'https://developers.sparkpost.com/api/recipient-lists/',
     });
-    it('renders the empty state when there are no recipient lists', () => {
-      stubRecipientLists({ fixture: '200.get.no-results.json' });
-      cy.visit(PAGE_URL);
-      cy.wait('@recipientLists');
-      cy.findByRole('heading', { name: 'Recipient Lists' }).should('be.visible');
-      cy.findByText(
-        'A recipient list is a collection of recipients that can be used in a transmission. When sending email to multiple recipients, it’s best to put them in a recipient list. This is particularly true when sending multiple emails to the same recipients.',
-      ).should('be.visible');
-      cy.verifyLink({
-        content: 'Create Recipient List',
-        href: '/lists/recipient-lists/create',
-      });
-      cy.verifyLink({
-        content: 'Recipient Lists Documentation',
-        href: 'https://developers.sparkpost.com/api/recipient-lists/',
-      });
+  });
+  it('renders the empty state when there are no recipient lists', () => {
+    stubRecipientLists({ fixture: '200.get.no-results.json' });
+    cy.visit(PAGE_URL);
+    cy.wait('@recipientLists');
+    cy.findByRole('heading', { name: 'Recipient Lists' }).should('be.visible');
+    cy.findByText(
+      'A recipient list is a collection of recipients that can be used in a transmission. When sending email to multiple recipients, it’s best to put them in a recipient list. This is particularly true when sending multiple emails to the same recipients.',
+    ).should('be.visible');
+    cy.verifyLink({
+      content: 'Create Recipient List',
+      href: '/lists/recipient-lists/create',
     });
-  }
+    cy.verifyLink({
+      content: 'Recipient Lists Documentation',
+      href: 'https://developers.sparkpost.com/api/recipient-lists/',
+    });
+  });
 });

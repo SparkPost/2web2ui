@@ -1,5 +1,3 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
-
 describe('logging out', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -17,15 +15,10 @@ describe('logging out', () => {
       status: 200,
     });
 
-    if (IS_HIBANA_ENABLED) {
-      cy.findByText('UT').click();
-      cy.get('[data-id="desktop-navigation-account-actionlist"]').within(() => {
-        cy.findByRole('link', { name: 'Log Out' }).click();
-      });
-    } else {
-      cy.findByText('mockuser@example.com').click();
-      cy.findByText('Log Out').click();
-    }
+    cy.findByText('UT').click();
+    cy.get('[data-id="desktop-navigation-account-actionlist"]').within(() => {
+      cy.findByRole('link', { name: 'Log Out' }).click();
+    });
 
     cy.url().should('include', '/auth');
     cy.visit('/dashboard');

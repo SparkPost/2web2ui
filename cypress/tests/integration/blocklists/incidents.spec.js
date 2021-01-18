@@ -1,5 +1,3 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
-
 const PAGE_BASE_URL = '/signals/blocklist/incidents';
 
 describe('The blocklist incidents page', () => {
@@ -89,14 +87,10 @@ describe('The blocklist incidents page', () => {
     cy.visit(PAGE_BASE_URL);
     cy.wait(['@getMonitors', '@getIncidents']);
 
-    if (IS_HIBANA_ENABLED) {
-      cy.findByLabelText('Date Range').click({ force: true });
-      cy.tick(300); // ugh, run off for popover animation
-      cy.findByText('Last 24 Hours').click({ force: true });
-      cy.findByText('Apply').click();
-    } else {
-      cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
-    }
+    cy.findByLabelText('Date Range').click({ force: true });
+    cy.tick(300); // ugh, run off for popover animation
+    cy.findByText('Last 24 Hours').click({ force: true });
+    cy.findByText('Apply').click();
 
     cy.wait('@getIncidents').then(({ url }) => {
       cy.wrap(url).should('include', 'from=2019-09-10');
@@ -108,14 +102,10 @@ describe('The blocklist incidents page', () => {
     cy.visit(PAGE_BASE_URL);
     cy.wait(['@getMonitors', '@getIncidents']);
 
-    if (IS_HIBANA_ENABLED) {
-      cy.findByLabelText('Date Range').click({ force: true });
-      cy.tick(300); // ugh, run off for popover animation
-      cy.findByText('Last 7 Days').click({ force: true });
-      cy.findByText('Apply').click();
-    } else {
-      cy.findByLabelText('Broad Date Range').select('Last 7 Days');
-    }
+    cy.findByLabelText('Date Range').click({ force: true });
+    cy.tick(300); // ugh, run off for popover animation
+    cy.findByText('Last 7 Days').click({ force: true });
+    cy.findByText('Apply').click();
 
     cy.wait('@getIncidents').then(({ url }) => {
       cy.wrap(url).should('include', 'from=2019-09-04');
@@ -127,14 +117,10 @@ describe('The blocklist incidents page', () => {
     cy.visit(PAGE_BASE_URL);
     cy.wait(['@getMonitors', '@getIncidents']);
 
-    if (IS_HIBANA_ENABLED) {
-      cy.findByLabelText('Date Range').click({ force: true });
-      cy.tick(300); // ugh, run off for popover animation
-      cy.findByText('Last 90 Days').click({ force: true });
-      cy.findByText('Apply').click();
-    } else {
-      cy.findByLabelText('Broad Date Range').select('Last 90 Days');
-    }
+    cy.findByLabelText('Date Range').click({ force: true });
+    cy.tick(300); // ugh, run off for popover animation
+    cy.findByText('Last 90 Days').click({ force: true });
+    cy.findByText('Apply').click();
 
     cy.wait('@getIncidents').then(({ url }) => {
       cy.wrap(url).should('include', 'from=2019-06-12');
