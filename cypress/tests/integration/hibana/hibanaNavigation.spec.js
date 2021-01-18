@@ -144,15 +144,14 @@ describe('the Hibana navigation', () => {
       });
     });
     it('all nav links renders correctly for developer', () => {
-      commonBeforeSteps();
       stubGrantsRequest({ role: 'developer' });
+      commonBeforeSteps();
       cy.wait('@stubbedGrantsRequest');
       cy.get(desktopNavSelector).within(() => {
         cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
         cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
         cy.verifyLink({ content: 'Content', href: '/templates' });
-        cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
-        cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
+        cy.verifyLink({ content: 'Recipients', href: '/lists/recipient-lists' });
         cy.verifyLink({ content: 'Configuration', href: '/domains' });
       });
 
@@ -188,10 +187,9 @@ describe('the Hibana navigation', () => {
         cy.findByText('Recipients').click();
       });
 
-      cy.url().should('include', '/recipient-validation/list');
+      cy.url().should('include', '/lists/recipient-lists');
 
       cy.get(secondaryNavSelector).within(() => {
-        cy.verifyLink({ content: 'Recipient Validation', href: '/recipient-validation/list' });
         cy.verifyLink({ content: 'Recipient Lists', href: '/lists/recipient-lists' });
         cy.verifyLink({ content: 'Suppressions', href: '/lists/suppressions' });
       });
