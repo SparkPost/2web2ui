@@ -17,13 +17,6 @@ exports[`ProfilePage renders with verify email banner 1`] = `
       />
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Panel.LEGACY>
-    <Panel.LEGACY.Section>
-      <ThemeToggleForm
-        onChange={[Function]}
-      />
-    </Panel.LEGACY.Section>
-  </Panel.LEGACY>
   <Component
     condition={[Function]}
   >
