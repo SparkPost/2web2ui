@@ -18,13 +18,11 @@ describe('Seedlist Page', () => {
     cy.findByText('Download CSV').should('be.visible');
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
-    it.skip('has link to documentation website', () => {
-      // Skip for now because documentation does not exist yet
-      cy.verifyLink({
-        content: 'Learn more about Automatic Seeding',
-        href: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost',
-      });
+  it.skip('has link to documentation website', () => {
+    // Skip for now because documentation does not exist yet
+    cy.verifyLink({
+      content: 'Learn more about Automatic Seeding',
+      href: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost',
     });
-  }
+  });
 });
