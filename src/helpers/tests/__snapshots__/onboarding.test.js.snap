@@ -2,7 +2,7 @@
 
 exports[`Onboarding helpers Should create a curl request 1`] = `
 "curl -X POST \\\\
-  http://fake-api-test-host.com/v1/transmissions \\\\
+  http://api.sparkpost.test/v1/transmissions \\\\
   -H \\"Authorization: 12345\\" \\\\
   -H \\"Content-Type: application/json\\" \\\\
   -d '{

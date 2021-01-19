@@ -12,6 +12,6 @@ import { shallow } from 'enzyme';
 export default function context(Component, context) {
   const component = shallow(Component);
   const ChildrenFunc = component.props().children;
-  const children = (newContext) => shallow(<ChildrenFunc {...context} {...newContext} />);
+  const children = newContext => shallow(<ChildrenFunc {...context} {...newContext} />);
   return { component, children };
 }

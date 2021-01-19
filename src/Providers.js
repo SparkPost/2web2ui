@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Poll from 'src/context/Poll';
 import { ThemeProvider } from 'src/components/matchbox';
 import { HibanaProvider } from 'src/context/HibanaContext';
-import { QueryCacheProvider } from 'src/context/QueryCache';
+import { QueryClientProvider } from 'src/context/QueryClient';
 
 const reloadApp = () => {
   window.location.reload(true);
@@ -12,7 +12,7 @@ const reloadApp = () => {
 
 const Providers = ({ store = {}, children }) => (
   <Provider store={store}>
-    <QueryCacheProvider>
+    <QueryClientProvider>
       <HibanaProvider>
         <ThemeProvider target={document.querySelector('#styled-components-target')}>
           <ErrorBoundary onCtaClick={reloadApp} ctaLabel="Reload Page">
@@ -20,7 +20,7 @@ const Providers = ({ store = {}, children }) => (
           </ErrorBoundary>
         </ThemeProvider>
       </HibanaProvider>
-    </QueryCacheProvider>
+    </QueryClientProvider>
   </Provider>
 );
 

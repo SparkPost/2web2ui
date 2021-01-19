@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactQueryDevtools } from 'react-query-devtools';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { AuthenticationGate, SuspensionAlerts } from 'src/components/auth';
 import { CookieConsent, GlobalAlertWrapper, BoomerangBanner, SiftScience } from 'src/components';
 import VisualWebsiteOptimizer from './components/vwo/VisualWebsiteOptimizer';

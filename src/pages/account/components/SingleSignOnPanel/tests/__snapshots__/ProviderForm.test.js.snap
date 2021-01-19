@@ -22,7 +22,7 @@ exports[`ProviderForm disables fields and buttons when submitting 1`] = `
         <div>
           <CopyField
             hideCopy={false}
-            value="http://fake-api-test-host.com/v1/users/saml/consume"
+            value="http://api.sparkpost.test/v1/users/saml/consume"
           />
         </div>
       </Stack>
@@ -103,7 +103,7 @@ exports[`ProviderForm renders form 1`] = `
         <div>
           <CopyField
             hideCopy={false}
-            value="http://fake-api-test-host.com/v1/users/saml/consume"
+            value="http://api.sparkpost.test/v1/users/saml/consume"
           />
         </div>
       </Stack>
