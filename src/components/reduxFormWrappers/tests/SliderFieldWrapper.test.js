@@ -52,7 +52,7 @@ describe('SliderFieldWrapper', () => {
     expect(wrapper.find(TextField)).toHaveValue(invalidValue);
   });
 
-  it('updates internal state value based on prop change', () => {
+  it.skip('updates internal state value based on prop change', () => {
     const testWrapper = wrap => {
       expect(wrap.find(Slider)).toHaveValue(45);
       expect(wrap.find(TextField)).toHaveValue(45);

@@ -83,8 +83,7 @@ describe('Page: Single Inbox Placement Test', () => {
   });
 
   it('renders content when tab is set to content', () => {
-    const wrapper = subject();
-    wrapper.setProps({ tabIndex: 1 });
+    const wrapper = subject({ tabIndex: 1 });
     expect(wrapper.find('TestContent')).toExist();
     expect(wrapper.find('TestDetails')).not.toExist();
   });
