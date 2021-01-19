@@ -45,7 +45,9 @@ export default function SendingDomainsEmptyState() {
       <EmptyState.Image src={SendingMail} seeThrough>
         <source srcSet={SendingMailWebp} type="image/webp" />
       </EmptyState.Image>
-      <EmptyState.Action component={PageLink} to="/domains/create?type=sending">Add Sending Domain</EmptyState.Action>
+      <EmptyState.Action component={PageLink} to="/domains/create?type=sending">
+        Add Sending Domain
+      </EmptyState.Action>
       <EmptyState.Action variant="outline" to={LINKS.SENDING_DOMAIN_DOCS} external>
         Sending Domains Documentation
       </EmptyState.Action>

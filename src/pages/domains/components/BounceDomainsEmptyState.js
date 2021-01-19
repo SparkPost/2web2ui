@@ -50,7 +50,9 @@ export default function BounceDomainsEmptyState() {
       <EmptyState.Image src={SendingMail} seeThrough>
         <source srcSet={SendingMailWebp} type="image/webp" />
       </EmptyState.Image>
-      <EmptyState.Action component={PageLink} to="/domains/create?type=bounce">Add Bounce Domain</EmptyState.Action>
+      <EmptyState.Action component={PageLink} to="/domains/create?type=bounce">
+        Add Bounce Domain
+      </EmptyState.Action>
       <EmptyState.Action variant="outline" to={LINKS.BOUNCE_DOMAIN_DOCS} external>
         Bounce Domains Documentation
       </EmptyState.Action>

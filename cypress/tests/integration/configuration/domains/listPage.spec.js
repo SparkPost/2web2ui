@@ -952,7 +952,7 @@ describe('The domains list page', () => {
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
-          fixture: 'sending-domains/200.get.unverified-sending.json',
+          fixture: '200.get.no-results.json',
           requestAlias: 'sendingDomainsReq',
         });
         stubAccountsReq();
@@ -960,10 +960,11 @@ describe('The domains list page', () => {
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
-          cy.findByRole('table').should('exist');
+          cy.findByRole('table').should('not.exist');
 
-          // bounce domain tab
           cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+
+          cy.findByRole('heading', { name: 'Bounce Domains' });
 
           cy.verifyLink({
             content: 'Add Bounce Domain',
@@ -1194,17 +1195,71 @@ describe('The domains list page', () => {
         });
       });
 
-      // TODO: Turn into empty state test on FE-1241
-      it('renders an empty table when no results are returned and empty states is turned on', () => {
+      it('renders an empty state when no results are returned and empty states is turned on', () => {
         stubTrackingDomains({ fixture: '200.get.no-results.json' });
+        stubAccountsReq();
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
-        stubAccountsReq();
+
+        cy.findByRole('tab', { name: 'Tracking Domains' }).click({ force: true });
 
         cy.withinMainContent(() => {
           cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display').should('be.visible');
+
+          cy.findByRole('heading', { name: 'Tracking Domains' });
+
+          cy.verifyLink({
+            content: 'Add Tracking Domain',
+            href: '/domains/create?type=tracking',
+          });
+
+          cy.verifyLink({
+            content: 'Tracking Domains Documentation',
+            href: LINKS.TRACKING_DOMAIN_DOCS,
+          });
+          cy.findByText('Tracking Domains Documentation').should('have.length', 1);
+
+          cy.findByText(
+            'Tracking domains are used in engagement tracking to report email opens and link clicks. Custom tracking domains will replace the domain portion of the URL.',
+          ).should('be.visible');
+
+          cy.findByText('Add a new tracking domain.').should('be.visible');
+
+          cy.findByText('Configure the CNAME record with your domain provider.').should(
+            'be.visible',
+          );
+
+          cy.findByText('Confirm that the tracking domain was successfully verified.').should(
+            'be.visible',
+          );
         });
+      });
+
+      it('renders an empty state banner above the table after requesting tracking domains.', () => {
+        stubTrackingDomains();
+        stubAccountsReq();
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+        cy.findByRole('tab', { name: 'Tracking Domains' }).click({ force: true });
+        cy.findByRole('heading', { name: 'Tracking Domains' }).should('be.visible');
+        cy.get('p').contains(
+          'Tracking domains are used in engagement tracking to report email opens and link clicks. Custom tracking domains will replace the domain portion of the URL.',
+        );
+        cy.verifyLink({
+          content: 'Tracking Domains Documentation',
+          href: LINKS.TRACKING_DOMAIN_DOCS,
+        });
+      });
+
+      it('does not render an empty state banner above the table after requesting tracking domains if the user dismissed it.', () => {
+        stubTrackingDomains();
+        stubAccountsReq();
+        stubUsersRequest({ fixture: 'users/200.get.tracking-domain-banner-dismissed.json' });
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+        cy.findByRole('tab', { name: 'Tracking Domains' }).click({ force: true });
+        cy.findByRole('heading', { name: 'Tracking Domains' }).should('not.exist');
+        cy.findByRole('button', { name: 'Tracking Domains Documentation' }).should('not.exist');
       });
 
       it('renders an error message when an error is returned from the server', () => {
