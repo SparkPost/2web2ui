@@ -182,7 +182,7 @@ function DomainTabPages() {
           showBounceDomainsEmptyState ||
           showTrackingDomainsEmptyState,
       }}
-      loading={listPending || isFirstRender}
+      loading={listPending && isFirstRender}
     >
       <Stack>
         <Tabs selected={tabIndex} tabs={TABS} />
