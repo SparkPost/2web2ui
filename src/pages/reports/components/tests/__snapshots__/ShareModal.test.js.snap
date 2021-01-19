@@ -26,7 +26,7 @@ exports[`Component: ShareModal should render correctly when open 1`] = `
         <Stack>
           <CopyField
             hideCopy={false}
-            value="http://phoenix.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"
+            value="http://api.sparkpost.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"
           />
           <Checkbox
             checked={true}
@@ -72,7 +72,7 @@ exports[`Component: ShareModal should render with a valid relative range 1`] = `
         <Stack>
           <CopyField
             hideCopy={false}
-            value="http://phoenix.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"
+            value="http://api.sparkpost.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"
           />
           <Checkbox
             checked={true}
@@ -98,8 +98,8 @@ exports[`Component: ShareModal should render with a valid relative range 1`] = `
 
 exports[
   `Component: ShareModal should unpin when clicking the checkbox 1`
-] = `"http://phoenix.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"`;
+] = `"http://api.sparkpost.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"`;
 
 exports[
   `Component: ShareModal should unpin when clicking the checkbox 2`
-] = `"http://phoenix.test/?range=valid&recipients=one%40test.com&recipients=two%2B2%40test.com"`;
+] = `"http://api.sparkpost.test/?range=valid&recipients=one%40test.com&recipients=two%2B2%40test.com"`;

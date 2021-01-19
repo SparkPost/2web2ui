@@ -11,7 +11,7 @@ import nock from 'nock';
  *
  */
 export default function stubRequest({
-  url = 'http://fake-api-test-host.com',
+  url = 'http://api.sparkpost.test',
   path,
   method = 'GET',
   statusCode = 200,
