@@ -1,3 +1,4 @@
+export * from './api';
 export { default as useABTest } from './useABTest';
 export { default as useMultiEntry } from './useMultiEntry';
 export { default as useEffectAfterMounting } from './useEffectAfterMounting';
@@ -9,6 +10,5 @@ export { default as usePinnedReport } from './usePinnedRport';
 export { default as usePrepareReportBuilderQuery } from './usePrepareReportBuilderQuery';
 export { default as usePrevious } from './usePrevious';
 export { default as useProvidedContext } from './useProvidedContext';
-export { useSparkPostQueries, useSparkPostQuery } from './useSparkPostQuery';
 export { default as useTabs } from './useTabs';
 export { default as useUniqueId } from './useUniqueId';
