@@ -1,1 +1,1 @@
-export { default as defaultQuery } from './defaultQuery';
+export { default as defaultQueryFn } from './defaultQueryFn';
