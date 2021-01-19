@@ -209,6 +209,22 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('radio', { name: 'Or' }).should('not.be.checked');
       });
 
+      // This test protects against the re-introduction of a bug - https://sparkpost.atlassian.net/browse/SA-2018
+      it('requests data for sending domains successfully when searching for sending domains in the relevant typeahead', () => {
+        cy.stubRequest({
+          url: '/api/v1/sending-domains',
+          fixture: 'sending-domains/200.get.json',
+          requestAlias: 'getSendingDomains',
+        });
+        cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
+        cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
+        cy.findByLabelText('Sending Domain').type('bounce');
+
+        cy.wait('@getSendingDomains');
+
+        cy.findByRole('option', { name: 'bounce.uat.sparkspam.com' }).should('be.visible');
+      });
+
       it('returns no results when the user has entered fewer than 3 characters', () => {
         cy.findByLabelText(TYPE_LABEL).select('Subaccount');
         cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');

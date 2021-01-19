@@ -329,7 +329,7 @@ export function ReportBuilder({
       empty={{
         trackingOnly: showReportBuilderEmptyState,
       }}
-      loading={sendingDomainsListLoading || isFirstRender}
+      loading={sendingDomainsListLoading && isFirstRender}
     >
       {/* EMPTY STATE */}
       {showReportBuilderEmptyState && (
