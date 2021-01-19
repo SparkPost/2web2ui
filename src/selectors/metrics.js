@@ -7,5 +7,5 @@ export const selectFeatureFlaggedMetrics = createSelector(
     selectCondition(isUserUiOptionSet('use-metrics-rollup')),
     // add more metrics feature flags here
   ],
-  useMetricsRollup => ({ useMetricsRollup }),
+  () => ({ useMetricsRollup: true }),
 );
