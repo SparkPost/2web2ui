@@ -460,7 +460,7 @@ if (IS_HIBANA_ENABLED) {
     });
 
     describe('Compare By - Group By Table', () => {
-      it('will show a breakdown including comparisons', () => {
+      it('will show a breakdown including comparisons without the current active comparison type as a "Breakdown By" option', () => {
         cy.stubRequest({
           url: '/api/v1/metrics/deliverability/watched-domain**/*',
           fixture: 'metrics/deliverability/watched-domain/200.get.json',
@@ -473,6 +473,9 @@ if (IS_HIBANA_ENABLED) {
 
         cy.findByLabelText('Break Down By')
           .scrollIntoView()
+          .within(() => {
+            cy.findByRole('option', { name: 'Subaccount' }).should('not.exist');
+          })
           .select('Recipient Domain', { force: true });
 
         cy.wait('@getWatchedDomains');

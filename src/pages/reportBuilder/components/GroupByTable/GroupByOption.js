@@ -3,9 +3,13 @@ import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
 export default function GroupByOption(props) {
   const { disabled, groupBy, hasSubaccounts, onChange } = props;
+  const {
+    state: { comparisons },
+  } = useReportBuilderContext();
   const selectId = useUniqueId('break-down-by');
   const [topDomainsOnly, setTopDomainsOnly] = useState(true);
 
@@ -25,18 +29,23 @@ export default function GroupByOption(props) {
   };
 
   const getSelectOptions = () => {
-    const filteredOptionsKeys = Object.keys(GROUP_BY_CONFIG).filter(key => {
-      return !(
-        (key === 'subaccount' && !hasSubaccounts) ||
-        (key === 'domain' && topDomainsOnly) ||
-        (key === 'watched-domain' && !topDomainsOnly)
-      );
-    });
-
-    const options = filteredOptionsKeys.map(key => ({
-      value: key,
-      label: GROUP_BY_CONFIG[key].label,
-    }));
+    const activeComparisonsType = Boolean(comparisons.length) ? comparisons[0].type : undefined;
+    const options = Object.keys(GROUP_BY_CONFIG)
+      // filter configuration based on current state
+      .filter(key => {
+        return !(
+          (key === 'subaccount' && !hasSubaccounts) ||
+          (key === 'domain' && topDomainsOnly) ||
+          (key === 'watched-domain' && !topDomainsOnly) ||
+          // If there are active comparisons, filter by the comparison type
+          GROUP_BY_CONFIG[key].label === activeComparisonsType
+        );
+      })
+      // Remap configuration to data structure needed by the UI component
+      .map(key => ({
+        value: key,
+        label: GROUP_BY_CONFIG[key].label,
+      }));
 
     return options;
   };

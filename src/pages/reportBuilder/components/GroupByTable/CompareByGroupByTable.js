@@ -4,19 +4,15 @@ import cx from 'classnames';
 import _ from 'lodash';
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
-
-import { TableCollection, Unit, PanelLoading } from 'src/components';
-import GroupByOption from './GroupByOption';
-import { Empty } from 'src/components';
+import { ApiErrorBanner, Empty, PanelLoading, TableCollection, Unit } from 'src/components';
 import { Panel, Table, Box, Tag } from 'src/components/matchbox';
+import EmptyCell from 'src/components/collection/EmptyCell';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
-import { ApiErrorBanner } from 'src/components';
-
 import styles from './ReportTable.module.scss';
 import useGroupByTable from './useGroupByTable';
-import EmptyCell from '../../../../components/collection/EmptyCell';
+import GroupByOption from './GroupByOption';
 
 const tableWrapper = props => {
   return (
