@@ -162,7 +162,7 @@
     "cypress-file-upload": "^3.5.3",
     "cypress-multi-reporters": "^1.2.4",
     "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.11.2",
+    "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.3.1",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.7.0",
