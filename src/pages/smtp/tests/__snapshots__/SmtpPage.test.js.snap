@@ -11,7 +11,7 @@ exports[`Page: Smtp tests should render page correctly with defaults 1`] = `
       apiKey={null}
     />
   </Panel.LEGACY>
-  <Component
+  <Connect(ReduxForm)
     toggle={[Function]}
   />
 </Page>

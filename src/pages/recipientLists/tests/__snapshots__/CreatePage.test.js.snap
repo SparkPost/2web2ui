@@ -11,7 +11,7 @@ exports[`CreatePage should render correctly 1`] = `
   }
   title="Create Recipient List"
 >
-  <Component
+  <Connect(ReduxForm)
     onSubmit={[Function]}
   />
 </Page>

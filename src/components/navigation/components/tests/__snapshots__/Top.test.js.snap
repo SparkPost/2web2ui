@@ -28,7 +28,7 @@ exports[`Top should render close icon when open 1`] = `
   <div
     className="MobileAccountDropdownWrapper"
   >
-    <Component />
+    <Connect(AccountDropdown) />
   </div>
 </div>
 `;
@@ -50,7 +50,7 @@ exports[`Top should render correctly on desktop 1`] = `
   <div
     className="RightSideWrapper"
   >
-    <Component
+    <AccessControl
       condition={[Function]}
     >
       <Link
@@ -63,7 +63,7 @@ exports[`Top should render correctly on desktop 1`] = `
           Upgrade Plan
         </div>
       </Link>
-    </Component>
+    </AccessControl>
     <IconButton
       className="SupportButton"
       data-id="nav-button-help"
@@ -76,7 +76,7 @@ exports[`Top should render correctly on desktop 1`] = `
         size={22}
       />
     </IconButton>
-    <Component />
+    <Connect(AccountDropdown) />
   </div>
 </div>
 `;
@@ -109,7 +109,7 @@ exports[`Top should render correctly on mobile 1`] = `
   <div
     className="MobileAccountDropdownWrapper"
   >
-    <Component />
+    <Connect(AccountDropdown) />
   </div>
 </div>
 `;

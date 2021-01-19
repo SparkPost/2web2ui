@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Sending Domains Edit Page should redirects to list page with error message 1`] = `
-<Component
+<Connect(RedirectAndAlert)
   alert={
     Object {
       "message": "Oh no!",
@@ -86,7 +86,7 @@ exports[`Sending Domains Edit Page should renders correctly 1`] = `
         }
       }
     />
-    <Component
+    <Connect(ReduxForm)
       domain={
         Object {
           "dkim": Object {
@@ -113,7 +113,7 @@ exports[`Sending Domains Edit Page should renders correctly 1`] = `
       }
       id="example.com"
     />
-    <Component
+    <Connect(ReduxForm)
       domain={
         Object {
           "dkim": Object {
@@ -230,7 +230,7 @@ exports[`Sending Domains Edit Page should show a delete modal 1`] = `
         }
       }
     />
-    <Component
+    <Connect(ReduxForm)
       domain={
         Object {
           "dkim": Object {
@@ -257,7 +257,7 @@ exports[`Sending Domains Edit Page should show a delete modal 1`] = `
       }
       id="example.com"
     />
-    <Component
+    <Connect(ReduxForm)
       domain={
         Object {
           "dkim": Object {

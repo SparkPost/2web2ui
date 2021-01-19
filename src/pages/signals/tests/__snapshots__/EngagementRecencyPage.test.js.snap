@@ -80,7 +80,7 @@ exports[`EngagementRecencyPage renders correctly 1`] = `
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -312,7 +312,7 @@ Array [
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -363,7 +363,7 @@ exports[`EngagementRecencyPage renders error correctly 1`] = `
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -407,7 +407,7 @@ Array [
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>

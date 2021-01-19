@@ -42,7 +42,7 @@ exports[`SpamTrapOverview renders overview panel with controls and table 1`] = `
       />
     </div>
   </Panel.LEGACY.Section>
-  <Component
+  <Connect(SummaryTable)
     data={
       Array [
         Object {
@@ -100,6 +100,6 @@ exports[`SpamTrapOverview renders overview panel with controls and table 1`] = `
       label="Total Injections"
       width="15%"
     />
-  </Component>
+  </Connect(SummaryTable)>
 </Panel.LEGACY>
 `;

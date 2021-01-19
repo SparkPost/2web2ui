@@ -144,7 +144,7 @@ Array [
 `;
 
 exports[`Webhooks Form Component should subaccount section if subaccounts exist 1`] = `
-<Component
+<Connect(SubaccountSection)
   disabled={false}
   formName="webhookForm"
   newWebhook={false}

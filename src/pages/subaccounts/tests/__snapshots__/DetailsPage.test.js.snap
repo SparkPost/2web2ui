@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DetailsPage should redirect and alert on error 1`] = `
-<Component
+<Connect(RedirectAndAlert)
   alert={
     Object {
       "message": "Oh no!",
@@ -202,7 +202,7 @@ exports[`DetailsPage should show api key banner with new api key 1`] = `
   }
   title="Bob Evans, the restaurant. (123)"
 >
-  <Component
+  <Connect(ApiKeySuccessBanner)
     mb="400"
     title="Don't Forget Your API Key"
   />

@@ -29,9 +29,9 @@ exports[`IP Pools List Page does not render purchase action if isAdmin is false 
       <p>
         To adjust these settings, please
          
-        <Component>
+        <Connect(SupportTicketLink)>
           submit a support ticket
-        </Component>
+        </Connect(SupportTicketLink)>
          or contact your TAM.
       </p>
       <p>
@@ -110,9 +110,9 @@ exports[`IP Pools List Page does not render purchase action if showPurchaseCTA i
       <p>
         To adjust these settings, please
          
-        <Component>
+        <Connect(SupportTicketLink)>
           submit a support ticket
-        </Component>
+        </Connect(SupportTicketLink)>
          or contact your TAM.
       </p>
       <p>
@@ -191,9 +191,9 @@ exports[`IP Pools List Page does not render purchase action if showPurchaseCTA i
       <p>
         To adjust these settings, please
          
-        <Component>
+        <Connect(SupportTicketLink)>
           submit a support ticket
-        </Component>
+        </Connect(SupportTicketLink)>
          or contact your TAM.
       </p>
       <p>
@@ -302,9 +302,9 @@ exports[`IP Pools List Page should render the list page correctly 1`] = `
       <p>
         To adjust these settings, please
          
-        <Component>
+        <Connect(SupportTicketLink)>
           submit a support ticket
-        </Component>
+        </Connect(SupportTicketLink)>
          or contact your TAM.
       </p>
       <p>
@@ -404,9 +404,9 @@ exports[`IP Pools List Page should show alert upon error 1`] = `
       <p>
         To adjust these settings, please
          
-        <Component>
+        <Connect(SupportTicketLink)>
           submit a support ticket
-        </Component>
+        </Connect(SupportTicketLink)>
          or contact your TAM.
       </p>
       <p>

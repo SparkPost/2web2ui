@@ -21,7 +21,7 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -29,7 +29,7 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
     </Panel.LEGACY.Section>
     <Panel.LEGACY.Section>
       <Grid>
-        <Component
+        <Connect(FacetFilter)
           facets={
             Array [
               Object {
@@ -55,7 +55,7 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
       </Grid>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Component
+  <Connect(withRouter(Connect(EngagementRecencyOverview)))
     defaults={
       Object {
         "perPage": 25,

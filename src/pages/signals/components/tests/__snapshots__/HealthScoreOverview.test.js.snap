@@ -14,7 +14,7 @@ exports[`HealthScoreOverview current score column component renders current scor
 
 exports[`HealthScoreOverview renders both subaccount and facet columns 1`] = `
 <Panel.LEGACY>
-  <Component
+  <Connect(SummaryTable)
     data={
       Array [
         Object {
@@ -80,13 +80,13 @@ exports[`HealthScoreOverview renders both subaccount and facet columns 1`] = `
       label="Average Score"
       width="15%"
     />
-  </Component>
+  </Connect(SummaryTable)>
 </Panel.LEGACY>
 `;
 
 exports[`HealthScoreOverview renders injections column if after V2 release date 1`] = `
 <Panel.LEGACY>
-  <Component
+  <Connect(SummaryTable)
     data={
       Array [
         Object {
@@ -160,13 +160,13 @@ exports[`HealthScoreOverview renders injections column if after V2 release date 
       label="Average Score"
       width="12.5%"
     />
-  </Component>
+  </Connect(SummaryTable)>
 </Panel.LEGACY>
 `;
 
 exports[`HealthScoreOverview renders overview panel with controls and table 1`] = `
 <Panel.LEGACY>
-  <Component
+  <Connect(SummaryTable)
     data={
       Array [
         Object {
@@ -225,6 +225,6 @@ exports[`HealthScoreOverview renders overview panel with controls and table 1`] 
       label="Average Score"
       width="15%"
     />
-  </Component>
+  </Connect(SummaryTable)>
 </Panel.LEGACY>
 `;

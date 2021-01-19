@@ -7,7 +7,7 @@ exports[`EnableTfaModal tests should render correctly 1`] = `
   <Panel.LEGACY
     title="Enable Two-Factor Authentication"
   >
-    <Component
+    <Connect(EnableTfaForm)
       afterEnable={[MockFunction]}
       onClose={[MockFunction]}
     />

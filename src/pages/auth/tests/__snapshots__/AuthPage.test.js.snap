@@ -7,7 +7,7 @@ exports[`AuthPage tests renders correctly 1`] = `
     sectioned={true}
     title="Log In"
   >
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>
@@ -47,7 +47,7 @@ exports[`AuthPage tests should show link to join when has_signup feature flag ex
     sectioned={true}
     title="Log In"
   >
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>

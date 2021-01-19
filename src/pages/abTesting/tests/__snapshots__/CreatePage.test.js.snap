@@ -12,7 +12,7 @@ exports[`A/B Test Create Page should render the list page correctly 1`] = `
   title="Create a New A/B Test"
 >
   <Panel.LEGACY>
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>
@@ -31,7 +31,7 @@ exports[`A/B Test Create Page should show loading component when data is loading
   title="Create a New A/B Test"
 >
   <Panel.LEGACY>
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>

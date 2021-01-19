@@ -51,7 +51,7 @@ exports[`SuppressionSearch renders correctly 1`] = `
     md={3}
     xs={6}
   >
-    <Component
+    <Connect(FilterDropdown)
       displayValue="Type"
       formName="filterForm"
       id="types-filter-dropdown"
@@ -76,7 +76,7 @@ exports[`SuppressionSearch renders correctly 1`] = `
     md={3}
     xs={6}
   >
-    <Component
+    <Connect(FilterDropdown)
       displayValue="Sources"
       formName="filterForm"
       id="source-filter-dropdown"

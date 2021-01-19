@@ -6,7 +6,7 @@ exports[`Form Container: Update Contact should render 1`] = `
     title="Update Billing Contact"
   >
     <Panel.LEGACY.Section>
-      <Component
+      <Connect(BillingContactForm)
         countries={Array []}
         formName="updateContact"
       />

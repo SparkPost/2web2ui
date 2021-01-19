@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SubaccountTypeaheadWrapper renders subaccounts typeahead 1`] = `
-<Component
+<Connect(SubaccountTypeahead)
   label="Start typing"
   name="example"
   onChange={[MockFunction]}
@@ -21,7 +21,7 @@ exports[`SubaccountTypeaheadWrapper renders subaccounts typeahead 1`] = `
 `;
 
 exports[`SubaccountTypeaheadWrapper renders subaccounts typeahead with error 1`] = `
-<Component
+<Connect(SubaccountTypeahead)
   error="Oh no!"
   label="Start typing"
   name="example"

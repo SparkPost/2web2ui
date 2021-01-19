@@ -62,7 +62,7 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -248,7 +248,7 @@ Array [
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -298,7 +298,7 @@ exports[`Signals Spam Trap Page renders error correctly 1`] = `
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -349,7 +349,7 @@ Array [
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>

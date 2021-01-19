@@ -16,11 +16,11 @@ exports[`Component: SuspendedForBilling should render correctly 1`] = `
       <p>
         If this is incorrect, please
          
-        <Component
+        <Connect(SupportTicketLink)
           issueId="general_billing"
         >
           submit a support ticket
-        </Component>
+        </Connect(SupportTicketLink)>
          
         and let us know why.
       </p>
