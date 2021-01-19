@@ -131,6 +131,12 @@ Cypress.Commands.add('stubAuth', ({ hasRefreshToken = false } = {}) => {
     status: 200,
     response: {},
   }).as('stubbedSockNodeGet');
+  cy.route({
+    method: 'POST',
+    url: 'https://api.analytics.sparkpost.com/v1/*',
+    status: 200,
+    response: {},
+  }).as('stubbedAnalytics');
 });
 
 /**

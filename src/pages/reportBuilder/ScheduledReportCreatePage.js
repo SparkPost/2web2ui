@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getReport, createScheduledReport } from 'src/actions/reports';
-import { showAlert } from 'src/actions/globalAlert';
+import { useForm } from 'react-hook-form';
 import { Page } from 'src/components/matchbox';
 import {
   ScheduledReportDetailsForm,
   ScheduledReportTimingForm,
 } from './components/ScheduledReportForm';
 import { Loading } from 'src/components/loading';
+import { PageLink } from 'src/components/links';
+import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
+import { getReport, createScheduledReport } from 'src/actions/reports';
+import { showAlert } from 'src/actions/globalAlert';
 import { selectUsers } from 'src/selectors/users';
 import { listUsers } from 'src/actions/users';
 import { getLocalTimezone } from 'src/helpers/date';
-import { useForm } from 'react-hook-form';
-import { formatFormValues } from './helpers/scheduledReports';
-import { PageLink } from 'src/components/links';
-import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
+import { formatFormValues, segmentDataTransform } from './helpers/scheduledReports';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 export default function ScheduledReportCreatePage() {
   const { reportId } = useParams();
@@ -51,6 +52,10 @@ export default function ScheduledReportCreatePage() {
   const onSubmit = values => {
     const formattedValues = formatFormValues(values);
     dispatch(createScheduledReport(reportId, formattedValues)).then(() => {
+      segmentTrack(
+        SEGMENT_EVENTS.SCHEDULED_REPORT_CREATED,
+        segmentDataTransform(formattedValues, report.query_string),
+      );
       dispatch(
         showAlert({
           type: 'success',

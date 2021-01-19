@@ -1,5 +1,6 @@
 import { formatHourString, formatMinuteString } from 'src/helpers/units';
 import _ from 'lodash';
+import qs from 'qs';
 
 export const formatFormValues = formValues => {
   const { name, subject, period, timing, timezone, ...rest } = formValues;
@@ -83,3 +84,16 @@ export const hasAtLeastOneRecipient = recipientList => recipientList.length > 0;
 //If this is updated, also update function in
 //cypress/tests/integration/signals-analytics/analytics-report/scheduledReports.spec.js.
 export const recipientUserToString = user => (user ? `${user.name} <${user.email}>` : '');
+
+export const segmentDataTransform = (formValues, reportQueryString) => {
+  const { comparisons, filters, metrics, query_filters = '' } = qs.parse(reportQueryString);
+  const queryFiltersParsed = JSON.parse(decodeURI(query_filters) || '{}');
+  return {
+    schedule_type: formValues.schedule_type,
+    recipients: formValues.recipients.length,
+    comparisons,
+    filters,
+    metrics,
+    query_filters: queryFiltersParsed.length > 0 ? queryFiltersParsed : undefined,
+  };
+};

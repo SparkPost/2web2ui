@@ -776,7 +776,7 @@ function stubReportingUserGrants() {
 // todo, maybe replace testPreviewContent
 function getIframeBody() {
   return cy
-    .get('iframe')
+    .get('iframe[title="preview email template frame"]')
     .its('0.contentDocument.body')
     .should('not.be.empty')
     .then(cy.wrap);

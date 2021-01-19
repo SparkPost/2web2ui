@@ -212,6 +212,12 @@ if (IS_HIBANA_ENABLED) {
 
     it('Submits form properly for creating a scheduled report', () => {
       cy.visit('/signals/schedule/foo');
+      cy.stubRequest({
+        url: 'https://api.analytics.sparkpost.com/v1/t',
+        method: 'POST',
+        requestAlias: 'analyticsPost',
+        fixture: 'blank.json',
+      });
 
       cy.findByLabelText('Scheduled Report Name').type('My First Report');
       cy.findByLabelText('Email Subject').type('Free Macbook');
@@ -235,6 +241,15 @@ if (IS_HIBANA_ENABLED) {
       cy.findByRole('button', { name: 'Schedule Report' }).should('be.disabled');
       cy.findByRole('button', { name: 'Cancel' }).should('be.disabled');
       cy.wait('@createNewScheduledReport');
+      cy.wait('@analyticsPost').then(xhr => {
+        const { event, properties } = xhr.request.body;
+        cy.wrap(event).should('eq', 'Created Scheduled Report');
+        cy.wrap(properties).should('deep.equal', {
+          metrics: 'count_bounce',
+          recipients: 1,
+          schedule_type: 'daily',
+        });
+      });
       cy.get('@createNewScheduledReport')
         .its('requestBody')
         .should('deep.equal', {
