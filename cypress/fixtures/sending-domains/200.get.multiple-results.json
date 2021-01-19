@@ -48,7 +48,7 @@
         "dkim_status": "invalid",
         "postmaster_at_status": "unverified"
       },
-      "domain": "failed-verification.com",
+      "domain": "fake1.domain.com",
       "is_default_bounce_domain": false
     },
     {

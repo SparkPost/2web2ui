@@ -169,7 +169,7 @@ function DomainTabPages() {
       return 'tracking';
     }
   };
-  const queryParams = qs.parse(useLocation().search);
+  const [queryParams] = useState(qs.parse(useLocation().search));
   return (
     <Page
       title="Domains"
