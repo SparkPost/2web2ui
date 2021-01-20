@@ -405,9 +405,7 @@ export default function DashboardPageV2() {
                         </Text>
                       </Dashboard.Tip>
                       <Dashboard.Tip>
-                        <ExternalLink to="https://www.sparkpost.com/inbox-tracker/">
-                          Inbox Tracker
-                        </ExternalLink>
+                        <ExternalLink to={LINKS.INBOX_TRACKER}>Inbox Tracker</ExternalLink>
                         <Text>
                           Examine every element of deliverability with precision using Inbox
                           Tracker.
@@ -430,7 +428,9 @@ export default function DashboardPageV2() {
                       </Panel.Header>
 
                       <Panel.Section>
-                        <ExternalLink to="/">Integration Documentation</ExternalLink>
+                        <ExternalLink to={LINKS.INTEGRATION_DOCS}>
+                          Integration Documentation
+                        </ExternalLink>
                       </Panel.Section>
                     </Dashboard.Panel>
                   </Column>

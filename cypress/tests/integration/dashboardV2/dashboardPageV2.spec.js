@@ -530,7 +530,7 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Setup Documentation' }).should('be.visible');
       cy.verifyLink({
         content: 'Integration Documentation',
-        href: '/',
+        href: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/',
       });
 
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
