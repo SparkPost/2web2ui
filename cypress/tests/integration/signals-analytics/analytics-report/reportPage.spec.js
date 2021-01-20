@@ -84,7 +84,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findByRole('button', { name: 'View All Reports' }).should('be.visible');
     });
 
-    it('renders the banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+    it('renders the banner when the banner has not been dismissed', () => {
       commonBeforeSteps();
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1+ verified sending domain - check
       cy.visit(PAGE_URL); //

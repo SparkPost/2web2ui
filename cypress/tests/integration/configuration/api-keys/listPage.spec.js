@@ -89,7 +89,7 @@ describe('The API Keys list page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders the empty state when "allow_empty_states" is set on the account', () => {
+    it('renders the empty state', () => {
       stubApiKeys({ fixture: '200.get.no-results.json' });
       cy.visit(PAGE_URL);
       cy.wait(['@accountReq', '@apiKeys']);

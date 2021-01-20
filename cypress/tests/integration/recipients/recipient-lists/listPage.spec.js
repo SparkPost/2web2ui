@@ -54,7 +54,7 @@ describe('The recipient lists page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+    it('renders the empty state banner when the banner has not been dismissed', () => {
       stubRecipientLists();
       cy.visit(PAGE_URL);
       cy.wait(['@accountReq', '@recipientLists']);
