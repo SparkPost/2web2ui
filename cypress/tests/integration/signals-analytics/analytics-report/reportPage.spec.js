@@ -226,7 +226,7 @@ if (IS_HIBANA_ENABLED) {
         stubDeliverability(deliverabilityAlias);
         stubTimeSeries(timeSeriesAlias);
 
-        cy.findByText(tagContent)
+        cy.findByDataId(`metric-tag-${metric.queryParam}`)
           .closest('[data-id="metric-tag"]')
           .find('button')
           .click();
@@ -244,7 +244,7 @@ if (IS_HIBANA_ENABLED) {
 
       cy.findByDataId('report-options').within(() => {
         verifyMetricTagDismiss('Sent');
-        verifyMetricTagDismiss('Unique Confirmed Opens per hour');
+        verifyMetricTagDismiss('Unique Confirmed Opens');
       });
     });
 
