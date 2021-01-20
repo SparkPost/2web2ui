@@ -56,7 +56,7 @@ if (IS_HIBANA_ENABLED) {
         .scrollIntoView()
         .select('Recipient Domain', { force: true });
 
-      cy.wait(['@getWatchedDomains']);
+      cy.wait('@getWatchedDomains');
 
       cy.findByLabelText('Top Domains Only')
         .should('be.visible')

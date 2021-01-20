@@ -223,7 +223,6 @@ if (IS_HIBANA_ENABLED) {
           fixture: 'reports/200.get',
           requestAlias: 'getSavedReports',
         });
-        stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1+ verified sending domain - check
       });
 
       it('loads saved reports', () => {
