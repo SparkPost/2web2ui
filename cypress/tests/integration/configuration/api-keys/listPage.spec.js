@@ -92,7 +92,7 @@ describe('The API Keys list page', () => {
     it('renders the empty state', () => {
       stubApiKeys({ fixture: '200.get.no-results.json' });
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@apiKeys']);
+      cy.wait('@apiKeys');
 
       cy.findByRole('heading', { name: 'API Keys' }).should('be.visible');
       cy.findByText('API Keys Documentation')
