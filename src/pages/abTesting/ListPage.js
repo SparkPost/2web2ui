@@ -96,7 +96,7 @@ export class ListPage extends Component {
         hibanaEmptyStateComponent={AbTestEmptyState}
         loading={loading || this.state.isFirstRender}
       >
-        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
+        {this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
         <DeleteModal
           open={this.state.showDeleteModal}

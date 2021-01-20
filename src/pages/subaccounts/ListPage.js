@@ -10,7 +10,6 @@ import getRowData from './helpers/getRowData';
 import { LINKS } from 'src/constants';
 import InfoBanner from './components/InfoBanner';
 import SubaccountEmptyState from './components/SubaccountEmptyState';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { useHibana } from 'src/context/HibanaContext';
 import { CREATE_SUBACCOUNT } from 'src/constants';
 
@@ -93,7 +92,7 @@ export class ListPage extends Component {
         hibanaEmptyStateComponent={SubaccountEmptyState}
         loading={loading || this.state.isFirstRender}
       >
-        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
+        {this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );
@@ -104,7 +103,6 @@ const mapStateToProps = state => ({
   subaccounts: selectSubaccounts(state),
   loading: state.subaccounts.listLoading,
   error: state.subaccounts.listError,
-  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
 function ListPageContainer(props) {

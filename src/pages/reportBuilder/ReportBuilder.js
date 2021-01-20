@@ -27,7 +27,6 @@ import {
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { getFormattedDateRangeForAggregateData } from 'src/helpers/date';
 import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import {
   Charts,
   ReportOptions,
@@ -79,10 +78,9 @@ export function ReportBuilder({
   listSendingDomains,
   sendingDomains,
   sendingDomainsListLoading,
-  isEmptyStateEnabled,
 }) {
   const history = useHistory();
-  const showReportBuilderEmptyState = sendingDomains.length === 0 && isEmptyStateEnabled;
+  const showReportBuilderEmptyState = sendingDomains.length === 0;
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
@@ -97,7 +95,7 @@ export function ReportBuilder({
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
-  const showInfoBanner = !showReportBuilderEmptyState && isEmptyStateEnabled;
+  const showInfoBanner = !showReportBuilderEmptyState;
   const emptyStateUrlHash = location.hash.replace('#', '');
   let emptyStateTabFromUrl;
 
@@ -472,7 +470,6 @@ const mapStateToProps = state => ({
   subscription: state.billing.subscription,
   sendingDomains: selectVerifiedDomains(state),
   sendingDomainsListLoading: state.sendingDomains.listLoading,
-  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
 const mapDispatchToProps = {

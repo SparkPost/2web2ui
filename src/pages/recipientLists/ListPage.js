@@ -67,7 +67,7 @@ export class ListPage extends Component {
   }
 
   render() {
-    const { error, loading, recipientLists, isEmptyStateEnabled, isHibanaEnabled } = this.props;
+    const { error, loading, recipientLists, isHibanaEnabled } = this.props;
 
     if (loading) {
       return <Loading />;
@@ -90,7 +90,7 @@ export class ListPage extends Component {
         hibanaEmptyStateComponent={RecipientListEmptyState}
         loading={loading || this.state.isFirstRender}
       >
-        {!error && isEmptyStateEnabled && isHibanaEnabled && <InfoBanner />}
+        {!error && isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );

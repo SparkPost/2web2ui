@@ -6,7 +6,6 @@ import { hasGrants } from 'src/helpers/conditions';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import ListPage from './ListPage';
 import { selectSnippets } from 'src/selectors/snippets';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { useHibana } from 'src/context/HibanaContext';
 
 const mapStateToProps = state => ({
@@ -17,7 +16,6 @@ const mapStateToProps = state => ({
   loading: state.snippets.loading,
   snippets: selectSnippets(state),
   subaccounts: state.subaccounts.list,
-  isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
 });
 
 const mapDispatchToProps = {

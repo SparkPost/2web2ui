@@ -25,7 +25,6 @@ function DomainTabPages() {
     sendingDomainsListError,
     sendingDomains,
     bounceDomains,
-    isEmptyStateEnabled,
     hasSubaccounts,
     subaccounts,
     listSubaccounts,
@@ -75,45 +74,24 @@ function DomainTabPages() {
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
 
   const showSendingDomainsEmptyState =
-    !listPending &&
-    matchesSendingTab &&
-    isEmptyStateEnabled &&
-    sendingDomains.length === 0 &&
-    !sendingDomainsListError;
+    !listPending && matchesSendingTab && sendingDomains.length === 0 && !sendingDomainsListError;
 
   const showBounceDomainsEmptyState =
-    !listPending &&
-    matchesBounceTab &&
-    isEmptyStateEnabled &&
-    bounceDomains.length === 0 &&
-    !sendingDomainsListError;
+    !listPending && matchesBounceTab && bounceDomains.length === 0 && !sendingDomainsListError;
 
   const showTrackingDomainsEmptyState =
-    !listPending &&
-    matchesTrackingTab &&
-    isEmptyStateEnabled &&
-    trackingDomains.length === 0 &&
-    !trackingDomainsListError;
+    !listPending && matchesTrackingTab && trackingDomains.length === 0 && !trackingDomainsListError;
 
   const showSendingDomainInfoBanner =
-    !listPending &&
-    !showSendingDomainsEmptyState &&
-    matchesSendingTab &&
-    isEmptyStateEnabled &&
-    sendingDomains.length > 0;
+    !listPending && !showSendingDomainsEmptyState && matchesSendingTab && sendingDomains.length > 0;
 
   const showBounceDomainInfoBanner =
-    !listPending &&
-    !showBounceDomainsEmptyState &&
-    matchesBounceTab &&
-    isEmptyStateEnabled &&
-    bounceDomains.length > 0; // We might want to add sendingDomains.length > 0 too
+    !listPending && !showBounceDomainsEmptyState && matchesBounceTab && bounceDomains.length > 0; // We might want to add sendingDomains.length > 0 too
 
   const showTrackingDomainInfoBanner =
     !listPending &&
     !showTrackingDomainsEmptyState &&
     matchesTrackingTab &&
-    isEmptyStateEnabled &&
     trackingDomains.length > 0;
 
   const renderInfoBanner = () => {
