@@ -65,6 +65,13 @@ describe('Component: Report Builder ActiveMetrics', () => {
     );
   };
 
+  it('should not render with "per" labels without metrics rollup', () => {
+    subject();
+
+    expect(screen.queryByText('B per minute')).not.toBeInTheDocument();
+    expect(screen.queryByText('C per minute')).not.toBeInTheDocument();
+  });
+
   it('should render using "per minute" labels for unique metrics for 1min precision', () => {
     subject(
       {},

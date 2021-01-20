@@ -1,13 +1,15 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 
 export function fetch({ type = 'FETCH_METRICS', path, params = {}, context }) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const useRollup = Boolean(isUserUiOptionSet('use-metrics-rollup')(getState()));
     const meta = {
       method: 'GET',
       url: `/v1/metrics/${path}`,
       params: {
         ...params,
-        rollup: true,
+        ...(useRollup && { rollup: true }), //Done this way because falsy props still show in the snapshot
       },
     };
 
