@@ -24,8 +24,6 @@ if (IS_HIBANA_ENABLED) {
         fixture: 'billing/subscription/200.get',
         requestAlias: 'billingSubscriptionReq',
       });
-
-      stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1+ verified sending domain - check
     });
 
     it('loads a preset report in addition to relevant query params', () => {
@@ -639,18 +637,5 @@ if (IS_HIBANA_ENABLED) {
         cy.findByDataId('reports-limit-tooltip-icon').should('not.exist');
       });
     });
-  });
-}
-
-function stubSendingDomains({
-  fixture = 'sending-domains/200.get.json',
-  requestAlias = 'sendingDomainsReq',
-  statusCode = 200,
-} = {}) {
-  cy.stubRequest({
-    url: '/api/v1/sending-domains',
-    fixture,
-    requestAlias,
-    statusCode,
   });
 }
