@@ -244,7 +244,7 @@ if (IS_HIBANA_ENABLED) {
 
       cy.findByDataId('report-options').within(() => {
         verifyMetricTagDismiss('Sent');
-        verifyMetricTagDismiss('Unique Confirmed Opens');
+        verifyMetricTagDismiss('Unique Confirmed Opens per hour');
       });
     });
 
