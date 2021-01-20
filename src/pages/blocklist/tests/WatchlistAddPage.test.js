@@ -51,14 +51,14 @@ describe('WatchlistAddPage', () => {
     expect(queryByRole('button', { name: saveAndContinueText })).toHaveProperty('disabled');
   });
 
-  it.skip('submits the resource and redirects on save', () => {
+  it('submits the resource and redirects on save', () => {
     const resource = 'test';
     const promise = Promise.resolve({ resource });
     const watchlistAdd = jest.fn(() => promise);
-    const { getByLabelText, getByText } = subject({ watchlistAdd });
+    const { getByLabelText, getByRole } = subject({ watchlistAdd });
 
     const input = getByLabelText(ipOrSendingDomainText);
-    const save = getByText(saveText);
+    const save = getByRole('button', { name: saveText });
     fireEvent.change(input, { target: { value: resource } });
     expect(input.value).toBe(resource);
     fireEvent.click(save);
