@@ -5,7 +5,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/bounce-classification",
     },
     "type": "FETCH_METRICS_BOUNCE_CLASSIFICATIONS",
@@ -18,7 +20,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/bounce-reason",
     },
     "type": "FETCH_METRICS_BOUNCE_REASONS",
@@ -31,7 +35,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/bounce-reason/domain",
     },
     "type": "FETCH_METRICS_BOUNCE_REASONS_BY_DOMAIN",
@@ -44,7 +50,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/delay-reason/domain",
     },
     "type": "FETCH_METRICS_DELAY_REASONS_BY_DOMAIN",
@@ -57,7 +65,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability",
     },
     "type": "GET_ACCEPTED_AGGREGATES",
@@ -70,7 +80,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/attempt",
     },
     "type": "FETCH_METRICS_DELIVERIES_BY_ATTEMPT",
@@ -83,7 +95,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/rejection-reason/domain",
     },
     "type": "FETCH_METRICS_REJECTION_REASONS_BY_DOMAIN",
@@ -96,7 +110,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/deliverability/time-series",
     },
     "type": "FETCH_METRICS",
@@ -109,7 +125,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/campaigns",
     },
     "type": "FETCH_METRICS_CAMPAIGNS",
@@ -122,7 +140,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/domains",
     },
     "type": "FETCH_METRICS_DOMAINS",
@@ -135,7 +155,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/ip-pools",
     },
     "type": "FETCH_METRICS_IP_POOLS",
@@ -148,7 +170,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/sending-ips",
     },
     "type": "FETCH_METRICS_SENDING_IPS",
@@ -161,7 +185,9 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "params": Object {},
+      "params": Object {
+        "rollup": true,
+      },
       "url": "/v1/metrics/templates",
     },
     "type": "FETCH_METRICS_TEMPLATES",
