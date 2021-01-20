@@ -51,7 +51,7 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
       stubSendingDomains();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@sendingDomainsReq']);
+      cy.wait(['@sendingDomainsReq']);
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
       cy.findAllByText(
         "Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited metrics across delivery and deliverability data. To learn how to unlock the full potential of SparkPost's Analytics Report, visit the documentation link below.",
