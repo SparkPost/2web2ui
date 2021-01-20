@@ -52,7 +52,7 @@ describe('The A/B Testing list page', () => {
     it('renders the empty state banner when the banner has not been dismissed', () => {
       stubAbTest();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@abTest']);
+      cy.wait('@abTest');
 
       cy.findByRole('heading', { name: 'Discover Better Engagement' }).should('be.visible');
       cy.findByText('A/B Testing Documentation')
@@ -66,7 +66,7 @@ describe('The A/B Testing list page', () => {
     it('renders the empty state when there are no ab tests', () => {
       stubAbTest({ fixture: '200.get.no-results.json' });
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@abTest']);
+      cy.wait('@abTest');
       cy.findByRole('heading', { name: 'A/B Testing' }).should('be.visible');
       cy.findByText(
         'A/B testing uses Templates and Transmissions to create tests that reveal how variations in content impact recipient engagement. These tests can help identify the most effective content, subject lines, images, and more.',

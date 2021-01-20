@@ -57,7 +57,7 @@ describe('The recipient lists page', () => {
     it('renders the empty state banner when the banner has not been dismissed', () => {
       stubRecipientLists();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@recipientLists']);
+      cy.wait('@recipientLists');
 
       cy.findByRole('heading', { name: 'Organize Recipients' }).should('be.visible');
       cy.verifyLink({
@@ -69,7 +69,7 @@ describe('The recipient lists page', () => {
       stubRecipientLists({ fixture: '200.get.no-results.json' });
       stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@recipientLists']);
+      cy.wait('@recipientLists');
       cy.findByRole('heading', { name: 'Recipient Lists' }).should('be.visible');
       cy.findByText(
         'A recipient list is a collection of recipients that can be used in a transmission. When sending email to multiple recipients, it’s best to put them in a recipient list. This is particularly true when sending multiple emails to the same recipients.',
