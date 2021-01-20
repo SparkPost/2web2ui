@@ -11,14 +11,6 @@ function stubRecipientLists({ fixture = 'recipient-lists/200.get.json', statusCo
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
-
 describe('The recipient lists page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -64,7 +56,6 @@ describe('The recipient lists page', () => {
   if (IS_HIBANA_ENABLED) {
     it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
       stubRecipientLists();
-      stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait(['@accountReq', '@recipientLists']);
 

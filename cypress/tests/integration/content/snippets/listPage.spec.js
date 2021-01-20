@@ -11,13 +11,6 @@ function stubSnippets({ fixture = 'snippets/200.get.json', statusCode } = {}) {
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
 describe('The Snippets list page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -58,7 +51,6 @@ describe('The Snippets list page', () => {
   if (IS_HIBANA_ENABLED) {
     it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
       stubSnippets();
-      stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait(['@accountReq', '@snippetsReq']);
 
@@ -70,7 +62,6 @@ describe('The Snippets list page', () => {
     });
     it('renders the empty state when there are no ab tests', () => {
       stubSnippets({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait(['@accountReq', '@snippetsReq']);
       cy.findByRole('heading', { name: 'Snippets' }).should('be.visible');

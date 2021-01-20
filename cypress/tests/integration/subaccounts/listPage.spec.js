@@ -12,14 +12,6 @@ function stubSubaccount({ fixture = 'subaccounts/200.get.json', statusCode } = {
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
-
 // this is an override of the stub set by stubAuth
 function stubUsersRequest() {
   cy.stubRequest({
@@ -63,7 +55,6 @@ describe('The subaccounts list page', () => {
 
     it('does not renders the empty state banner when the banner has been dismissed', () => {
       stubSubaccount({ fixture: 'subaccounts/200.get.json' });
-      stubAccountsReq();
       stubUsersRequest(); // override for user ui option to turn off banner
       cy.visit(PAGE_URL);
       cy.wait(['@subaccounts']);
@@ -77,7 +68,6 @@ describe('The subaccounts list page', () => {
 
     it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
       stubSubaccount({ fixture: 'subaccounts/200.get.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait(['@subaccounts']);
       cy.title().should('include', 'Subaccounts');
@@ -94,7 +84,6 @@ describe('The subaccounts list page', () => {
 
     it('renders the empty state when there are no subaccounts', () => {
       stubSubaccount({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait(['@subaccounts']);
       cy.title().should('include', 'Subaccounts');
