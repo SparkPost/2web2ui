@@ -37,7 +37,8 @@ if (IS_HIBANA_ENABLED) {
       // Default selected metrics
       cy.withinMainContent(() => {
         cy.findAllByText('Sent').should('have.length', 2);
-        cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
+        cy.findAllByText('Unique Confirmed Opens').should('have.length', 1);
+        cy.findAllByText('Unique Confirmed Opens per hour').should('have.length', 1);
         cy.findAllByText('Accepted').should('have.length', 2);
         cy.findAllByText('Bounces').should('have.length', 2);
       });
@@ -140,7 +141,8 @@ if (IS_HIBANA_ENABLED) {
       cy.visit(`${PAGE_URL}&filters=Recipient Domain%3Atest.com`);
       cy.withinMainContent(() => {
         cy.findAllByText('Sent').should('have.length', 2);
-        cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
+        cy.findAllByText('Unique Confirmed Opens').should('have.length', 1);
+        cy.findAllByText('Unique Confirmed Opens per hour').should('have.length', 1);
         cy.findAllByText('Accepted').should('have.length', 2);
         cy.findAllByText('Bounces').should('have.length', 2);
       });
@@ -177,7 +179,7 @@ if (IS_HIBANA_ENABLED) {
       // 3. Verify that tags render for each metric *and* query params for each metric appear in the URL
       cy.withinMainContent(() => {
         METRICS.forEach(metric => {
-          cy.findAllByText(metric.name).should('have.length', 2);
+          cy.findByDataId(`metric-tag-${metric.queryParam}`).should('be.visible');
           cy.url().should('include', `=${metric.queryParam}`);
         });
       });

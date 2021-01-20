@@ -38,7 +38,12 @@ export default function ActiveMetrics({ metrics, removeMetric }) {
 export function MetricTag({ metric, uniqueLabel, onRemove }) {
   return (
     <Tag key={metric.name} onRemove={onRemove} data-id="metric-tag">
-      <Box as="span" display="inline-flex" alignItems="center">
+      <Box
+        as="span"
+        display="inline-flex"
+        alignItems="center"
+        data-id={`metric-tag-${metric.name}`}
+      >
         <LegendCircle color={metric.stroke} right="9px" />
         <Box>
           {metric.isUniquePerTimePeriod && uniqueLabel
