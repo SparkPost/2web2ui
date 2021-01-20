@@ -87,6 +87,8 @@ export const LINKS = {
   ANALYTICS_DOCS: 'https://www.sparkpost.com/docs/reporting/signals-analytics/#',
   METRICS_GROUPINGS_STRUCTURE_DOCS:
     'https://developers.sparkpost.com/api/metrics/#header-groupings-structure',
+  INTEGRATION_DOCS: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/',
+  INBOX_TRACKER: 'https://www.sparkpost.com/inbox-tracker/',
 };
 
 export const ENTERPRISE_PLAN_CODES = ['ent1'];
