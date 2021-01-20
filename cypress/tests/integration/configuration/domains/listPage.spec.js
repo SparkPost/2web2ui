@@ -64,6 +64,42 @@ describe('The domains list page', () => {
       cy.url().should('include', `${PAGE_URL}/list/sending`);
     });
 
+    it('successfully verifies the sending/bounce domain when url has token, mailbox and domain as query parameters and redirects to domain details page', () => {
+      stubSendingDomains({ fixture: 'sending-domains/200.get.paginated-results.json' });
+      stubSubaccounts();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/fake1.domain.com/verify',
+        method: 'POST',
+        fixture: 'sending-domains/verify/200.post-abusetoken.json',
+        requestAlias: 'sendingDomainVerifyReq',
+      });
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/fake1.domain.com',
+        fixture: 'sending-domains/200.get.all-verified.json',
+        requestAlias: 'sendingDomainsReq',
+      });
+      cy.visit(`${PAGE_URL}/list/sending?token=faketoken&domain=fake1.domain.com&mailbox=abuse`);
+
+      cy.wait(['@sendingDomainsReq', '@subaccountsReq', '@sendingDomainVerifyReq']);
+      cy.findByText('fake1.domain.com has been verified').should('be.visible');
+      cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
+    });
+
+    it('renders error when domain cannot be verified and the sending/bounce domain url has token, mailbox and domain as query parameters', () => {
+      stubSendingDomains({ fixture: 'sending-domains/200.get.paginated-results.json' });
+      stubSubaccounts();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/fake1.domain.com/verify',
+        method: 'POST',
+        fixture: 'sending-domains/verify/200.post.json',
+        requestAlias: 'sendingDomainVerifyReq',
+      });
+      cy.visit(`${PAGE_URL}/list/sending?token=faketoken&domain=fake1.domain.com&mailbox=abuse`);
+
+      cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+      cy.findByText('Unable to verify fake1.domain.com').should('be.visible');
+      cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
+    });
     /**
      * SENDING DOMAINS TABLE
      */
@@ -129,7 +165,7 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 4,
-          domainName: 'failed-verification.com',
+          domainName: 'fake1.domain.com',
           creationDate: 'Aug 3, 2017',
           subaccount: 'Assignment: Primary Account',
           statusTags: ['Unverified'],
@@ -397,7 +433,7 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 3,
-          domainName: 'failed-verification.com',
+          domainName: 'fake1.domain.com',
           creationDate: 'Aug 3, 2017',
           statusTags: ['Unverified'],
         });
@@ -445,7 +481,7 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 3,
-          domainName: 'failed-verification.com',
+          domainName: 'fake1.domain.com',
           creationDate: 'Aug 3, 2017',
           statusTags: ['Unverified'],
         });
@@ -507,7 +543,7 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 4,
-          domainName: 'failed-verification.com',
+          domainName: 'fake1.domain.com',
           creationDate: 'Aug 3, 2017',
           statusTags: ['Unverified'],
         });
@@ -541,7 +577,7 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 2,
-          domainName: 'failed-verification.com',
+          domainName: 'fake1.domain.com',
           creationDate: 'Aug 3, 2017',
           statusTags: ['Unverified'],
         });
@@ -635,7 +671,7 @@ describe('The domains list page', () => {
         });
         verifyTableRow({
           rowIndex: 3,
-          domainName: 'failed-verification.com',
+          domainName: 'fake1.domain.com',
           creationDate: 'Aug 3, 2017',
           statusTags: ['Unverified'],
         });

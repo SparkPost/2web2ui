@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Page, Banner, Button, Box } from 'src/components/matchbox';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
@@ -24,7 +24,6 @@ const StyledBox = styled(Box)`
 `;
 function DetailsPage(props) {
   const {
-    match,
     history,
     sendingDomainsPending,
     trackingDomainListPending,
@@ -43,10 +42,10 @@ function DetailsPage(props) {
   const [isTracking] = useState(useRouteMatch(`${DETAILS_BASE_URL}/tracking`));
   const [warningBanner, toggleBanner] = useState(true);
   const [trackingDomainNotFound, settrackingDomainNotFound] = useState(false);
+  const { id } = useParams();
   let domain = isTracking
-    ? _.find(trackingDomainList, ['domain', match.params.id.toLowerCase()])
+    ? _.find(trackingDomainList, ['domain', id.toLowerCase()])
     : sendingOrBounceDomain;
-
   const handleAllDomains = () => {
     if (isTracking) return history.push('/domains/list/tracking');
 
@@ -56,20 +55,20 @@ function DetailsPage(props) {
   };
 
   useEffect(() => {
-    if (!isTracking) getDomain(match.params.id);
+    if (!isTracking) getDomain(id);
     return () => {
       //reset the domain
       clearSendingDomain();
     };
-  }, [clearSendingDomain, getDomain, isTracking, match.params.id]);
+  }, [clearSendingDomain, getDomain, isTracking, id]);
   useEffect(() => {
     listTrackingDomains().then(res => {
       //this logic redirects to list page when the tracking domain is not found in the list
-      if (isTracking && !Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
+      if (isTracking && !Boolean(_.find(res, ['domain', id.toLowerCase()]))) {
         settrackingDomainNotFound(true);
       }
     });
-  }, [history, isTracking, listTrackingDomains, match.params.id]);
+  }, [history, isTracking, listTrackingDomains, id]);
 
   useEffect(() => {
     if (hasSubaccounts && subaccounts?.length === 0) {
@@ -171,8 +170,7 @@ function DetailsPage(props) {
             </Banner.Actions>
           </Banner>
         )}
-
-        <Domains.DomainStatusSection domain={domain} id={match.params.id} isTracking={isTracking} />
+        <Domains.DomainStatusSection domain={domain} id={id} isTracking={isTracking} />
 
         <Domains.SetupForSending
           domain={domain}
@@ -210,7 +208,7 @@ function DetailsPage(props) {
         <Domains.DeleteDomainSection
           domain={domain}
           history={history}
-          id={match.params.id}
+          id={id}
           isTracking={isTracking}
         />
       </Page>
@@ -230,5 +228,10 @@ export default connect(
     sendingOrBounceDomain: selectDomain(state),
     subaccounts: state.subaccounts.list,
   }),
-  { getDomain, listTrackingDomains, listSubaccounts, clearSendingDomain },
+  {
+    getDomain,
+    listTrackingDomains,
+    listSubaccounts,
+    clearSendingDomain,
+  },
 )(DetailsPage);

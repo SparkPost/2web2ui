@@ -104,7 +104,7 @@ export default (state = initialState, { type, payload, meta }) => {
     case 'VERIFY_TOKEN_PENDING':
       return {
         ...state,
-        verifyTokenLoading: false,
+        verifyTokenLoading: true,
         verifyTokenStatus: null,
         verifyTokenError: null,
       };

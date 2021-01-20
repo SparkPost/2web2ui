@@ -2,7 +2,11 @@ import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
-import { verifyMailboxToken, verifyAbuseToken, verifyPostmasterToken } from 'src/actions/sendingDomains';
+import {
+  verifyMailboxToken,
+  verifyAbuseToken,
+  verifyPostmasterToken,
+} from 'src/actions/sendingDomains';
 import { showAlert } from 'src/actions/globalAlert';
 import _ from 'lodash';
 
@@ -20,7 +24,9 @@ export class VerifyToken extends Component {
     const sendingDomain = _.find(domains, { domain });
 
     if (sendingDomain && mailbox && domain && token) {
-      const subaccount = !isNaN(parseInt(sendingDomain.subaccount_id)) ? sendingDomain.subaccount_id : undefined;
+      const subaccount = !isNaN(parseInt(sendingDomain.subaccount_id))
+        ? sendingDomain.subaccount_id
+        : undefined;
       let verifyAction = verifyMailboxToken;
 
       if (mailbox === 'abuse') {
@@ -55,10 +61,15 @@ export class VerifyToken extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   domains: state.sendingDomains.list,
-  tokenStatus: state.sendingDomains.verifyTokenStatus
+  tokenStatus: state.sendingDomains.verifyTokenStatus,
 });
 
-const mapDispatchToProps = { showAlert, verifyMailboxToken, verifyAbuseToken, verifyPostmasterToken };
+const mapDispatchToProps = {
+  showAlert,
+  verifyMailboxToken,
+  verifyAbuseToken,
+  verifyPostmasterToken,
+};
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(VerifyToken));
