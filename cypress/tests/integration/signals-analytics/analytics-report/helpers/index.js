@@ -56,7 +56,7 @@ export function stubSubscription(requestAlias = 'getSubscription') {
 }
 
 export function stubSendingDomains({
-  fixture = '200.get.json',
+  fixture = 'sending-domains/200.get.json',
   requestAlias = 'sendingDomainsReq',
   statusCode = 200,
 } = {}) {
