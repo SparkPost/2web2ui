@@ -33,6 +33,7 @@ if (IS_HIBANA_ENABLED) {
     beforeEach(() => {
       cy.stubAuth();
       commonBeforeSteps();
+      stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1+ verified sending domain - check
 
       cy.stubRequest({
         url: '/api/v1/subaccounts',
@@ -56,7 +57,7 @@ if (IS_HIBANA_ENABLED) {
         .scrollIntoView()
         .select('Recipient Domain', { force: true });
 
-      cy.wait('@getWatchedDomains');
+      cy.wait(['@getWatchedDomains']);
 
       cy.findByLabelText('Top Domains Only')
         .should('be.visible')
@@ -548,5 +549,18 @@ if (IS_HIBANA_ENABLED) {
         });
       });
     });
+  });
+}
+
+function stubSendingDomains({
+  fixture = 'sending-domains/200.get.json',
+  requestAlias = 'sendingDomainsReq',
+  statusCode = 200,
+} = {}) {
+  cy.stubRequest({
+    url: '/api/v1/sending-domains',
+    fixture,
+    requestAlias,
+    statusCode,
   });
 }
