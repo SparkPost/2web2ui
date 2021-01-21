@@ -956,16 +956,6 @@ describe('The domains list page', () => {
         cy.findByLabelText('DKIM Signing').should('be.visible');
       });
 
-      it('renders an empty state when no results are returned and empty states is turned off', () => {
-        stubSendingDomains({ fixture: '200.get.no-results.json' });
-        stubSubaccounts();
-        cy.visit(`${PAGE_URL}/list/bounce`);
-        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
-
-        cy.get('table').should('not.exist');
-        cy.findByText('There is no data to display').should('be.visible');
-      });
-
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
