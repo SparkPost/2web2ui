@@ -4,6 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { TestApp, stubRequest } from 'src/__testHelpers__';
 import { useSparkPostQuery } from 'src/hooks';
 import { getUsage } from 'src/helpers/api/account';
+import { getBilling } from 'src/helpers/api/billing';
 
 const FAKE_AUTH_TOKEN = '123456';
 const USAGE_FIXTURE = {
@@ -91,9 +92,29 @@ describe('useSparkPostQuery', () => {
 
     const nockCalls = nock.recorder.play();
     expect(nockCalls[0].reqheaders.authorization).toEqual(FAKE_AUTH_TOKEN);
+    nock.restore(); // Stops recording
+    nock.recorder.clear(); // Remove recordings
   });
 
-  it('makes requests with parameters passed in to query functions', () => {});
+  it('makes requests with parameters passed in to query functions', async () => {
+    nock.recorder.rec({
+      dont_print: true,
+      output_objects: true,
+    });
+
+    const { result, waitFor } = renderHook(
+      () =>
+        useSparkPostQuery(() => getBilling({ my: 'param' }), { ...DEFAULT_OPTIONS, retry: false }),
+      { wrapper },
+    );
+
+    expect(result.current.status).toBe('loading');
+    await waitFor(() => result.current.status === 'error');
+    const nockCalls = nock.recorder.play();
+    expect(nockCalls[0].path).toEqual('/v1/billing?my=param');
+    nock.restore(); // Stops recording
+    nock.recorder.clear(); // Remove recordings
+  });
 
   it('makes requests with headers passed in to the query function', () => {});
 
