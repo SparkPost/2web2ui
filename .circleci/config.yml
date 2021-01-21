@@ -35,16 +35,12 @@ commands:
     steps:
       - checkout
       - restore_npm_cache
-      - run: npm ci
+      - run:
+          name: 'Installing NPM dependencies'
+          command: npm ci
       - save_npm_cache
 
   cypress_cleanup:
-    parameters:
-      theme:
-        type: string
-        description: '`og` or `hibana` Theme'
-        default: og
-
     steps:
       - store_test_results:
           name: 'Upload test report'
@@ -71,7 +67,7 @@ commands:
             fi
       - run:
           name: 'Rename coverage report'
-          command: mkdir -p coverage && mv cypress-coverage/coverage-final.json coverage/from-cypress-<< parameters.theme >>-${CIRCLE_NODE_INDEX}.json
+          command: mkdir -p coverage && mv cypress-coverage/coverage-final.json coverage/from-cypress-${CIRCLE_NODE_INDEX}.json
       - run: ls -al && cd coverage && ls -al && cd ../
       - run: mkdir -p workspace && mv coverage workspace
       # Saves the coverage folder to a temporary workspace directory for use by later jobs
@@ -118,40 +114,31 @@ jobs:
           paths:
             - coverage
 
-  'Build - OG Theme':
+  'Build':
     <<: *defaults
     steps:
       - setup
-      - run: npm run build-ci
-      - run: mkdir -p workspace && mv build build-og && mv build-og workspace
+      - run:
+          name: 'Running production build'
+          command: 'npm run build-ci'
+      - run:
+          name: 'Move built assets to the workspace directory'
+          command: mkdir -p workspace && mv build workspace
       # Saves the build folder to a temporary workspace directory for use by later jobs
       - persist_to_workspace:
           root: workspace
           paths:
-            - build-og
+            - build
 
-  'Build - Hibana':
-    <<: *defaults
-    steps:
-      - setup
-      - run: npm run build-ci-hibana
-      - run: mkdir -p workspace && mv build build-hibana && mv build-hibana workspace
-      # Saves the build folder to a temporary workspace directory for use by later jobs
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - build-hibana
-
-  'Integration Testing - OG Theme':
+  'Integration Testing':
     docker:
       - image: cypress/browsers
-    parallelism: 5
+    parallelism: 8
     steps:
       - setup
       # Restores the /build folder from the previous job
       - attach_workspace:
           at: ./
-      - run: mv build-og build
       - run:
           name: 'Run Cypress Integration Tests'
           command: |
@@ -161,13 +148,12 @@ jobs:
             FORMATTED_SPECS=$(join , ${SPECS[@]})
             echo $FORMATTED_SPECS
             npm run test-integration-ci -- --spec $FORMATTED_SPECS
-      - cypress_cleanup:
-          theme: og
+      - cypress_cleanup
 
-  'Integration Testing - OG Theme - Targeted':
+  'Integration Testing - Targeted':
     docker:
       - image: cypress/browsers
-    description: 'Runs integration tests for the OG theme, structured for individual test debugging'
+    description: 'Runs integration tests structured for individual test debugging'
     parameters:
       specs:
         type: string
@@ -177,58 +163,12 @@ jobs:
       # Restores the /build folder from the previous job
       - attach_workspace:
           at: ./
-      - run: mv build-og build
       - run:
           name: 'Run Cypress Integration Tests - Targeted'
           command: |
             SPECS=<< parameters.specs >>
             npm run test-integration-ci -- --spec $SPECS
-      - cypress_cleanup:
-          theme: og
-
-  'Integration Testing - Hibana Theme':
-    docker:
-      - image: cypress/browsers
-    parallelism: 5
-    steps:
-      - setup
-      # Restores the /build folder from the previous job
-      - attach_workspace:
-          at: ./
-      - run: mv build-hibana build
-      - run:
-          name: 'Run Cypress Integration Tests'
-          command: |
-            function join { local IFS="$1"; shift; echo "$*"; }
-            SPECS=$(circleci tests glob "./cypress/tests/integration/**/*.spec.js" | circleci tests split --split-by=timings);spec="${SPECS[@]}"
-            echo $SPECS
-            FORMATTED_SPECS=$(join , ${SPECS[@]})
-            echo $FORMATTED_SPECS
-            npm run test-integration-ci-hibana -- --spec $FORMATTED_SPECS
-      - cypress_cleanup:
-          theme: hibana
-
-  'Integration Testing - Hibana Theme - Targeted':
-    docker:
-      - image: cypress/browsers
-    description: 'Runs integration tests for the Hibana theme, structured for individual test debugging'
-    parameters:
-      specs:
-        type: string
-        default: ''
-    steps:
-      - setup
-      # Restores the /build folder from the previous job
-      - attach_workspace:
-          at: ./
-      - run: mv build-hibana build
-      - run:
-          name: 'Run Cypress Integration Tests - Targeted'
-          command: |
-            SPECS=<< parameters.specs >>
-            npm run test-integration-ci-hibana -- --spec $SPECS
-      - cypress_cleanup:
-          theme: hibana
+      - cypress_cleanup
 
   'Code coverage':
     <<: *defaults
@@ -252,28 +192,20 @@ workflows:
   test-and-build:
     jobs:
       - 'Unit Testing'
-      - 'Build - OG Theme'
-      - 'Build - Hibana'
-      - 'Integration Testing - OG Theme':
+      - 'Build'
+      - 'Integration Testing':
           requires:
-            - 'Build - OG Theme'
-      - 'Integration Testing - Hibana Theme':
-          requires:
-            - 'Build - Hibana'
+            - 'Build'
       - 'Code coverage':
           requires:
             - 'Unit Testing'
-            - 'Integration Testing - OG Theme'
-            - 'Integration Testing - Hibana Theme'
+            - 'Integration Testing'
+
       # Uncomment these jobs to run targeted integration tests by passing in
       # the targeted filename to run an individual spec or groups of specs.
       # See: https://docs.cypress.io/guides/guides/command-line.html#cypress-run for formatting tips.
       #
-      # - 'Integration Testing - OG Theme - Targeted':
+      # - 'Integration Testing - Targeted':
       #     specs: "./cypress/tests/integration/<your-glob-pattern-goes-here>.spec.js"
       #     requires:
-      #       - 'Build - OG Theme'
-      # - 'Integration Testing - Hibana Theme - Targeted':
-      #     specs: "./cypress/tests/integration/<your-glob-pattern-goes-here>.spec.js"
-      #     requires:
-      #       - 'Build - Hibana'
+      #       - 'Build'
