@@ -68,7 +68,7 @@ function mapStateToProps(state) {
   }
 
   if (onboarding !== 'done') {
-    segmentTrack(SEGMENT_EVENTS.ONBOARDING, {
+    segmentTrack(SEGMENT_EVENTS.DASHBOARD_ONBOARDING, {
       onboarding,
     });
   }
