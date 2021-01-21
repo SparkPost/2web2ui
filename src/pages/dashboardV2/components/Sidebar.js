@@ -9,12 +9,15 @@ import { formatFullNumber } from 'src/helpers/units';
 import { formatDate } from 'src/helpers/date';
 import { snakeToFriendly } from 'src/helpers/string';
 import useDashboardContext from '../hooks/useDashboardContext';
+import { Rocket } from '@sparkpost/matchbox-icons';
 
 const UpgradeLink = styled(PageLink)`
   text-decoration: none;
   font-weight: ${props => props.theme.fontWeights.semibold};
 `;
-
+const UpgradeIcon = styled(Rocket)`
+  color: ${props => props.theme.colors.brand.orange};
+`;
 function AccountDetails() {
   const { currentUser } = useDashboardContext();
 
@@ -63,7 +66,12 @@ function BillingUsage() {
                 <TranslatableText>Sending Plan</TranslatableText>
               </Heading>
 
-              {hasUpgradeLink && <UpgradeLink to="/account/billing/plan">Upgrade</UpgradeLink>}
+              {hasUpgradeLink && (
+                <UpgradeLink to="/account/billing/plan">
+                  Upgrade&nbsp;
+                  <UpgradeIcon size={16} />
+                </UpgradeLink>
+              )}
             </Box>
 
             <SidebarParagraph>{`${currentPlanName} Plan`}</SidebarParagraph>
