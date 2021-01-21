@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Page from '../Page';
 import { useHibana } from 'src/context/HibanaContext';
-import { useSelector } from 'react-redux';
 jest.mock('src/context/HibanaContext');
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -59,13 +58,8 @@ describe('Page Matchbox component wrapper', () => {
     expect(wrapper.find('Loading')).toExist();
   });
 
-  it('renders the Hibana EmptyState component when hibana is set and empty state condition is met', () => {
+  it('renders the Hibana EmptyState component when hibana is set', () => {
     useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-    useSelector.mockImplementation(selector =>
-      selector({
-        account: { options: { ui: { allow_empty_states: true } } },
-      }),
-    );
     const wrapper = subject({
       empty: { show: true },
       hibanaEmptyStateComponent: EmptyState,

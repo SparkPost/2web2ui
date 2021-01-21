@@ -11,13 +11,6 @@ function stubAbTest({ fixture = 'ab-test/200.get.json', statusCode } = {}) {
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
 describe('The A/B Testing list page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -56,11 +49,10 @@ describe('The A/B Testing list page', () => {
     cy.get('table').should('be.visible');
   });
   if (IS_HIBANA_ENABLED) {
-    it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+    it('renders the empty state banner when the banner has not been dismissed', () => {
       stubAbTest();
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@abTest']);
+      cy.wait('@abTest');
 
       cy.findByRole('heading', { name: 'Discover Better Engagement' }).should('be.visible');
       cy.findByText('A/B Testing Documentation')
@@ -73,9 +65,8 @@ describe('The A/B Testing list page', () => {
     });
     it('renders the empty state when there are no ab tests', () => {
       stubAbTest({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@abTest']);
+      cy.wait('@abTest');
       cy.findByRole('heading', { name: 'A/B Testing' }).should('be.visible');
       cy.findByText(
         'A/B testing uses Templates and Transmissions to create tests that reveal how variations in content impact recipient engagement. These tests can help identify the most effective content, subject lines, images, and more.',

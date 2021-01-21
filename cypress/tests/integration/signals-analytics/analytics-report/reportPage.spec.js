@@ -50,10 +50,9 @@ if (IS_HIBANA_ENABLED) {
 
     it('should render the Empty State when there are no sending domains and allow_empty_state is enabled', () => {
       commonBeforeSteps();
-      stubAccountsReq();
       stubSendingDomains();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@sendingDomainsReq']);
+      cy.wait(['@sendingDomainsReq']);
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
       cy.findAllByText(
         "Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited metrics across delivery and deliverability data. To learn how to unlock the full potential of SparkPost's Analytics Report, visit the documentation link below.",
@@ -68,7 +67,6 @@ if (IS_HIBANA_ENABLED) {
 
     it('does not render the banner when the banner has been dismissed', () => {
       commonBeforeSteps();
-      stubAccountsReq(); // has_empty_states - check
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1 verified sending domain - check
       stubUsersRequest(); // banner already dismissed - check
       cy.visit(PAGE_URL);
@@ -87,9 +85,8 @@ if (IS_HIBANA_ENABLED) {
       cy.findByRole('button', { name: 'View All Reports' }).should('be.visible');
     });
 
-    it('renders the banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+    it('renders the banner when the banner has not been dismissed', () => {
       commonBeforeSteps();
-      stubAccountsReq(); // has_empty_states - check
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' }); // 1+ verified sending domain - check
       cy.visit(PAGE_URL); //
       cy.wait(['@stubbedUsersRequest']);
@@ -377,13 +374,5 @@ function stubSendingDomains({
     fixture,
     requestAlias,
     statusCode,
-  });
-}
-
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
   });
 }

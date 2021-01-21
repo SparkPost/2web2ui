@@ -11,13 +11,6 @@ function stubSnippets({ fixture = 'snippets/200.get.json', statusCode } = {}) {
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
 describe('The Snippets list page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -56,11 +49,10 @@ describe('The Snippets list page', () => {
     cy.get('table').should('be.visible');
   });
   if (IS_HIBANA_ENABLED) {
-    it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+    it('renders the empty state banner when the banner has not been dismissed', () => {
       stubSnippets();
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@snippetsReq']);
+      cy.wait('@snippetsReq');
 
       cy.findByRole('heading', { name: 'Consistent Content, Easy' }).should('be.visible');
       cy.verifyLink({
@@ -70,9 +62,8 @@ describe('The Snippets list page', () => {
     });
     it('renders the empty state when there are no ab tests', () => {
       stubSnippets({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@snippetsReq']);
+      cy.wait('@snippetsReq');
       cy.findByRole('heading', { name: 'Snippets' }).should('be.visible');
       cy.findByText(
         'Snippets are modular, reusable content that can be imported into the HTML, Text, or AMP part of any email template. Snippets make it easy to create and maintain consistent content like footers and social share buttons across all emails.',

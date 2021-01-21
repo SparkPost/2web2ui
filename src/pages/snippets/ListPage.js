@@ -63,7 +63,7 @@ export default class ListPage extends React.Component {
         hibanaEmptyStateComponent={SnippetsEmptyState}
         loading={loading || this.state.isFirstRender}
       >
-        {this.props.isEmptyStateEnabled && this.props.isHibanaEnabled && <InfoBanner />}
+        {this.props.isHibanaEnabled && <InfoBanner />}
         {error ? this.renderError() : this.renderCollection()}
       </Page>
     );

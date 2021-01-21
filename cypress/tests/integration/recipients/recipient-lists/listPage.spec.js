@@ -11,14 +11,6 @@ function stubRecipientLists({ fixture = 'recipient-lists/200.get.json', statusCo
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
-
 describe('The recipient lists page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -62,11 +54,10 @@ describe('The recipient lists page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders the empty state banner when "allow_empty_states" is set on the account and banner has not been dismissed', () => {
+    it('renders the empty state banner when the banner has not been dismissed', () => {
       stubRecipientLists();
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@recipientLists']);
+      cy.wait('@recipientLists');
 
       cy.findByRole('heading', { name: 'Organize Recipients' }).should('be.visible');
       cy.verifyLink({
@@ -76,9 +67,8 @@ describe('The recipient lists page', () => {
     });
     it('renders the empty state when there are no recipient lists', () => {
       stubRecipientLists({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@recipientLists']);
+      cy.wait('@recipientLists');
       cy.findByRole('heading', { name: 'Recipient Lists' }).should('be.visible');
       cy.findByText(
         'A recipient list is a collection of recipients that can be used in a transmission. When sending email to multiple recipients, it’s best to put them in a recipient list. This is particularly true when sending multiple emails to the same recipients.',

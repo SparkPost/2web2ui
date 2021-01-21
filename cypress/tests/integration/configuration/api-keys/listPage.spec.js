@@ -15,14 +15,6 @@ function stubApiKeys({ fixture = 'api-keys/200.get.json', statusCode } = {}) {
   });
 }
 
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
-  });
-}
-
 describe('The API Keys list page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -97,11 +89,10 @@ describe('The API Keys list page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders the empty state when "allow_empty_states" is set on the account', () => {
+    it('renders the empty state', () => {
       stubApiKeys({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@apiKeys']);
+      cy.wait('@apiKeys');
 
       cy.findByRole('heading', { name: 'API Keys' }).should('be.visible');
       cy.findByText('API Keys Documentation')

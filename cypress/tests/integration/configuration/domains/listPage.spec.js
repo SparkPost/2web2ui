@@ -252,29 +252,12 @@ describe('The domains list page', () => {
         verifyMultipleResults();
       });
 
-      it('renders an empty table when no results are returned and empty states is turned off', () => {
-        cy.stubRequest({
-          url: '/api/v1/sending-domains',
-          fixture: '200.get.no-results.json',
-          requestAlias: 'sendingDomainsReq',
-        });
-
-        cy.visit(PAGE_URL);
-        cy.wait('@sendingDomainsReq');
-        cy.withinMainContent(() => {
-          cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display');
-        });
-      });
-
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
           fixture: '200.get.no-results.json',
           requestAlias: 'sendingDomainsReq',
         });
-        stubAccountsReq();
-
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
@@ -314,7 +297,6 @@ describe('The domains list page', () => {
 
       it('renders an empty state banner above the table after requesting sending domains.', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
-        stubAccountsReq();
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq']);
         // banner content
@@ -330,7 +312,6 @@ describe('The domains list page', () => {
 
       it('does not render an empty state banner above the table after requesting sending domains if the user dismissed it.', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
-        stubAccountsReq();
         stubUsersRequest({});
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq']);
@@ -975,24 +956,12 @@ describe('The domains list page', () => {
         cy.findByLabelText('DKIM Signing').should('be.visible');
       });
 
-      it('renders an empty state when no results are returned and empty states is turned off', () => {
-        stubSendingDomains({ fixture: '200.get.no-results.json' });
-        stubSubaccounts();
-        cy.visit(`${PAGE_URL}/list/bounce`);
-        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
-
-        cy.get('table').should('not.exist');
-        cy.findByText('There is no data to display').should('be.visible');
-      });
-
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
           fixture: '200.get.no-results.json',
           requestAlias: 'sendingDomainsReq',
         });
-        stubAccountsReq();
-
         cy.visit(PAGE_URL);
         cy.wait('@sendingDomainsReq');
         cy.withinMainContent(() => {
@@ -1035,7 +1004,6 @@ describe('The domains list page', () => {
 
       it('renders an empty state banner above the table after requesting sending domains.', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
-        stubAccountsReq();
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq']);
 
@@ -1055,7 +1023,6 @@ describe('The domains list page', () => {
 
       it('does not render an empty state banner above the table after requesting sending domains if the user dismissed it.', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
-        stubAccountsReq();
         stubUsersRequest({ fixture: 'users/200.get.bounce-domain-banner-dismissed.json' });
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq']);
@@ -1220,20 +1187,8 @@ describe('The domains list page', () => {
         verifyMultipleResults();
       });
 
-      it('renders an empty table when no results are returned and empty states is turned off', () => {
-        stubTrackingDomains({ fixture: '200.get.no-results.json' });
-        cy.visit(`${PAGE_URL}/list/tracking`);
-        cy.wait('@trackingDomainsReq');
-
-        cy.withinMainContent(() => {
-          cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display').should('be.visible');
-        });
-      });
-
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         stubTrackingDomains({ fixture: '200.get.no-results.json' });
-        stubAccountsReq();
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
 
@@ -1273,7 +1228,6 @@ describe('The domains list page', () => {
 
       it('renders an empty state banner above the table after requesting tracking domains.', () => {
         stubTrackingDomains();
-        stubAccountsReq();
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
         cy.findByRole('tab', { name: 'Tracking Domains' }).click({ force: true });
@@ -1289,7 +1243,6 @@ describe('The domains list page', () => {
 
       it('does not render an empty state banner above the table after requesting tracking domains if the user dismissed it.', () => {
         stubTrackingDomains();
-        stubAccountsReq();
         stubUsersRequest({ fixture: 'users/200.get.tracking-domain-banner-dismissed.json' });
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
@@ -1545,14 +1498,6 @@ function stubSendingDomains({
     fixture,
     requestAlias,
     statusCode,
-  });
-}
-
-function stubAccountsReq({ fixture = 'account/200.get.has-empty-states.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/account**',
-    fixture: fixture,
-    requestAlias: 'accountReq',
   });
 }
 

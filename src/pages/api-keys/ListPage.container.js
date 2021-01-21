@@ -11,7 +11,6 @@ import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { selectKeysForAccount } from 'src/selectors/api-keys';
 
 // Components/helpers
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { ListPage } from './ListPage';
 import { useHibana } from 'src/context/HibanaContext';
 
@@ -33,7 +32,6 @@ function mapStateToProps(state) {
     error,
     newKey,
     loading: keysLoading,
-    isEmptyStateEnabled: isAccountUiOptionSet('allow_empty_states')(state),
   };
 }
 
