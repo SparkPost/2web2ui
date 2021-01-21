@@ -67,7 +67,6 @@ describe('The recipient lists page', () => {
     });
     it('renders the empty state when there are no recipient lists', () => {
       stubRecipientLists({ fixture: '200.get.no-results.json' });
-      stubAccountsReq();
       cy.visit(PAGE_URL);
       cy.wait('@recipientLists');
       cy.findByRole('heading', { name: 'Recipient Lists' }).should('be.visible');
