@@ -60,7 +60,7 @@ describe('Summary Report page', () => {
       cy.url().should('not.include', 'range=7days');
       cy.findByDataId('report-options').within(() => {
         cy.findByLabelText('Narrow Date Range').should('have.value', getDatePickerText(dayAgo));
-        cy.findByLabelText('Broad Date Range').select('7days');
+        cy.get('select').select('7days');
       });
 
       const sevenDaysAgo = momentDateTime
