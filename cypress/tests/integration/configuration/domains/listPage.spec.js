@@ -252,21 +252,6 @@ describe('The domains list page', () => {
         verifyMultipleResults();
       });
 
-      it('renders an empty table when no results are returned and empty states is turned off', () => {
-        cy.stubRequest({
-          url: '/api/v1/sending-domains',
-          fixture: '200.get.no-results.json',
-          requestAlias: 'sendingDomainsReq',
-        });
-
-        cy.visit(PAGE_URL);
-        cy.wait('@sendingDomainsReq');
-        cy.withinMainContent(() => {
-          cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display');
-        });
-      });
-
       it('renders an empty state when no results are returned and empty states is turned on', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains',
@@ -1210,17 +1195,6 @@ describe('The domains list page', () => {
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         verifyMultipleResults();
-      });
-
-      it('renders an empty table when no results are returned and empty states is turned off', () => {
-        stubTrackingDomains({ fixture: '200.get.no-results.json' });
-        cy.visit(`${PAGE_URL}/list/tracking`);
-        cy.wait('@trackingDomainsReq');
-
-        cy.withinMainContent(() => {
-          cy.findByRole('table').should('not.exist');
-          cy.findByText('There is no data to display').should('be.visible');
-        });
       });
 
       it('renders an empty state when no results are returned and empty states is turned on', () => {
