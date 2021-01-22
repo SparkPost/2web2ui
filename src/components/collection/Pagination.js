@@ -64,7 +64,13 @@ const CollectionPagination = ({
       {/* Conditionally rendering the entire column is necessary to prevent spacing problems */}
       {hasPagination ? <Column data-id="pagination-pages">{renderPageButtons()}</Column> : null}
 
-      <Box as={Column} display="flex" justifyContent="flex-end" data-id="pagination-per-page">
+      <Box
+        as={Column}
+        data-id="pagination-per-page"
+        display="flex"
+        alignItems="center"
+        justifyContent={['flex-start', 'flex-start', 'flex-end']}
+      >
         <PerPageButtons
           totalCount={data.length}
           data={data}
