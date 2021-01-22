@@ -1,6 +1,6 @@
 import { USERNAME } from 'cypress/constants';
 
-describe('the Hibana navigation', () => {
+describe('navigation', () => {
   const desktopNavSelector = '[data-id="desktop-navigation"]';
   const secondaryNavSelector = '[data-id="secondary-navigation"]';
   const mobileNavSelector = '[data-id="mobile-navigation"]';

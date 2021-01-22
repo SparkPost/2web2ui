@@ -3,7 +3,7 @@ import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/dashboard';
 
-describe('Version 2 of the dashboard page', () => {
+describe('the dashboard page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
