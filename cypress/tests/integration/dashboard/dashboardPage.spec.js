@@ -529,7 +529,7 @@ describe('Version 2 of the dashboard page', () => {
     cy.findByRole('heading', { name: 'Setup Documentation' }).should('be.visible');
     cy.verifyLink({
       content: 'Integration Documentation',
-      href: '/',
+      href: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/',
     });
 
     cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
@@ -563,13 +563,6 @@ describe('Version 2 of the dashboard page', () => {
   describe('sidebar', () => {
     it("renders the user's email address and role  in the account details section", () => {
       commonBeforeSteps();
-      cy.title().should('include', 'Dashboard');
-      cy.findByRole('heading', { name: 'Welcome, Ulysses!' }).should('be.visible');
-      cy.findByRole('heading', { name: 'Setup Documentation' }).should('be.visible');
-      cy.verifyLink({
-        content: 'Integration Documentation',
-        href: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/',
-      });
 
       cy.findByDataId('sidebar-account-details').within(() => {
         cy.findByRole('heading', { name: 'Profile' }).should('be.visible');

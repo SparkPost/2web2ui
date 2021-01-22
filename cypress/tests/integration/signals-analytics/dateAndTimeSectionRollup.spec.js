@@ -1,7 +1,7 @@
 import { USERNAME } from 'cypress/constants';
 import { commonBeforeSteps } from './analytics-report/helpers';
 
-const PAGE_URL_HIBANA = '/signals/analytics';
+const PAGE_URL = '/signals/analytics';
 
 describe('Date Time Section on Summary Report & Report Builder', () => {
   const timestamp = 1580392800000; //01/30/2020 @ 2:00pm (UTC)
@@ -27,7 +27,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
   });
 
   it('default date and precision is applied correctly (Hibana)', () => {
-    cy.visit(PAGE_URL_HIBANA);
+    cy.visit(PAGE_URL);
 
     const weekAgo = Cypress.moment(timestamp).subtract(7, 'day');
     cy.findByDataId('report-options').within(() => {
@@ -44,7 +44,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
   });
 
   it('changing date picker values changes the precision correctly (Hibana)', () => {
-    cy.visit(PAGE_URL_HIBANA);
+    cy.visit(PAGE_URL);
     cy.findByLabelText('Precision').should('have.value', 'hour');
     cy.findByLabelText('Date Range').click();
 
