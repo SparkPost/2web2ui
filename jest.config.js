@@ -8,7 +8,7 @@ module.exports = {
     '<rootDir>/(.eslintplugin|src|scripts)/**/*.test.js?(x)',
   ],
   testEnvironment: 'node',
-  testURL: 'http://api.sparkpost.test',
+  testURL: 'http://mock.sparkpost.test',
   transform: {
     '^.+\\.(js|jsx)$': '<rootDir>/node_modules/babel-jest',
     '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
