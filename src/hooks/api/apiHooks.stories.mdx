@@ -83,13 +83,13 @@ function MyComponent() {
 
 ## useSparkPostQueries
 
-Similar to useSparkPostQuery, but can be passed in multiple request configurations. This is used
-when data is codependent and can dynamically accept a number of requests. This should NOT be used in
-preference over running a known number of parallel requests as in the previous example. Defer to
-using `useSparkPostQuery` instead.
+Similar to `useSparkPostQuery`, but can be passed in multiple, dynamic request configurations. This
+is used when data is codependent and can dynamically accept a number of requests. This should NOT be
+used in preference over running a known number of parallel requests as in the previous example.
+Defer to using `useSparkPostQuery` instead.
 
 ```js
-const { data, status } = useSparkPostQueries([getAccount, () => getUserId({ userId }))], {}, [userId])
+const queries = useSparkPostQueries([getAccount, () => getUserId({ userId }))], { enabled: true })
 ```
 
 Because of the variable number of requests and joining of data, the last parameter is an array of
