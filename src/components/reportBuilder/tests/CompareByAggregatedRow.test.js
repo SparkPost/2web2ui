@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import TestApp from 'src/__testHelpers__/TestApp';
 import CompareByAggregatedRow from '../CompareByAggregatedRow';
 import { useSparkPostQuery } from 'src/hooks';
-jest.mock('src/hooks/useSparkPostQuery');
+jest.mock('src/hooks/api/useSparkPostQuery');
 
 const defaultProps = {
   comparison: {
