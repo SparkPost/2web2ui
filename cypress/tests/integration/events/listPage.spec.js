@@ -87,7 +87,7 @@ describe('The events page', () => {
   it('renders the "Share this report" modal when clicking on the "Share" button', () => {
     cy.visit(PAGE_URL);
 
-    cy.findByText('Share').click();
+    cy.findByRole('button', { name: 'Share' }).click();
 
     cy.findByText('Share this report').should('be.visible');
   });
