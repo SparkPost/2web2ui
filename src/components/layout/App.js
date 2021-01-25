@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import Navigation from 'src/components/navigation/Navigation';
-import { Header as HibanaHeader, HibanaBanner, Footer } from 'src/components/hibana';
+import { Header as HibanaHeader, Footer } from 'src/components/hibana';
 import WindowSize from 'src/context/WindowSize';
 import { BannerContext } from 'src/context/GlobalBanner';
 import withContext from 'src/context/withContext';
@@ -39,7 +39,6 @@ export const App = ({ children, bannerOpen }) => {
 
         <ScrollToTop />
       </div>
-      <HibanaBanner />
     </WindowSize>
   );
 };
