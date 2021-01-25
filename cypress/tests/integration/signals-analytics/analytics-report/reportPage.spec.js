@@ -334,6 +334,8 @@ describe('Analytics Report', () => {
 
     // No tags render when no filters are applied
     getFilterTags().should('not.exist');
+    cy.url().should('not.contain', 'query_filters');
+
     cy.findByRole('heading', { name: 'Filters' }).should('be.visible');
     cy.findByRole('button', { name: 'Add Filters' }).click();
 
