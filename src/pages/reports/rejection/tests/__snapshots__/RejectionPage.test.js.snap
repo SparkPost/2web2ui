@@ -7,7 +7,7 @@ exports[`RejectionPage:  renders correctly when loading 1`] = `
   <withRouter(Connect(ReportOptions))
     reportLoading={true}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Rejected Rate"
     rateValue={14.000000000000002}
   >
@@ -20,7 +20,7 @@ exports[`RejectionPage:  renders correctly when loading 1`] = `
       100
     </strong>
      messages targeted
-  </Component>
+  </Connect(MetricsSummary)>
   <hr />
   <PanelLoading
     accent={false}
@@ -71,7 +71,7 @@ exports[`RejectionPage:  should render 1`] = `
   <withRouter(Connect(ReportOptions))
     reportLoading={false}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Rejected Rate"
     rateValue={14.000000000000002}
   >
@@ -84,7 +84,7 @@ exports[`RejectionPage:  should render 1`] = `
       100
     </strong>
      messages targeted
-  </Component>
+  </Connect(MetricsSummary)>
   <hr />
   <DataTable
     list={

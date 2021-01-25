@@ -12,6 +12,5 @@ describe('ButtonWrapper: ', () => {
     );
   it('should render correctly', () => {
     expect(subject()).toHaveTextContent('Children...');
-    expect(subject().find('div')).toHaveLength(1);
   });
 });

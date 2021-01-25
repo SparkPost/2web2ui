@@ -1613,7 +1613,7 @@ exports[`Component: Billing Summary should show the invoice history if there are
       </LabelledValue>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Component
+  <Connect(InvoiceHistory)
     invoices={
       Array [
         "an invoice",

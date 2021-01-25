@@ -17,7 +17,7 @@ exports[`Component: AdvancedFiltersModal should render initially and sync to sta
       event="keydown"
       handler={[Function]}
     />
-    <Component
+    <Connect(ReduxForm)
       handleApply={[Function]}
       handleCancel={[Function]}
     />

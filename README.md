@@ -22,14 +22,6 @@ http://localhost:3100/ and http://app.sparkpost.test. Additionally, a Storybook 
 start that provides supporting component documentation. ======= http://localhost:3100/ and
 http://app.sparkpost.test
 
-### Running the App with Hibana Enabled by default
-
-Run the app with Hibana enabled by default using an environment variable:
-
-```
-REACT_APP_DEFAULT_TO_HIBANA=true npm run start-app
-```
-
 ## Tests
 
 ### Unit Tests

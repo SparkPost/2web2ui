@@ -82,7 +82,7 @@ exports[`Alert Form Component should render the alert form component correctly 1
             <div
               className="Evaluator"
             >
-              <Component
+              <Connect(EvaluatorFields)
                 disabled={false}
                 isNewAlert={true}
                 key="health_score"
@@ -107,10 +107,10 @@ exports[`Alert Form Component should render the alert form component correctly 1
                     </small>
                   </h4>
                 </label>
-                <Component
+                <Connect(SubaccountsField)
                   disabled={false}
                 />
-                <Component
+                <Connect(FilterFields)
                   disabled={false}
                 />
               </Stack>

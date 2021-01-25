@@ -3,13 +3,13 @@
 exports[`creditCardSection should render correctly 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
-    <Component
+    <Connect(PaymentForm)
       disabled={false}
       formName="joinPlanForm"
     />
   </Panel.LEGACY.Section>
   <Panel.LEGACY.Section>
-    <Component
+    <Connect(BillingAddressForm)
       countries={Array []}
       disabled={false}
       formName="joinPlanForm"

@@ -25,7 +25,7 @@ exports[`ProviderSection renders when not provisioned 1`] = `
     open={false}
     showCloseButton={true}
   >
-    <Component
+    <Connect(ReduxForm)
       onCancel={[Function]}
       onSubmit={[Function]}
     />
@@ -58,7 +58,7 @@ exports[`ProviderSection renders when provisioned 1`] = `
     open={false}
     showCloseButton={true}
   >
-    <Component
+    <Connect(ReduxForm)
       onCancel={[Function]}
       onSubmit={[Function]}
     />

@@ -23,7 +23,7 @@ exports[`Inbox Placement Trends Filters Matches snapshot test with default filte
       to={2019-08-10T16:30:00.000Z}
       validate={[MockFunction]}
     />
-    <Component
+    <Connect(InboxPlacementTypeahead)
       filters={
         Object {
           "dateRange": Object {

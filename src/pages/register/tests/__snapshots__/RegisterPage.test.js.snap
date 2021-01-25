@@ -14,7 +14,7 @@ exports[`Page: RegisterPage happy path render 1`] = `
              invited you to join their SparkPost account.
           </small>
         </p>
-        <Component
+        <Connect(ReduxForm)
           email="newperson@example.com"
           onSubmit={[Function]}
         />

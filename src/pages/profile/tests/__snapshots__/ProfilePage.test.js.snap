@@ -4,7 +4,7 @@ exports[`ProfilePage renders with verify email banner 1`] = `
 <Page
   title="Profile"
 >
-  <Component
+  <Connect(VerifyEmailBanner)
     verifying={true}
   />
   <Panel.LEGACY>
@@ -17,39 +17,32 @@ exports[`ProfilePage renders with verify email banner 1`] = `
       />
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Panel.LEGACY>
-    <Panel.LEGACY.Section>
-      <ThemeToggleForm
-        onChange={[Function]}
-      />
-    </Panel.LEGACY.Section>
-  </Panel.LEGACY>
-  <Component
+  <AccessControl
     condition={[Function]}
   >
-    <Component
+    <AccessControl
       condition={[Function]}
     >
-      <Component />
-    </Component>
+      <Connect(TfaManager) />
+    </AccessControl>
     <Panel.LEGACY
       title="Edit Profile"
     >
-      <Component
+      <Connect(ReduxForm)
         onSubmit={[Function]}
       />
     </Panel.LEGACY>
-    <Component
+    <AccessControl
       condition={[Function]}
     >
       <Panel.LEGACY
         title="Update Password"
       >
-        <Component
+        <Connect(ReduxForm)
           onSubmit={[Function]}
         />
       </Panel.LEGACY>
-    </Component>
-  </Component>
+    </AccessControl>
+  </AccessControl>
 </Page>
 `;

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Page: Event tests redirects to list page if event_id not found 1`] = `
-<Component
+<Connect(RedirectAndAlert)
   alert={
     Object {
       "message": "Unable to find event(s) data with event_id # 3",
@@ -13,7 +13,7 @@ exports[`Page: Event tests redirects to list page if event_id not found 1`] = `
 `;
 
 exports[`Page: Event tests should redirect when no message events 1`] = `
-<Component
+<Connect(RedirectAndAlert)
   alert={
     Object {
       "message": "Unable to find event(s) data with message_id # id",

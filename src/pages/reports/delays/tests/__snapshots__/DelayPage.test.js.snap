@@ -5,7 +5,7 @@ exports[`DelayPage:  should render 1`] = `
   title="Delay Report"
 >
   <withRouter(Connect(ReportOptions)) />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Delayed Rate"
     rateValue={0.1}
     secondaryMessage="There were 1,000 total delays in this time period. (Note: messages may be delayed multiple times)"
@@ -19,7 +19,7 @@ exports[`DelayPage:  should render 1`] = `
       10,000
     </strong>
      accepted messages were delayed on first attempt
-  </Component>
+  </Connect(MetricsSummary)>
   <DelaysDataTable
     rows={
       Array [
@@ -42,7 +42,7 @@ exports[`DelayPage:  should show loading indicator when loading table 1`] = `
   <withRouter(Connect(ReportOptions))
     reportLoading={true}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Delayed Rate"
     rateValue={0.1}
     secondaryMessage="There were 1,000 total delays in this time period. (Note: messages may be delayed multiple times)"
@@ -56,7 +56,7 @@ exports[`DelayPage:  should show loading indicator when loading table 1`] = `
       10,000
     </strong>
      accepted messages were delayed on first attempt
-  </Component>
+  </Connect(MetricsSummary)>
   <PanelLoading
     accent={false}
     minHeight="400px"

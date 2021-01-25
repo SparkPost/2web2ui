@@ -60,7 +60,7 @@ exports[`Signals Unsubscribe Rate Page renders correctly 1`] = `
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -290,7 +290,7 @@ Array [
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>
@@ -320,7 +320,7 @@ Array [
           md={4}
           xs={12}
         >
-          <Component
+          <Connect(DateFilter)
             label="Date Range"
           />
         </Grid.Column>

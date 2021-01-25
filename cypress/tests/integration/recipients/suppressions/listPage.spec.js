@@ -1,4 +1,4 @@
-import { IS_HIBANA_ENABLED, USERNAME } from 'cypress/constants';
+import { USERNAME } from 'cypress/constants';
 
 const PAGE_URL = '/lists/suppressions';
 const SUPPRESSION_LIST_API_URL = '/api/v1/suppression-list*';
@@ -124,15 +124,9 @@ describe('The recipients suppressions list page', () => {
           .click({ force: true });
       });
 
-      if (IS_HIBANA_ENABLED) {
-        cy.findAllByText('Delete')
-          .first()
-          .click();
-      } else {
-        cy.findAllByText('Delete')
-          .last()
-          .click();
-      }
+      cy.findAllByText('Delete')
+        .first()
+        .click();
 
       cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
 
@@ -148,15 +142,10 @@ describe('The recipients suppressions list page', () => {
           .first()
           .click({ force: true });
       });
-      if (IS_HIBANA_ENABLED) {
-        cy.findAllByText('Delete')
-          .first()
-          .click();
-      } else {
-        cy.findAllByText('Delete')
-          .last()
-          .click();
-      }
+
+      cy.findAllByText('Delete')
+        .first()
+        .click();
 
       cy.withinModal(() => {
         cy.findByText('Delete').click();

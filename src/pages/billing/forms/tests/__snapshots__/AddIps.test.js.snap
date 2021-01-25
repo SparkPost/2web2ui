@@ -47,7 +47,7 @@ exports[`AddIps renders correctly when user reaches max ip limit 1`] = `
             ]
           }
         />
-        <Component
+        <Connect(IpPoolSelect)
           disabled={true}
           formName="add-sending-ips"
         />
@@ -133,7 +133,7 @@ exports[`AddIps renders correctly with default props 1`] = `
             ]
           }
         />
-        <Component
+        <Connect(IpPoolSelect)
           disabled={false}
           formName="add-sending-ips"
         />
@@ -224,7 +224,7 @@ exports[`AddIps renders free ip elements when included in plan 1`] = `
             ]
           }
         />
-        <Component
+        <Connect(IpPoolSelect)
           disabled={false}
           formName="add-sending-ips"
         />

@@ -12,7 +12,7 @@ exports[`Sending Domains Create Page renders and mounts correctly 1`] = `
   title="Add a Domain"
 >
   <Panel.LEGACY>
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>

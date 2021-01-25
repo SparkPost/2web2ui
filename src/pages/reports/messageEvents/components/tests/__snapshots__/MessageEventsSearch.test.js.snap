@@ -71,7 +71,7 @@ exports[`Component: MessageEventsSearch renders correctly 1`] = `
         />
       </div>
       <div>
-        <Component />
+        <Connect(AdvancedFiltersModal) />
       </div>
       <div>
         <withRouter(Connect(ShareModal))
@@ -81,6 +81,6 @@ exports[`Component: MessageEventsSearch renders correctly 1`] = `
       </div>
     </div>
   </Panel.LEGACY.Section>
-  <Component />
+  <Connect(ActiveFilters) />
 </Panel.LEGACY>
 `;

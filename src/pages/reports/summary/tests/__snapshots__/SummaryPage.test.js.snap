@@ -44,7 +44,7 @@ exports[`Page: SummaryPage should render correctly 1`] = `
   <div
     data-id="summary-table"
   >
-    <Component />
+    <Connect(Table) />
   </div>
   <MetricsModal
     onCancel={[Function]}
@@ -112,7 +112,7 @@ exports[`Page: SummaryPage should render when loading 1`] = `
   <div
     data-id="summary-table"
   >
-    <Component />
+    <Connect(Table) />
   </div>
   <MetricsModal
     onCancel={[Function]}

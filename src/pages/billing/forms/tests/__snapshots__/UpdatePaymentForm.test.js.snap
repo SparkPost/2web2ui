@@ -6,12 +6,12 @@ exports[`Form Container: Update Contact should render 1`] = `
     title="Update Payment Information"
   >
     <Panel.LEGACY.Section>
-      <Component
+      <Connect(PaymentForm)
         formName="updatePayment"
       />
     </Panel.LEGACY.Section>
     <Panel.LEGACY.Section>
-      <Component
+      <Connect(BillingAddressForm)
         countries={Array []}
         formName="updatePayment"
       />

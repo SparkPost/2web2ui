@@ -7,7 +7,7 @@ exports[`should render 1`] = `
     sectioned={true}
     title="Two-factor Authentication"
   >
-    <Component />
+    <Connect(ReduxForm) />
   </Panel.LEGACY>
 </Fragment>
 `;

@@ -53,7 +53,7 @@ exports[`EngagementRecencyOverview renders overview panel with controls and tabl
       />
     </div>
   </Panel.LEGACY.Section>
-  <Component
+  <Connect(SummaryTable)
     data={
       Array [
         Object {
@@ -112,6 +112,6 @@ exports[`EngagementRecencyOverview renders overview panel with controls and tabl
       sortable={true}
       width="15%"
     />
-  </Component>
+  </Connect(SummaryTable)>
 </Panel.LEGACY>
 `;

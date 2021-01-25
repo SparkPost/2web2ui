@@ -8,7 +8,7 @@ exports[`Engagement Report Page should render 1`] = `
     reportLoading={false}
     searchOptions={Object {}}
   />
-  <Component
+  <Connect(EngagementSummary)
     accepted={1}
     clicks={3}
     loading={false}

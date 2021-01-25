@@ -1,4 +1,3 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
 const PAGE_URL = '/account/api-keys';
 const API_URL = '/api/v1/api-keys';
 
@@ -88,20 +87,18 @@ describe('The API Keys list page', () => {
     cy.get('table').should('be.visible');
   });
 
-  if (IS_HIBANA_ENABLED) {
-    it('renders the empty state', () => {
-      stubApiKeys({ fixture: '200.get.no-results.json' });
-      cy.visit(PAGE_URL);
-      cy.wait('@apiKeys');
+  it('renders the empty state', () => {
+    stubApiKeys({ fixture: '200.get.no-results.json' });
+    cy.visit(PAGE_URL);
+    cy.wait('@apiKeys');
 
-      cy.findByRole('heading', { name: 'API Keys' }).should('be.visible');
-      cy.findByText('API Keys Documentation')
-        .closest('a')
-        .should(
-          'have.attr',
-          'href',
-          'https://www.sparkpost.com/docs/getting-started/create-api-keys/',
-        );
-    });
-  }
+    cy.findByRole('heading', { name: 'API Keys' }).should('be.visible');
+    cy.findByText('API Keys Documentation')
+      .closest('a')
+      .should(
+        'have.attr',
+        'href',
+        'https://www.sparkpost.com/docs/getting-started/create-api-keys/',
+      );
+  });
 });

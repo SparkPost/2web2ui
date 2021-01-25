@@ -42,23 +42,23 @@ describe('WatchlistAddPage', () => {
   });
 
   it('displays the Save button as disabled on load', () => {
-    const { queryByText } = subject();
-    expect(queryByText(saveText)).toHaveProperty('disabled');
+    const { queryByRole } = subject();
+    expect(queryByRole('button', { name: saveText })).toHaveProperty('disabled');
   });
 
   it('displays the Save and Add Another button as disabled on load', () => {
-    const { queryByText } = subject();
-    expect(queryByText(saveAndContinueText)).toHaveProperty('disabled');
+    const { queryByRole } = subject();
+    expect(queryByRole('button', { name: saveAndContinueText })).toHaveProperty('disabled');
   });
 
   it('submits the resource and redirects on save', () => {
     const resource = 'test';
     const promise = Promise.resolve({ resource });
     const watchlistAdd = jest.fn(() => promise);
-    const { getByLabelText, getByText } = subject({ watchlistAdd });
+    const { getByLabelText, getByRole } = subject({ watchlistAdd });
 
     const input = getByLabelText(ipOrSendingDomainText);
-    const save = getByText(saveText);
+    const save = getByRole('button', { name: saveText });
     fireEvent.change(input, { target: { value: resource } });
     expect(input.value).toBe(resource);
     fireEvent.click(save);

@@ -31,9 +31,7 @@ export default (state = initialState, { type, payload, meta }) => {
           ui: {
             ...state.options?.ui,
             ...payload.options?.ui,
-            ...(process.env.REACT_APP_DEFAULT_TO_HIBANA === 'true'
-              ? { isHibanaEnabled: true }
-              : undefined),
+            isHibanaEnabled: true,
           },
         },
       };

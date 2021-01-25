@@ -7,7 +7,7 @@ exports[`SsoAuthPage tests renders correctly 1`] = `
     sectioned={true}
     title="Single Sign-On"
   >
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>

@@ -20,9 +20,9 @@ describe('ToggleBlock', () => {
   };
 
   it('renders the passed in label for the toggle input', () => {
-    const { queryByText } = subject({ label: 'My Label' });
+    const { queryAllByText } = subject({ label: 'My Label' });
 
-    expect(queryByText('My Label')).toBeInTheDocument();
+    expect(queryAllByText('My Label')[1]).toBeInTheDocument();
   });
 
   it('renders passed in help text', () => {

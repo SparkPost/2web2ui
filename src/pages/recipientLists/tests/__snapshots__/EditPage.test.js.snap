@@ -19,7 +19,7 @@ exports[`EditPage should delete a recipient list 1`] = `
   }
   title="Update Recipient List"
 >
-  <Component
+  <Connect(ReduxForm)
     editMode={true}
     onSubmit={[Function]}
   />
@@ -58,7 +58,7 @@ exports[`EditPage should render correctly 1`] = `
   }
   title="Update Recipient List"
 >
-  <Component
+  <Connect(ReduxForm)
     editMode={true}
     onSubmit={[Function]}
   />
@@ -95,7 +95,7 @@ exports[`EditPage should show a delete modal 1`] = `
   }
   title="Update Recipient List"
 >
-  <Component
+  <Connect(ReduxForm)
     editMode={true}
     onSubmit={[Function]}
   />
@@ -132,7 +132,7 @@ exports[`EditPage should update a recipient list 1`] = `
   }
   title="Update Recipient List"
 >
-  <Component
+  <Connect(ReduxForm)
     editMode={true}
     onSubmit={[Function]}
   />

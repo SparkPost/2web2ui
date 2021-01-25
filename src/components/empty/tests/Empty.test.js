@@ -4,27 +4,14 @@ import TestApp from 'src/__testHelpers__/TestApp';
 import { Empty } from 'src/components';
 
 describe('Empty: ', () => {
-  it('renders a message', () => {
-    const { getByText, queryByText } = render(
-      <TestApp>
+  it('renders a message and a description', () => {
+    const { getByText } = render(
+      <TestApp isHibanaEnabled={true}>
         <Empty message="nothing here to see" description="so go away" />
       </TestApp>,
     );
 
     expect(getByText('nothing here to see')).toBeInTheDocument();
-    expect(queryByText('so go away')).not.toBeInTheDocument();
-  });
-
-  describe('with hibana enabled', () => {
-    it('renders a message and a description', () => {
-      const { getByText } = render(
-        <TestApp isHibanaEnabled={true}>
-          <Empty message="nothing here to see" description="so go away" />
-        </TestApp>,
-      );
-
-      expect(getByText('nothing here to see')).toBeInTheDocument();
-      expect(getByText('so go away')).toBeInTheDocument();
-    });
+    expect(getByText('so go away')).toBeInTheDocument();
   });
 });

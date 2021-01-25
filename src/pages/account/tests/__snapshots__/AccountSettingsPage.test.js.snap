@@ -13,9 +13,9 @@ exports[`AccountSettingsPage renders 1`] = `
       123123
     </LabelledValue>
   </Panel.LEGACY>
-  <Component />
-  <Component />
-  <Component />
+  <Connect(SingleSignOnPanel) />
+  <Connect(EnforceTFAPanel) />
+  <Connect(UIOptionsPanel) />
   <withRouter(Connect(CancellationPanel)) />
 </Page>
 `;

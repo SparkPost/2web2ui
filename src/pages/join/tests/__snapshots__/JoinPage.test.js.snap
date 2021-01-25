@@ -98,7 +98,7 @@ exports[`JoinPage render renders aws logo when signup from aws 1`] = `
         <h3>
           Sign Up for SparkPost
         </h3>
-        <Component
+        <Connect(ReduxForm)
           onSubmit={[Function]}
         />
       </Stack>
@@ -151,7 +151,7 @@ exports[`JoinPage render renders correctly 1`] = `
         <h3>
           Sign Up for SparkPost
         </h3>
-        <Component
+        <Connect(ReduxForm)
           onSubmit={[Function]}
         />
       </Stack>
@@ -214,7 +214,7 @@ exports[`JoinPage render renders errors 1`] = `
             }
           />
         </BottomPad>
-        <Component
+        <Connect(ReduxForm)
           onSubmit={[Function]}
         />
       </Stack>
