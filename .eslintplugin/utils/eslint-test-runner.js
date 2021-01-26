@@ -1,8 +1,14 @@
 import { Linter } from 'eslint';
 
 // note, experimented with RuleTester, too much magic and no easy way to set each test description
-//   because only "code" is provided to "it"
 // see, https://eslint.org/docs/developer-guide/nodejs-api#ruletester
+
+// Using:
+// https://eslint.org/docs/developer-guide/nodejs-api#sourcecode
+// &
+// https://eslint.org/docs/developer-guide/nodejs-api#linter-definerules
+// &
+// https://eslint.org/docs/developer-guide/nodejs-api#linter-verify
 const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
   describe(title, () => {
     const linter = new Linter();
@@ -16,15 +22,20 @@ const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
           {
             rules: { [title]: 'error' },
             parserOptions: {
-              ecmaVersion: 7,
+              ecmaVersion: 2020,
               sourceType: 'module',
+              ecmaFeatures: {
+                  jsx: true
+              }
             },
           },
           {
-            filename: valid[description].filename,
+            filename: valid[description].filename
           },
         );
 
+
+        console.log('result: ', result);
         expect(result.length === 0).toEqual(true);
       });
     });
@@ -36,20 +47,23 @@ const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
           {
             rules: { [title]: 'error' },
             parserOptions: {
-              ecmaVersion: 7,
+              ecmaVersion: 2020,
               sourceType: 'module',
+              ecmaFeatures: {
+                  jsx: true
+              }
             },
           },
           {
-            filename: invalid[description].filename,
+            filename: invalid[description].filename
           },
         );
 
+        expect(result.length).toBeGreaterThan(0);
         expect(result[0].message).toEqual(invalid[description].errors[0].message);
       });
     });
   });
 };
 
-// eslint-disable-next-line jest/no-export
 module.exports = runner;
