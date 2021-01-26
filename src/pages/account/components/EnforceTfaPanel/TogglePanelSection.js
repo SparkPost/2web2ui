@@ -22,7 +22,9 @@ export const TogglePanelSection = ({
       <Stack>
         <Columns>
           <Column width={2 / 3}>
-            <Banner size="small">Two-factor authentication is required for your account.</Banner>
+            {tfaRequiredEnforced && (
+              <Banner size="small">Two-factor authentication is required for your account.</Banner>
+            )}
           </Column>
         </Columns>
         <Columns>

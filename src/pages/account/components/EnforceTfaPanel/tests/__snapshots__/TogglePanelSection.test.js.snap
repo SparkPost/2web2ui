@@ -2,34 +2,38 @@
 
 exports[`Component: TogglePanel should render 1`] = `
 <Panel.LEGACY.Section>
-  <Grid>
-    <Grid.Column
-      md={10}
-      xs={12}
-    >
-      <LabelledValue
-        label="Status"
+  <Stack>
+    <Columns>
+      <Column
+        width={0.6666666666666666}
+      />
+    </Columns>
+    <Columns>
+      <Column
+        width={0.6666666666666666}
       >
-        <strong>
-          Optional
-        </strong>
-        <p>
-          Each user can manage their own two-factor authentication settings.
-        </p>
-      </LabelledValue>
-    </Grid.Column>
-    <Grid.Column
-      md={2}
-      xs={12}
-    >
-      <styled.div>
-        <Toggle
-          checked={false}
-          id="enforceTfa"
-          onChange={[Function]}
-        />
-      </styled.div>
-    </Grid.Column>
-  </Grid>
+        <LabelledValue
+          label="Status"
+        >
+          <strong>
+            Optional
+          </strong>
+          <p>
+            Each user can manage their own two-factor authentication settings.
+          </p>
+        </LabelledValue>
+      </Column>
+      <Column
+        width={0.3333333333333333}
+      >
+        <styled.div>
+          <Toggle
+            id="enforceTfa"
+            onChange={[Function]}
+          />
+        </styled.div>
+      </Column>
+    </Columns>
+  </Stack>
 </Panel.LEGACY.Section>
 `;
