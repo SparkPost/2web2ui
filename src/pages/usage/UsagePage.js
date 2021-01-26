@@ -12,8 +12,8 @@ import { MessagingUsageSection, FeatureUsageSection, RVUsageSection } from './co
 
 export default function UsagePage() {
   // API Requests
-  const { data: account, status: accountStatus, refetch: accountRefetch } = useSparkPostQuery(
-    getAccount,
+  const { data: account, status: accountStatus, refetch: accountRefetch } = useSparkPostQuery(() =>
+    getAccount({ include: 'usage' }),
   );
   const { data: usage, status: usageStatus, refetch: usageRefetch } = useSparkPostQuery(getUsage);
   const {
@@ -55,6 +55,18 @@ export default function UsagePage() {
 
   // Merging data so existing selectors can work together to grab from a common object
   const data = { account, subscription, usage, usageHistory };
+
+  // NOTE: API usage data discrepancy
+  usage.messaging.day = {
+    ...account.usage.day,
+    ...usage.messaging.day, // Usage second so if the API fixes the response, it'll win out over the account call
+  };
+  usage.messaging.month = {
+    ...account.usage.month,
+    ...usage.messaging.month, // Usage second so if the API fixes the response, it'll win out over the account call
+  };
+  // NOTE: API usage data discrepancy
+
   const endOfBillingPeriod = selectEndOfMonthlyUsage(data);
   const startOfBillingPeriod = selectStartOfMonthlyUsage(data);
   const accountSubscription = data.account.subscription;
