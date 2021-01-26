@@ -1,33 +1,17 @@
 const fs = require('fs');
 
 /**
- * Note:
- *  src/components/matchbox/Page.js - calls segmentTrack, and we need to make sure that call only fires the once on page load
- *  isFirstRender state variable should be part of the assignment expression for the loading attribute when empty attribute is present.
- *
- *  Required Page Prop format:
- *  {
- *    ...
- *    empty={ show={EXPRESSION_HERE} }
- *    hibanaEmptyStateComponent={SubaccountEmptyState}
- *    loading={loading || ...isFirstRender...}
- *    ...
- *  }
- *
- *  or
- *
- * {
- *    ...
- *    empty={ trackingOnly={EXPRESSION_HERE} }
- *    loading={loading || ...isFirstRender...}
- *    ...
- *  }
- */
-
-/**
  * ESLint Docs:
  *  - https://eslint.org/docs/developer-guide/working-with-plugins#create-a-plugin
  *  - https://eslint.org/docs/developer-guide/working-with-rules
+ *
+    pseudocode
+    1. Find JSX instances of <Page />
+      2a. Look for hibanaEmptyStateComponent= prop, if there is one
+      2b. or... Look for empty?.trackingOnly= prop, if there is one
+        3. Look for loading= prop
+          4a. no loading at all - report
+          4b. loading but no isFirstRender - report
  */
 
 const requireIsFirstRenderEmptyStateLoading = {
@@ -38,19 +22,9 @@ const requireIsFirstRenderEmptyStateLoading = {
     const filePath = context.getFilename();
     const withinSrcPages = /2web2ui\/src\/pages/.test(filePath);
     const isTestFile = /.test.js$/.test(filePath);
-
     if (!withinSrcPages || isTestFile) {
       return {};
     }
-
-    // pseudocode
-    // 1. Find JSX instances of <Page />
-    //   2a. Look for hibanaEmptyStateComponent= prop, if there is one
-    //   2b. or... Look for empty?.trackingOnly= prop, if there is one
-    //     3. Look for loading= prop
-    //       4a. no loading at all - report
-    //       4b. loading but no isFirstRender - report
-
     return {
       JSXElement: (node) => {
         if (node.openingElement.name.name === 'Page') {
@@ -104,7 +78,7 @@ const requireIsFirstRenderEmptyStateLoading = {
                 if (!foundIsFirstRender) {
                   report({
                     node: node,
-                    message: 'Page with hibanaEmptyStateComponentAttr & loading attribute missing isFirstRender in the assignment expression.',
+                    message: 'Page with hibanaEmptyStateComponentAttr and loading attribute missing isFirstRender in the assignment expression.',
                   });
                 }
               }

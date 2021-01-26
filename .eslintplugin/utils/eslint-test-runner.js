@@ -22,7 +22,7 @@ const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
           {
             rules: { [title]: 'error' },
             parserOptions: {
-              ecmaVersion: 2020,
+              ecmaVersion: 7,
               sourceType: 'module',
               ecmaFeatures: {
                   jsx: true
@@ -34,8 +34,6 @@ const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
           },
         );
 
-
-        console.log('result: ', result);
         expect(result.length === 0).toEqual(true);
       });
     });
@@ -47,7 +45,7 @@ const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
           {
             rules: { [title]: 'error' },
             parserOptions: {
-              ecmaVersion: 2020,
+              ecmaVersion: 7,
               sourceType: 'module',
               ecmaFeatures: {
                   jsx: true
