@@ -35,10 +35,11 @@ export default function usePinnedReport(onboarding) {
   const reportOptionsWithDates = reportOptions => {
     const { relativeRange, precision } = reportOptions;
     const { from, to } = getRelativeDates(relativeRange, { precision });
+    // Note: when relativeRange is set to custom, getRelativeDates won't produce from and to, so reportOptions goes last in the return struct
     return {
+      from,
+      to,
       ...reportOptions,
-      from: relativeRange === 'custom' ? reportOptions.from : from,
-      to: relativeRange === 'custom' ? reportOptions.to : to,
     };
   };
 
