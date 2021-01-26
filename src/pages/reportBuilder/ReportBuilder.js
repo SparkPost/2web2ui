@@ -1,3 +1,4 @@
+/* eslint-disable local/require-is-first-render-empty-state-loading */
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -50,6 +51,7 @@ import { PRESET_REPORT_CONFIGS } from './constants';
 import { TrackingEngagementTab, InvestigatingProblemsTab } from './components/EmptyTabs';
 import { InfoBanner } from './components';
 import { Heading } from 'src/components/text';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
 // Enable for EMPTY_STATE_TABS when SD is released
 // {
@@ -78,9 +80,10 @@ export function ReportBuilder({
   listSendingDomains,
   sendingDomains,
   sendingDomainsListLoading,
+  ingestEventsAllowed,
 }) {
   const history = useHistory();
-  const showReportBuilderEmptyState = sendingDomains.length === 0;
+  const showReportBuilderEmptyState = sendingDomains.length === 0 && !ingestEventsAllowed;
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
   const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
@@ -470,6 +473,7 @@ const mapStateToProps = state => ({
   subscription: state.billing.subscription,
   sendingDomains: selectVerifiedDomains(state),
   sendingDomainsListLoading: state.sendingDomains.listLoading,
+  ingestEventsAllowed: hasAccountOptionEnabled('allow_events_ingest')(state),
 });
 
 const mapDispatchToProps = {
