@@ -63,6 +63,19 @@ describe('Analytics Report', () => {
     });
     cy.findByRole('heading', { name: 'Example Analytics' }).should('be.visible');
   });
+  it('should not render the Empty State when allow_events_ingest is enabled for the account', () => {
+    commonBeforeSteps();
+    stubAccountsReq();
+    stubSendingDomains();
+    cy.visit(PAGE_URL);
+    cy.wait(['@sendingDomainsReq']);
+    cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+    cy.findAllByText(
+      "Build and save custom reports with SparkPost's easy to use dashboard. Apply unlimited metrics across delivery and deliverability data. To learn how to unlock the full potential of SparkPost's Analytics Report, visit the documentation link below.",
+    ).should('not.exist');
+    cy.findByRole('button', { name: 'Add Sending Domain' }).should('not.exist');
+    cy.findByRole('heading', { name: 'Example Analytics' }).should('not.exist');
+  });
 
   it('does not render the banner when the banner has been dismissed', () => {
     commonBeforeSteps();
@@ -374,5 +387,13 @@ function stubSendingDomains({
     fixture,
     requestAlias,
     statusCode,
+  });
+}
+
+function stubAccountsReq({ fixture = 'account/200.get.has-integration-page.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/account**',
+    fixture: fixture,
+    requestAlias: 'accountReq',
   });
 }
