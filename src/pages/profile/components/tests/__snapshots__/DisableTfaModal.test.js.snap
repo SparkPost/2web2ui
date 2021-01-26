@@ -13,27 +13,34 @@ exports[`DisableTfaModal tests should render correctly 1`] = `
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
-        <p>
-          Enter your SparkPost password to disable two-factor authentication.
-        </p>
-        <p>
-          If two-factor authentication is required on this account, you will be logged out after disabling it. You can re-enable when you next log in.
-        </p>
-        <Grid>
-          <Grid.Column
-            md={6}
-            xs={12}
-          >
-            <TextField
-              error=""
-              id="tfa-disable-password"
-              onChange={[Function]}
-              placeholder="Enter your password"
-              type="password"
-              value=""
-            />
-          </Grid.Column>
-        </Grid>
+        <Stack>
+          <p>
+            Enter your SparkPost password to
+             
+            <TranslatableText>
+              disable
+            </TranslatableText>
+             two-factor authentication.
+          </p>
+          <p>
+            If two-factor authentication is required on this account, you will be logged out after disabling it. You can re-enable when you next log in.
+          </p>
+          <Grid>
+            <Grid.Column
+              md={6}
+              xs={12}
+            >
+              <TextField
+                error=""
+                id="tfa-disable-password"
+                onChange={[Function]}
+                placeholder="Enter your password"
+                type="password"
+                value=""
+              />
+            </Grid.Column>
+          </Grid>
+        </Stack>
       </Panel.LEGACY.Section>
       <Panel.LEGACY.Section>
         <ButtonWrapper>
@@ -72,27 +79,34 @@ exports[`DisableTfaModal tests should show disabling as button text when toggleP
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
-        <p>
-          Enter your SparkPost password to disable two-factor authentication.
-        </p>
-        <p>
-          If two-factor authentication is required on this account, you will be logged out after disabling it. You can re-enable when you next log in.
-        </p>
-        <Grid>
-          <Grid.Column
-            md={6}
-            xs={12}
-          >
-            <TextField
-              error=""
-              id="tfa-disable-password"
-              onChange={[MockFunction]}
-              placeholder="Enter your password"
-              type="password"
-              value=""
-            />
-          </Grid.Column>
-        </Grid>
+        <Stack>
+          <p>
+            Enter your SparkPost password to
+             
+            <TranslatableText>
+              disable
+            </TranslatableText>
+             two-factor authentication.
+          </p>
+          <p>
+            If two-factor authentication is required on this account, you will be logged out after disabling it. You can re-enable when you next log in.
+          </p>
+          <Grid>
+            <Grid.Column
+              md={6}
+              xs={12}
+            >
+              <TextField
+                error=""
+                id="tfa-disable-password"
+                onChange={[MockFunction]}
+                placeholder="Enter your password"
+                type="password"
+                value=""
+              />
+            </Grid.Column>
+          </Grid>
+        </Stack>
       </Panel.LEGACY.Section>
       <Panel.LEGACY.Section>
         <ButtonWrapper>
@@ -118,9 +132,7 @@ exports[`DisableTfaModal tests should show disabling as button text when toggleP
 </Modal.LEGACY>
 `;
 
-exports[
-  `DisableTfaModal tests should show error on TextField when toggleError and showErrors 1`
-] = `
+exports[`DisableTfaModal tests should show error on TextField when toggleError and showErrors 1`] = `
 <Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
@@ -133,27 +145,34 @@ exports[
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
-        <p>
-          Enter your SparkPost password to disable two-factor authentication.
-        </p>
-        <p>
-          If two-factor authentication is required on this account, you will be logged out after disabling it. You can re-enable when you next log in.
-        </p>
-        <Grid>
-          <Grid.Column
-            md={6}
-            xs={12}
-          >
-            <TextField
-              error="Incorrect password"
-              id="tfa-disable-password"
-              onChange={[MockFunction]}
-              placeholder="Enter your password"
-              type="password"
-              value=""
-            />
-          </Grid.Column>
-        </Grid>
+        <Stack>
+          <p>
+            Enter your SparkPost password to
+             
+            <TranslatableText>
+              disable
+            </TranslatableText>
+             two-factor authentication.
+          </p>
+          <p>
+            If two-factor authentication is required on this account, you will be logged out after disabling it. You can re-enable when you next log in.
+          </p>
+          <Grid>
+            <Grid.Column
+              md={6}
+              xs={12}
+            >
+              <TextField
+                error="Incorrect password"
+                id="tfa-disable-password"
+                onChange={[MockFunction]}
+                placeholder="Enter your password"
+                type="password"
+                value=""
+              />
+            </Grid.Column>
+          </Grid>
+        </Stack>
       </Panel.LEGACY.Section>
       <Panel.LEGACY.Section>
         <ButtonWrapper>

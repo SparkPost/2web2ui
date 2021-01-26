@@ -44,6 +44,7 @@ exports[`EnableTfaModal tests should render correctly 1`] = `
     enabled={false}
     onClose={[Function]}
     open={false}
+    tfaRequired={false}
     toggleError={false}
     togglePending={false}
   />
@@ -104,6 +105,7 @@ exports[`EnableTfaModal tests should show a message about 0 codes 1`] = `
     enabled={true}
     onClose={[Function]}
     open={false}
+    tfaRequired={false}
     toggleError={false}
     togglePending={false}
   />
@@ -166,6 +168,7 @@ exports[`EnableTfaModal tests should toggle status text when enabled 1`] = `
     enabled={true}
     onClose={[Function]}
     open={false}
+    tfaRequired={false}
     toggleError={false}
     togglePending={false}
   />

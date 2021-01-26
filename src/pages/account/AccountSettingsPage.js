@@ -6,14 +6,15 @@ import CancellationPanel from './components/CancellationPanel';
 import SingleSignOnPanel from './components/SingleSignOnPanel';
 import EnforceTfaPanel from './components/EnforceTfaPanel';
 import UIOptionsPanel from './components/UIOptionsPanel';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
-export function AccountSettingsPage({ currentUser }) {
+export function AccountSettingsPage({ currentUser, tfaRequiredEnforced }) {
   return (
     <Page title="Account Settings">
       <Panel.LEGACY sectioned>
         <LabelledValue label="Account ID">{currentUser.customer}</LabelledValue>
       </Panel.LEGACY>
-      <SingleSignOnPanel />
+      {!tfaRequiredEnforced && <SingleSignOnPanel />}
       <EnforceTfaPanel />
       <UIOptionsPanel />
       <CancellationPanel />
@@ -21,6 +22,11 @@ export function AccountSettingsPage({ currentUser }) {
   );
 }
 
-const mapStateToProps = ({ currentUser }) => ({ currentUser });
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser,
+    tfaRequiredEnforced: hasAccountOptionEnabled('enforce_tfa_required')(state),
+  };
+};
 
 export default connect(mapStateToProps)(AccountSettingsPage);

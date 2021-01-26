@@ -41,6 +41,18 @@ describe('Account Settings Page', () => {
       'All users must have two-factor authentication enabled to login to this account.',
     ).should('be.visible');
   });
+  it('hides SSO Panel Section and tfa toggle is disabled and turned on when enforce_tfa_required is enabled', () => {
+    stubAccountsReq({ fixture: 'account/200.get.enforce-tfa.json' });
+    cy.visit(PAGE_URL);
+    cy.findAllByRole('checkbox', { id: 'enforceTfa' })
+      .first()
+      .should('be.checked');
+    cy.findAllByRole('checkbox', { id: 'enforceTfa' })
+      .first()
+      .should('be.disabled');
+    cy.findAllByRole('heading', { name: 'Single Sign On' }).should('not.exist');
+    cy.findByText('Two-factor authentication is required for your account.').should('be.visible');
+  });
 
   describe('Single Sign On Panel', () => {
     describe('SCIM Token Section', () => {
@@ -191,3 +203,11 @@ describe('Account Settings Page', () => {
     });
   });
 });
+
+function stubAccountsReq({ fixture = 'account/200.get.tfa-required.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/account**',
+    fixture: fixture,
+    requestAlias: 'accountReq',
+  });
+}
