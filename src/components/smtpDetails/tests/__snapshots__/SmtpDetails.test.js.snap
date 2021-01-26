@@ -31,7 +31,7 @@ exports[`Smtp component: Smtp Details should render page correctly with an api k
       />
       <LabelledValue
         label="Username"
-        value="phoenix"
+        value="mock"
       />
       <LabelledValue
         label="Password"
@@ -78,7 +78,7 @@ exports[`Smtp component: Smtp Details should render page correctly with defaults
       />
       <LabelledValue
         label="Username"
-        value="phoenix"
+        value="mock"
       />
       <LabelledValue
         label="Password"
