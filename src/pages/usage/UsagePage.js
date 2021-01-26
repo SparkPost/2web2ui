@@ -56,7 +56,7 @@ export default function UsagePage() {
   // Merging data so existing selectors can work together to grab from a common object
   const data = { account, subscription, usage, usageHistory };
 
-  // NOTE: API usage data discrepancy
+  // NOTE: AC-1851 - API usage data discrepancy
   usage.messaging.day = {
     ...account.usage.day,
     ...usage.messaging.day, // Usage second so if the API fixes the response, it'll win out over the account call
@@ -65,7 +65,7 @@ export default function UsagePage() {
     ...account.usage.month,
     ...usage.messaging.month, // Usage second so if the API fixes the response, it'll win out over the account call
   };
-  // NOTE: API usage data discrepancy
+  // NOTE: AC-1851 - API usage data discrepancy
 
   const endOfBillingPeriod = selectEndOfMonthlyUsage(data);
   const startOfBillingPeriod = selectStartOfMonthlyUsage(data);
