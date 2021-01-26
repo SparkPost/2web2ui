@@ -34,12 +34,18 @@ export default function usePinnedReport(onboarding) {
 
   const reportOptionsWithDates = reportOptions => {
     const { relativeRange, precision } = reportOptions;
-    const { from, to } = getRelativeDates(relativeRange, { precision });
-    return {
-      ...reportOptions,
-      from,
-      to,
-    };
+    if (relativeRange === 'custom') {
+      return {
+        ...reportOptions,
+      };
+    } else {
+      const { from, to } = getRelativeDates(relativeRange, { precision });
+      return {
+        ...reportOptions,
+        from,
+        to,
+      };
+    }
   };
 
   pinnedReport.loading = subaccountsLoading || reportsLoading;
@@ -48,7 +54,6 @@ export default function usePinnedReport(onboarding) {
   const summaryReportOptions = parseSearch(summaryReportQueryString);
 
   const report = _.find(reports, { id: pinnedReportId });
-
   if (report) {
     const options = parseSearch(report.query_string);
     pinnedReport.name = report.name;
