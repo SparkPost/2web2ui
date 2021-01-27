@@ -15,6 +15,7 @@
     "build": "node scripts/build.js",
     "analyze": "source-map-explorer build/static/js/main.*",
     "test": "node scripts/test.js --env=jsdom --config=./jest.config.js",
+    "test-custom-eslint-rules": "npm run test .eslintplugin/tests/*.test.js",
     "test-ci": "CI=true npm test -- --colors --maxWorkers=2",
     "test-integration": "TZ=America/New_York cypress open --config-file cypress.dev.json",
     "test-integration-headless": "TZ=America/New_York cypress run --config-file cypress.dev.json",

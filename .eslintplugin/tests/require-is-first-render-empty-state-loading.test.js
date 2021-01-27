@@ -1,4 +1,4 @@
-import runner from '../utils/eslint-test-runner';
+import runner from '../utils/eslintTestRunner';
 import rule from '../require-is-first-render-empty-state-loading';
 
 const NEWLINE = '\n\r'; // make sure we do newlines just like the real file would
