@@ -4,6 +4,7 @@ describe('The usage page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
+
     cy.stubRequest({
       url: `api/v1/billing/subscription`,
       fixture: 'billing/subscription/200.get.json',
@@ -109,6 +110,7 @@ describe('The usage page', () => {
     cy.wait(['@usageReq', '@usageHistoryReq', '@subscriptionReq']);
     cy.findByText('Aug 18th').should('not.exist');
   });
+
   it('renders Usage Page correctly for customers on Annual plans', () => {
     cy.stubRequest({
       url: 'api/v1/account',
@@ -186,9 +188,10 @@ describe('The usage page', () => {
     cy.wait(['@usageReq', '@usageHistoryReq', '@subscriptionReq']);
     cy.get('[data-id="messaging-usage-chart"]').should('be.visible');
   });
+
   it('renders Usage Page correctly for enterprise customers', () => {
     cy.stubRequest({
-      url: 'api/v1/account',
+      url: 'api/v1/account*',
       fixture: 'account/200.get.enterprise-tenant.json',
       requestAlias: 'accountReq',
     });
