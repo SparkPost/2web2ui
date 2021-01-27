@@ -15,15 +15,15 @@ commands:
             #   "Caches are immutable so it is useful to start all your cache keys with a version prefix,
             #    for example v1-.... This enables you to regenerate all of your caches by incrementing
             #    the version in this prefix."
-            - v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - v2-deps-{{ .Branch }}-
-            - v2-deps-
+            # We simplified the cache key according to advice from Cypress founder Gleb Bahmutov:
+            # https://glebbahmutov.com/blog/do-not-let-cypress-cache-snowball/
+            - v3-deps-{{ checksum "package-lock.json" }}
 
   save_npm_cache:
     description: 'Saves Node modules for later re-use'
     steps:
       - save_cache:
-          key: v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v3-deps-{{ checksum "package-lock.json" }}
           paths:
             - ~/.npm
             - ~/.cache/Cypress
@@ -53,28 +53,6 @@ commands:
           name: 'Upload screenshots'
           path: /root/project/cypress/screenshots
           destination: cypress-screenshots
-      - run:
-          name: 'Check for coverage report'
-          command: |
-            FILE=./cypress-coverage/coverage-final.json
-
-            if [ -f "$FILE" ]; then
-                echo "$FILE exists."
-                exit 0
-            else
-                echo "$FILE does not exist."
-                exit 1
-            fi
-      - run:
-          name: 'Rename coverage report'
-          command: mkdir -p coverage && mv cypress-coverage/coverage-final.json coverage/from-cypress-${CIRCLE_NODE_INDEX}.json
-      - run: ls -al && cd coverage && ls -al && cd ../
-      - run: mkdir -p workspace && mv coverage workspace
-      # Saves the coverage folder to a temporary workspace directory for use by later jobs
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - coverage
 
 
 # These are what actually get run in a workflow
@@ -90,29 +68,6 @@ jobs:
             circleci tests split --split-by=timings)
       - store_test_results:
           path: test_results
-      - run:
-          name: 'Check for coverage report'
-          command: |
-            FILE=./jest-coverage/coverage-final.json
-
-            if [ -f "$FILE" ]; then
-                echo "$FILE exists."
-                exit 0
-            else
-                echo "$FILE does not exist."
-                exit 1
-            fi
-      - run:
-          name: 'Make coverage directory and move Jest coverage report using the runner node index'
-          command: mkdir -p coverage && mv jest-coverage/coverage-final.json coverage/from-jest-${CIRCLE_NODE_INDEX}.json
-      - run:
-          name: 'Move coverage report to temporary workspace directory'
-          command: mkdir -p workspace && mv coverage workspace
-      # Saves the coverage folder to a temporary workspace directory for use by later jobs
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - coverage
 
   'Build':
     <<: *defaults
@@ -120,7 +75,7 @@ jobs:
       - setup
       - run:
           name: 'Running production build'
-          command: 'npm run build-ci'
+          command: 'npm run build'
       - run:
           name: 'Move built assets to the workspace directory'
           command: mkdir -p workspace && mv build workspace
@@ -133,7 +88,7 @@ jobs:
   'Integration Testing':
     docker:
       - image: cypress/browsers
-    parallelism: 8
+    parallelism: 6
     steps:
       - setup
       # Restores the /build folder from the previous job
@@ -170,23 +125,6 @@ jobs:
             npm run test-integration-ci -- --spec $SPECS
       - cypress_cleanup
 
-  'Code coverage':
-    <<: *defaults
-    steps:
-      - checkout
-      # Restores the /coverage folder from the previous job
-      - attach_workspace:
-          at: ./
-      - run: cd coverage && ls -al && cd ../
-      - run:
-          name: 'Merge code coverage reports from multiple sources'
-          command: npx nyc merge coverage coverage/coverage.json
-      - run: cd coverage && ls -al && cd ../ && ls -al
-      - run:
-          name: 'Upload code coverage report'
-          command: bash <(curl -s https://codecov.io/bash) -f coverage/coverage.json -Z || echo 'Codecov upload failed'
-          when: on_success
-
 workflows:
   version: 2
   test-and-build:
@@ -196,10 +134,6 @@ workflows:
       - 'Integration Testing':
           requires:
             - 'Build'
-      - 'Code coverage':
-          requires:
-            - 'Unit Testing'
-            - 'Integration Testing'
 
       # Uncomment these jobs to run targeted integration tests by passing in
       # the targeted filename to run an individual spec or groups of specs.

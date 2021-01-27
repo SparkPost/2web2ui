@@ -24,7 +24,6 @@ const WEBPACK_OPTIONS = {
 
 module.exports = (on, config) => {
   const webpackPreprocessor = require('@cypress/webpack-preprocessor');
-  require('@cypress/code-coverage/task')(on, config);
 
   // Allows for custom webpack configuration for Cypress tests.
   // Particularly useful to allow the usage of import aliases.

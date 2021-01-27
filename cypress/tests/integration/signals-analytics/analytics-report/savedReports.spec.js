@@ -55,7 +55,7 @@ describe('Analytics Report Saved Reports', () => {
     cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
     // Additional params
     cy.findAllByText('Christmas').should('be.visible');
-    cy.findByText('Policy Rejections').should('be.visible');
+    cy.findAllByText('Policy Rejections').should('be.visible');
   });
 
   it('Selecting a preset report works correctly', () => {
@@ -464,7 +464,7 @@ describe('Analytics Report Saved Reports', () => {
         // Wait required due to rendering bug with `TableCollection`
         // Should be removable once https://sparkpost.atlassian.net/browse/FE-1284 is resolved
         // eslint-disable-next-line
-          cy.wait(500);
+        cy.wait(500);
         cy.findByRole('button', { name: 'Open Menu' }).click({ force: true });
 
         cy.findByRole('button', { name: 'Delete' }).click({ force: true });

@@ -329,9 +329,6 @@ module.exports = function(webpackEnv) {
                       },
                     },
                   ],
-                  ...(process.env.INSTRUMENT_CODE === 'true'
-                    ? [require.resolve('babel-plugin-istanbul')]
-                    : []),
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/

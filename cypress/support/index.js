@@ -14,7 +14,6 @@
 // ***********************************************************
 
 import './commands';
-import '@cypress/code-coverage/support';
 
 // Used to help log `cy.log()` invocations to the console during headless runs.
 // See: https://github.com/cypress-io/cypress/issues/3199#issuecomment-529430701
