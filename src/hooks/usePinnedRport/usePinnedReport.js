@@ -37,8 +37,8 @@ export default function usePinnedReport(onboarding) {
     const { from, to } = getRelativeDates(relativeRange, { precision });
     return {
       ...reportOptions,
-      from,
-      to,
+      from: relativeRange === 'custom' ? reportOptions.from : from,
+      to: relativeRange === 'custom' ? reportOptions.to : to,
     };
   };
 
@@ -48,7 +48,6 @@ export default function usePinnedReport(onboarding) {
   const summaryReportOptions = parseSearch(summaryReportQueryString);
 
   const report = _.find(reports, { id: pinnedReportId });
-
   if (report) {
     const options = parseSearch(report.query_string);
     pinnedReport.name = report.name;
