@@ -1,9 +1,3 @@
-const matchSrc = 'src';
-const matchScripts = 'scripts';
-const matchProjectESLintRules = '.eslintplugin';
-const testMatchList =
-  process.env.TEST_MATCH_LIST || [matchSrc, matchScripts, matchProjectESLintRules].join('|');
-
 module.exports = {
   reporters: ['default', 'jest-junit'],
   testResultsProcessor: './node_modules/jest-junit-reporter',
@@ -11,7 +5,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/config/jest/setup.js'],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.js?(x)',
-    `<rootDir>/(${testMatchList})/**/*.test.js?(x)`,
+    `<rootDir>/(eslint-rules|src|scripts)/**/*.test.js?(x)`,
   ],
   testEnvironment: 'node',
   testURL: 'http://phoenix.test',
