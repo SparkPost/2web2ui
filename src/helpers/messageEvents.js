@@ -1,6 +1,6 @@
 import qs from 'query-string';
 import _ from 'lodash';
-import { getRelativeDates } from 'src/helpers/date';
+import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { ALL_EVENTS_FILTERS } from 'src/constants';
 
 /*
@@ -14,7 +14,8 @@ import { ALL_EVENTS_FILTERS } from 'src/constants';
 export function formatDocumentation(data) {
   const events = {};
 
-  _.each(data, (event) => {
+  /* eslint-disable lodash/preferred-alias */
+  _.each(data, event => {
     const {
       type,
       display_name: { sampleValue: displayName },
@@ -25,14 +26,18 @@ export function formatDocumentation(data) {
     events[type.sampleValue] = {
       displayName,
       description,
-      ...fieldDescriptions
+      ...fieldDescriptions,
     };
   });
+  /* eslint-enable lodash/preferred-alias */
 
   return events;
 }
 export function parseSearch(search) {
   const { from, to, range, ...rest } = qs.parse(search);
+  // If the passed in range is present in configuration, then a valid range has been set
+  const hasValidRange =
+    range && Boolean(relativeDateOptions.filter(option => option.value === range).length);
   let dateOptions = {};
 
   if (from) {
@@ -43,20 +48,23 @@ export function parseSearch(search) {
     dateOptions.to = new Date(to);
   }
 
-  if (range) {
+  if (hasValidRange) {
     dateOptions = { ...dateOptions, ...getRelativeDates(range, { roundToPrecision: false }) };
   }
 
   const transformedParams = transformParams(rest);
 
-  const options = _.mapValues(transformedParams, (filter) => typeof filter === 'string' ? [filter] : filter);
+  const options = _.mapValues(transformedParams, filter =>
+    typeof filter === 'string' ? [filter] : filter,
+  );
 
   return { dateOptions, ...options };
 }
 
-
 export function getDetailsPath(messageId, eventId) {
-  return `/reports/message-events/details/${messageId ? `${messageId}/${eventId}` : `_noid_/${eventId}`}`;
+  return `/reports/message-events/details/${
+    messageId ? `${messageId}/${eventId}` : `_noid_/${eventId}`
+  }`;
 }
 
 /**
@@ -66,7 +74,7 @@ export function getDetailsPath(messageId, eventId) {
  */
 export function getEmptyFilters(filters) {
   // Build an array of objects of form { value: [] }
-  const emptyFilters = _.map(filters,(value, key) => ({ [key]: []}));
+  const emptyFilters = _.map(filters, (value, key) => ({ [key]: [] }));
 
   return Object.assign({}, ...emptyFilters);
 }
@@ -84,20 +92,24 @@ function transformParams(params) {
     template_ids: 'templates',
     ab_test_ids: 'ab_tests',
     message_ids: 'messages',
-    friendly_froms: 'from_addresses'
+    friendly_froms: 'from_addresses',
   };
 
-  const transformedParams = _.reduce(params, (accumulator, value, key) => {
-    if (ALL_EVENTS_FILTERS.hasOwnProperty(key)) {
-      accumulator[key] = value;
+  const transformedParams = _.reduce(
+    params,
+    (accumulator, value, key) => {
+      if (ALL_EVENTS_FILTERS.hasOwnProperty(key)) {
+        accumulator[key] = value;
+        return accumulator;
+      }
+      if (oldFiltersToNewFilters.hasOwnProperty(key)) {
+        const newKey = oldFiltersToNewFilters[key];
+        accumulator[newKey] = value;
+        return accumulator;
+      }
       return accumulator;
-    }
-    if (oldFiltersToNewFilters.hasOwnProperty(key)) {
-      const newKey = oldFiltersToNewFilters[key];
-      accumulator[newKey] = value;
-      return accumulator;
-    }
-    return accumulator;
-  }, {});
+    },
+    {},
+  );
   return transformedParams;
 }
