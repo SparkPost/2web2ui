@@ -4,8 +4,6 @@ import { Linter } from 'eslint';
 // see, https://eslint.org/docs/developer-guide/nodejs-api#ruletester
 
 // Using:
-// https://eslint.org/docs/developer-guide/nodejs-api#sourcecode
-// &
 // https://eslint.org/docs/developer-guide/nodejs-api#linter-definerules
 // &
 // https://eslint.org/docs/developer-guide/nodejs-api#linter-verify
@@ -57,7 +55,10 @@ const runner = (title, rule, { valid = {}, invalid = {} } = {}) => {
           },
         );
 
-        expect(result.length).toBeGreaterThan(0);
+        // Note: if invalid tests are failing, it means the rule isn't reporting
+
+        expect(result.length).toBeGreaterThan(0); // Test passed, it shouldn't have...
+        expect(result[0]).toBeTruthy();
         expect(result[0].message).toEqual(invalid[description].errors[0].message);
       });
     });
