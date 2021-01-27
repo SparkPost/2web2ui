@@ -58,12 +58,12 @@ export default function UsagePage() {
 
   // NOTE: AC-1851 - API usage data discrepancy
   usage.messaging.day = {
-    ...account.usage.day,
-    ...usage.messaging.day, // Usage second so if the API fixes the response, it'll win out over the account call
+    ...account?.usage?.day,
+    ...usage?.messaging?.day, // Usage second so if the API fixes the response, it'll win out over the account call
   };
   usage.messaging.month = {
-    ...account.usage.month,
-    ...usage.messaging.month, // Usage second so if the API fixes the response, it'll win out over the account call
+    ...account?.usage?.month,
+    ...usage?.messaging?.month, // Usage second so if the API fixes the response, it'll win out over the account call
   };
   // NOTE: AC-1851 - API usage data discrepancy
 
