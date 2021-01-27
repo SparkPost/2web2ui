@@ -57,7 +57,7 @@ export class UploadForm extends Component {
               <Field
                 component={SubaccountTypeaheadWrapper}
                 disabled={submitting}
-                helpText="Leaving this field blank will add the suppressions to the master account."
+                helpText="Leaving this field blank will add the suppressions to the primary account."
                 name="subaccount"
               />
             </Stack>

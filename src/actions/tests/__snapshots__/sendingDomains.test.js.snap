@@ -19,7 +19,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Create domain should be assigned to master 1`] = `
+exports[`Action Creator: Sending Domains Create domain should be assigned to primary 1`] = `
 Array [
   Object {
     "meta": Object {

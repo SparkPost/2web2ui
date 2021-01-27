@@ -81,7 +81,7 @@ describe('The recipients suppressions list page', () => {
       cy.findByText('fake-email@gmail.com').should('be.visible');
       cy.findByText('Non-transactional').should('be.visible');
       cy.findByText('Manually Added').should('be.visible');
-      cy.findByText('Master Account').should('be.visible');
+      cy.findByText('Primary Account').should('be.visible');
     });
 
     it('renders an error when the suppression list endpoint returns an error', () => {

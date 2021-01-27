@@ -25,7 +25,7 @@ export class CreateForm extends Component {
               <Field
                 component={SubaccountTypeaheadWrapper}
                 name="subaccount"
-                helpText="Leaving this field blank will permanently assign the tracking domain to the master account."
+                helpText="Leaving this field blank will permanently assign the tracking domain to the primary account."
                 disabled={submitting}
               />
             </Stack>

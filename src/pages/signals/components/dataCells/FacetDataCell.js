@@ -13,7 +13,7 @@ const FacetDataCell = ({ dimension, facet, id, name, subaccountId, truncate }) =
   if (facet === 'sid' && id === -1) {
     return (
       <div className={classNames(styles.PaddedCell, truncate && styles.OverflowCell)}>
-        Master & All Subaccounts
+        Primary & All Subaccounts
       </div>
     );
   }
@@ -23,7 +23,7 @@ const FacetDataCell = ({ dimension, facet, id, name, subaccountId, truncate }) =
   switch (facet) {
     case 'sid':
       if (id === 0) {
-        label = 'Master Account';
+        label = 'Primary Account';
       }
       break;
     case 'mb_provider':

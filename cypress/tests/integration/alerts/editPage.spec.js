@@ -33,7 +33,7 @@ describe('Alerts Page - Edit', () => {
     cy.get('[name="metric"]').should('have.attr', 'disabled');
     cy.findByLabelText('Evaluated').should('have.attr', 'disabled');
     cy.get('[data-id="alert-filters"]').within(() => {
-      cy.findByText('Master and all subaccounts').should('be.visible');
+      cy.findByText('Primary and all subaccounts').should('be.visible');
       cy.findByLabelText('Facet').should('have.value', 'mailbox_provider');
       cy.findByText('Gmail').should('be.visible');
       cy.findByText('Apple').should('be.visible');

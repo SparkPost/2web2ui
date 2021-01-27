@@ -9,33 +9,33 @@ describe('Page: Webhook Create', () => {
     getEventDocs: jest.fn(),
     createWebhook: jest.fn(() => Promise.resolve()),
     history: {
-      push: jest.fn()
+      push: jest.fn(),
     },
     eventsLoading: false,
     eventListing: [
       {
         key: 'event1',
         description: 'desc for event 1',
-        display_name: 'Event 1'
+        display_name: 'Event 1',
       },
       {
         key: 'event2',
         description: 'desc for event 2',
-        display_name: 'Event 2'
+        display_name: 'Event 2',
       },
       {
         key: 'event3',
         description: 'desc for event 3',
-        display_name: 'Event 3'
+        display_name: 'Event 3',
       },
       {
         key: 'event4',
         description: 'desc for event 4',
-        display_name: 'Event 4'
-      }
+        display_name: 'Event 4',
+      },
     ],
     showAlert: jest.fn(),
-    webhook: {}
+    webhook: {},
   };
 
   let wrapper;
@@ -53,7 +53,7 @@ describe('Page: Webhook Create', () => {
   });
 
   it('should show loading component while events are loading if no events are present', () => {
-    wrapper.setProps({ eventsLoading: true, eventListing: []});
+    wrapper.setProps({ eventsLoading: true, eventListing: [] });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -68,7 +68,7 @@ describe('Page: Webhook Create', () => {
   });
 
   describe('create tests', () => {
-    it('should redirect on create success, and receive events from only master', async () => {
+    it('should redirect on create success, and receive events from only primary', async () => {
       const instance = wrapper.instance();
       await instance.create({
         name: 'my webhook',
@@ -78,8 +78,8 @@ describe('Page: Webhook Create', () => {
         events: {
           event1: true,
           event2: true,
-          event3: true
-        }
+          event3: true,
+        },
       });
 
       expect(props.createWebhook).toHaveBeenCalledWith({
@@ -87,12 +87,14 @@ describe('Page: Webhook Create', () => {
         webhook: {
           name: 'my webhook',
           target: 'http://url.com',
-          events: ['event1', 'event2', 'event3']
-        }
+          events: ['event1', 'event2', 'event3'],
+        },
       });
       expect(props.showAlert).toHaveBeenCalledWith({ type: 'success', message: 'Webhook created' });
-      wrapper.setProps({ webhook: { id: 'webhook-updated-in-store', subaccount: 0 }}); // simulate redux updating the store
-      expect(props.history.push).toHaveBeenCalledWith('/webhooks/details/webhook-updated-in-store?subaccount=0');
+      wrapper.setProps({ webhook: { id: 'webhook-updated-in-store', subaccount: 0 } }); // simulate redux updating the store
+      expect(props.history.push).toHaveBeenCalledWith(
+        '/webhooks/details/webhook-updated-in-store?subaccount=0',
+      );
     });
 
     it('should only pass in checked events, and receive events from all', async () => {
@@ -104,9 +106,9 @@ describe('Page: Webhook Create', () => {
         events: {
           event1: true,
           event2: false,
-          event3: true
+          event3: true,
         },
-        assignTo: 'all'
+        assignTo: 'all',
       });
 
       expect(props.createWebhook).toHaveBeenCalledWith({
@@ -114,8 +116,8 @@ describe('Page: Webhook Create', () => {
         webhook: {
           name: 'my webhook',
           target: 'http://url.com',
-          events: ['event1', 'event3']
-        }
+          events: ['event1', 'event3'],
+        },
       });
       expect(props.showAlert).toHaveBeenCalledWith({ type: 'success', message: 'Webhook created' });
     });
@@ -131,7 +133,7 @@ describe('Page: Webhook Create', () => {
         basicUser: 'user',
         basicPass: 'pw',
         assignTo: 'subaccount',
-        subaccount: { id: 101 } // subaccount object from typeahead
+        subaccount: { id: 101 }, // subaccount object from typeahead
       });
 
       expect(props.createWebhook).toHaveBeenCalledWith({
@@ -143,9 +145,9 @@ describe('Page: Webhook Create', () => {
           auth_type: 'basic',
           auth_credentials: {
             username: 'user',
-            password: 'pw'
-          }
-        }
+            password: 'pw',
+          },
+        },
       });
       expect(props.showAlert).toHaveBeenCalledWith({ type: 'success', message: 'Webhook created' });
     });
@@ -160,7 +162,7 @@ describe('Page: Webhook Create', () => {
         auth: 'oauth2',
         tokenURL: 'token',
         clientId: 'client',
-        clientSecret: 'shhhh'
+        clientSecret: 'shhhh',
       });
 
       expect(props.createWebhook).toHaveBeenCalledWith({
@@ -173,10 +175,10 @@ describe('Page: Webhook Create', () => {
             url: 'token',
             body: {
               client_id: 'client',
-              client_secret: 'shhhh'
-            }
-          }
-        }
+              client_secret: 'shhhh',
+            },
+          },
+        },
       });
       expect(props.showAlert).toHaveBeenCalledWith({ type: 'success', message: 'Webhook created' });
     });

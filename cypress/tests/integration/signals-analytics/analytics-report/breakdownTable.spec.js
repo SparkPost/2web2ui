@@ -231,7 +231,7 @@ describe('Analytics Report breakdown table', () => {
 
     verifyRow({
       rowIndex: 0,
-      firstCell: 'Master Account (ID 0)',
+      firstCell: 'Primary Account (ID 0)',
       secondCell: '1.3K',
       thirdCell: '1.4K',
       fourthCell: '1.5K',

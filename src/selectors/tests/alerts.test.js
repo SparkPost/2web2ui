@@ -92,7 +92,7 @@ describe('Alerts Selectors: ', () => {
     };
 
     const testCases = {
-      'master and all subaccounts': {
+      'primary and all subaccounts': {
         formData: { ...formData },
         apiData: { ...apiData },
       },

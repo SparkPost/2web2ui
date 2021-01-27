@@ -56,7 +56,7 @@ describe('Page: Alert Details', () => {
   it('should handle subaccount id to String', () => {
     const subaccountIdToString = wrapper.instance().subaccountIdToString;
     expect(subaccountIdToString(1)).toEqual('My Subaccount (1)');
-    expect(subaccountIdToString(0)).toEqual('Master account');
+    expect(subaccountIdToString(0)).toEqual('Primary account');
   });
 
   it('should toggle delete modal upon clicking delete Button', () => {

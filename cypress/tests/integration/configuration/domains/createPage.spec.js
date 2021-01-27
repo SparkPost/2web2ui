@@ -27,7 +27,7 @@ describe('The domains create page', () => {
     cy.findByLabelText('Share with all Subaccounts')
       .should('be.visible')
       .should('be.checked');
-    cy.findByLabelText('Assign to Master Account').should('be.visible');
+    cy.findByLabelText('Assign to Primary Account').should('be.visible');
     cy.findByLabelText('Assign to Subaccount').should('be.visible');
   });
 
@@ -66,7 +66,7 @@ describe('The domains create page', () => {
     cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
   });
 
-  it('creates a new sending domain for the Assign to Master Account', () => {
+  it('creates a new sending domain for the Assign to Primary Account', () => {
     commonBeforeSteps();
     stubSendingDomainsPostReq();
     cy.stubRequest({
@@ -77,7 +77,7 @@ describe('The domains create page', () => {
 
     cy.findByLabelText(/Sending Domain/g).check();
     cy.findByLabelText('Domain').type('example.com');
-    cy.findByLabelText('Assign to Master Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+    cy.findByLabelText('Assign to Primary Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
     cy.findByRole('button', { name: 'Save and Continue' }).click();
 
     cy.withinModal(() => {
@@ -191,7 +191,7 @@ describe('The domains create page', () => {
     cy.title().should('include', 'Verify Bounce Domain | Domains');
     cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
   });
-  it('creates a new bounce domain for the Assign to Master Account', () => {
+  it('creates a new bounce domain for the Assign to Primary Account', () => {
     commonBeforeSteps();
     stubSendingDomainsPostReq();
     cy.stubRequest({
@@ -202,7 +202,7 @@ describe('The domains create page', () => {
 
     cy.findByLabelText(/Bounce Domain/g).check({ force: true });
     cy.findByLabelText('Domain').type('example.com');
-    cy.findByLabelText('Assign to Master Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+    cy.findByLabelText('Assign to Primary Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
     cy.findByRole('button', { name: 'Save and Continue' }).click();
 
     cy.wait('@sendingDomainsReq').then(xhr => {
@@ -243,6 +243,7 @@ describe('The domains create page', () => {
       cy.wrap(shared_with_subaccounts).should('be.eq', false);
       cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
     });
+
     cy.wait('@unverifieddkimSendingDomains');
 
     cy.findByText('Bounce Domain example.com created').should('be.visible');
@@ -262,7 +263,7 @@ describe('The domains create page', () => {
     cy.findByLabelText(/Tracking Domain/g).check({ force: true });
     cy.findByLabelText('Domain').type('example.com');
     cy.findByLabelText('Share with all Subaccounts').should('not.exist'); // This field is hidden when "Tracking Domains" is selected as the primary use
-    cy.findByLabelText('Assign to Master Account').should('be.checked');
+    cy.findByLabelText('Assign to Primary Account').should('be.checked');
     cy.findByRole('button', { name: 'Save and Continue' }).click();
 
     cy.wait('@trackingDomainsReq').then(xhr => {

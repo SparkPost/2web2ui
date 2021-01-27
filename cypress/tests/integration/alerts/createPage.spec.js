@@ -74,26 +74,26 @@ describe('Alerts Page - Create', () => {
     });
   });
 
-  it('Subaccount Filters stops accepting more subaccounts when master & all or any subaccount is selected', () => {
+  it('Subaccount Filters stops accepting more subaccounts when primary & all or any subaccount is selected', () => {
     cy.get('[name="metric"]').select('block_bounce_rate');
 
     cy.get('[data-id="alert-filters"]').within(() => {
       cy.findByLabelText('Subaccounts').type('subaccount');
-      cy.findByText('Master and all subaccounts').click({ force: true });
+      cy.findByText('Primary and all subaccounts').click({ force: true });
       cy.findByLabelText('Subaccounts').should('have.attr', 'readonly');
     });
   });
 
-  it('Subaccount Filters stops accepting master & all or any subaccount when another subaccount is selected', () => {
+  it('Subaccount Filters stops accepting primary & all or any subaccount when another subaccount is selected', () => {
     cy.get('[name="metric"]').select('block_bounce_rate');
 
     cy.get('[data-id="alert-filters"]').within(() => {
       cy.findByLabelText('Subaccounts').type('subaccount');
-      cy.findByText('Master and all subaccounts').should('be.visible');
+      cy.findByText('Primary and all subaccounts').should('be.visible');
 
       cy.findByText('Fake Subaccount 1 (101)').click({ force: true });
-      cy.findByText('Master and all subaccounts').should('not.exist');
-      cy.findByText('Master account').should('be.visible');
+      cy.findByText('Primary and all subaccounts').should('not.exist');
+      cy.findByText('Primary account').should('be.visible');
     });
   });
 

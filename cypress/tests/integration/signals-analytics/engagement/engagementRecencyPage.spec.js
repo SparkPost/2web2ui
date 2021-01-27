@@ -125,7 +125,7 @@ describe('The engagement recency page', () => {
       cy.get('tbody tr')
         .first()
         .within(() => {
-          cy.findByText('Master Account').should('be.visible');
+          cy.findByText('Primary Account').should('be.visible');
           cy.get('.recharts-wrapper').should('be.visible');
           cy.findByText('-50%').should('be.visible');
           cy.findByText('5').should('be.visible');

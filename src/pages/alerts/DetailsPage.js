@@ -58,10 +58,10 @@ export class DetailsPageComponent extends Component {
   subaccountIdToString = id => {
     const { subaccounts } = this.props;
     if (id === -1) {
-      return 'Master and all subaccounts';
+      return 'Primary and all subaccounts';
     }
     if (id === 0) {
-      return 'Master account';
+      return 'Primary account';
     }
     const matchedSubaccount = subaccounts.find(subaccount => subaccount.id === id) || {};
     return `${matchedSubaccount.name} (${matchedSubaccount.id})`;

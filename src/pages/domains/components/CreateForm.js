@@ -228,7 +228,7 @@ export default function CreateForm() {
                       <Radio
                         ref={register}
                         disabled={createPending}
-                        label="Assign to Master Account"
+                        label="Assign to Primary Account"
                         id="assign-to-principal-only"
                         value="principalOnly"
                         name="assignTo"

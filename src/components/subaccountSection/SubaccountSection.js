@@ -7,7 +7,7 @@ import { ToggleBlock } from 'src/components/toggleBlock';
 import { required } from 'src/helpers/validation';
 
 const createOptions = [
-  { label: 'Assign to Master Account', value: 'master' },
+  { label: 'Assign to Primary Account', value: 'master' },
   { label: 'Share with all Subaccounts', value: 'shared' },
   { label: 'Assign to Subaccount', value: 'subaccount' },
 ];

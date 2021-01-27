@@ -16,12 +16,12 @@ import hibanaStyles from './SubaccountFilterHibana.module.scss';
 const OPTIONS = [
   {
     id: undefined,
-    name: 'Master & All Subaccounts',
+    name: 'Primary & All Subaccounts',
     condition: ({ id }) => !id && id !== 0,
   },
   {
     id: 0,
-    name: 'Master Account',
+    name: 'Primary Account',
     condition: ({ id }) => id === 0,
   },
   {

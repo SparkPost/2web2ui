@@ -20,7 +20,7 @@ exports[`AddForm tests should disable fields when submitting 1`] = `
         <Field
           component={[Function]}
           disabled={true}
-          helpText="Leaving this field blank will add the suppressions to the master account."
+          helpText="Leaving this field blank will add the suppressions to the primary account."
           name="subaccount"
         />
         <Checkbox.Group
@@ -81,7 +81,7 @@ exports[`AddForm tests should make form submitable when dirty and not submitting
         <Field
           component={[Function]}
           disabled={false}
-          helpText="Leaving this field blank will add the suppressions to the master account."
+          helpText="Leaving this field blank will add the suppressions to the primary account."
           name="subaccount"
         />
         <Checkbox.Group
@@ -142,7 +142,7 @@ exports[`AddForm tests should render add form 1`] = `
         <Field
           component={[Function]}
           disabled={false}
-          helpText="Leaving this field blank will add the suppressions to the master account."
+          helpText="Leaving this field blank will add the suppressions to the primary account."
           name="subaccount"
         />
         <Checkbox.Group

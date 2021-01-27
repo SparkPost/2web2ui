@@ -20,7 +20,7 @@ describe('Snippet Actions', () => {
 
   snapshotActionCases('.createSnippet', [
     {
-      name: 'when assigned to master account',
+      name: 'when assigned to primary account',
       actionCreator: () =>
         createSnippet({
           id: 'test-snippet',
@@ -80,14 +80,14 @@ describe('Snippet Actions', () => {
 
   snapshotActionCases('.getSnippets', [
     {
-      name: 'when assigned to master account',
+      name: 'when assigned to primary account',
       actionCreator: getSnippets,
     },
   ]);
 
   snapshotActionCases('.deleteSnippet', [
     {
-      name: 'when assigned to master account',
+      name: 'when assigned to primary account',
       actionCreator: () =>
         deleteSnippet({
           id: 'test-snippet',
@@ -105,7 +105,7 @@ describe('Snippet Actions', () => {
 
   snapshotActionCases('.updateSnippet', [
     {
-      name: 'when assigned to master account',
+      name: 'when assigned to primary account',
       actionCreator: () =>
         updateSnippet({
           id: 'test-snippet',

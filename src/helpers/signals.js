@@ -9,7 +9,7 @@ const translateSubaccount = id => {
   // Note: Subaccount -1 (aggregate of all subaccounts) does not have a details Page
 
   if (String(id) === '0') {
-    return 'Master Account';
+    return 'Primary Account';
   }
 
   return `Subaccount ${id}`;

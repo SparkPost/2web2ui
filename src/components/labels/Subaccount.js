@@ -30,7 +30,7 @@ const Subaccount = ({ id, name, all, receiveAll, master, isDefault, shrinkLength
   } else if (receiveAll) {
     content = 'All';
   } else if (master) {
-    content = 'Master Account';
+    content = 'Primary Account';
   }
 
   if (!content && !defaultContent) {
@@ -52,7 +52,7 @@ Subaccount.propTypes = {
   // 'Shared with all'
   all: PropTypes.bool,
 
-  // 'Master account'
+  // 'Primary account'
   master: PropTypes.bool,
 
   // 'All'

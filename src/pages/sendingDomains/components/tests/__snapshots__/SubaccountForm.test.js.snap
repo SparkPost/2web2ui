@@ -9,7 +9,7 @@ exports[`Sending Domains Subaccount Form renders correctly 1`] = `
     options={
       Array [
         Object {
-          "label": "Assign to Master Account",
+          "label": "Assign to Primary Account",
           "value": "master",
         },
         Object {

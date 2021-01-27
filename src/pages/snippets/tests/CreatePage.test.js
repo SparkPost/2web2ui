@@ -6,9 +6,7 @@ import SubaccountSection from 'src/components/subaccountSection';
 import CreatePage from '../CreatePage';
 
 describe('CreatePage', () => {
-  const subject = (props) => shallow(
-    <CreatePage handleSubmit={(fn) => fn} {...props} />
-  );
+  const subject = props => shallow(<CreatePage handleSubmit={fn => fn} {...props} />);
 
   it('renders form', () => {
     expect(subject()).toMatchSnapshot();
@@ -25,8 +23,8 @@ describe('CreatePage', () => {
       getSnippet,
       snippetToDuplicate: {
         id: 'duplicate-snippet',
-        subaccountId: '123'
-      }
+        subaccountId: '123',
+      },
     });
 
     expect(getSnippet).toHaveBeenCalledWith({ id: 'duplicate-snippet', subaccountId: '123' });
@@ -50,50 +48,54 @@ describe('CreatePage', () => {
   it('redirects to edit page after create suceeds', async () => {
     const createSnippet = jest.fn(() => Promise.resolve());
     const historyPush = jest.fn();
-    const wrapper = subject({ createSnippet, history: { push: historyPush }});
+    const wrapper = subject({ createSnippet, history: { push: historyPush } });
 
-    await wrapper.prop('primaryAction').onClick({ id: 'test-snippet', subaccount: { id: 123 }});
+    await wrapper.prop('primaryAction').onClick({ id: 'test-snippet', subaccount: { id: 123 } });
 
     expect(createSnippet).toHaveBeenCalled();
     expect(historyPush).toHaveBeenCalledWith('/snippets/edit/test-snippet?subaccount=123');
   });
 
   describe('.submitSnippet', () => {
-    cases('succeeds', ({ name, ...values }) => {
-      const createSnippet = jest.fn(() => Promise.resolve());
-      const historyPush = jest.fn();
-      const wrapper = subject({ createSnippet, history: { push: historyPush }});
+    cases(
+      'succeeds',
+      ({ name, ...values }) => {
+        const createSnippet = jest.fn(() => Promise.resolve());
+        const historyPush = jest.fn();
+        const wrapper = subject({ createSnippet, history: { push: historyPush } });
 
-      wrapper.prop('primaryAction').onClick({
-        ...values,
-        id: 'example-snippet',
-        name: 'Example Snippet'
-      });
+        wrapper.prop('primaryAction').onClick({
+          ...values,
+          id: 'example-snippet',
+          name: 'Example Snippet',
+        });
 
-      expect(createSnippet).toMatchSnapshot();
-    }, {
-      'with content': {
-        content: {
-          html: '<p>testing...</p>',
-          text: 'testing...',
-          amp_html: '<span>amped</span>'
-        }
+        expect(createSnippet).toMatchSnapshot();
       },
-      'with master account assignment': {
-        assignTo: 'master',
-        content: {}
-      },
-      'with shared subaccounts assignment': {
-        assignTo: 'shared',
-        content: {}
-      },
-      'with a subaccount assignment': {
-        assignTo: 'subaccount',
-        subaccount: {
-          id: 'example-subaccount'
+      {
+        'with content': {
+          content: {
+            html: '<p>testing...</p>',
+            text: 'testing...',
+            amp_html: '<span>amped</span>',
+          },
         },
-        content: {}
-      }
-    });
+        'with primary account assignment': {
+          assignTo: 'master',
+          content: {},
+        },
+        'with shared subaccounts assignment': {
+          assignTo: 'shared',
+          content: {},
+        },
+        'with a subaccount assignment': {
+          assignTo: 'subaccount',
+          subaccount: {
+            id: 'example-subaccount',
+          },
+          content: {},
+        },
+      },
+    );
   });
 });

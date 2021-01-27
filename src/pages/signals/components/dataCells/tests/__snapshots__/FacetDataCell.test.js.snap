@@ -38,7 +38,7 @@ exports[`FacetDataCell renders label for all accounts 1`] = `
 <div
   className="PaddedCell"
 >
-  Master & All Subaccounts
+  Primary & All Subaccounts
 </div>
 `;
 
@@ -59,7 +59,7 @@ exports[`FacetDataCell renders page link 1`] = `
 </div>
 `;
 
-exports[`FacetDataCell renders page link for master account 1`] = `
+exports[`FacetDataCell renders page link for primary account 1`] = `
 <div
   className="PaddedCell"
 >
@@ -71,7 +71,7 @@ exports[`FacetDataCell renders page link for master account 1`] = `
       }
     }
   >
-    Master Account
+    Primary Account
   </PageLink>
 </div>
 `;

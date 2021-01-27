@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatusDescription component Shallow tests does not render subaccount details on master account domains 1`] = `
+exports[`StatusDescription component Shallow tests does not render subaccount details on primary account domains 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <LabelledValue

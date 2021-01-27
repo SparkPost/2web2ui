@@ -80,7 +80,7 @@ export function abTestDefaultTemplate(value, formValues, props) {
   if (formValues.subaccount) {
     return 'Template not available to selected subaccount';
   }
-  return 'Template not available to master account';
+  return 'Template not available to primary account';
 }
 
 export function abTestDuration(value, formValues) {

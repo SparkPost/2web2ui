@@ -4,7 +4,7 @@ const sendingDomains = require('../sendingDomains');
 jest.mock('../helpers/sparkpostApiRequest');
 
 snapshotActionCases('Action Creator: Sending Domains', {
-  'Create domain should be assigned to master': {
+  'Create domain should be assigned to primary': {
     actionCreator: () => sendingDomains.create({ domain: 'domain.com' }),
   },
   'Create domain should be assigned a subaccount': {

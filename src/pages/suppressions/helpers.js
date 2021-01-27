@@ -2,13 +2,13 @@ import _ from 'lodash';
 
 export function formatSubaccountDisplay(subaccountId, allSubAccounts) {
   if (!subaccountId) {
-    return 'Master Account (0)';
+    return 'Primary Account (0)';
   }
 
   subaccountId = parseInt(subaccountId, 10);
 
   const subaccount = _.find(allSubAccounts, {
-    id: subaccountId
+    id: subaccountId,
   });
 
   if (subaccount) {

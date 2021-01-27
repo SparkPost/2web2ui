@@ -30,8 +30,8 @@ export class SubaccountSection extends Component {
     const { assignTo, disabled } = this.props;
 
     const createOptions = [
-      { label: 'Master and all subaccounts', value: 'all', disabled },
-      { label: 'Master account only', value: 'master', disabled },
+      { label: 'Primary and all subaccounts', value: 'all', disabled },
+      { label: 'Primary account only', value: 'master', disabled },
       { label: 'Single Subaccount', value: 'subaccount', disabled },
     ];
 
@@ -57,7 +57,7 @@ export class SubaccountSection extends Component {
     const { subaccount } = this.props;
     let component = SubaccountTypeaheadWrapper;
 
-    // On 'master only' or 'master and all' webhooks
+    // On 'primary only' or 'primary and all' webhooks
     if (typeof subaccount === 'string') {
       component = TextFieldWrapper;
     }

@@ -17,27 +17,31 @@ describe('StatusDescription component', () => {
         readyFor: {
           sending: false,
           bounce: false,
-          dkim: false
+          dkim: false,
         },
         domain: {
           shared_with_subaccounts: false,
-          is_default_bounce_domain: false
-        }
+          is_default_bounce_domain: false,
+        },
       };
       wrapper = shallow(<StatusDescription {...props} />);
     });
 
-    cases('renders verification status correctly', ({ status }) => {
-      wrapper.setProps({ status });
-      expect(wrapper).toMatchSnapshot();
-    }, verificationCases);
+    cases(
+      'renders verification status correctly',
+      ({ status }) => {
+        wrapper.setProps({ status });
+        expect(wrapper).toMatchSnapshot();
+      },
+      verificationCases,
+    );
 
-    it('does not render subaccount details on master account domains', () => {
+    it('does not render subaccount details on primary account domains', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
     it('renders subaccount details', () => {
-      wrapper.setProps({ domain: { ...props.domain, subaccount_id: 101 }});
+      wrapper.setProps({ domain: { ...props.domain, subaccount_id: 101 } });
       expect(wrapper).toMatchSnapshot();
     });
   });

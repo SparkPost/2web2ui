@@ -64,7 +64,7 @@ export const selectUnverifiedTrackingDomains = createSelector(
   trackingDomains => trackingDomains.filter(item => !item.verified),
 );
 
-// currently used to just get domains owned by a subaccount/master account
+// currently used to just get domains owned by a subaccount/primary account
 export const selectVerifiedTrackingDomains = createSelector(
   [selectTrackingDomainsList, selectSubaccountFromProps],
   (trackingDomains, subaccount) =>

@@ -38,7 +38,7 @@ exports[`CreatePage .submitSnippet succeeds with content 1`] = `
 }
 `;
 
-exports[`CreatePage .submitSnippet succeeds with master account assignment 1`] = `
+exports[`CreatePage .submitSnippet succeeds with primary account assignment 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [

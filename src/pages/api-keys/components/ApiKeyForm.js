@@ -78,7 +78,7 @@ export class ApiKeyForm extends Component {
               helpText={
                 isReadOnly
                   ? ''
-                  : 'This assignment is permanent. Leave blank to assign to master account.'
+                  : 'This assignment is permanent. Leave blank to assign to primary account.'
               }
               component={SubaccountTypeaheadWrapper}
               disabled={!isNew}

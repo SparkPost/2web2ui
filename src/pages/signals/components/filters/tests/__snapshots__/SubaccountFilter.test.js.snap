@@ -18,7 +18,7 @@ exports[`SubaccountFilter Component renders open popover with options 1`] = `
         <span
           className="ButtonLabel"
         >
-          Master & All Subaccounts
+          Primary & All Subaccounts
         </span>
         <TriggerIcon
           className="ButtonIcon"
@@ -62,28 +62,28 @@ exports[`SubaccountFilter Component renders open popover with options 1`] = `
       className="PopoverContent showOptions"
     >
       <SubaccountOption
-        key="Master & All Subaccounts"
-        label="Master & All Subaccounts"
+        key="Primary & All Subaccounts"
+        label="Primary & All Subaccounts"
         onChange={[Function]}
         onOpen={[Function]}
         selected={true}
         value={
           Object {
             "id": undefined,
-            "name": "Master & All Subaccounts",
+            "name": "Primary & All Subaccounts",
           }
         }
       />
       <SubaccountOption
-        key="Master Account"
-        label="Master Account"
+        key="Primary Account"
+        label="Primary Account"
         onChange={[Function]}
         onOpen={[Function]}
         selected={false}
         value={
           Object {
             "id": 0,
-            "name": "Master Account",
+            "name": "Primary Account",
           }
         }
       />
@@ -198,28 +198,28 @@ exports[`SubaccountFilter Component renders with subaccount 1`] = `
           className="PopoverContent showOptions"
         >
           <SubaccountOption
-            key="Master & All Subaccounts"
-            label="Master & All Subaccounts"
+            key="Primary & All Subaccounts"
+            label="Primary & All Subaccounts"
             onChange={[Function]}
             onOpen={[Function]}
             selected={false}
             value={
               Object {
                 "id": undefined,
-                "name": "Master & All Subaccounts",
+                "name": "Primary & All Subaccounts",
               }
             }
           />
           <SubaccountOption
-            key="Master Account"
-            label="Master Account"
+            key="Primary Account"
+            label="Primary Account"
             onChange={[Function]}
             onOpen={[Function]}
             selected={false}
             value={
               Object {
                 "id": 0,
-                "name": "Master Account",
+                "name": "Primary Account",
               }
             }
           />

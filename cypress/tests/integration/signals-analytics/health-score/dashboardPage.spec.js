@@ -243,7 +243,7 @@ describe('The health score dashboard page', () => {
 
       verifyTableRow({
         rowIndex: 0,
-        subaccount: /Master Account/g,
+        subaccount: /Primary Account/g,
         currentScore: 10,
         currentInjections: 12,
         WoW: '10%',

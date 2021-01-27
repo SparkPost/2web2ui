@@ -3,17 +3,16 @@ import { AddFilterLink } from '../AddFilterLink';
 import { shallow } from 'enzyme';
 
 describe('Add Filter Link', () => {
-
   const filters = ['Campaign: shiny new filter'];
   const baseProps = {
-    newFilter: { id: 0, type: 'Subaccount', value: 'Master Account (ID 0)' },
+    newFilter: { id: 0, type: 'Subaccount', value: 'Primary Account (ID 0)' },
     reportType: 'summary',
-    content: 'master account',
+    content: 'primary account',
     addFilters: jest.fn(),
     currentSearchOptions: {
       filters,
-      metrics: ['count_something']
-    }
+      metrics: ['count_something'],
+    },
   };
 
   function subject(props) {
@@ -26,7 +25,7 @@ describe('Add Filter Link', () => {
   });
 
   it('should render correctly for other reports and should not include metrics in the link', () => {
-    const wrapper = subject({ reportType: 'bounce' , currentSearchOptions: { filters }});
+    const wrapper = subject({ reportType: 'bounce', currentSearchOptions: { filters } });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -35,7 +34,9 @@ describe('Add Filter Link', () => {
     wrapper.find('PageLink').simulate('mouseUp', {});
     wrapper.find('PageLink').simulate('click');
 
-    expect(baseProps.addFilters).toHaveBeenCalledWith([{ id: 0, type: 'Subaccount', value: 'Master Account (ID 0)' }]);
+    expect(baseProps.addFilters).toHaveBeenCalledWith([
+      { id: 0, type: 'Subaccount', value: 'Primary Account (ID 0)' },
+    ]);
   });
 
   it('should handle click while holding down meta(cmd) key correctly', () => {

@@ -10,12 +10,12 @@ exports[`Webhooks SubaccountSection on create should render radio group 1`] = `
       Array [
         Object {
           "disabled": false,
-          "label": "Master and all subaccounts",
+          "label": "Primary and all subaccounts",
           "value": "all",
         },
         Object {
           "disabled": false,
-          "label": "Master account only",
+          "label": "Primary account only",
           "value": "master",
         },
         Object {

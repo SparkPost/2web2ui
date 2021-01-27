@@ -30,8 +30,8 @@ describe('Component: Subaccount without shrink', () => {
     expect(subject({ receiveAll: true }).text()).toEqual('All');
   });
 
-  it('should render a master account tag', () => {
-    expect(subject({ master: true }).text()).toEqual('Master Account');
+  it('should render a primary account tag', () => {
+    expect(subject({ master: true }).text()).toEqual('Primary Account');
   });
 });
 
@@ -63,7 +63,7 @@ describe('Component: Subaccount with shrink', () => {
     expect(subject({ all: true }).text()).toEqual('Shared with all');
   });
 
-  it('should render a master account tag', () => {
-    expect(subject({ master: true }).text()).toEqual('Master Account');
+  it('should render a primary account tag', () => {
+    expect(subject({ master: true }).text()).toEqual('Primary Account');
   });
 });

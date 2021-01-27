@@ -73,8 +73,8 @@ export class AbTestCreateForm extends Component {
                       name="subaccount"
                       component={SubaccountTypeaheadWrapper}
                       label="Subaccount Assignment"
-                      placeholder="Master Account"
-                      helpText="Leaving this field blank will permanently assign the A/B test to the master account."
+                      placeholder="Primary Account"
+                      helpText="Leaving this field blank will permanently assign the A/B test to the primary account."
                     />
                   </Grid.Column>
                 </Grid>

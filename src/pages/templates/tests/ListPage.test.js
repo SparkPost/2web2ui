@@ -32,7 +32,7 @@ describe('ListPage', () => {
           {
             published: false,
             id: 'id3',
-            name: 'master template',
+            name: 'primary template',
             last_update_time: '2017-08-10T14:15:16+00:00',
           },
         ]}

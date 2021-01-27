@@ -23,7 +23,7 @@ Object {
   "deletePending": false,
   "list": Array [
     Object {
-      "id": "test-master",
+      "id": "test-primary",
       "status": "running",
     },
     Object {
@@ -40,7 +40,7 @@ Object {
   "cancelPending": false,
   "list": Array [
     Object {
-      "id": "test-master",
+      "id": "test-primary",
       "status": "running",
     },
     Object {

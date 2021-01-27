@@ -16,7 +16,7 @@ export const SUBACCOUNT_ITEMS = {
 };
 
 export const SUBACCOUNT_OPTIONS = [
-  { label: 'Master Account', value: 'master' },
-  { label: 'Master and All Subaccounts', value: 'shared' },
+  { label: 'Primary Account', value: 'master' },
+  { label: 'Primary and All Subaccounts', value: 'shared' },
   { label: 'Select a Subaccount', value: 'subaccount' },
 ];

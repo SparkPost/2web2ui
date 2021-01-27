@@ -81,7 +81,7 @@ describe('HealthScoreOverview', () => {
     const wrapper = subject({
       signalOptions: {
         id: undefined,
-        name: 'Master & All Subaccounts',
+        name: 'Primary & All Subaccounts',
       },
     });
 
@@ -187,7 +187,7 @@ describe('HealthScoreOverview', () => {
       relativeRange: '14days',
       subaccount: {
         id: undefined,
-        name: 'Master & All Subaccounts',
+        name: 'Primary & All Subaccounts',
       },
     };
     const summaryTable = {
@@ -237,7 +237,7 @@ describe('HealthScoreOverview', () => {
       });
     });
 
-    it('ignores master and all subaccount clickthrough to details page', () => {
+    it('ignores primary and all subaccount clickthrough to details page', () => {
       const historyPush = jest.fn();
       const wrapper = factory({
         facet: {
@@ -278,7 +278,7 @@ describe('HealthScoreOverview', () => {
     });
   });
 
-  it('filters out master and all subaccounts row', () => {
+  it('filters out primary and all subaccounts row', () => {
     const data = [
       {
         current_health_score: 98,
@@ -290,7 +290,7 @@ describe('HealthScoreOverview', () => {
       },
       {
         current_health_score: 50,
-        domain: 'master-and-all.com',
+        domain: 'primary-and-all.com',
         history: [{ date: '2018-01-13', health_score: 50 }],
         average_health_score: 50,
         WoW: 0.5,

@@ -13,7 +13,7 @@ describe('FacetDataCell', () => {
     expect(subject()).toMatchSnapshot();
   });
 
-  it('renders page link for master account', () => {
+  it('renders page link for primary account', () => {
     expect(subject({ facet: 'sid', id: 0 })).toMatchSnapshot();
   });
 

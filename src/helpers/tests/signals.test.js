@@ -40,8 +40,8 @@ cases(
       expected: 'Campaign welcome',
       values: { facet: 'campaign_id', facetId: 'welcome' },
     },
-    'translate master account': {
-      expected: 'Master Account',
+    'translate primary account': {
+      expected: 'Primary Account',
       values: { facet: 'sid', facetId: '0' },
     },
     'translate subaccount': {

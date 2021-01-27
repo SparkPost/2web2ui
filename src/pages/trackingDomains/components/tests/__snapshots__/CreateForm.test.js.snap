@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[
-  `Component: Tracking Domains Create Form should render correctly when submitting is false 1`
-] = `
+exports[`Component: Tracking Domains Create Form should render correctly when submitting is false 1`] = `
 <Panel.LEGACY>
   <form
     onSubmit={[MockFunction]}
@@ -23,7 +21,7 @@ exports[
         <Field
           component={[Function]}
           disabled={false}
-          helpText="Leaving this field blank will permanently assign the tracking domain to the master account."
+          helpText="Leaving this field blank will permanently assign the tracking domain to the primary account."
           name="subaccount"
         />
       </Stack>
@@ -41,9 +39,7 @@ exports[
 </Panel.LEGACY>
 `;
 
-exports[
-  `Component: Tracking Domains Create Form should render correctly when submitting is true 1`
-] = `
+exports[`Component: Tracking Domains Create Form should render correctly when submitting is true 1`] = `
 <Panel.LEGACY>
   <form
     onSubmit={[MockFunction]}
@@ -64,7 +60,7 @@ exports[
         <Field
           component={[Function]}
           disabled={true}
-          helpText="Leaving this field blank will permanently assign the tracking domain to the master account."
+          helpText="Leaving this field blank will permanently assign the tracking domain to the primary account."
           name="subaccount"
         />
       </Stack>

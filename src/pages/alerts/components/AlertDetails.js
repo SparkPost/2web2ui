@@ -82,7 +82,7 @@ export const AlertDetails = ({
   };
 
   const renderFilteredBy = () => {
-    //Shows subaccounts filter if the account has subaccounts and if the subaccount value is not `Master and all`
+    //Shows subaccounts filter if the account has subaccounts and if the subaccount value is not `Primary and all`
     const shouldShowSubaccounts =
       hasSubaccounts && ((subaccounts.length > 0 && subaccounts[0] !== -1) || any_subaccount);
     const subaccount = shouldShowSubaccounts ? (

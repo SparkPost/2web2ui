@@ -9,7 +9,7 @@ exports[`Component: TrackingDomainRow Tag component should render the IsDefaultT
 </Tag>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a "currently verifying" domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a "currently verifying" domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -89,7 +89,7 @@ exports[`Component: TrackingDomainRow rendering when assigned to master account 
 </Fragment>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a blocked domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a blocked domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -169,7 +169,7 @@ exports[`Component: TrackingDomainRow rendering when assigned to master account 
 </Fragment>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a default unverified domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a default unverified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -256,7 +256,7 @@ exports[`Component: TrackingDomainRow rendering when assigned to master account 
 </Fragment>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a default verified domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a default verified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -339,7 +339,7 @@ exports[`Component: TrackingDomainRow rendering when assigned to master account 
 </Fragment>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a non-default unverified domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a non-default unverified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -414,7 +414,7 @@ exports[`Component: TrackingDomainRow rendering when assigned to master account 
 </Fragment>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a non-default verified domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a non-default verified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -489,7 +489,7 @@ exports[`Component: TrackingDomainRow rendering when assigned to master account 
 </Fragment>
 `;
 
-exports[`Component: TrackingDomainRow rendering when assigned to master account should render a pending domain 1`] = `
+exports[`Component: TrackingDomainRow rendering when assigned to primary account should render a pending domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>

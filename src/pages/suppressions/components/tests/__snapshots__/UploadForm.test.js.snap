@@ -37,7 +37,7 @@ exports[`UploadForm tests should disable fields when submitting 1`] = `
         <Field
           component={[Function]}
           disabled={true}
-          helpText="Leaving this field blank will add the suppressions to the master account."
+          helpText="Leaving this field blank will add the suppressions to the primary account."
           name="subaccount"
         />
       </Stack>
@@ -92,7 +92,7 @@ exports[`UploadForm tests should render upload form 1`] = `
         <Field
           component={[Function]}
           disabled={false}
-          helpText="Leaving this field blank will add the suppressions to the master account."
+          helpText="Leaving this field blank will add the suppressions to the primary account."
           name="subaccount"
         />
       </Stack>

@@ -10,7 +10,7 @@ exports[`Templates SubaccountSection on create should render radio group 1`] = `
       options={
         Array [
           Object {
-            "label": "Assign to Master Account",
+            "label": "Assign to Primary Account",
             "value": "master",
           },
           Object {

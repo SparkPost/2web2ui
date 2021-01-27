@@ -178,7 +178,7 @@ describe('EngagementRecencyOverview', () => {
       relativeRange: '14days',
       subaccount: {
         id: undefined,
-        name: 'Master & All Subaccounts',
+        name: 'Primary & All Subaccounts',
       },
     };
     const summaryTable = {

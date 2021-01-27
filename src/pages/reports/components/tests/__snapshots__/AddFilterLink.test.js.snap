@@ -5,9 +5,9 @@ exports[`Add Filter Link should render correctly for other reports and should no
   onClick={[Function]}
   onMouseUp={[Function]}
   replace={true}
-  to="/reports/bounce/?filters=Campaign%3A%20shiny%20new%20filter&filters=Subaccount%3AMaster%20Account%20%28ID%200%29%3A0"
+  to="/reports/bounce/?filters=Campaign%3A%20shiny%20new%20filter&filters=Subaccount%3APrimary%20Account%20%28ID%200%29%3A0"
 >
-  master account
+  primary account
 </PageLink>
 `;
 
@@ -16,8 +16,8 @@ exports[`Add Filter Link should render correctly for the summary report and incl
   onClick={[Function]}
   onMouseUp={[Function]}
   replace={true}
-  to="/reports/summary/?filters=Campaign%3A%20shiny%20new%20filter&filters=Subaccount%3AMaster%20Account%20%28ID%200%29%3A0&metrics=count_something"
+  to="/reports/summary/?filters=Campaign%3A%20shiny%20new%20filter&filters=Subaccount%3APrimary%20Account%20%28ID%200%29%3A0&metrics=count_something"
 >
-  master account
+  primary account
 </PageLink>
 `;

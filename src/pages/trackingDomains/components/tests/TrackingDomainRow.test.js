@@ -145,7 +145,7 @@ describe('Component: TrackingDomainRow', () => {
     });
   });
 
-  describe('rendering when assigned to master account', () => {
+  describe('rendering when assigned to primary account', () => {
     it('should render a non-default unverified domain', () => {
       const wrapper = shallow(
         <TrackingDomainRow

@@ -3,10 +3,10 @@
 exports[`A/B Test Create Form Component should render subaccount section if subaccounts exist 1`] = `
 <Field
   component={[Function]}
-  helpText="Leaving this field blank will permanently assign the A/B test to the master account."
+  helpText="Leaving this field blank will permanently assign the A/B test to the primary account."
   label="Subaccount Assignment"
   name="subaccount"
-  placeholder="Master Account"
+  placeholder="Primary Account"
 />
 `;
 

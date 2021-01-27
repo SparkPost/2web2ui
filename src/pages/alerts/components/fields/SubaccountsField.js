@@ -17,9 +17,9 @@ export const SubaccountsField = props => {
   }, [listSubaccounts]);
 
   const subaccountItems = [
-    { id: -1, name: 'Master and all subaccounts' },
+    { id: -1, name: 'Primary and all subaccounts' },
     { id: -2, name: 'Any subaccount' },
-    { id: 0, name: 'Master account' },
+    { id: 0, name: 'Primary account' },
     ...subaccounts,
   ];
 

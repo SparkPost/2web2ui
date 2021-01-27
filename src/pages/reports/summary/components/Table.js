@@ -43,7 +43,7 @@ export class Table extends Component {
     const { typeaheadCache } = this.props;
 
     if (subaccountId === 0) {
-      return { type: 'Subaccount', value: 'Master Account (ID 0)', id: 0 };
+      return { type: 'Subaccount', value: 'Primary Account (ID 0)', id: 0 };
     }
 
     const subaccount = _.find(typeaheadCache, { type: 'Subaccount', id: subaccountId });

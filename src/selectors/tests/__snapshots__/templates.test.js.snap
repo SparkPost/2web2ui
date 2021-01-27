@@ -62,7 +62,7 @@ Array [
     },
   },
   Object {
-    "domain": "masterOnly.com",
+    "domain": "primaryOnly.com",
     "status": Object {
       "compliance_status": "valid",
       "ownership_verified": true,
@@ -81,7 +81,7 @@ Array [
   },
   Object {
     "has_published": true,
-    "name": "publishedMaster",
+    "name": "publishedPrimary",
     "published": true,
     "shared_with_subaccounts": false,
     "subaccount_id": 0,
@@ -112,11 +112,11 @@ Array [
 ]
 `;
 
-exports[`Templates selectors selectPublishedTemplatesBySubaccount should return published templates for master account 1`] = `
+exports[`Templates selectors selectPublishedTemplatesBySubaccount should return published templates for primary account 1`] = `
 Array [
   Object {
     "has_published": true,
-    "name": "publishedMaster",
+    "name": "publishedPrimary",
     "published": true,
     "shared_with_subaccounts": false,
     "subaccount_id": 0,
@@ -140,7 +140,7 @@ Array [
   },
   Object {
     "has_published": true,
-    "name": "publishedMaster",
+    "name": "publishedPrimary",
     "published": true,
     "shared_with_subaccounts": false,
     "subaccount_id": 0,
@@ -186,7 +186,7 @@ Array [
   },
   Object {
     "has_published": true,
-    "name": "publishedMaster",
+    "name": "publishedPrimary",
     "published": true,
     "shared_with_subaccounts": false,
     "subaccount_id": 0,
@@ -234,9 +234,9 @@ Array [
   Object {
     "has_draft": true,
     "has_published": true,
-    "list_name": "publishedMaster",
+    "list_name": "publishedPrimary",
     "list_status": "published",
-    "name": "publishedMaster",
+    "name": "publishedPrimary",
     "published": true,
     "shared_with_subaccounts": false,
     "subaccount_id": 0,
@@ -327,9 +327,9 @@ Array [
   },
   Object {
     "has_published": true,
-    "list_name": "publishedMaster",
+    "list_name": "publishedPrimary",
     "list_status": "published",
-    "name": "publishedMaster",
+    "name": "publishedPrimary",
     "published": true,
     "shared_with_subaccounts": false,
     "subaccount_id": 0,

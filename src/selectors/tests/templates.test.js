@@ -28,7 +28,7 @@ describe('Templates selectors', () => {
             subaccount_id: 101,
           },
           {
-            name: 'publishedMaster',
+            name: 'publishedPrimary',
             has_published: true,
             shared_with_subaccounts: false,
             subaccount_id: 0,
@@ -121,7 +121,7 @@ describe('Templates selectors', () => {
             status: { ownership_verified: true, compliance_status: 'valid' },
           },
           {
-            domain: 'masterOnly.com',
+            domain: 'primaryOnly.com',
             status: { ownership_verified: true, compliance_status: 'valid' },
           },
           {
@@ -354,7 +354,7 @@ describe('Templates selectors', () => {
   });
 
   describe('selectPublishedTemplatesBySubaccount', () => {
-    it('should return published templates for master account', () => {
+    it('should return published templates for primary account', () => {
       expect(selector.selectPublishedTemplatesBySubaccount(store)).toMatchSnapshot();
     });
 
@@ -409,7 +409,7 @@ describe('Templates selectors', () => {
     it('returns verified domains when exist', () => {
       expect(
         selector.selectDomainsBySubaccountWithDefault(store, {}).map(dom => dom.domain),
-      ).toEqual(['shared.com', 'masterOnly.com']);
+      ).toEqual(['shared.com', 'primaryOnly.com']);
     });
 
     it('returns subaccount verified domains when exist', () => {

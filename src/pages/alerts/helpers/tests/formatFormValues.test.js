@@ -36,7 +36,7 @@ const apiData = {
 };
 
 const testCases = {
-  'master and all subaccounts': {
+  'primary and all subaccounts': {
     formData: { ...formData },
     apiData: { ...apiData },
   },

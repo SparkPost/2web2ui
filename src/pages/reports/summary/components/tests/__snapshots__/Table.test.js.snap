@@ -3,12 +3,12 @@
 exports[`Summary Table should render group by row data 1`] = `
 Array [
   <Memo(Connect(AddFilterLink))
-    content="Master Account (ID 0)"
+    content="Primary Account (ID 0)"
     newFilter={
       Object {
         "id": 0,
         "type": "Subaccount",
-        "value": "Master Account (ID 0)",
+        "value": "Primary Account (ID 0)",
       }
     }
     reportType="summary"
