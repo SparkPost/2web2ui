@@ -5,7 +5,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/config/jest/setup.js'],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.js?(x)',
-    `<rootDir>/(eslint-rules|src|scripts)/**/*.test.js?(x)`,
+    '<rootDir>/(eslint-rules|src|scripts)/**/*.test.js?(x)',
   ],
   testEnvironment: 'node',
   testURL: 'http://phoenix.test',
