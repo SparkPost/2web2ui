@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Loading } from 'src/components';
 import { ButtonLink, DownloadLink } from 'src/components/links';
-import { Heading } from 'src/components/text';
+import { Heading, TranslatableText } from 'src/components/text';
 import { Error, Stack } from 'src/components/matchbox';
 import { FileType } from '@sparkpost/matchbox-icons';
 import exampleRecipientValidationListPath from './example-recipient-validation-list.csv';
@@ -56,7 +56,9 @@ export class FileUploadWrapperClass extends Component {
           <Heading as="h3">Drag and drop your list here</Heading>
 
           <p>
-            or <ButtonLink onClick={this.handleOpen}>select a file</ButtonLink> to upload
+            <TranslatableText>or </TranslatableText>
+            <ButtonLink onClick={this.handleOpen}>select a file</ButtonLink>
+            <TranslatableText> to upload.</TranslatableText>
           </p>
 
           <div className={styles.InputWrapper}>
