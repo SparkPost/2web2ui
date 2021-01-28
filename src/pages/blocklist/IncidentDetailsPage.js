@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import isIP from 'validator/lib/isIP';
+import isFQDN from 'validator/lib/isFQDN';
 import { ApiErrorBanner, Loading, PanelLoading } from 'src/components';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
 import {
@@ -7,7 +9,6 @@ import {
   Button,
   Columns,
   Column,
-  Grid,
   Inline,
   Layout,
   Page,
@@ -15,7 +16,6 @@ import {
   Stack,
   Text,
 } from 'src/components/matchbox';
-import { useHibana } from 'src/context/HibanaContext';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 import {
   getIncident,
@@ -49,9 +49,6 @@ export const IncidentDetailsPage = ({
   incidentsForBlocklistPending,
   historicalIncidentsPending,
 }) => {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
   useEffect(() => {
     getIncident(id).then(incident => {
       listIncidentsForResource(incident.resource);
@@ -80,6 +77,8 @@ export const IncidentDetailsPage = ({
     occurred_at_timestamp,
     recommendation = {},
   } = incident || {};
+  //Should always be IP or Domain, but added Resource as a failsafe.
+  const resourceType = isIP(resource) ? 'IP' : isFQDN(resource) ? 'Domain' : 'Resource';
 
   const renderError = () => (
     <div data-id="error-banner">
@@ -97,64 +96,6 @@ export const IncidentDetailsPage = ({
     </div>
   );
 
-  const renderOGContent = () => {
-    if (error) {
-      return renderError();
-    }
-
-    return (
-      <>
-        <Grid>
-          <Grid.Column lg={6} xs={12}>
-            <Panel.LEGACY data-id="incident-details">
-              <IncidentDetails
-                resourceName={resource}
-                blocklistName={blocklist_name}
-                listedTimestamp={occurred_at_timestamp}
-                resolvedTimestamp={resolved_at_timestamp}
-                daysListed={days_listed}
-                historicalIncidents={historicalIncidents}
-              />
-            </Panel.LEGACY>
-          </Grid.Column>
-          <Grid.Column lg={6} xs={12}>
-            {historicalIncidentsPending ? (
-              <PanelLoading minHeight="250px" />
-            ) : (
-              <RelatedIncidents
-                incident={{ ...incident, id }}
-                incidents={historicalIncidents}
-                loading={historicalIncidentsPending}
-                name={`${resource} on ${blocklist_name}`}
-                type="history"
-              />
-            )}
-          </Grid.Column>
-        </Grid>
-        <Grid>
-          <Grid.Column lg={6} xs={12}>
-            <RelatedIncidents
-              incident={{ ...incident, id }}
-              incidents={incidentsForBlocklist}
-              loading={incidentsForBlocklistPending}
-              name={blocklist_name}
-              type="blocklist"
-            />
-          </Grid.Column>
-          <Grid.Column lg={6} xs={12}>
-            <RelatedIncidents
-              incident={{ ...incident, id }}
-              incidents={incidentsForResource}
-              loading={incidentsForResourcePending}
-              name={resource}
-              type="resource"
-            />
-          </Grid.Column>
-        </Grid>
-      </>
-    );
-  };
-
   const renderHibanaContent = () => {
     if (error) {
       return renderError();
@@ -170,15 +111,13 @@ export const IncidentDetailsPage = ({
             {historicalIncidentsPending ? (
               <PanelLoading minHeight="150px" />
             ) : (
-              <Panel.LEGACY data-id="incident-details">
-                <IncidentDetails
-                  resourceName={resource}
-                  blocklistName={blocklist_name}
-                  listedTimestamp={occurred_at_timestamp}
-                  resolvedTimestamp={resolved_at_timestamp}
-                  daysListed={days_listed}
-                />
-              </Panel.LEGACY>
+              <IncidentDetails
+                resourceName={resource}
+                blocklistName={blocklist_name}
+                listedTimestamp={occurred_at_timestamp}
+                resolvedTimestamp={resolved_at_timestamp}
+                daysListed={days_listed}
+              />
             )}
           </Layout.Section>
         </Layout>
@@ -211,9 +150,6 @@ export const IncidentDetailsPage = ({
             </Layout.Section>
             <Layout.Section>
               <Panel data-id="remediation-steps">
-                <Panel.Header>
-                  <Panel.Headline as="h6">{recommendation.title}</Panel.Headline>
-                </Panel.Header>
                 <Panel.Section>
                   <Stack>
                     {(recommendation.check_list || []).map((item, count) => (
@@ -270,11 +206,11 @@ export const IncidentDetailsPage = ({
         )}
         <Layout>
           <Layout.Section annotated>
-            <Layout.SectionTitle>Other Incidents for this Resource</Layout.SectionTitle>
+            <Layout.SectionTitle>Other Incidents for this {resourceType}</Layout.SectionTitle>
             <Stack space="400">
               <Text>Most recent incidents involving {resource}</Text>
               <PageLink to={`/signals/blocklist/incidents?search=resource:${resource}`}>
-                View All Incidents for this Resource
+                View all incidents for this {resourceType}
               </PageLink>
             </Stack>
           </Layout.Section>
@@ -283,7 +219,6 @@ export const IncidentDetailsPage = ({
               incident={{ ...incident, id }}
               incidents={incidentsForResource}
               loading={incidentsForResourcePending}
-              name={resource}
               type="resource"
             />
           </Layout.Section>
@@ -296,16 +231,14 @@ export const IncidentDetailsPage = ({
               <PageLink
                 to={`/signals/blocklist/incidents?search=bloacklist_name:${blocklist_name}`}
               >
-                View All Incidents for this Blocklist
+                View all incidents for this blocklist
               </PageLink>
             </Stack>
           </Layout.Section>
           <Layout.Section>
             <RelatedIncidents
-              incident={{ ...incident, id }}
               incidents={incidentsForBlocklist}
-              loading={incidentsForResourcePending}
-              name={blocklist_name}
+              loading={incidentsForBlocklistPending}
               type="blocklist"
             />
           </Layout.Section>
@@ -323,7 +256,7 @@ export const IncidentDetailsPage = ({
         component: PageLink,
       }}
     >
-      {isHibanaEnabled ? renderHibanaContent() : renderOGContent()}
+      {renderHibanaContent()}
     </Page>
   );
 };

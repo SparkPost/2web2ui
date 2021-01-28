@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { PageLink } from 'src/components/links';
 import { Panel, Table, Tag, Text } from 'src/components/matchbox';
 import PropTypes from 'prop-types';
-import { DisplayDate, Empty, PanelLoading, TableCollection } from 'src/components';
+import { DisplayDate, PanelLoading, TableCollection } from 'src/components';
 
 const TableWrapper = props => (
   <>
@@ -12,17 +12,28 @@ const TableWrapper = props => (
   </>
 );
 
-const RelatedIncidents = ({ incidents = [], loading, name = '', type = '' }) => {
+const RelatedIncidents = ({ incidents = [], loading, type = '' }) => {
   const columns = useMemo(() => {
     switch (type) {
       case 'resource': {
-        return [{ label: 'Blocklist' }, { label: 'Date Listed' }, { label: 'Date Resolved' }];
+        return [
+          { label: 'Blocklist', sortKey: 'blocklist_name' },
+          { label: 'Date Listed', sortKey: 'occurred_at_timestamp' },
+          { label: 'Date Resolved', sortKey: 'resolved_at' },
+        ];
       }
       case 'blocklist': {
-        return [{ label: 'Resource' }, { label: 'Date Listed' }, { label: 'Date Resolved' }];
+        return [
+          { label: 'Resource', sortKey: 'resource' },
+          { label: 'Date Listed', sortKey: 'occurred_at_timestamp' },
+          { label: 'Date Resolved', sortKey: 'resolved_at' },
+        ];
       }
       case 'history': {
-        return [{ label: 'Date Listed' }, { label: 'Date Resolved' }];
+        return [
+          { label: 'Date Listed', sortKey: 'occurred_at_timestamp' },
+          { label: 'Date Resolved', sortKey: 'resolved_at' },
+        ];
       }
       default: {
         return [];
@@ -32,19 +43,6 @@ const RelatedIncidents = ({ incidents = [], loading, name = '', type = '' }) => 
 
   if (loading) {
     return <PanelLoading minHeight="315px" />;
-  }
-
-  if (!incidents.length) {
-    const message =
-      type === 'history'
-        ? `No historical incidents for ${name}`
-        : `No other recent ${name} incidents`;
-
-    return (
-      <Panel.LEGACY>
-        <Empty message={message} />
-      </Panel.LEGACY>
-    );
   }
 
   const getRowData = ({

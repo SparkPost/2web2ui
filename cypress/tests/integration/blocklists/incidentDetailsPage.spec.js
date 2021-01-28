@@ -95,42 +95,18 @@ describe('Blocklist Incident Details Page', () => {
     });
   });
 
-  describe('Incident Details', () => {
-    it('displays alternative text when there are no historical incidents', () => {
-      cy.stubRequest({
-        url: `${BLOCKLIST_BASE_API_URL}/sparkpost.io/incidents**`,
-        fixture: '/200.get.no-results.json',
-        requestAlias: 'historicalIncidentsEmpty',
-      });
-      cy.visit(PAGE_URL);
-      cy.wait('@historicalIncidentsEmpty');
-      cy.findByText('No historical incidents for sparkpost.io on abuseat.org (CBL)').should(
-        'be.visible',
-      );
-    });
-
-    it('deep links to filtered summary report page upon clicking "View Engagement" ', () => {
-      cy.visit(PAGE_URL);
-      cy.findByText('View Engagement').click({ force: true });
+    describe('Incident Details', () => {
+      it('deep links to filtered summary report page upon clicking "View Engagement" ', () => {
+        cy.visit(PAGE_URL);
+        cy.findByText('View Engagement').click({ force: true });
 
       cy.url().should('include', 'filters=Sending%20Domain%3Asparkpost.io');
     });
   });
 
-  describe('Related Incidents (blocklist)', () => {
-    it('displays alternative text when there are no other recent incidents', () => {
-      cy.stubRequest({
-        url: `${BLOCKLIST_BASE_API_URL}/incidents?blocklists=**`,
-        fixture: '/200.get.no-results.json',
-        requestAlias: 'recentOtherIncidentsEmpty',
-      });
-      cy.visit(PAGE_URL);
-      cy.wait('@recentOtherIncidentsEmpty');
-      cy.findByText('No other recent abuseat.org (CBL) incidents').should('be.visible');
-    });
-
-    it("redirects to that incident's detail page when clicking another incident", () => {
-      cy.visit(PAGE_URL);
+    describe('Related Incidents (blocklist)', () => {
+      it("redirects to that incident's detail page when clicking another incident", () => {
+        cy.visit(PAGE_URL);
 
       cy.get('[data-id=related-incidents-blocklist]').within(() => {
         cy.get('a')
@@ -141,20 +117,9 @@ describe('Blocklist Incident Details Page', () => {
     });
   });
 
-  describe('Related Incidents (resource)', () => {
-    it('displays alternative text when there are no other recent incidents', () => {
-      cy.stubRequest({
-        url: `${BLOCKLIST_BASE_API_URL}/incidents?resources=**`,
-        fixture: '/200.get.no-results.json',
-        requestAlias: 'recentOtherIncidentsEmpty',
-      });
-      cy.visit(PAGE_URL);
-      cy.wait('@recentOtherIncidentsEmpty');
-      cy.findByText('No other recent sparkpost.io incidents').should('be.visible');
-    });
-
-    it("redirects to that incident's detail page when clicking another incident", () => {
-      cy.visit(PAGE_URL);
+    describe('Related Incidents (resource)', () => {
+      it("redirects to that incident's detail page when clicking another incident", () => {
+        cy.visit(PAGE_URL);
 
       cy.get('[data-id=related-incidents-resource]').within(() => {
         cy.get('a')

@@ -1,12 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import { PageLink } from 'src/components/links';
-import { Box, Button, Grid, LabelValue, Panel, Tag } from 'src/components/matchbox';
+import { Button, Grid, LabelValue, Panel, Tag } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
 import { domainRegex } from 'src/helpers/regex';
-import { ShowChart } from '@sparkpost/matchbox-icons';
-import { Definition as DefinitionOG } from 'src/components/text';
-import { useHibana } from 'src/context/HibanaContext';
+import { StackedLineChart } from '@sparkpost/matchbox-icons';
 
 export default ({
   resourceName,
@@ -15,10 +13,6 @@ export default ({
   resolvedTimestamp,
   daysListed,
 }) => {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-  const Definition = isHibanaEnabled ? LabelValue : DefinitionOG;
-
   const engagementSummaryFrom = moment
     .utc(listedTimestamp)
     .subtract('7', 'days')
@@ -40,64 +34,58 @@ export default ({
     : 'Sending IP';
 
   return (
-    <>
-      <Panel.LEGACY.Section>
+    <Panel data-id="incident-details">
+      <Panel.Section>
         <Grid>
           <Grid.Column sm={3}>
-            <Definition>
-              <Definition.Label>Resource</Definition.Label>
-              <Definition.Value>{resourceName}</Definition.Value>
-            </Definition>
+            <LabelValue>
+              <LabelValue.Label>Resource</LabelValue.Label>
+              <LabelValue.Value>{resourceName}</LabelValue.Value>
+            </LabelValue>
           </Grid.Column>
           <Grid.Column sm={3}>
-            <Definition>
-              <Definition.Label>Blocklist</Definition.Label>
-              <Definition.Value>{blocklistName}</Definition.Value>
-            </Definition>
+            <LabelValue>
+              <LabelValue.Label>Blocklist</LabelValue.Label>
+              <LabelValue.Value>{blocklistName}</LabelValue.Value>
+            </LabelValue>
           </Grid.Column>
         </Grid>
-      </Panel.LEGACY.Section>
-      <Panel.LEGACY.Section>
+      </Panel.Section>
+      <Panel.Section>
         <Grid>
-          <Grid.Column sm={3}>
-            <Definition>
-              <Definition.Label>Date Listed</Definition.Label>
-              <Definition.Value>{formatDateTime(listedTimestamp)}</Definition.Value>
-            </Definition>
+          <Grid.Column sm={4}>
+            <LabelValue>
+              <LabelValue.Label>Date Listed</LabelValue.Label>
+              <LabelValue.Value>{formatDateTime(listedTimestamp)}</LabelValue.Value>
+            </LabelValue>
           </Grid.Column>
-          <Grid.Column sm={resolvedTimestamp ? 3 : 2}>
-            <Definition>
-              <Definition.Label>Date Resolved</Definition.Label>
-              <Definition.Value>
+          <Grid.Column sm={resolvedTimestamp ? 4 : 3}>
+            <LabelValue>
+              <LabelValue.Label>Date Resolved</LabelValue.Label>
+              <LabelValue.Value>
                 {resolvedTimestamp ? (
                   formatDateTime(resolvedTimestamp)
                 ) : (
                   <Tag color="red">Active</Tag>
                 )}
-              </Definition.Value>
-            </Definition>
+              </LabelValue.Value>
+            </LabelValue>
           </Grid.Column>
           <Grid.Column sm={2}>
-            <Definition>
-              <Definition.Label>Days Listed</Definition.Label>
-              <Definition.Value>{daysListed}</Definition.Value>
-            </Definition>
-          </Grid.Column>
-          <Grid.Column sm={2}>
-            <PageLink
-              as={Button}
-              size="small"
-              flat
-              to={`/reports/summary?from=${engagementSummaryFrom}&to=${engagementSummaryTo}&range=custom&filters=${engagementSummaryResource}:${resourceName}&report=engagement`}
-            >
-              View Engagement
-              <Box as="span" position="relative" left="200" bottom="1px">
-                <ShowChart />
-              </Box>
-            </PageLink>
+            <LabelValue>
+              <LabelValue.Label>Days Listed</LabelValue.Label>
+              <LabelValue.Value>{daysListed}</LabelValue.Value>
+            </LabelValue>
           </Grid.Column>
         </Grid>
-      </Panel.LEGACY.Section>
-    </>
+        <Panel.Action
+          component={PageLink}
+          to={`/reports/summary?from=${engagementSummaryFrom}&to=${engagementSummaryTo}&range=custom&filters=${engagementSummaryResource}:${resourceName}&report=engagement`}
+        >
+          View Engagement
+          <Button.Icon as={StackedLineChart} marginLeft="200" />
+        </Panel.Action>
+      </Panel.Section>
+    </Panel>
   );
 };

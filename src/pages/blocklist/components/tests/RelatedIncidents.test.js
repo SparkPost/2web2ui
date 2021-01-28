@@ -55,16 +55,6 @@ describe('Blocklist Component: RelatedIncidents', () => {
     );
   };
 
-  it('renders correct empty statement when there are no incidents for blocklist', () => {
-    const { queryByText } = subject({ name: 'spamhaus.org - pbl' });
-    expect(queryByText('No other recent spamhaus.org - pbl incidents')).toBeInTheDocument();
-  });
-
-  it('renders correct empty statement when there are no incidents for history', () => {
-    const { queryByText } = subject({ name: 'spamhaus.org - pbl', type: 'history' });
-    expect(queryByText('No historical incidents for spamhaus.org - pbl')).toBeInTheDocument();
-  });
-
   it('renders the resource name of incidents when type is blocklist', () => {
     const { queryByText } = subject({ incidents: mixedIncidents });
     expect(queryByText('1.2.3.4')).toBeInTheDocument();

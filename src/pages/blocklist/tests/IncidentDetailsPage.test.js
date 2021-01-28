@@ -34,6 +34,16 @@ const mockIncident = {
   recommendation,
 };
 
+const mockDomainIncident = {
+  id: '123',
+  resource: 'realNigerianPrince.com',
+  blocklist_name: 'spamhaus.org - pbl',
+  occurred_at: '2019-12-31T18:14:57.899Z',
+  resolved_at: '2019-12-31T19:01:32.741Z',
+  status: 'resolved',
+  recommendation,
+};
+
 const mockHistoricalIncidents = [
   {
     id: '1234',
@@ -121,6 +131,34 @@ describe('IncidentDetailsPage', () => {
     expect(wrapper.find('.mock-incident-details')).toHaveLength(1);
   });
 
+  it('renders IP address incident correctly in Hibana', () => {
+    subject(
+      {
+        loading: false,
+        incident: mockIncident,
+      },
+      render,
+      true,
+    );
+
+    expect(screen.getByText('Other Incidents for this IP')).toBeVisible();
+    expect(screen.getByText('View all incidents for this IP')).toBeVisible();
+  });
+
+  it('renders Domain incident correctly in Hibana', () => {
+    subject(
+      {
+        loading: false,
+        incident: mockDomainIncident,
+      },
+      render,
+      true,
+    );
+
+    expect(screen.getByText('Other Incidents for this Domain')).toBeVisible();
+    expect(screen.getByText('View all incidents for this Domain')).toBeVisible();
+  });
+
   it('renders the remediation steps for Hibana', () => {
     const props = {
       loading: false,
@@ -129,7 +167,6 @@ describe('IncidentDetailsPage', () => {
 
     subject(props, render, true);
 
-    expect(screen.getByText('Fix This')).toBeVisible();
     expect(screen.getByText('If you are happy')).toBeVisible();
     expect(screen.getByText('And you know it')).toBeVisible();
     expect(screen.getByText('Clap your hands')).toBeVisible();
