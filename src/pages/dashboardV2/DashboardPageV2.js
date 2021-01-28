@@ -76,7 +76,9 @@ export default function DashboardPageV2() {
         onboarding,
       });
     }
+  }, [onboarding]);
 
+  useEffect(() => {
     getAccount();
     listAlerts();
     if (canViewUsage) getUsage();
@@ -214,7 +216,6 @@ export default function DashboardPageV2() {
                   </Columns>
                 </Dashboard.Panel>
               )}
-
               {onboarding === 'addSending' && (
                 <Dashboard.Panel>
                   <Columns>
