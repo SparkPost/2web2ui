@@ -22,6 +22,6 @@
       "type": "default"
     },
     "options": {},
-    "support": { "phone": false, "online": true },
+    "support": { "phone": false, "online": true }
   }
 }
