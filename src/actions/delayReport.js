@@ -31,7 +31,7 @@ export function refreshDelayReportV2(updates = {}) {
           params: getQueryFromOptionsV2({ ...updates, metrics: DELIVERABILITY_METRICS }),
         }),
       ),
-      dispatch(fetchDelayReasonsByDomain(getQueryFromOptions(updates))),
+      dispatch(fetchDelayReasonsByDomain(getQueryFromOptionsV2(updates))),
     ]);
   };
 }

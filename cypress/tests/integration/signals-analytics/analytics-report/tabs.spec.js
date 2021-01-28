@@ -1,10 +1,10 @@
-import { PAGE_URL, STABLE_UNIX_DATE } from './constants';
+import { PAGE_URL, FILTERS_URL, QUERY_FILTER, STABLE_UNIX_DATE } from './constants';
 import { stubDeliverability, stubTimeSeries } from './helpers';
 
 describe('Analytics Report report tabs', () => {
   describe('the bounce reason table', () => {
     beforeEach(() => {
-      commonBeforeSteps();
+      commonBeforeSteps(FILTERS_URL);
       cy.withinDrawer(() => {
         // Uncheck defaults, and check a metric that renders the "Rejection Reason" table
         cy.findByLabelText('Targeted').uncheck({ force: true });
@@ -44,8 +44,12 @@ describe('Analytics Report report tabs', () => {
 
       cy.findByRole('tab', { name: 'Bounce Reason' }).click();
 
-      cy.wait(['@getDeliverability', '@getBounceClassification', '@getBounceReason']);
-
+      cy.wait(['@getDeliverability', '@getBounceClassification', '@getBounceReason']).then(xhrs => {
+        const [deliverabilityReq, bounceClassReq, bounceReasonReq] = xhrs;
+        cy.wrap(deliverabilityReq.url).should('contain', `${QUERY_FILTER}`);
+        cy.wrap(bounceClassReq.url).should('contain', `${QUERY_FILTER}`);
+        cy.wrap(bounceReasonReq.url).should('contain', `${QUERY_FILTER}`);
+      });
       cy.get('tbody tr').within(() => {
         cy.get('td')
           .eq(0)
@@ -79,7 +83,7 @@ describe('Analytics Report report tabs', () => {
 
   describe('the rejection reason table', () => {
     beforeEach(() => {
-      commonBeforeSteps();
+      commonBeforeSteps(FILTERS_URL);
       cy.withinDrawer(() => {
         cy.findByLabelText('Targeted').uncheck({ force: true });
         cy.findByLabelText('Accepted').uncheck({ force: true });
@@ -159,7 +163,7 @@ describe('Analytics Report report tabs', () => {
 
   describe('the delay reason table', () => {
     beforeEach(() => {
-      commonBeforeSteps();
+      commonBeforeSteps(FILTERS_URL);
       cy.withinDrawer(() => {
         cy.findByLabelText('Targeted').uncheck({ force: true });
         cy.findByLabelText('Accepted').uncheck({ force: true });
@@ -175,12 +179,22 @@ describe('Analytics Report report tabs', () => {
 
     it('renders the report chart and delay reason table depending on the selected tab', () => {
       cy.clock(STABLE_UNIX_DATE);
+      cy.stubRequest({
+        url: '/api/v1/metrics/deliverability/delay-reason/domain**/*',
+        fixture: 'metrics/deliverability/delay-reason/domain/200.get.json',
+        requestAlias: 'getDelayReasons',
+      });
 
       cy.findByDataId('summary-chart').within(() => {
         cy.findByText('Delay Reason').click();
       });
 
       cy.findByDataId('summary-chart').within(() => cy.get('table').should('be.visible'));
+      cy.wait(['@getDelayReasons', '@getDeliverability']).then(xhrs => {
+        const [delayReasons, deliverabilityReq] = xhrs;
+        cy.wrap(delayReasons.url).should('contain', `${QUERY_FILTER}`);
+        cy.wrap(deliverabilityReq.url).should('contain', `${QUERY_FILTER}`);
+      });
 
       cy.findByDataId('summary-chart').within(() => {
         cy.findByText('Report').click();
@@ -236,7 +250,7 @@ describe('Analytics Report report tabs', () => {
 
   describe('the links table', () => {
     beforeEach(() => {
-      commonBeforeSteps();
+      commonBeforeSteps(FILTERS_URL);
       cy.withinDrawer(() => {
         cy.findByLabelText('Targeted').uncheck({ force: true });
         cy.findByLabelText('Accepted').uncheck({ force: true });
@@ -274,8 +288,11 @@ describe('Analytics Report report tabs', () => {
       });
       cy.findByRole('tab', { name: 'Links' }).click();
 
-      cy.wait(['@getLinks', '@getDeliverability']);
-
+      cy.wait(['@getLinks', '@getDeliverability']).then(xhrs => {
+        const [linksReq, deliverabilityReq] = xhrs;
+        cy.wrap(linksReq.url).should('contain', `${QUERY_FILTER}`);
+        cy.wrap(deliverabilityReq.url).should('contain', `${QUERY_FILTER}`);
+      });
       cy.findByLabelText('Filter').should('be.visible');
       cy.get('tbody tr')
         .eq(0)
@@ -938,7 +955,7 @@ function applySubaccountComparisons() {
 /**
  * A common series of actions that occur at the beginning of each test in the suite
  */
-function commonBeforeSteps() {
+function commonBeforeSteps(path = PAGE_URL) {
   cy.stubAuth();
   cy.login({ isStubbed: true });
   cy.stubRequest({
@@ -948,7 +965,7 @@ function commonBeforeSteps() {
   });
   stubDeliverability();
   stubTimeSeries();
-  cy.visit(PAGE_URL);
+  cy.visit(path);
   cy.findByRole('button', { name: 'Add Metrics' }).click();
 }
 
