@@ -21,69 +21,7 @@
       "self_serve": true,
       "type": "default"
     },
-    "options": {
-      "ui": {
-        "developer_and_email_roles": true,
-        "prototype_signals_details": true,
-        "isGuideAtBottom": true,
-        "recipientverif": true,
-        "allow_health_score_v3": true,
-        "sendTestEmail": true,
-        "messaging_onboarding": true,
-        "stepName": "Show Me SparkPost",
-        "snippets": true,
-        "onboarding": {
-          "active_step": "Show Me SparkPost",
-          "invite_collaborator_completed": true,
-          "explore_analytics_completed": true,
-          "send_test_email_completed": true,
-          "isGuideAtBottom": true
-        },
-        "feature_signals_v2": true,
-        "Send Test Email": null,
-        "spamTrapHitsByType": true,
-        "inbox_placement": false,
-        "subaccount_reporting": true,
-        "message_onboarding": true,
-        "active_guide_step": "Show Me SparkPost",
-        "hideTerminatedSubaccounts": true,
-        "amp_html": true,
-        "new_navigation": false,
-        "allow_events_ingest": true,
-        "abtests": true,
-        "allow_health_score_V3": true,
-        "recipverif": true,
-        "account_feature_flags": false,
-        "templatesV2": true,
-        "alerts": true,
-        "onbaording": { "isGuideAtBottom": true },
-        "signals": true,
-        "onboarding_active_step": "Show Me SparkPost",
-        "feature_alerts": true,
-        "ip_auto_warmup": true,
-        "allow_injection_alerts": true
-      },
-      "initial_open_pixel_tracking": true,
-      "smtp_tracking_default": true,
-      "blocklist_monitors": true,
-      "recipient_validation": true,
-      "inbox_placement": true,
-      "auto_verify_domains": false
-    },
+    "options": {},
     "support": { "phone": false, "online": true },
-    "usage": {
-      "timestamp": "2019-12-13T16:34:00.000Z",
-      "day": {
-        "used": 259823,
-        "start": "2019-12-12T16:45:00.000Z",
-        "end": "2019-12-13T16:45:00.000Z"
-      },
-      "month": {
-        "used": 1141451,
-        "start": "2019-12-09T08:00:00.000Z",
-        "end": "2020-01-09T08:00:00.000Z"
-      },
-      "sandbox": { "limit": 5, "used": 123083 }
-    }
   }
 }

@@ -1,6 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Banner, Panel, Stack, Toggle, Columns, Column } from 'src/components/matchbox';
+import {
+  Banner,
+  Panel,
+  Stack,
+  Toggle,
+  Columns,
+  Column,
+  ScreenReaderOnly,
+} from 'src/components/matchbox';
 import LabelledValue from 'src/components/labelledValue/LabelledValue';
 
 const RightAlignedText = styled.div`
@@ -37,7 +45,8 @@ export const TogglePanelSection = ({
           <Column width={1 / 3}>
             <RightAlignedText>
               <Toggle
-                id="enforceTfa"
+                label={<ScreenReaderOnly>Enforce TFA</ScreenReaderOnly>}
+                labelHidden
                 disabled={readOnly || tfaRequiredEnforced}
                 checked={tfaRequiredOrEnforced}
                 onChange={toggleTfaRequired}
