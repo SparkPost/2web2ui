@@ -76,7 +76,7 @@ export class EnforceTFAPanel extends React.Component {
           </Panel.LEGACY.Section>
         )}
         <TogglePanelSection
-          readOnly={ssoEnabled}
+          ssoEnabled={ssoEnabled}
           tfaRequired={tfaRequired}
           toggleTfaRequired={this.toggleTfaRequired}
           tfaRequiredEnforced={tfaRequiredEnforced}

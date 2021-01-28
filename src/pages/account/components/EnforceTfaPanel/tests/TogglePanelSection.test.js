@@ -27,9 +27,9 @@ describe('Component: TogglePanel', () => {
     expect(toggleTfaRequired).toHaveBeenCalledTimes(1);
   });
 
-  it('should be disabled if readOnly or tfaEnforced is set to true', () => {
+  it('should be disabled if ssoEnabled or tfaEnforced is set to true', () => {
     expect(
-      subject({ readOnly: true })
+      subject({ ssoEnabled: true })
         .find('Toggle')
         .prop('disabled'),
     ).toEqual(true);
