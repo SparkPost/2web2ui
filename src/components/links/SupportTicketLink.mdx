@@ -1,0 +1,39 @@
+# SupportTicketLink
+
+Use the `<SupportTicketLink/>` component to render a link that opens the support ticket modal.
+
+## Usage
+
+```js
+import React from 'react';
+import { SupportTicketLink } from 'src/components/links';
+
+const MyComponent = () => (
+  <SupportTicketLink issueId="general_billing">
+    Is there a problem with your billing?
+  </SupportTicketLink>
+);
+```
+
+## Examples
+
+### Default
+
+```js
+<SupportTicketLink issueId="general_billing" openSupportTicketForm={console.log}>
+  Is there a problem with your billing?
+</SupportTicketLink>
+```
+
+### As Button
+
+```js
+<SupportTicketLink
+  as={Button}
+  issueId="general_billing"
+  openSupportTicketForm={console.log}
+  primary
+>
+  Is there a problem with your billing?
+</SupportTicketLink>
+```

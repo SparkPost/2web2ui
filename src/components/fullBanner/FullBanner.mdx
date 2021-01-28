@@ -1,0 +1,59 @@
+# FullBanner
+
+Use the `<FullBanner/>` to display a full width alert that spans its container.
+
+## Usage
+
+```js
+import React from 'react';
+import { FullBanner } from 'src/components/fullBanner';
+
+const MyComponent = () => (
+  <FullBanner>
+    <FullBanner.Icon as={AccessTime} />
+    <Text>Here is some content</Text>
+    <FullBanner.CloseButton onClick={() => console.log('onClick!')} />
+  </FullBanner>
+);
+```
+
+## Examples
+
+### Default
+
+```js
+<FullBanner>
+  <Text>Here is some content</Text>
+</FullBanner>
+```
+
+### With a Close Button
+
+```js
+<FullBanner>
+  <Text>Here is some content</Text>
+  <FullBanner.CloseButton onClick={() => console.log('onClick!')} />
+</FullBanner>
+```
+
+### With an Icon
+
+```js
+<FullBanner>
+  <FullBanner.Icon as={AccessTime} />
+  <Text>Here is some content</Text>
+  <FullBanner.CloseButton onClick={() => console.log('onClick!')} />
+</FullBanner>
+```
+
+### With a Link
+
+Note that this link semantically defaults to `ButtonLink` and assumes there is a passed in click
+handler. Use the `as` prop if a different type of link component is needed.
+
+```js
+<FullBanner>
+  <Text>Here is some content</Text>
+  <FullBanner.Link onClick={() => console.log('onClick!')}>Click Me</FullBanner.Link>
+</FullBanner>
+```

@@ -1,0 +1,58 @@
+# LabelledValue
+
+The `<LabelledValue/>` component is used to style labels and their associated values in a
+side-by-side manner. **NOTE:** This component is deprecated. Use the Matchbox LabelValue component
+instead.
+
+## Usage
+
+```js
+import React from 'react';
+import LabelledValue from 'src/components/labelledValue/LabelledValue';
+
+const MyComponent = () => (
+  <div>
+    <LabelledValue label="First Name" value="Sparky" />
+    <LabelledValue label="Last Name" value="SparkPost" />
+    <LabelledValue label="Phone Number" value="(443) 555 - 1234" />
+  </div>
+);
+```
+
+## Examples
+
+### Default
+
+```js
+<div>
+  <LabelledValue label="First Name" value="Sparky" />
+  <LabelledValue label="Last Name" value="SparkPost" />
+  <LabelledValue label="Phone Number" value="(443) 555 - 1234" />
+</div>
+```
+
+### With Bold Disabled
+
+```js
+<div>
+  <LabelledValue label="First Name" value="Sparky" bold={false} />
+  <LabelledValue label="Last Name" value="SparkPost" bold={false} />
+  <LabelledValue label="Phone Number" value="(443) 555 - 1234" bold={false} />
+</div>
+```
+
+### With Children
+
+```js
+<form>
+  <LabelledValue label="First Name">
+    <TextField id="first-name" name="first-name" />
+  </LabelledValue>
+  <LabelledValue label="Last Name">
+    <TextField id="last-name" name="last-name" />
+  </LabelledValue>
+  <LabelledValue label="Phone Number">
+    <TextField id="phone-number" name="phone-number" type="tel" />
+  </LabelledValue>
+</form>
+```

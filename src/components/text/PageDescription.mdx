@@ -1,0 +1,24 @@
+# PageDescription
+
+Use the `<PageDescription/>` in conjunction with the Matchbox `<Page/>` component when additional
+descriptive text is rendered below the heading.
+
+## Usage
+
+```js
+import React from 'react';
+import { Page } from 'src/components/matchbox';
+import { PageDescription } from 'src/components/text';
+
+const MyComponent = () => (
+  <Page
+    title="This is a page title"
+    primaryAction={{ content: 'Create', onClick: () => console.log('hello') }}
+  >
+    <PageDescription className="my-class" data-id="my-page-description">
+      This is a page description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+      sodales mi at mattis molestie. Curabitur et metus rutrum, laoreet nisi id, imperdiet lacus.
+    </PageDescription>
+  </Page>
+);
+```

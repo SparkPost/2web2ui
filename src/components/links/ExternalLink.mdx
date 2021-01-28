@@ -1,0 +1,32 @@
+# ExternalLink
+
+Use the `<ExternalLink/>` component to render a link that directs to a new page outside of the app.
+
+## Usage
+
+```js
+import React from 'react';
+import { ExternalLink } from 'src/components';
+
+const MyComponent = () => (
+  <ExternalLink to="https://developers.sparkpost.com">
+    SparkPost Developer Documentation
+  </ExternalLink>
+);
+```
+
+## Examples
+
+### Default
+
+```js
+<ExternalLink to="https://developers.sparkpost.com">SparkPost Developer Documentation</ExternalLink>
+```
+
+### As Button
+
+```js
+<ExternalLink as={Button} to="https://developers.sparkpost.com" primary>
+  SparkPost Developer Documentation
+</ExternalLink>
+```

@@ -1,0 +1,53 @@
+# usePageFilters
+
+`usePageFilters` This hook return the current query params, and also helps manage them. Ideal for
+pages where filters should be deeplinked with the url. This hook also handles the qs logic for
+syncing url with the filters
+
+### Example
+
+```js
+const initFilters = {
+  id: {
+    validate: val => !isNaN(val) && val > 0 && val < 10,
+    normalize: val => val * 1, // Convert from string to number
+    defaultValue: 0,
+    excludeFromRoute: false,
+  },
+};
+function MyPageWithFilters() {
+  const { filters, prevFilters, updateFilters, resetFilters } = usePageFilters(initFilters);
+
+  return <>Some Page with filters</>;
+}
+```
+
+### What the hook provides
+
+- **filters** - returns the current query parameters
+- **prevFilters** - return the query parameters before the updateFilters was called
+- **updateFilters** - used to update the query parameters
+- **resetFilters** - used to reset the query parameters to initial state
+
+### Initializing usePageFilters
+
+- the initFilters to initialize the usePageFilters should be either initialized outside the
+  component or be wrapped in React.memo
+- remember to specify which query params that are allowed in the page using initFilters
+- each query param object has validate, normalize, defaultValue and excludeFromRoute
+
+  - **validate** - it validates the values for that particular key in request parameters. Example -
+
+  ```js
+       page: {
+             validate: val => !isNaN(val) && val > 0 && val < 10,
+             defaultValue: 0,
+       }
+  ```
+
+  above condition would make sure the page param is between 0 and 10; in case the request param is
+  not between 0 and 10 then validation would reset it to defaultValue of 0
+
+  - **normalize** - function to convert the string/array value from requestParams before the
+    validation occurs; this is necessary because the request parameters is of type string
+  - **excludeFromRoute** - This is to exclude the parameter from being included in the route

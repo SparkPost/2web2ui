@@ -1,0 +1,20 @@
+# ActionPopover
+
+Use the `<ActionPopover/>` for simple `<Popover/>` dropdowns.
+
+## Usage
+
+```js
+import React from 'react';
+import ActionPopover from 'src/components/actionPopover';
+
+const MyComponent = () => (
+  <ActionPopover
+    actions={[
+      { content: 'Edit', to: '/edit' },
+      { content: 'Save', to: '/save' },
+      { content: 'Delete', to: '/delete' },
+    ]}
+  />
+);
+```

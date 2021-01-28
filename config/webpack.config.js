@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const resolve = require('resolve');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -20,8 +19,6 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const snapshotGenerator = require('../scripts/browsersSnapshotGen');
@@ -540,35 +537,6 @@ module.exports = function(webpackEnv) {
       // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
       // You can remove this if you don't use Moment.js:
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      // TypeScript type checking
-      useTypeScript &&
-        new ForkTsCheckerWebpackPlugin({
-          typescript: resolve.sync('typescript', {
-            basedir: paths.appNodeModules,
-          }),
-          async: false,
-          checkSyntacticErrors: true,
-          tsconfig: paths.appTsConfig,
-          compilerOptions: {
-            module: 'esnext',
-            moduleResolution: 'node',
-            resolveJsonModule: true,
-            isolatedModules: true,
-            noEmit: true,
-            jsx: 'preserve',
-          },
-          reportFiles: [
-            '**',
-            '!**/*.json',
-            '!**/__tests__/**',
-            '!**/?(*.)(spec|test).*',
-            '!**/src/setupProxy.*',
-            '!**/src/setupTests.*',
-          ],
-          watch: paths.appSrc,
-          silent: true,
-          formatter: typescriptFormatter,
-        }),
       isEnvProduction &&
         new BundleAnalyzerPlugin({
           // See Docs for these options: https://www.npmjs.com/package/webpack-bundle-analyzer

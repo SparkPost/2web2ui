@@ -1,0 +1,31 @@
+# Abbreviation
+
+Use the `<Abbreviation/>` component for handling abbreviated content.
+
+## Usage
+
+```js
+import React from 'react';
+import { Abbreviation } from 'src/components';
+
+const MyComponent = () => <Abbreviation title="Customer Success Manager">CSM</Abbreviation>;
+```
+
+If there are multiple instances of the same abbreviation on a page, the `<Abbreviation/>` component
+is only necessary for the first instance. For example:
+
+```js
+import React from 'react';
+import { Abbreviation } from 'src/components';
+
+const MyPage = () => (
+  <div>
+    <p>
+      Get to know your friendly <Abbreviation title="Customer Success Manager">CSM</Abbreviation>{' '}
+      here at SparkPost.
+    </p>
+
+    <p>A good CSM is worth their weight in gold.</p>
+  </div>
+);
+```

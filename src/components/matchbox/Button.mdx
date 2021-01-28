@@ -1,0 +1,114 @@
+# Button
+
+Use the `<Button/>` component for interactive elements that draw the user's attention.
+
+## Examples
+
+### Default Variant
+
+```js
+<Button onClick={() => console.log('hello, world')}>Click Me</Button>
+```
+
+### Primary Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="primary">
+  Click Me
+</Button>
+```
+
+### Secondary Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="secondary">
+  Click Me
+</Button>
+```
+
+### Tertiary Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="tertiary">
+  Click Me
+</Button>
+```
+
+### Destructive Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="destructive">
+  Click Me
+</Button>
+```
+
+### Minimal Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="minimal">
+  Click Me
+</Button>
+```
+
+### Monochrome Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="monochrome">
+  Click Me
+</Button>
+```
+
+### Monochrome Secondary Variant
+
+```js
+<Button onClick={() => console.log('hello, world')} variant="monochrome-secondary">
+  Click Me
+</Button>
+```
+
+### Connected Variant
+
+```js
+<TextField
+  id="example-text-field"
+  name="example-text-field"
+  label="Example Text Field"
+  connectRight={<Button variant="connected">Clear</Button>}
+  onChange={() => console.log('change!')}
+/>
+```
+
+## Usage
+
+### As an Interactive Element
+
+For elements that trigger page behavior or submit forms.
+
+```js
+import { Button } from 'src/components/matchbox';
+
+const MyComponent = () => {
+  return (
+    <Button variant="primary" onClick={() => console.log('hello, world')}>
+      Click Me
+    </Button>
+  );
+};
+```
+
+### As a Link
+
+For elements that leverage the app's router or link to an external URL.
+
+```js
+import { PageLink } from 'src/components/links';
+import { Button } from 'src/components/matchbox';
+
+const MyComponent = () => {
+  return (
+    <PageLink as={Button} to="https://sparkpost.com">
+      Go to SparkPost.com
+    </PageLink>
+  );
+};
+```

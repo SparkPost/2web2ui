@@ -1,0 +1,25 @@
+# LabelSpacer
+
+The `<LabelSpacer />` is used to render empty space above elements that need to align with form
+controls that render with labels.
+
+## Usage
+
+```js
+import { Button, Panel, TextField } from 'src/components/matchbox';
+import { LabelSpacer } from 'src/components/labels';
+
+const MyComponent = () => (
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
+      <Inline>
+        <TextField label="Filter By" />
+        <div>
+          <LabelSpacer />
+          <Button variant="secondary">Share</Button>
+        </div>
+      </Inline>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+);
+```

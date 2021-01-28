@@ -24,7 +24,7 @@ export default (state = initialState, { type, payload, meta }) => {
         cookie_consent: !!payload.cookie_consent,
         // TODO: Remove when OG theme is removed
         // Just defaults the app state to having Hibana enabled when using the env variable
-        // Run the app locally with `npm run start-app-hibana`
+        // Run the app locally with `npm run start-hibana`
         options: {
           ...state.options,
           ...payload.options,

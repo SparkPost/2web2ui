@@ -1,0 +1,23 @@
+# Abbreviation
+
+Use the `<BreadCrumbs/>` `<BreadCrumbsItem/>` component for rendering breadcrumbs.
+
+## Usage
+
+```js
+import React from 'react';
+import { BreadCrumbs, BreadCrumbsItem } from 'src/components';
+
+const MyPage = () => (
+  <div>
+    <BreadCrumbs>
+      <BreadCrumbsItem onClick={() => {}} active={true}>
+        {' '}
+        Step 1
+      </BreadCrumbsItem>
+      <BreadCrumbsItem> Step 2</BreadCrumbsItem>
+      <BreadCrumbsItem> Step 3</BreadCrumbsItem>
+    </BreadCrumbs>
+  </div>
+);
+```

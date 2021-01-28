@@ -1,0 +1,29 @@
+# Icon Button
+
+Use the `<IconButton/>` component to create an interactive element that only visibly contains an
+icon as a child.
+
+## Usage
+
+```js
+import React from 'react';
+import { IconButton } from 'src/components';
+import { HelpOutline } from '@sparkpost/matchbox-icons';
+
+const MyComponent = () => {
+  const doSomething = () => console.log('something!');
+
+  return (
+    <IconButton
+      onClick={doSomething}
+      className="my-class"
+      screenReaderLabel="Help"
+      data-id="my-icon-button"
+    >
+      <HelpOutline size={22} />
+    </IconButton>
+  );
+};
+```
+
+In order to use the `<IconButton/>`, import the component as well as an icon to use as a child.

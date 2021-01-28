@@ -1,0 +1,14 @@
+# Panel Loading
+
+Use the `<PanelLoading/>` component as a placeholder for `<Panel/>` component. This is particularly
+useful within `<Modal/>` components.
+
+## Usage
+
+```js
+import React from 'react';
+import { PanelLoading } from 'src/components/loading';
+import { Panel } from 'src/components/matchbox';
+
+const MyComponent = ({ loading }) => (loading ? <PanelLoading /> : <Panel />);
+```

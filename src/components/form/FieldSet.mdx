@@ -1,0 +1,24 @@
+# FieldSet
+
+Use the `<FieldSet/>` component to group related form fields.
+
+## Usage
+
+```js
+import React from 'react';
+import { FieldSet } from 'src/components/form';
+
+const NameFields = () => (
+  <FieldSet legend="Name">
+    <label>
+      First Name
+      <input name="first" type="text" />
+    </label>
+
+    <label>
+      Last Name
+      <input name="last" type="text" />
+    </label>
+  </FieldSet>
+);
+```

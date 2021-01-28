@@ -1,0 +1,47 @@
+# Banner
+
+Use the `<Banner/>` component to highlight important information or account state changes to the
+user. When `<Banner/>` components contain child `<Button/>` or link components, wrap them in
+`<Banner.Actions/>`.
+
+## Usage
+
+```js
+import { Banner, Button } from 'src/components/matchbox';
+
+const MyComponent = () => {
+  return (
+    <Banner status="warning" title="This is a warning banner with buttons">
+      <p>This is some content in a banner.</p>
+      <Banner.Actions>
+        <Button variant="monochrome">Continue</Button>
+      </Banner.Actions>
+    </Banner>
+  );
+};
+```
+
+## Examples
+
+### With Two Buttons
+
+```js
+<Banner status="warning" title="This is a warning banner with buttons">
+  <p>This is some content in a banner.</p>
+  <Banner.Actions>
+    <Button variant="monochrome-primary">Continue</Button>
+    <Button variant="monochrome">Cancel</Button>
+  </Banner.Actions>
+</Banner>
+```
+
+### With One Button
+
+```js
+<Banner status="warning" title="This is a warning banner with buttons">
+  <p>This is some content in a banner.</p>
+  <Banner.Actions>
+    <Button variant="monochrome">Continue</Button>
+  </Banner.Actions>
+</Banner>
+```

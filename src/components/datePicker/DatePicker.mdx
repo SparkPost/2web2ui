@@ -1,0 +1,22 @@
+# DatePicker
+
+A text field paired with a `<select>` that allows users to select date ranges.
+
+## Usage
+
+```js
+import React from 'react';
+import DatePicker from 'src/components/datePicker/DatePicker';
+
+const MyComponent = () => (
+  <DatePicker
+    relativeDateOptions={['hour', 'day', '7days', '30days', '90days', 'custom']}
+    relativeRange="hour"
+    from={new Date()}
+    to={new Date()}
+    disabled={false}
+    onChange={() => console.log('change!')}
+    roundToPrecision={true}
+  />
+);
+```

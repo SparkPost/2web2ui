@@ -196,7 +196,7 @@ function Item(props) {
   return (
     <>
       {React.Children.map(children, child => {
-        if (child.type.name === 'ExpandableButton') {
+        if (child.type === ExpandableButton) {
           return React.cloneElement(child, {
             id,
             isExpanded,
@@ -205,7 +205,7 @@ function Item(props) {
           });
         }
 
-        if (child.type.name === 'ExpandableContent') {
+        if (child.type === ExpandableContent) {
           return React.cloneElement(child, { id, isExpanded });
         }
       })}

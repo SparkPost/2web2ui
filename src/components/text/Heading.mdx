@@ -1,0 +1,19 @@
+# Heading
+
+The `<Heading/>` component is used to render heading elements - these elements can be semantically
+one heading level, but visually another.
+
+## Usage
+
+```js
+import React from 'react';
+import { Heading } from 'src/components/text';
+
+const MyComponent = () => {
+  return (
+    <Heading as="h2" lookLike="h6">
+      This is a level 2 heading, but it looks like a level 6 heading
+    </Heading>
+  );
+};
+```

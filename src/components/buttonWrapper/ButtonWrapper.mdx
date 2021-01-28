@@ -1,0 +1,25 @@
+# ButtonWrapper
+
+Use the `<ButtonWrapper/>` to wrap Matchbox `<Button/>` components and provide consistent spacing,
+typically within forms. This not only handles vertical spacing above the component, but also spacing
+between child components.
+
+## Usage
+
+```js
+import React from 'react';
+import { Button, Panel, TextField } from 'src/components/matchbox';
+import { ButtonWrapper } from 'src/components';
+
+const MyComponent = () => (
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
+      <TextField id="first-name" name="firstName" label="First Name" type="text" />
+      <TextField id="last-name" name="lastName" label="Last Name" type="text" />
+      <ButtonWrapper>
+        <Button primary>Save</Button>
+      </ButtonWrapper>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+);
+```

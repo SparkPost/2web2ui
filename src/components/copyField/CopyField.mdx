@@ -1,0 +1,25 @@
+# CopyField
+
+Use the `<CopyField/>` component to render a generic text input field with a copy button.
+
+Note that this component needs to be paired with a valid HTML `<label/>` in order to
+[meet accessibility requirements](https://www.w3.org/WAI/tutorials/forms/labels/).
+
+## Usage
+
+```js
+import React, { useState } from 'react';
+import { CopyField } from 'src/components';
+
+const MyComponent = () => {
+  const [fieldValue, setFieldValue] = useState('My Default Value');
+
+  return (
+    <CopyField
+      id="my-copy-field"
+      value={fieldValue}
+      onChange={e => setFieldValue(e.target.value)}
+    />
+  );
+};
+```

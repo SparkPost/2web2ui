@@ -39,7 +39,9 @@ function PendingCancelBanner(props) {
         email or login. Changed your mind?`}
       </Text>
 
-      <FullBanner.Link onClick={handleLinkClick}>Don&rsquo;t Cancel</FullBanner.Link>
+      <FullBanner.Link as="button" onClick={handleLinkClick}>
+        Don&rsquo;t Cancel
+      </FullBanner.Link>
     </FullBanner>
   );
 }

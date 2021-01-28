@@ -1,0 +1,95 @@
+# MultiEmailField
+
+Use the `<MultiEmailField/>` component to allow the user to enter (and submit) multiple email
+addresses in to a single text field.
+
+Typically, this component is used in conjunction with the `useMultiEmail` custom hook.
+
+## Usage
+
+```js
+import React from 'react';
+import MultiEmailField, { useMultiEmailField } from 'src/components/multiEmailField';
+
+const MyComponent = () => {
+  const {
+    handleMultiEmailChange,
+    handleMultiEmailKeyDownAndBlur,
+    handleMultiEmailRemove,
+    setMultiEmailError,
+    setMultiEmailValue,
+    setMultiEmailList,
+    multiEmailValue,
+    multiEmailList,
+    multiEmailError,
+  } = useMultiEmailField();
+
+  return (
+    <form>
+      <MultiEmailField
+        id="multi-email-email-to"
+        label="To:"
+        name="emailTo"
+        onChange={e => handleMultiEmailChange(e)}
+        onKeyDownAndBlur={e => handleMultiEmailKeyDownAndBlur(e)}
+        onRemoveEmail={handleMultiEmailRemove}
+        error={multiEmailError}
+        value={multiEmailValue}
+        emailList={multiEmailList}
+      />
+
+      <button onClick={() => setMultiEmailValue('')}>Clear Value</button>
+
+      <button onClick={() => setMultiEmailList([])}>Clear List</button>
+
+      <button onClick={() => setMultiEmailError('')}>Clear Error</button>
+    </form>
+  );
+};
+```
+
+## Examples
+
+### Default
+
+```js
+<MultiEmailField
+  id="multi-email-email-to"
+  label="To:"
+  name="emailTo"
+  onChange={() => console.log('change!')}
+  onKeyDownAndBlur={() => console.log('keyDown or blur!')}
+  onRemoveEmail={() => console.log('remove!')}
+  value={'hello@me.com'}
+/>
+```
+
+### With an Error
+
+```js
+<MultiEmailField
+  id="multi-email-email-to-with-an-error"
+  label="To:"
+  name="emailTo"
+  onChange={() => console.log('change!')}
+  onKeyDownAndBlur={() => console.log('keyDown or blur!')}
+  onRemoveEmail={() => console.log('remove!')}
+  value={'hello@me.com'}
+  error="This instance has an error"
+/>
+```
+
+### With Email Addresses Entered
+
+```js
+<MultiEmailField
+  id="multi-email-email-to-with-email-addresses-entered"
+  label="To:"
+  name="emailTo"
+  onChange={() => console.log('change!')}
+  onKeyDownAndBlur={() => console.log('keyDown or blur!')}
+  onRemoveEmail={() => console.log('remove!')}
+  value={'hello@me.com'}
+  emailList={[{ email: 'hello@you.com' }, { email: 'hello@gmail.com' }]}
+/>
+```

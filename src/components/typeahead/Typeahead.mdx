@@ -1,0 +1,34 @@
+# Typeahead
+
+Use the `<Typeahead/>` to create combobox, searchable text fields. The `<TypeaheadItem/>` can be
+used to render each item in the typeahead.
+
+## Usage
+
+```js
+import React from 'react';
+import TypeAhead from 'src/components/typeAhead/TypeAhead';
+
+const MyComponent = () => (
+  <Typeahead
+    name="my-typeahead"
+    label="My Typeahead"
+    disabled={false}
+    error="This is an error"
+    helpText="This is some help text"
+    onChange={() => console.log('change')}
+    itemToString={item => item}
+    renderItem={({ label, id }) => <TypeaheadItem label={label} id={id} />}
+    results={[
+      {
+        label: 'ABC',
+        id: '123',
+      },
+      {
+        label: 'DEF',
+        id: '456',
+      },
+    ]}
+  />
+);
+```

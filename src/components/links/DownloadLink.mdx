@@ -1,0 +1,37 @@
+# DownloadLink
+
+Use the `<DownloadLink/>` component when the user needs to download a file.
+
+## Usage
+
+```js
+import React from 'react';
+import exampleFilePath from './example-file.csv';
+import { DownloadLink } from 'src/components/links';
+
+const MyComponent = () => <DownloadLink href={exampleFilePath}>Download Me!</DownloadLink>;
+```
+
+## Examples
+
+### Default
+
+```js
+<DownloadLink href={exampleFilePath}>Download Me!</DownloadLink>
+```
+
+### As Button
+
+```js
+<DownloadLink as={Button} href={exampleFilePath} primary>
+  Download Me!
+</DownloadLink>
+```
+
+### With Filename
+
+```js
+<DownloadLink as={Button} download="example.csv" href={exampleFilePath} primary>
+  Download Me!
+</DownloadLink>
+```
