@@ -1,13 +1,30 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Box, Inline, Checkbox, Tooltip, Drawer } from 'src/components/matchbox';
+import { Box, Button, Checkbox, Drawer, Expandable, Stack, Tooltip } from 'src/components/matchbox';
 
 import { categorizedMetricsList, list } from 'src/config/metrics';
 import _ from 'lodash';
+import styled from 'styled-components';
+
+const ColumnList = styled.div`
+  padding: inherit;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: ${props => `repeat(${props.count}, auto)`};
+  grid-auto-flow: column;
+  word-wrap: break-word;
+  max-width: 100%;
+`;
 
 const INITIAL_STATE = list.reduce((accumulator, { key }) => {
   accumulator[key] = false;
   return accumulator;
 }, {});
+
+const DESCRIPTIONS = {
+  Injection: 'Processing of messages through SparkPost',
+  Delivery: 'Transmission of messages to the mailbox',
+  Engagement: 'Interaction in messages in the inbox',
+};
 
 export default function MetricsDrawer(props) {
   const getStateFromProps = useCallback(() => {
@@ -39,18 +56,6 @@ export default function MetricsDrawer(props) {
 
   const getSelectedMetrics = () => _.keys(selectedMetrics).filter(key => !!selectedMetrics[key]);
 
-  const renderMetricsCategories = () => {
-    return categorizedMetricsList.map(({ category, metrics }) => {
-      return (
-        <div key={category}>
-          <Box fontWeight="semibold" marginTop="600" marginBottom="400" paddingLeft="100">
-            {category}
-          </Box>
-          <Inline space="100">{renderMetrics(metrics)}</Inline>
-        </div>
-      );
-    });
-  };
   const renderMetrics = metrics =>
     metrics.map(metric => {
       return (
@@ -69,6 +74,29 @@ export default function MetricsDrawer(props) {
       );
     });
 
+  const MetricsCategories = () => {
+    return (
+      <Stack>
+        {categorizedMetricsList.map(({ category, metrics }) => {
+          return (
+            <Box key={category}>
+              <Expandable
+                defaultOpen
+                id={category}
+                subtitle={DESCRIPTIONS[category]}
+                title={`${category} Metrics`}
+              >
+                <ColumnList count={Math.ceil(metrics.length / 2)}>
+                  {renderMetrics(metrics)}
+                </ColumnList>
+              </Expandable>
+            </Box>
+          );
+        })}
+      </Stack>
+    );
+  };
+
   const isSelectedMetricsSameAsCurrentlyAppliedMetrics =
     props.selectedMetrics
       .map(({ key }) => key)
@@ -82,8 +110,8 @@ export default function MetricsDrawer(props) {
   const { DrawerFooter = Drawer.Footer } = props;
   return (
     <>
-      <Box margin="400" paddingBottom="100px">
-        {renderMetricsCategories()}
+      <Box padding="500" paddingBottom="100px">
+        <MetricsCategories />
       </Box>
       <DrawerFooter margin="400">
         <Box display="flex">
