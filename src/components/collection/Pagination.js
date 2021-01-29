@@ -14,7 +14,9 @@ const CollectionPagination = ({
   perPageButtons,
   saveCsv,
 }) => {
-  const hasPagination = !(data.length <= perPage);
+  const hasPagination = !Boolean(data.length <= perPage);
+  // eslint-disable-next-line
+  console.log('here');
 
   if (!currentPage) {
     return null;
