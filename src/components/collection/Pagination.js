@@ -14,9 +14,11 @@ const CollectionPagination = ({
   perPageButtons,
   saveCsv,
 }) => {
-  const hasPagination = data.length > perPage;
-
   const renderPageButtons = () => {
+    if (data.length <= perPage) {
+      return null;
+    }
+
     return (
       <Pagination
         pages={Math.ceil(data.length / perPage)}
@@ -33,7 +35,7 @@ const CollectionPagination = ({
 
   return (
     <Columns collapseBelow="xs" align="center">
-      {hasPagination ? <Column data-id="pagination-pages">{renderPageButtons()}</Column> : null}
+      <Column data-id="pagination-pages">{renderPageButtons()}</Column>
       <Box
         as={Column}
         data-id="pagination-per-page"
