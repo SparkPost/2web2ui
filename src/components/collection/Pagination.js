@@ -35,7 +35,10 @@ const CollectionPagination = ({
 
   return (
     <Columns collapseBelow="xs" align="center">
-      <Column data-id="pagination-pages">{renderPageButtons()}</Column>
+      {renderPageButtons() ? (
+        <Column data-id="pagination-pages">{renderPageButtons()}</Column>
+      ) : null}
+
       <Box
         as={Column}
         data-id="pagination-per-page"
