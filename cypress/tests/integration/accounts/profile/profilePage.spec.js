@@ -16,7 +16,7 @@ describe('The profile page', () => {
     stubTwofaReq();
     stubTwofaBackupReq();
     cy.visit(PAGE_URL);
-    cy.wait(['@accountReq', '@twoFactorBackupReq', 'twoFactorReq']);
+    cy.wait(['@accountReq', '@twoFactorBackupReq', '@twoFactorReq']);
     cy.findByRole('button', { name: 'Reset 2FA' }).should('be.visible');
     cy.findByRole('button', { name: 'Reset 2FA' }).click();
     cy.withinModal(() => {
