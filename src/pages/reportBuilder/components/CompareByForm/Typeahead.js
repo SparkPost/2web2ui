@@ -238,7 +238,7 @@ const AsyncTypeaheadReducer = (state, action) => {
   }
 };
 
-function Typeahead({ id, onChange, lookaheadRequest, results = [], ...rest }) {
+function Typeahead({ id, onChange, lookaheadRequest, results = [], lookaheadOptions, ...rest }) {
   const [state, dispatch] = useReducer(AsyncTypeaheadReducer, initState);
   const { omitResults, loading, inputValue } = state;
 
@@ -254,6 +254,7 @@ function Typeahead({ id, onChange, lookaheadRequest, results = [], ...rest }) {
 
       dispatch({ type: 'SET_LOADING' });
       const options = {
+        ...lookaheadOptions,
         match: pattern,
         limit: METRICS_API_LIMIT,
       };
@@ -261,7 +262,7 @@ function Typeahead({ id, onChange, lookaheadRequest, results = [], ...rest }) {
         dispatch({ type: 'SET_READY' });
       });
     },
-    [lookaheadRequest, dispatch],
+    [lookaheadRequest, lookaheadOptions],
   );
 
   const filteredResults = useMemo(() => {

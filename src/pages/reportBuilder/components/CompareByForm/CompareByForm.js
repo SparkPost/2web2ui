@@ -23,6 +23,7 @@ import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
+import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
 import Typeahead from './Typeahead';
 import styled from 'styled-components';
 
@@ -113,7 +114,7 @@ function CompareByForm({
   handleSubmit,
 }) {
   const { state: reportOptions } = useReportBuilderContext();
-  const { comparisons } = reportOptions;
+  const { comparisons, to, from } = reportOptions;
   const [state, dispatch] = useReducer(reducer, getInitialState(comparisons));
   const { filters, filterType, hasMinComparisonsError, hasMaxComparisonsError } = state;
 
@@ -218,6 +219,7 @@ function CompareByForm({
                       <Typeahead
                         id={`typeahead-${index}`}
                         lookaheadRequest={filterAction}
+                        lookaheadOptions={getQueryFromOptionsV2({ to, from })}
                         label={filterLabel}
                         labelHidden
                         dispatch={dispatch}

@@ -36,6 +36,7 @@ import {
   TypeSelect,
 } from './components';
 import useFiltersForm from './useFiltersForm';
+import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
 
 const FILTER_VALUE_PLACEHOLDER_TEXT = 'e.g. resource_01 or resource_02';
 
@@ -66,7 +67,7 @@ function FiltersForm({
   } = actions;
   const groupings = getGroupingFields(state.groupings);
   const { state: reportOptions } = useReportBuilderContext();
-  const { filters } = reportOptions;
+  const { filters, to, from } = reportOptions;
 
   function handleFormSubmit(e) {
     e.preventDefault(); // Prevents page refresh
@@ -212,6 +213,7 @@ function FiltersForm({
                                 <Typeahead
                                   id={`typeahead-${groupingIndex}-${filterIndex}`}
                                   lookaheadRequest={filterRequest}
+                                  lookaheadOptions={getQueryFromOptionsV2({ to, from })}
                                   itemToString={item => (item?.value ? item.value : '')}
                                   groupingIndex={groupingIndex}
                                   filterType={filter.type}
