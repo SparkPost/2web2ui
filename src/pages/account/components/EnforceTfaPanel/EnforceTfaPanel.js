@@ -49,7 +49,7 @@ export class EnforceTFAPanel extends React.Component {
     });
 
   render() {
-    const { loading, tfaRequired, tfaUpdatePending, ssoEnabled } = this.props;
+    const { loading, tfaRequired, tfaRequiredEnforced, tfaUpdatePending, ssoEnabled } = this.props;
     const { enableModal, disableModal } = this.state;
 
     if (loading) {
@@ -76,9 +76,10 @@ export class EnforceTFAPanel extends React.Component {
           </Panel.LEGACY.Section>
         )}
         <TogglePanelSection
-          readOnly={ssoEnabled}
+          ssoEnabled={ssoEnabled}
           tfaRequired={tfaRequired}
           toggleTfaRequired={this.toggleTfaRequired}
+          tfaRequiredEnforced={tfaRequiredEnforced}
         />
         <ConfirmationModal
           open={enableModal}

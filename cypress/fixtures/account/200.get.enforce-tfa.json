@@ -1,0 +1,29 @@
+{
+  "results": {
+    "anniversary_date": "2019-12-09T08:00:00.000Z",
+    "company_name": "Fake Company",
+    "country_code": "US",
+    "created": "2014-12-30T17:43:18.954Z",
+    "customer_id": 123,
+    "service_level": "standard",
+    "status": "active",
+    "status_reason_category": "200.02",
+    "status_updated": "2018-10-12T14:30:10.500Z",
+    "tfa_required": false,
+    "updated": "2019-12-10T21:00:45.997Z",
+    "subscription": {
+      "code": "100K-premier-0519",
+      "name": "100K Premier",
+      "plan_volume": 50000,
+      "period": "month",
+      "recurring_charge": 20,
+      "overage": 1,
+      "self_serve": true,
+      "type": "default"
+    },
+    "options": {
+      "enforce_tfa_required": true
+    },
+    "support": { "phone": false, "online": true }
+  }
+}
