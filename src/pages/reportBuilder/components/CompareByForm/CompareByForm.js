@@ -1,5 +1,4 @@
 import React, { useReducer } from 'react';
-import { connect } from 'react-redux';
 import {
   Banner,
   Box,
@@ -13,15 +12,24 @@ import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { Add, Close } from '@sparkpost/matchbox-icons';
 import { TranslatableText, Comparison } from 'src/components/text';
 import {
-  fetchMetricsDomains,
-  fetchMetricsCampaigns,
-  fetchMetricsSendingIps,
-  fetchMetricsIpPools,
-  fetchMetricsTemplates,
-} from 'src/actions/metrics';
-import { list as listSubaccounts } from 'src/actions/subaccounts';
-import { list as listSendingDomains } from 'src/actions/sendingDomains';
-import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
+  getDomains,
+  getCampaigns,
+  getSendingIps,
+  getTemplates,
+  getIpPools,
+} from 'src/helpers/api/metrics';
+import { getSendingDomains } from 'src/helpers/api/domains';
+import { getSubaccounts } from 'src/helpers/api/subaccounts';
+import {
+  selectRecipientDomains,
+  selectCampaigns,
+  selectIpPools,
+  selectSendingDomains,
+  selectSendingIps,
+  selectSubaccounts,
+  selectTemplates,
+} from 'src/helpers/api/selectors/metrics';
+
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
 import Typeahead from './Typeahead';
@@ -101,18 +109,7 @@ const getInitialState = comparisons => {
   };
 };
 
-function CompareByForm({
-  // reportOptions,
-  fetchMetricsDomains,
-  fetchMetricsCampaigns,
-  fetchMetricsSendingIps,
-  fetchMetricsIpPools,
-  fetchMetricsTemplates,
-  listSubaccounts,
-  listSendingDomains,
-  typeaheadCache,
-  handleSubmit,
-}) {
+function CompareByForm({ handleSubmit }) {
   const { state: reportOptions } = useReportBuilderContext();
   const { comparisons, to, from } = reportOptions;
   const [state, dispatch] = useReducer(reducer, getInitialState(comparisons));
@@ -143,42 +140,50 @@ function CompareByForm({
     {
       label: 'Recipient Domain',
       value: 'domains',
-      action: fetchMetricsDomains,
+      action: getDomains,
+      selector: selectRecipientDomains,
     },
     {
       label: 'Sending IP',
       value: 'sending_ips',
-      action: fetchMetricsSendingIps,
+      action: getSendingIps,
+      selector: selectSendingIps,
     },
     {
       label: 'IP Pool',
       value: 'ip_pools',
-      action: fetchMetricsIpPools,
+      action: getIpPools,
+      selector: selectIpPools,
     },
     {
       label: 'Campaign',
       value: 'campaigns',
-      action: fetchMetricsCampaigns,
+      action: getCampaigns,
+      selector: selectCampaigns,
     },
     {
       label: 'Template',
       value: 'templates',
-      action: fetchMetricsTemplates,
+      action: getTemplates,
+      selector: selectTemplates,
     },
     {
       label: 'Sending Domain',
       value: 'sending_domains',
-      action: listSendingDomains,
+      action: getSendingDomains,
+      selector: selectSendingDomains,
     },
     {
       label: 'Subaccount',
       value: 'subaccounts',
-      action: listSubaccounts,
+      action: getSubaccounts,
+      selector: selectSubaccounts,
     },
   ];
 
   const filterConfig = FILTER_TYPES.find(item => item.value === filterType);
   const filterAction = filterConfig?.action;
+  const filterSelector = filterConfig?.selector;
   const filterLabel = filterConfig?.label;
 
   const areInputsFilled = filters.every(filter => filter !== null);
@@ -200,11 +205,6 @@ function CompareByForm({
           />
           {filterType &&
             filters.map((filter, index) => {
-              const filteredTypeaheadResults = typeaheadCache[filterLabel]?.filter(
-                typeaheadItem => {
-                  return !filters.some(filter => typeaheadItem.value === filter?.value);
-                },
-              );
               return (
                 <Box key={`filter-typeahead-${index}`} position="relative">
                   {index > 0 && filter && filters.length > 2 ? (
@@ -219,13 +219,13 @@ function CompareByForm({
                       <Typeahead
                         id={`typeahead-${index}`}
                         lookaheadRequest={filterAction}
+                        selector={filterSelector}
                         lookaheadOptions={getQueryFromOptionsV2({ to, from })}
                         label={filterLabel}
                         labelHidden
                         dispatch={dispatch}
                         itemToString={item => (item?.value ? item.value : '')}
                         selectedItem={filter}
-                        results={filteredTypeaheadResults}
                         onChange={value => {
                           dispatch({ type: 'SET_FILTER', index, value });
                         }}
@@ -293,12 +293,4 @@ function CompareByForm({
   );
 }
 
-export default connect(state => ({ typeaheadCache: selectCacheReportBuilder(state) }), {
-  fetchMetricsDomains,
-  fetchMetricsCampaigns,
-  fetchMetricsSendingIps,
-  fetchMetricsIpPools,
-  fetchMetricsTemplates,
-  listSubaccounts,
-  listSendingDomains,
-})(CompareByForm);
+export default CompareByForm;

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo, useReducer } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
 import { useDebouncedCallback } from 'use-debounce';
@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@sparkpost/matchbox-icons';
 import { ActionList, Box, Inline, TextField } from 'src/components/matchbox';
 import { LoadingSVG } from 'src/components';
+import { useSparkPostQuery } from 'src/hooks';
 
 const Loading = () => <LoadingSVG size="XSmall" />;
 
@@ -217,53 +218,19 @@ TypeaheadItem.propTypes = {
   meta: PropTypes.string,
 };
 
-const initState = {
-  omitResults: false,
-  loading: false,
-  inputValue: '',
-};
+function Typeahead({ id, onChange, lookaheadRequest, lookaheadOptions, selector, ...rest }) {
+  const [inputValue, setInputValue] = useState('');
 
-const AsyncTypeaheadReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_INPUT':
-      return { ...state, inputValue: action.value };
-    case 'SET_LOADING':
-      return { ...state, loading: true, omitResults: true };
-    case 'SET_EMPTY':
-      return { ...state, loading: false, omitResults: true };
-    case 'SET_READY':
-      return { ...state, loading: false, omitResults: false };
-    default:
-      throw new Error(`${action.type} is not supported.`);
-  }
-};
-
-function Typeahead({ id, onChange, lookaheadRequest, results = [], lookaheadOptions, ...rest }) {
-  const [state, dispatch] = useReducer(AsyncTypeaheadReducer, initState);
-  const { omitResults, loading, inputValue } = state;
-
-  const updateLookahead = useCallback(
-    pattern => {
-      dispatch({ type: 'SET_INPUT', value: pattern });
-      if (!lookaheadRequest) return;
-
-      if (!pattern || pattern.length <= 2) {
-        dispatch({ type: 'SET_EMPTY' });
-        return;
-      }
-
-      dispatch({ type: 'SET_LOADING' });
-      const options = {
+  const { data, status } = useSparkPostQuery(
+    () =>
+      lookaheadRequest({
         ...lookaheadOptions,
-        match: pattern,
+        match: inputValue,
         limit: METRICS_API_LIMIT,
-      };
-      lookaheadRequest(options).then(() => {
-        dispatch({ type: 'SET_READY' });
-      });
-    },
-    [lookaheadRequest, lookaheadOptions],
+      }),
+    { enabled: inputValue && inputValue.length >= 3 },
   );
+  const results = selector(data);
 
   const filteredResults = useMemo(() => {
     return sortMatch(results, inputValue, a => a.value);
@@ -273,14 +240,14 @@ function Typeahead({ id, onChange, lookaheadRequest, results = [], lookaheadOpti
     <TypeSelect
       id={id}
       onChange={onChange}
-      onInputChange={updateLookahead}
-      results={omitResults ? [] : filteredResults}
+      onInputChange={setInputValue}
       itemToString={item => {
         return item ? item.value : '';
       }}
-      loading={loading}
+      loading={status === 'loading'}
       suffix={null}
       {...rest}
+      results={filteredResults}
     />
   );
 }
