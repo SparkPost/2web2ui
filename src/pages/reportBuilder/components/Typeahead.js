@@ -36,7 +36,7 @@ function Typeahead(props) {
         match: inputValue,
         limit: METRICS_API_LIMIT,
       }),
-    { enabled: inputValue && inputValue.length >= 3 },
+    { enabled: inputValue && inputValue.length >= 3, refetchOnWindowFocus: false },
   );
   const results = selector(data);
 
