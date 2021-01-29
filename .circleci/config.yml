@@ -130,10 +130,10 @@ workflows:
   test-and-build:
     jobs:
       - 'Unit Testing'
-      # - 'Build'
-      # - 'Integration Testing':
-      #     requires:
-      #       - 'Build'
+      - 'Build'
+      - 'Integration Testing':
+          requires:
+            - 'Build'
 
       # Uncomment these jobs to run targeted integration tests by passing in
       # the targeted filename to run an individual spec or groups of specs.
