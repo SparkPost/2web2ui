@@ -1,5 +1,5 @@
 import React from 'react';
-import { Columns, Column, Pagination } from 'src/components/matchbox';
+import { Box, Columns, Column, Pagination } from 'src/components/matchbox';
 import { DEFAULT_PER_PAGE_BUTTONS, DEFAULT_PAGE_RANGE } from 'src/constants';
 import PerPageButtons from './PerPageButtons';
 import SaveCSVButton from './SaveCSVButton';
@@ -34,7 +34,13 @@ const CollectionPagination = ({
   return (
     <Columns collapseBelow="xs" align="center">
       {hasPagination ? <Column data-id="pagination-pages">{renderPageButtons()}</Column> : null}
-      <Column data-id="pagination-per-page">
+      <Box
+        as={Column}
+        data-id="pagination-per-page"
+        display="flex"
+        alignItems="center"
+        justifyContent={['flex-start', 'flex-start', 'flex-end']}
+      >
         <PerPageButtons
           totalCount={data.length}
           data={data}
@@ -43,7 +49,7 @@ const CollectionPagination = ({
           onPerPageChange={onPerPageChange}
         />
         <SaveCSVButton size="small" outline data={data} saveCsv={saveCsv} />
-      </Column>
+      </Box>
     </Columns>
   );
 };
