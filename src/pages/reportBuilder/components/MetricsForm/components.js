@@ -3,15 +3,10 @@ import { Banner, Inline, Box } from 'src/components/matchbox';
 import { ExternalLink } from 'src/components/links';
 import { Rocket } from '@sparkpost/matchbox-icons';
 
-import { useSelector } from 'react-redux';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-
 export const DeliverabilityBanner = () => {
   const [bannerOpen, setBannerOpen] = useState(true);
 
-  const isDeliverabilityEnabled = useSelector(isAccountUiOptionSet('allow_deliverability_metrics'));
-
-  if (!bannerOpen || !isDeliverabilityEnabled) {
+  if (!bannerOpen) {
     return null;
   }
 

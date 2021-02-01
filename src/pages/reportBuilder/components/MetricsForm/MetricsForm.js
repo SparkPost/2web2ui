@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import {
+  isAccountUiOptionSet,
+  hasProductOnBillingSubscription,
+} from 'src/helpers/conditions/account';
 import { Box, Button, Checkbox, Drawer, Expandable, Stack, Tooltip } from 'src/components/matchbox';
 import { DeliverabilityBanner } from './components';
 import { categorizedMetricsList, list } from 'src/config/metrics';
@@ -23,6 +28,7 @@ const INITIAL_STATE = list.reduce((accumulator, { key }) => {
 const DESCRIPTIONS = {
   Injection: 'Processing of messages through SparkPost',
   Delivery: 'Transmission of messages to the mailbox',
+  Deliverability: 'Placement of messages in the inbox',
   Engagement: 'Interaction in messages in the inbox',
 };
 
@@ -38,6 +44,15 @@ export default function MetricsForm(props) {
   }, [props.selectedMetrics]);
 
   const [selectedMetrics, setSelectedMetrics] = useState(getStateFromProps());
+  const hasD12yMetricsEnabled = useSelector(state =>
+    isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const disabledCheckboxes = hasD12yProduct
+    ? []
+    : ['count_spam', 'count_inbox', 'inbox_folder_rate', 'spam_folder_rate'];
 
   useEffect(() => {
     const newSelectedMetrics = getStateFromProps();
@@ -56,47 +71,6 @@ export default function MetricsForm(props) {
 
   const getSelectedMetrics = () => _.keys(selectedMetrics).filter(key => !!selectedMetrics[key]);
 
-  const renderMetrics = metrics =>
-    metrics.map(metric => {
-      return (
-        <div key={metric.key}>
-          <Tooltip id={metric.key} content={metric.description} portalID="tooltip-portal">
-            <Box marginRight="300" width="200px" paddingLeft="100">
-              <Checkbox
-                id={metric.key}
-                onChange={() => handleCheckbox(metric.key)}
-                checked={selectedMetrics[metric.key]}
-                label={metric.label}
-              />
-            </Box>
-          </Tooltip>
-        </div>
-      );
-    });
-
-  const MetricsCategories = () => {
-    return (
-      <Stack>
-        {categorizedMetricsList.map(({ category, metrics }) => {
-          return (
-            <Box key={category}>
-              <Expandable
-                defaultOpen
-                id={category}
-                subtitle={DESCRIPTIONS[category]}
-                title={`${category} Metrics`}
-              >
-                <ColumnList count={Math.ceil(metrics.length / 2)}>
-                  {renderMetrics(metrics)}
-                </ColumnList>
-              </Expandable>
-            </Box>
-          );
-        })}
-      </Stack>
-    );
-  };
-
   const isSelectedMetricsSameAsCurrentlyAppliedMetrics =
     props.selectedMetrics
       .map(({ key }) => key)
@@ -110,9 +84,51 @@ export default function MetricsForm(props) {
   const { DrawerFooter = Drawer.Footer } = props;
   return (
     <>
-      <DeliverabilityBanner />
+      {Boolean(hasD12yMetricsEnabled && !hasD12yProduct) && <DeliverabilityBanner />}
       <Box padding="500" paddingBottom="100px">
-        <MetricsCategories />
+        <Stack>
+          {/* Renders categories */}
+          {categorizedMetricsList.map(({ category, metrics }) => {
+            if (!hasD12yMetricsEnabled && category === 'Deliverability') return null;
+
+            return (
+              <Box key={category}>
+                <Expandable
+                  defaultOpen
+                  id={category}
+                  subtitle={DESCRIPTIONS[category]}
+                  title={`${category} Metrics`}
+                >
+                  {/* Renders metrics inside each category */}
+                  <ColumnList count={Math.ceil(metrics.length / 2)}>
+                    {metrics.map(metric => {
+                      return (
+                        <div key={metric.key}>
+                          <Tooltip
+                            id={metric.key}
+                            content={metric.description}
+                            portalID="tooltip-portal"
+                          >
+                            <Box marginRight="300" width="200px" paddingLeft="100">
+                              <Checkbox
+                                id={metric.key}
+                                key={`${category}-${metric.key}`}
+                                onChange={() => handleCheckbox(metric.key)}
+                                checked={selectedMetrics[metric.key]}
+                                disabled={disabledCheckboxes.includes(metric.key)}
+                                label={metric.label}
+                              />
+                            </Box>
+                          </Tooltip>
+                        </div>
+                      );
+                    })}
+                  </ColumnList>
+                </Expandable>
+              </Box>
+            );
+          })}
+        </Stack>
       </Box>
       <DrawerFooter margin="400">
         <Box display="flex">
