@@ -147,6 +147,8 @@ function FiltersForm({ handleSubmit }) {
     };
   });
 
+  const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
+
   return (
     <form onSubmit={handleFormSubmit}>
       <Box padding="500" paddingBottom="8rem">
@@ -219,7 +221,7 @@ function FiltersForm({ handleSubmit }) {
                                 <Typeahead
                                   id={`typeahead-${groupingIndex}-${filterIndex}`}
                                   lookaheadRequest={filterRequest}
-                                  lookaheadOptions={getQueryFromOptionsV2({ to, from })}
+                                  lookaheadOptions={{ to: formattedTo, from: formattedFrom }}
                                   selector={filterSelector}
                                   itemToString={item => (item?.value ? item.value : '')}
                                   groupingIndex={groupingIndex}

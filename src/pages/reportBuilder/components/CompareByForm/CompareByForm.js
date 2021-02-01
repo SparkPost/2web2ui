@@ -187,7 +187,7 @@ function CompareByForm({ handleSubmit }) {
   const filterLabel = filterConfig?.label;
 
   const areInputsFilled = filters.every(filter => filter !== null);
-
+  const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
   return (
     <form onSubmit={handleFormSubmit}>
       <Box padding="500" paddingBottom="8rem">
@@ -220,7 +220,7 @@ function CompareByForm({ handleSubmit }) {
                         id={`typeahead-${index}`}
                         lookaheadRequest={filterAction}
                         selector={filterSelector}
-                        lookaheadOptions={getQueryFromOptionsV2({ to, from })}
+                        lookaheadOptions={{ to: formattedTo, from: formattedFrom }}
                         label={filterLabel}
                         labelHidden
                         dispatch={dispatch}
