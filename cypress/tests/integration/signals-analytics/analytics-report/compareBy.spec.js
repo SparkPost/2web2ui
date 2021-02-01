@@ -226,11 +226,15 @@ describe('Analytics Report - Compare By', () => {
       Array(7)
         .fill()
         .forEach((_item, index) => {
-          cy.findByRole('button', { name: 'Add Subaccount' }).click();
+          cy.findByRole('button', { name: 'Add Subaccount' })
+            .scrollIntoView()
+            .click();
           cy.findAllByLabelText('Subaccount')
             .eq(index + 2)
             .type('Fake Subaccount');
           cy.findByText(`Fake Subaccount ${index + 3} (ID 10${index + 3})`)
+            .scrollIntoView()
+
             .should('be.visible')
             .click();
         });
@@ -238,8 +242,12 @@ describe('Analytics Report - Compare By', () => {
       cy.findByRole('button', { name: 'Add Subaccount' }).click();
       cy.findAllByLabelText('Subaccount')
         .eq(9)
+        .scrollIntoView()
+
         .type('Fake Subaccount');
       cy.findByText(`Fake Subaccount 10 (ID 110)`)
+        .scrollIntoView()
+
         .should('be.visible')
         .click();
 
