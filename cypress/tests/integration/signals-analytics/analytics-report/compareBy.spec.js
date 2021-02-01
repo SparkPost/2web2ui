@@ -215,7 +215,7 @@ describe('Analytics Report - Compare By', () => {
         .type('Fake Subaccount');
       cy.findByText('Fake Subaccount 1 (ID 101)')
         .should('be.visible')
-        .click();
+        .click({ force: true });
       cy.findAllByLabelText('Subaccount')
         .eq(1)
         .type('Fake Subaccount');
@@ -226,30 +226,42 @@ describe('Analytics Report - Compare By', () => {
       Array(7)
         .fill()
         .forEach((_item, index) => {
-          cy.findByRole('button', { name: 'Add Subaccount' }).click();
+          cy.findByRole('button', { name: 'Add Subaccount' })
+            .scrollIntoView()
+            .click({ force: true });
           cy.findAllByLabelText('Subaccount')
             .eq(index + 2)
+            .scrollIntoView()
             .type('Fake Subaccount');
           cy.findByText(`Fake Subaccount ${index + 3} (ID 10${index + 3})`)
+            .scrollIntoView()
             .should('be.visible')
             .click();
         });
 
-      cy.findByRole('button', { name: 'Add Subaccount' }).click();
+      cy.findByRole('button', { name: 'Add Subaccount' })
+        .scrollIntoView()
+        .click({ force: true });
       cy.findAllByLabelText('Subaccount')
         .eq(9)
+        .scrollIntoView()
         .type('Fake Subaccount');
+
       cy.findByText(`Fake Subaccount 10 (ID 110)`)
+        .scrollIntoView()
         .should('be.visible')
         .click();
 
-      cy.findByText('Limit on number of comparisons reached').should('be.visible');
+      cy.findByText('Limit on number of comparisons reached')
+        .scrollIntoView()
+        .should('be.visible');
       cy.findByRole('button', { name: 'Add Subaccount' }).should('not.exist');
 
       cy.findAllByRole('button', { name: 'Remove Filter' })
         .eq(8)
+        .scrollIntoView()
         .should('be.visible')
-        .click();
+        .click({ force: true });
 
       cy.findByText('Limit on number of comparisons reached').should('not.exist');
     });

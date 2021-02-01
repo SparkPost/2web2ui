@@ -42,7 +42,7 @@ export const ComboBoxTypeahead = ({
   useEffect(() => {
     onInputChange(debouncedValue);
   }, [onInputChange, debouncedValue]);
-  const [debounceInputChange] = useDebouncedCallback(setDebouncedValue, 300);
+  const [debounceInputChange] = useDebouncedCallback(setDebouncedValue, 500);
 
   useEffect(() => {
     debounceInputChange(inputValue);

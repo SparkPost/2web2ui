@@ -25,6 +25,14 @@ export function getSendingIps(params) {
   };
 }
 
+export function getIpPools(params) {
+  return {
+    method: 'GET',
+    url: `${METRICS_BASE_URL}/ip-pools`,
+    params: { ...params, rollup: true },
+  };
+}
+
 export function getTemplates(params) {
   return {
     method: 'GET',

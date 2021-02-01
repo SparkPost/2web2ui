@@ -1,16 +1,24 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
 import _ from 'lodash';
+
 import {
-  fetchMetricsDomains,
-  fetchMetricsCampaigns,
-  fetchMetricsSendingIps,
-  fetchMetricsIpPools,
-  fetchMetricsTemplates,
-} from 'src/actions/metrics';
-import { list as listSubaccounts } from 'src/actions/subaccounts';
-import { list as listSendingDomains } from 'src/actions/sendingDomains';
-import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
+  getDomains,
+  getCampaigns,
+  getSendingIps,
+  getTemplates,
+  getIpPools,
+} from 'src/helpers/api/metrics';
+import { getSendingDomains } from 'src/helpers/api/domains';
+import { getSubaccounts } from 'src/helpers/api/subaccounts';
+import {
+  selectRecipientDomains,
+  selectCampaigns,
+  selectIpPools,
+  selectSendingDomains,
+  selectSendingIps,
+  selectSubaccounts,
+  selectTemplates,
+} from 'src/helpers/api/selectors/metrics';
 import { RadioButtonGroup } from 'src/components';
 import {
   Button,
@@ -36,20 +44,11 @@ import {
   TypeSelect,
 } from './components';
 import useFiltersForm from './useFiltersForm';
+import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
 
 const FILTER_VALUE_PLACEHOLDER_TEXT = 'e.g. resource_01 or resource_02';
 
-function FiltersForm({
-  handleSubmit,
-  fetchMetricsDomains,
-  listSubaccounts,
-  fetchMetricsCampaigns,
-  fetchMetricsTemplates,
-  listSendingDomains,
-  fetchMetricsIpPools,
-  fetchMetricsSendingIps,
-  typeaheadCache,
-}) {
+function FiltersForm({ handleSubmit }) {
   const { state, actions } = useFiltersForm();
   const { status } = state;
   const {
@@ -66,7 +65,7 @@ function FiltersForm({
   } = actions;
   const groupings = getGroupingFields(state.groupings);
   const { state: reportOptions } = useReportBuilderContext();
-  const { filters } = reportOptions;
+  const { filters, to, from } = reportOptions;
 
   function handleFormSubmit(e) {
     e.preventDefault(); // Prevents page refresh
@@ -99,37 +98,44 @@ function FiltersForm({
     {
       label: 'Recipient Domain',
       value: 'domains',
-      action: fetchMetricsDomains,
+      action: getDomains,
+      selector: selectRecipientDomains,
     },
     {
       label: 'Sending IP',
       value: 'sending_ips',
-      action: fetchMetricsSendingIps,
+      action: getSendingIps,
+      selector: selectSendingIps,
     },
     {
       label: 'IP Pool',
       value: 'ip_pools',
-      action: fetchMetricsIpPools,
+      action: getIpPools,
+      selector: selectIpPools,
     },
     {
       label: 'Campaign',
       value: 'campaigns',
-      action: fetchMetricsCampaigns,
+      action: getCampaigns,
+      selector: selectCampaigns,
     },
     {
       label: 'Template',
       value: 'templates',
-      action: fetchMetricsTemplates,
+      action: getTemplates,
+      selector: selectTemplates,
     },
     {
       label: 'Sending Domain',
       value: 'sending_domains',
-      action: listSendingDomains,
+      action: getSendingDomains,
+      selector: selectSendingDomains,
     },
     {
       label: 'Subaccount',
       value: 'subaccounts',
-      action: listSubaccounts,
+      action: getSubaccounts,
+      selector: selectSubaccounts,
     },
   ];
 
@@ -140,6 +146,8 @@ function FiltersForm({
       value: filter.value,
     };
   });
+
+  const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -154,6 +162,7 @@ function FiltersForm({
                       const filterConfig = FILTERS.find(item => item.value === filter.type); // Find the matching configuration entry
                       const filterRequest = filterConfig?.action;
                       const filterLabel = filterConfig?.label;
+                      const filterSelector = filterConfig?.selector;
                       const filterValue = filterConfig?.value;
 
                       return (
@@ -212,6 +221,8 @@ function FiltersForm({
                                 <Typeahead
                                   id={`typeahead-${groupingIndex}-${filterIndex}`}
                                   lookaheadRequest={filterRequest}
+                                  lookaheadOptions={{ to: formattedTo, from: formattedFrom }}
+                                  selector={filterSelector}
                                   itemToString={item => (item?.value ? item.value : '')}
                                   groupingIndex={groupingIndex}
                                   filterType={filter.type}
@@ -220,7 +231,6 @@ function FiltersForm({
                                   value={filter.values}
                                   type={filterLabel}
                                   label={filterLabel}
-                                  results={typeaheadCache[filterLabel]}
                                   placeholder={FILTER_VALUE_PLACEHOLDER_TEXT}
                                 />
                               ) : null}
@@ -362,12 +372,4 @@ function FiltersForm({
   );
 }
 
-export default connect(state => ({ typeaheadCache: selectCacheReportBuilder(state) }), {
-  fetchMetricsDomains,
-  fetchMetricsCampaigns,
-  fetchMetricsSendingIps,
-  fetchMetricsIpPools,
-  fetchMetricsTemplates,
-  listSubaccounts,
-  listSendingDomains,
-})(FiltersForm);
+export default FiltersForm;

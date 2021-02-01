@@ -2,6 +2,7 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { ComboBoxTypeahead } from 'src/components/typeahead/AsyncComboBoxTypeahead';
 import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
+import { useSparkPostQuery } from 'src/hooks';
 
 function getItemToStr({ filterType, item }) {
   if (filterType === 'Subaccount') {
@@ -17,47 +18,33 @@ function Typeahead(props) {
     setFilterValues,
     index,
     lookaheadRequest,
+    lookaheadOptions = {},
+    selector,
     value,
-    results = [],
     itemToString,
     groupingIndex,
     filterIndex,
     filterType,
     ...rest
   } = props;
-  const [omitResults, setOmitResults] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
+
+  const { data, status } = useSparkPostQuery(
+    () =>
+      lookaheadRequest({
+        ...lookaheadOptions,
+        match: inputValue,
+        limit: METRICS_API_LIMIT,
+      }),
+    { enabled: inputValue && inputValue.length >= 3, refetchOnWindowFocus: false },
+  );
+  const results = selector(data);
 
   const onFilterChange = useCallback(
     newValues => {
       setFilterValues({ groupingIndex, filterIndex, values: newValues });
     },
     [groupingIndex, filterIndex, setFilterValues],
-  );
-
-  const updateLookahead = useCallback(
-    pattern => {
-      setInputValue(pattern);
-      if (!lookaheadRequest) return;
-
-      if (!pattern || pattern.length <= 2) {
-        setLoading(false);
-        setOmitResults(true);
-        return;
-      }
-
-      setOmitResults(false);
-      setLoading(true);
-      const options = {
-        match: pattern,
-        limit: METRICS_API_LIMIT,
-      };
-      lookaheadRequest(options).then(() => {
-        setLoading(false);
-      });
-    },
-    [setLoading, setOmitResults, lookaheadRequest, setInputValue],
   );
 
   const filteredResults = useMemo(() => {
@@ -68,11 +55,11 @@ function Typeahead(props) {
     <ComboBoxTypeahead
       id={id}
       onChange={onFilterChange}
-      onInputChange={updateLookahead}
+      onInputChange={setInputValue}
       itemToString={item => (item ? getItemToStr({ filterType, item }) : '')}
       value={value}
-      results={omitResults ? [] : filteredResults}
-      loading={loading}
+      results={filteredResults}
+      loading={status === 'loading'}
       {...rest}
     />
   );
