@@ -70,7 +70,7 @@ export class TfaManager extends Component {
   }
 
   render() {
-    const { statusUnknown, enabled } = this.props;
+    const { statusUnknown, enabled, required } = this.props;
 
     if (statusUnknown) {
       return <PanelLoading minHeight="100px" />;
@@ -98,7 +98,7 @@ export class TfaManager extends Component {
         color: 'orange',
       },
       {
-        content: 'Disable 2FA',
+        content: required ? 'Reset 2FA' : 'Disable 2FA',
         onClick: () => this.setState({ openModal: 'disable' }),
         color: 'orange',
       },
@@ -132,6 +132,7 @@ export class TfaManager extends Component {
           togglePending={this.props.togglePending}
           toggleError={this.props.toggleError}
           enabled={enabled}
+          tfaRequired={this.props.required}
         />
       </Panel.LEGACY>
     );

@@ -7,6 +7,7 @@ import {
 import { getTfaStatus } from 'src/actions/tfa';
 import { logout } from 'src/actions/auth';
 import { update as updateAccount } from 'src/actions/account';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 import EnforceTfaPanel from './EnforceTfaPanel';
 
 const mapStateToProps = state => {
@@ -17,6 +18,7 @@ const mapStateToProps = state => {
     tfaRequired: account.tfa_required,
     tfaUpdatePending: account.updateLoading,
     tfaEnabled: tfa.enabled,
+    tfaRequiredEnforced: hasAccountOptionEnabled('enforce_tfa_required')(state),
   };
 };
 

@@ -24,22 +24,21 @@ describe('EnableTfaModal tests', () => {
       togglePending: false,
       toggleError: false,
       backupCodes: { activeCount: 1 },
-      statusUnknown: false
+      statusUnknown: false,
     };
 
     wrapper = shallow(<TfaManager {...props} />);
     instance = wrapper.instance();
   });
 
-  it('should render correctly', () => {
+  it('should call getTfaBackupStatus and getTfaStatus', () => {
     expect(instance.props.getTfaBackupStatus).toHaveBeenCalled();
     expect(instance.props.getTfaStatus).not.toHaveBeenCalled();
-    expect(wrapper).toMatchSnapshot();
   });
 
   it('should show panel loading while status unknown', () => {
     wrapper.setProps({ statusUnknown: true });
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find('PanelLoading')).toHaveLength(1);
   });
 
   it('should call getTfaStatus when statusUnknown at mount', () => {
@@ -51,12 +50,31 @@ describe('EnableTfaModal tests', () => {
 
   it('should toggle status text when enabled', () => {
     wrapper.setProps({ enabled: true });
-    expect(wrapper).toMatchSnapshot();
+    expect(
+      wrapper
+        .find('LabelledValue')
+        .at(0)
+        .children()
+        .contains('Enabled'),
+    ).toBe(true);
   });
 
   it('should show a message about 0 codes', () => {
-    wrapper.setProps({ enabled: true, backupCodes: { activeCount: 0 }});
-    expect(wrapper).toMatchSnapshot();
+    wrapper.setProps({ enabled: true, backupCodes: { activeCount: 0 } });
+    expect(
+      wrapper
+        .find('h6')
+        .text()
+        .includes('0'),
+    ).toBe(true);
+    expect(
+      wrapper
+        .find('small')
+        .text()
+        .includes(
+          'We recommend saving a set of backup codes in case you lose or misplace your current device.',
+        ),
+    ).toBe(true);
   });
 
   it('should refresh backup code status after enable', () => {
@@ -104,4 +122,3 @@ describe('EnableTfaModal tests', () => {
     expect(wrapper.instance().props.logout).not.toHaveBeenCalled();
   });
 });
-

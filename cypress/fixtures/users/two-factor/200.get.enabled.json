@@ -1,0 +1,7 @@
+{
+  "results": {
+    "enabled": true,
+    "required": true,
+    "secret": "fake_two_factor_secret"
+  }
+}

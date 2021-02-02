@@ -19,6 +19,7 @@ export const SEGMENT_EVENTS = {
   SENDING_DOMAIN_ADDED: 'Sending Domain Added',
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
   EMPTY_STATE_LOADED: 'Empty state loaded',
+  DASHBOARD_ONBOARDING: 'Dashboard Onboarding Loaded',
   REPORT_BUILDER_COMPARISON_ADDED: 'Report Builder Comparison Added',
   SCHEDULED_REPORT_CREATED: 'Created Scheduled Report',
 };

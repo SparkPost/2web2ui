@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Grid, Button, Panel, TextField, Modal } from 'src/components/matchbox';
+import { Grid, Button, Panel, Stack, TextField, Modal } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
+import { TranslatableText } from 'src/components/text';
 
 export default class DisableTfaModal extends Component {
   state = {
@@ -30,30 +31,41 @@ export default class DisableTfaModal extends Component {
   };
 
   render() {
-    const { open, onClose, togglePending, toggleError } = this.props;
+    const { open, onClose, togglePending, toggleError, tfaRequired } = this.props;
 
     return (
       <Modal.LEGACY open={open} onClose={onClose}>
-        <Panel.LEGACY title="Disable Two-Factor Authentication" accent>
+        <Panel.LEGACY
+          title={
+            tfaRequired ? 'Reset Two-Factor Authentication' : 'Disable Two-Factor Authentication'
+          }
+          accent
+        >
           <form onSubmit={e => e.preventDefault()}>
             <Panel.LEGACY.Section>
-              <p>Enter your SparkPost password to disable two-factor authentication.</p>
-              <p>
-                If two-factor authentication is required on this account, you will be logged out
-                after disabling it. You can re-enable when you next log in.
-              </p>
-              <Grid>
-                <Grid.Column xs={12} md={6}>
-                  <TextField
-                    id="tfa-disable-password"
-                    type="password"
-                    error={this.state.showErrors && toggleError ? 'Incorrect password' : ''}
-                    placeholder="Enter your password"
-                    onChange={this.handleInputChange}
-                    value={this.state.password}
-                  />
-                </Grid.Column>
-              </Grid>
+              <Stack>
+                <p>
+                  Enter your SparkPost password to{' '}
+                  <TranslatableText>{tfaRequired ? 'reset' : 'disable'}</TranslatableText>
+                  &nbsp;two-factor authentication.
+                </p>
+                <p>
+                  If two-factor authentication is required on this account, you will be logged out
+                  after disabling it. You can re-enable when you next log in.
+                </p>
+                <Grid>
+                  <Grid.Column xs={12} md={6}>
+                    <TextField
+                      label="Password"
+                      type="password"
+                      error={this.state.showErrors && toggleError ? 'Incorrect password' : ''}
+                      placeholder="Enter your password"
+                      onChange={this.handleInputChange}
+                      value={this.state.password}
+                    />
+                  </Grid.Column>
+                </Grid>
+              </Stack>
             </Panel.LEGACY.Section>
             <Panel.LEGACY.Section>
               <ButtonWrapper>
@@ -63,7 +75,13 @@ export default class DisableTfaModal extends Component {
                   disabled={togglePending}
                   onClick={() => this.props.disable(this.state.password)}
                 >
-                  {togglePending ? 'Disabling...' : 'Disable 2FA'}
+                  {tfaRequired
+                    ? togglePending
+                      ? 'Reseting...'
+                      : 'Reset 2FA'
+                    : togglePending
+                    ? 'Disabling...'
+                    : 'Disable 2FA'}
                 </Button>
 
                 <Button variant="seconary" disabled={togglePending} onClick={onClose}>

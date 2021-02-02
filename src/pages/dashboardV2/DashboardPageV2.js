@@ -41,6 +41,7 @@ import { _getAggregateDataReportBuilder } from 'src/actions/summaryChart';
 import { usePrevious } from 'src/hooks';
 import { AsyncActionModal } from 'src/components';
 import { ActiveFilters } from 'src/components/reportBuilder';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 const OnboardingImg = styled(Picture.Image)`
   vertical-align: bottom;
@@ -68,6 +69,14 @@ export default function DashboardPageV2() {
   const allReports = reports.map(report => ({ ...report, key: report.id }));
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
   const history = useHistory();
+
+  useEffect(() => {
+    if (onboarding !== 'done') {
+      segmentTrack(SEGMENT_EVENTS.DASHBOARD_ONBOARDING, {
+        onboarding,
+      });
+    }
+  }, [onboarding]);
 
   useEffect(() => {
     getAccount();
@@ -207,7 +216,6 @@ export default function DashboardPageV2() {
                   </Columns>
                 </Dashboard.Panel>
               )}
-
               {onboarding === 'addSending' && (
                 <Dashboard.Panel>
                   <Columns>
