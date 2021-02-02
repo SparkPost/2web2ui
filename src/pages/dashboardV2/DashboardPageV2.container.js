@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ROLES } from 'src/constants';
 import hasGrants from 'src/helpers/conditions/hasGrants';
 import { hasRole, isAdmin } from 'src/helpers/conditions/user';
+import { isManuallyBilled } from 'src/selectors/accountBillingInfo';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
 import { selectRecentlyTriggeredAlerts } from 'src/selectors/alerts';
@@ -93,7 +94,7 @@ function mapStateToProps(state) {
     validationsThisMonth: selectMonthlyRecipientValidationUsage(state),
     endOfBillingPeriod: selectEndOfBillingPeriod(state),
     pending: isPending,
-    hasUpgradeLink: hasGrants('account/manage')(state),
+    hasUpgradeLink: hasGrants('account/manage')(state) && !isManuallyBilled(state),
     hasUsageSection: isAdmin(state),
     reports: state.reports.list,
   };

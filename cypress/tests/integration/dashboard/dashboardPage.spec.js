@@ -560,6 +560,43 @@ describe('the dashboard page', () => {
     cy.findByDataId('validations-usage-section').should('not.exist');
   });
 
+  it('does not render the "Upgrade" link for manually billed customers', () => {
+    stubAccountsReq();
+    stubAlertsReq();
+    stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+    stubReportsRequest();
+    stubSubscription({ fixture: 'billing/subscription/200.get.manually-billed.json' });
+    cy.stubRequest({
+      url: '/api/v1/subaccounts',
+      fixture: 'subaccounts/200.get.json',
+      requestAlias: 'subaccountsReq',
+    });
+    cy.stubRequest({
+      method: 'GET',
+      url: '/api/v1/metrics/deliverability**/**',
+      fixture: 'metrics/deliverability/200.get.json',
+      requestAlias: 'dataGetDeliverability',
+    });
+    cy.stubRequest({
+      method: 'GET',
+      url: '/api/v1/metrics/deliverability/time-series**/**',
+      fixture: 'metrics/deliverability/time-series/200.get.json',
+      requestAlias: 'dataGetTimeSeries',
+    });
+    cy.visit(PAGE_URL);
+    cy.wait([
+      '@accountReq',
+      '@alertsReq',
+      '@usageReq',
+      '@getReports',
+      '@getSubscription',
+      '@subaccountsReq',
+      '@dataGetTimeSeries',
+      '@dataGetDeliverability',
+    ]);
+    cy.findByRole('link', { name: 'Upgrade' }).should('not.exist');
+  });
+
   describe('sidebar', () => {
     it("renders the user's email address and role  in the account details section", () => {
       commonBeforeSteps();
@@ -650,6 +687,17 @@ function commonBeforeSteps() {
 
   cy.visit(PAGE_URL);
   cy.wait(['@accountReq', '@usageReq', '@alertsReq']);
+}
+
+function stubSubscription({
+  fixture = 'billing/subscription/200.get.json',
+  requestAlias = 'getSubscription',
+}) {
+  cy.stubRequest({
+    url: '/api/v1/billing/subscription',
+    fixture,
+    requestAlias,
+  });
 }
 
 function stubAccountsReq({ fixture = 'account/200.get.dashboard-v2.json' } = {}) {

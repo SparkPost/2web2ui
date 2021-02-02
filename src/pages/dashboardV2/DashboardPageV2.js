@@ -216,6 +216,7 @@ export default function DashboardPageV2() {
                   </Columns>
                 </Dashboard.Panel>
               )}
+
               {onboarding === 'addSending' && (
                 <Dashboard.Panel>
                   <Columns>
