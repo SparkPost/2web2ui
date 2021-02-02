@@ -23,17 +23,21 @@ export const selectCampaigns = ({ campaigns = [] } = {}) =>
     value,
   }));
 
-export const selectSendingIps = ({ sendingIps = [] } = {}) =>
-  sendingIps.map(value => ({
+export const selectSendingIps = (data = {}) => {
+  const sendingIps = data['sending-ips'] || [];
+  return sendingIps.map(value => ({
     type: 'Sending IP',
     value,
   }));
+};
 
-export const selectIpPools = ({ ipPools = [] } = {}) =>
-  ipPools.map(value => ({
+export const selectIpPools = (data = {}) => {
+  const ipPools = data['ip-pools'] || [];
+  return ipPools.map(value => ({
     type: 'IP Pool',
     value,
   }));
+};
 
 export const selectTemplates = ({ templates = [] } = {}) =>
   templates.map(value => ({
