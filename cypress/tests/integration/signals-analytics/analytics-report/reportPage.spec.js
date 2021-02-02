@@ -192,41 +192,6 @@ describe('Analytics Report', () => {
     });
   });
 
-  it('should properly control the expandables', () => {
-    commonBeforeSteps();
-    cy.visit(PAGE_URL);
-    cy.findByRole('button', { name: 'Add Metrics' }).click();
-    cy.withinDrawer(() => {
-      cy.findByDataId('expandable-content')
-        .eq(0)
-        .should('be.visible');
-      cy.findByDataId('expandable-toggle')
-        .eq(0)
-        .click();
-      cy.findByDataId('expandable-content')
-        .eq(0)
-        .should('not.be.visible');
-      cy.findByDataId('expandable-content')
-        .eq(1)
-        .should('be.visible');
-      cy.findByDataId('expandable-toggle')
-        .eq(1)
-        .click();
-      cy.findByDataId('expandable-content')
-        .eq(1)
-        .should('not.be.visible');
-      cy.findByDataId('expandable-content')
-        .eq(2)
-        .should('be.visible');
-      cy.findByDataId('expandable-toggle')
-        .eq(2)
-        .click();
-      cy.findByDataId('expandable-content')
-        .eq(2)
-        .should('not.be.visible');
-    });
-  });
-
   it('filters by metric', () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);

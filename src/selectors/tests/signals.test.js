@@ -310,6 +310,21 @@ describe('Selectors: signals', () => {
     };
   });
 
+  describe('facet value', () => {
+    it('should decode facet url for mailbox provider', () => {
+      const newProps = {
+        ...props,
+        match: {
+          params: {
+            facet: 'mb_provider',
+            facetId: 'Potato%2FPotato',
+          },
+        },
+      };
+      expect(selectors.getFacetIdFromParams(state, newProps)).toEqual('Potato/Potato');
+    });
+  });
+
   describe('spam hits details', () => {
     it('should select spam hits details', () => {
       expect(selectors.selectSpamHitsDetails(state, props)).toMatchSnapshot();

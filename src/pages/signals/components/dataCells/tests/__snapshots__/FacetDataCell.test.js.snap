@@ -17,23 +17,6 @@ exports[`FacetDataCell adds a class to truncate its contents 1`] = `
 </div>
 `;
 
-exports[`FacetDataCell formats mailbox provider label to friendly value 1`] = `
-<div
-  className="PaddedCell"
->
-  <PageLink
-    to={
-      Object {
-        "pathname": "/signals/example/mb_provider/other",
-        "search": undefined,
-      }
-    }
-  >
-    Other Providers
-  </PageLink>
-</div>
-`;
-
 exports[`FacetDataCell renders label for all accounts 1`] = `
 <div
   className="PaddedCell"

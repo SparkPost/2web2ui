@@ -11,7 +11,7 @@ import moment from 'moment';
 
 // Router props
 export const getFacetFromParams = (state, props) => _.get(props, 'match.params.facet');
-export const getFacetIdFromParams = (state, props) => _.get(props, 'match.params.facetId');
+export const getFacetIdFromParamsRaw = (state, props) => _.get(props, 'match.params.facetId');
 export const getSelectedDateFromRouter = (state, props) => _.get(props, 'location.state.date');
 export const getOptions = (state, { now = moment().subtract(1, 'day'), ...options } = {}) => ({
   ...state.signalOptions,
@@ -29,6 +29,11 @@ export const getUnsubscribeRateByCohortData = state =>
 export const getComplaintsByCohortData = state => _.get(state, 'signals.complaintsByCohort', {});
 export const getHealthScoreData = state => _.get(state, 'signals.healthScore', {});
 export const getCurrentHealthScoreData = state => _.get(state, 'signals.currentHealthScore', {});
+
+export const getFacetIdFromParams = createSelector(
+  [getFacetFromParams, getFacetIdFromParamsRaw],
+  (facet, facetId) => (facet === 'mb_provider' ? decodeURIComponent(facetId) : facetId),
+);
 
 // Details
 export const selectSpamHitsDetails = createSelector(

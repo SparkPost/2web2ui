@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { PageLink } from 'src/components/links';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
-import { MAILBOX_PROVIDERS } from 'src/constants';
 import OGStyles from './DataCell.module.scss';
 import hibanaStyles from './DataCellHibana.module.scss';
 
@@ -18,17 +17,14 @@ const FacetDataCell = ({ dimension, facet, id, name, subaccountId, truncate }) =
     );
   }
 
-  //This is the default case for the label. The switch statements below are for special cases.
+  //This is the default case for the label. The condition below is for special cases.
   let label = name ? `${name} (${id})` : id;
-  switch (facet) {
-    case 'sid':
-      if (id === 0) {
-        label = 'Primary Account';
-      }
-      break;
-    case 'mb_provider':
-      label = MAILBOX_PROVIDERS[id] || label;
+  if (facet === 'sid' && id === 0) {
+    label = 'Primary Account';
   }
+
+  //To handle any strange mailbox provider names; ie: Hotmail / Outlook
+  const facetIdURL = 'mb_provider' ? encodeURIComponent(id) : id;
 
   const search = subaccountId >= 0 ? setSubaccountQuery(subaccountId) : undefined;
 
@@ -37,7 +33,7 @@ const FacetDataCell = ({ dimension, facet, id, name, subaccountId, truncate }) =
       <PageLink
         children={label}
         to={{
-          pathname: `/signals/${dimension}/${facet}/${id}`,
+          pathname: `/signals/${dimension}/${facet}/${facetIdURL}`,
           search,
         }}
       />

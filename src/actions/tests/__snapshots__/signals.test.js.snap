@@ -122,7 +122,7 @@ Array [
       "headers": Object {},
       "method": "GET",
       "params": Object {
-        "filter": "google_ap",
+        "filter": "Google Ap",
         "from": "2018-01-12",
         "limit": undefined,
         "offset": undefined,

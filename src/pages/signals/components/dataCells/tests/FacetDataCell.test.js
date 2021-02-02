@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import FacetDataCell from '../FacetDataCell';
-import { MAILBOX_PROVIDERS } from 'src/constants';
 
 jest.mock('src/hooks/useHibanaOverride', () => styles => styles);
 
@@ -33,16 +32,6 @@ describe('FacetDataCell', () => {
     };
     const wrapper = subject(props);
     expect(wrapper.find('PageLink').prop('children')).toEqual('Test Subaccount (123)');
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('formats mailbox provider label to friendly value', () => {
-    const props = {
-      facet: 'mb_provider',
-      id: 'other',
-    };
-    const wrapper = subject(props);
-    expect(wrapper.find('PageLink').prop('children')).toEqual(MAILBOX_PROVIDERS.other);
     expect(wrapper).toMatchSnapshot();
   });
 
