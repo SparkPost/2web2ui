@@ -1,4 +1,4 @@
-import runner from '../utils/eslint-test-runner';
+import runner from '../utils/eslintTestRunner';
 import rule from '../no-matchbox-import';
 
 runner('no-matchbox-import', rule, {
