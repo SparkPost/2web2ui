@@ -594,9 +594,7 @@ describe('the dashboard page', () => {
       '@dataGetTimeSeries',
       '@dataGetDeliverability',
     ]);
-    cy.get('a')
-      .contains('Upgrade')
-      .should('not.exist');
+    cy.findByRole('link', { name: 'Upgrade' }).should('not.exist');
   });
 
   describe('sidebar', () => {
