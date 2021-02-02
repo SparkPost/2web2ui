@@ -52,7 +52,6 @@ export default function DashboardPageV2() {
     canViewUsage,
     canManageSendingDomains,
     canManageApiKeys,
-    getSubscription,
     getAccount,
     getReports,
     listAlerts,
@@ -80,7 +79,6 @@ export default function DashboardPageV2() {
   }, [onboarding]);
 
   useEffect(() => {
-    getSubscription();
     getAccount();
     listAlerts();
     if (canViewUsage) getUsage();

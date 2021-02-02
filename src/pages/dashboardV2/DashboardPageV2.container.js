@@ -4,7 +4,6 @@ import { ROLES } from 'src/constants';
 import hasGrants from 'src/helpers/conditions/hasGrants';
 import { hasRole, isAdmin } from 'src/helpers/conditions/user';
 import { isManuallyBilled } from 'src/selectors/accountBillingInfo';
-import { getSubscription } from 'src/actions/billing';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
 import { selectRecentlyTriggeredAlerts } from 'src/selectors/alerts';
@@ -102,7 +101,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  getSubscription,
   getAccount,
   getReports,
   listAlerts,
