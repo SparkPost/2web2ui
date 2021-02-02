@@ -68,7 +68,7 @@ function BillingUsage() {
 
               {hasUpgradeLink && (
                 <UpgradeLink to="/account/billing/plan">
-                  Upgrade&nbsp;
+                  <span>Upgrade&nbsp;</span>
                   <UpgradeIcon size={16} />
                 </UpgradeLink>
               )}
