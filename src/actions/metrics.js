@@ -5,10 +5,7 @@ export function fetch({ type = 'FETCH_METRICS', path, params = {}, context }) {
     const meta = {
       method: 'GET',
       url: `/v1/metrics/${path}`,
-      params: {
-        ...params,
-        rollup: true,
-      },
+      params,
     };
 
     if (context) {

@@ -1,6 +1,5 @@
 import * as metrics from '../metrics';
-import { snapshotActionCases } from '../../__testHelpers__/snapshotActionHelpers';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import { snapshotActionCases } from 'src/__testHelpers__';
 jest.mock('src/actions/helpers/sparkpostApiRequest');
 jest.mock('src/helpers/conditions/user', () => ({ isUserUiOptionSet: jest.fn(() => () => false) }));
 
@@ -61,22 +60,4 @@ describe('Metrics Actions', () => {
       actionCreator: metrics.fetchDeliveriesByAttempt,
     },
   ]);
-
-  it('makes request using rollup query param when ui option is set', () => {
-    isUserUiOptionSet.mockImplementationOnce(() => () => true);
-    const dispatch = jest.fn(a => a);
-    const thunk = metrics.fetch({ path: 'foo/1', params: { foo: 'bar' } });
-    thunk(dispatch, jest.fn);
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'FETCH_METRICS',
-      meta: {
-        method: 'GET',
-        url: '/v1/metrics/foo/1',
-        params: {
-          foo: 'bar',
-          rollup: true,
-        },
-      },
-    });
-  });
 });
