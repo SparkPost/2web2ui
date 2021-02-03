@@ -1,4 +1,3 @@
-import { USERNAME } from 'cypress/constants';
 import { commonBeforeSteps } from './analytics-report/helpers';
 
 const PAGE_URL = '/signals/analytics';
@@ -9,10 +8,6 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
 
   beforeEach(() => {
     commonBeforeSteps();
-    cy.stubRequest({
-      url: `/api/v1/users/${USERNAME}`,
-      fixture: 'users/200.get.metrics-rollup.json',
-    });
 
     cy.stubRequest({
       url: '/api/v1/reports',

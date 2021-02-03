@@ -1,16 +1,9 @@
-import { USERNAME } from 'cypress/constants';
 import { PAGE_URL } from './constants';
 import { commonBeforeSteps } from './helpers';
 
 describe('Analytics Report Saved Reports', () => {
   beforeEach(() => {
     commonBeforeSteps();
-
-    cy.stubRequest({
-      url: `/api/v1/users/${USERNAME}`,
-      fixture: 'users/200.get.metrics-rollup.json',
-      requestAlias: 'userReq',
-    });
 
     cy.stubRequest({
       url: '/api/v1/reports',
