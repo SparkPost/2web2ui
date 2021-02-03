@@ -19,7 +19,6 @@ import DatePicker from 'src/components/datePicker/DatePicker';
 import typeaheadCacheSelector from 'src/selectors/reportFilterTypeaheadCache';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import CustomReports from './CustomReports';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import _ from 'lodash';
 import config from 'src/config';
 import OGStyles from './ReportOptions.module.scss';
@@ -89,130 +88,97 @@ export class ReportOptionsClassComponent extends Component {
       reportLoading,
       refreshReportOptions,
       searchOptions,
-      featureFlaggedMetrics,
       styles,
     } = this.props;
 
-    if (featureFlaggedMetrics.useMetricsRollup) {
-      const isForcedUTC =
-        reportOptions.precision && isForcedUTCRollupPrecision(reportOptions.precision);
+    const isForcedUTC =
+      reportOptions.precision && isForcedUTCRollupPrecision(reportOptions.precision);
 
-      const isShownForcedUTC =
-        this.state.shownPrecision && isForcedUTCRollupPrecision(this.state.shownPrecision);
+    const isShownForcedUTC =
+      this.state.shownPrecision && isForcedUTCRollupPrecision(this.state.shownPrecision);
 
-      const timezoneDisabled = reportLoading || (isForcedUTC && this.state.shownPrecision === '');
+    const timezoneDisabled = reportLoading || (isForcedUTC && this.state.shownPrecision === '');
 
-      const timezoneTypeahead = (
-        <TimezoneTypeahead
-          initialValue={reportOptions.timezone}
-          onChange={this.handleTimezoneSelect}
-          isForcedUTC={isForcedUTC}
-          disabledAndUTCOnly={!!isShownForcedUTC}
-          disabled={timezoneDisabled}
-        />
-      );
-
-      return (
-        <>
-          <Panel.LEGACY.Section>
-            <Grid>
-              <Grid.Column xs={9} md={6}>
-                <Typeahead
-                  reportOptions={reportOptions}
-                  placeholder="Filter by domain, campaign, etc"
-                  onSelect={this.handleTypeaheadSelect}
-                  items={typeaheadCache}
-                  selected={reportOptions.filters}
-                  disabled={reportLoading}
-                />
-              </Grid.Column>
-              <Grid.Column xs={3} md={2} mdOffset={4}>
-                <ShareModal disabled={reportLoading} searchOptions={searchOptions} />
-              </Grid.Column>
-            </Grid>
-          </Panel.LEGACY.Section>
-          <Panel.LEGACY.Section>
-            <Grid>
-              <Grid.Column xs={12} md={6}>
-                <div className={styles.FieldWrapperMetricsRollup}>
-                  <DatePicker
-                    {...reportOptions}
-                    label="Date Range"
-                    relativeDateOptions={RELATIVE_DATE_OPTIONS}
-                    disabled={reportLoading}
-                    onChange={refreshReportOptions}
-                    roundToPrecision={true}
-                    selectPrecision={true}
-                    updateShownPrecision={this.updateShownPrecision}
-                  />
-                </div>
-              </Grid.Column>
-              <Grid.Column xs={6} md={4}>
-                <div className={styles.TimezoneTooltipWrapper}>
-                  <Tooltip
-                    disabled={!isShownForcedUTC && !timezoneDisabled}
-                    content="Day, week, and month precision only support UTC."
-                  >
-                    {timezoneTypeahead}
-                  </Tooltip>
-                </div>
-              </Grid.Column>
-              <Grid.Column xs={6} md={2}>
-                {//We will show a fake selector that shows the temporary precision when the user
-                //is selecting dates using the datepicker but has not confirmed the selection
-                !this.state.shownPrecision ? (
-                  <PrecisionSelector
-                    from={reportOptions.from}
-                    to={reportOptions.to}
-                    selectedPrecision={reportOptions.precision}
-                    changeTime={refreshReportOptions}
-                    disabled={reportLoading}
-                  />
-                ) : (
-                  <Select
-                    id="precision-select"
-                    label="Precision"
-                    options={PRECISION_OPTIONS}
-                    value={this.state.shownPrecision}
-                    disabled={reportLoading}
-                    readOnly
-                  />
-                )}
-              </Grid.Column>
-            </Grid>
-          </Panel.LEGACY.Section>
-        </>
-      );
-    }
+    const timezoneTypeahead = (
+      <TimezoneTypeahead
+        initialValue={reportOptions.timezone}
+        onChange={this.handleTimezoneSelect}
+        isForcedUTC={isForcedUTC}
+        disabledAndUTCOnly={!!isShownForcedUTC}
+        disabled={timezoneDisabled}
+      />
+    );
 
     return (
-      <Panel.LEGACY.Section>
-        <Grid>
-          <Grid.Column xs={12} md={6}>
-            <div className={styles.FieldWrapper}>
-              <DatePicker
-                {...reportOptions}
-                relativeDateOptions={RELATIVE_DATE_OPTIONS}
+      <>
+        <Panel.LEGACY.Section>
+          <Grid>
+            <Grid.Column xs={9} md={6}>
+              <Typeahead
+                reportOptions={reportOptions}
+                placeholder="Filter by domain, campaign, etc"
+                onSelect={this.handleTypeaheadSelect}
+                items={typeaheadCache}
+                selected={reportOptions.filters}
                 disabled={reportLoading}
-                onChange={refreshReportOptions}
-                roundToPrecision={true}
               />
-            </div>
-          </Grid.Column>
-          <Grid.Column xs={8} md={4} xl={5}>
-            <Typeahead
-              reportOptions={reportOptions}
-              placeholder="Filter by domain, campaign, etc"
-              onSelect={this.handleTypeaheadSelect}
-              items={typeaheadCache}
-              selected={reportOptions.filters}
-            />
-          </Grid.Column>
-          <Grid.Column xs={4} md={2} xl={1}>
-            <ShareModal disabled={reportLoading} searchOptions={searchOptions} />
-          </Grid.Column>
-        </Grid>
-      </Panel.LEGACY.Section>
+            </Grid.Column>
+            <Grid.Column xs={3} md={2} mdOffset={4}>
+              <ShareModal disabled={reportLoading} searchOptions={searchOptions} />
+            </Grid.Column>
+          </Grid>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
+          <Grid>
+            <Grid.Column xs={12} md={6}>
+              <div className={styles.FieldWrapperMetricsRollup}>
+                <DatePicker
+                  {...reportOptions}
+                  label="Date Range"
+                  relativeDateOptions={RELATIVE_DATE_OPTIONS}
+                  disabled={reportLoading}
+                  onChange={refreshReportOptions}
+                  roundToPrecision={true}
+                  selectPrecision={true}
+                  updateShownPrecision={this.updateShownPrecision}
+                />
+              </div>
+            </Grid.Column>
+            <Grid.Column xs={6} md={4}>
+              <div className={styles.TimezoneTooltipWrapper}>
+                <Tooltip
+                  disabled={!isShownForcedUTC && !timezoneDisabled}
+                  content="Day, week, and month precision only support UTC."
+                >
+                  {timezoneTypeahead}
+                </Tooltip>
+              </div>
+            </Grid.Column>
+            <Grid.Column xs={6} md={2}>
+              {//We will show a fake selector that shows the temporary precision when the user
+              //is selecting dates using the datepicker but has not confirmed the selection
+              !this.state.shownPrecision ? (
+                <PrecisionSelector
+                  from={reportOptions.from}
+                  to={reportOptions.to}
+                  selectedPrecision={reportOptions.precision}
+                  changeTime={refreshReportOptions}
+                  disabled={reportLoading}
+                />
+              ) : (
+                <Select
+                  id="precision-select"
+                  label="Precision"
+                  options={PRECISION_OPTIONS}
+                  value={this.state.shownPrecision}
+                  disabled={reportLoading}
+                  readOnly
+                />
+              )}
+            </Grid.Column>
+          </Grid>
+        </Panel.LEGACY.Section>
+      </>
     );
   };
 
@@ -241,7 +207,6 @@ function ReportOptions(props) {
 const mapStateToProps = state => ({
   reportOptions: state.reportOptions,
   typeaheadCache: typeaheadCacheSelector(state),
-  featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
 });
 
 const mapDispatchToProps = {

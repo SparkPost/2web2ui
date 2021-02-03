@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { connect } from 'react-redux';
 import { Box, Button, Drawer, Expandable, Inline, Panel, Stack } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import {
   ActiveMetrics,
@@ -239,8 +237,4 @@ export function ReportOptions(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
-});
-
-export default connect(mapStateToProps)(ReportOptions);
+export default ReportOptions;

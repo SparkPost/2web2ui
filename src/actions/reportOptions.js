@@ -1,5 +1,4 @@
 import moment from 'moment';
-
 import {
   fetchMetricsDomains,
   fetchMetricsCampaigns,
@@ -7,19 +6,13 @@ import {
   fetchMetricsIpPools,
   fetchMetricsTemplates,
 } from './metrics';
-
 import { list as listSubaccounts } from './subaccounts';
 import { list as listSendingDomains } from './sendingDomains';
 import { getRelativeDates } from 'src/helpers/date';
-import {
-  getQueryFromOptions,
-  getPrecision as getRawPrecision,
-  getRollupPrecision,
-} from 'src/helpers/metrics';
-import { isSameDate, getLocalTimezone } from 'src/helpers/date';
+import { getQueryFromOptions, getRollupPrecision } from 'src/helpers/metrics';
+import { isSameDate } from 'src/helpers/date';
 import { dedupeFilters } from 'src/helpers/reports';
 import _ from 'lodash';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import config from 'src/config';
 
@@ -134,13 +127,8 @@ export function refreshReportOptions(payload) {
   return (dispatch, getState) => {
     const { reportOptions } = getState();
     let update = { ...reportOptions, ...payload };
-    const { useMetricsRollup } = selectFeatureFlaggedMetrics(getState());
-    const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
+    const getPrecision = getRollupPrecision;
     const isHibanaEnabled = isUserUiOptionSet('isHibanaEnabled')(getState());
-
-    if (!update.timezone || !useMetricsRollup) {
-      update.timezone = getLocalTimezone();
-    }
 
     if (!update.metrics) {
       update.metrics = isHibanaEnabled
@@ -158,7 +146,7 @@ export function refreshReportOptions(payload) {
 
     //old version of update
 
-    const rollupPrecision = useMetricsRollup && update.precision;
+    const rollupPrecision = update.precision;
     if (update.relativeRange !== 'custom') {
       const { from, to } = getRelativeDates(update.relativeRange, {
         precision: rollupPrecision,

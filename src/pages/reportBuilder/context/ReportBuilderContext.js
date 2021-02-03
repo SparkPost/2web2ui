@@ -1,13 +1,8 @@
 import React, { useCallback, useContext, useMemo, useReducer, createContext } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { getRelativeDates } from 'src/helpers/date';
-import {
-  getMetricsFromKeys,
-  getPrecision as getRawPrecision,
-  getRollupPrecision,
-} from 'src/helpers/metrics';
+import { getMetricsFromKeys, getRollupPrecision } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
@@ -40,11 +35,11 @@ const reducer = (state, action) => {
     }
     case 'UPDATE_REPORT_OPTIONS': {
       const { payload, meta } = action;
-      const { useMetricsRollup, subaccounts } = meta;
+      const { subaccounts } = meta;
       let update = { ...state, ...payload };
-      const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
+      const getPrecision = getRollupPrecision;
 
-      if (!update.timezone || !useMetricsRollup) {
+      if (!update.timezone) {
         update.timezone = getLocalTimezone();
       }
 
@@ -62,7 +57,7 @@ const reducer = (state, action) => {
 
       //old version of update
 
-      const rollupPrecision = useMetricsRollup && (update.precision || 'hour'); //Default to hour since it's the recommended rollup precision for 7 days
+      const rollupPrecision = update.precision || 'hour'; //Default to hour since it's the recommended rollup precision for 7 days
       if (update.relativeRange !== 'custom') {
         const { from, to } = getRelativeDates(update.relativeRange, {
           precision: rollupPrecision,
@@ -178,7 +173,7 @@ const getSelectors = reportOptions => {
 };
 
 const ReportOptionsContextProvider = props => {
-  const { useMetricsRollup, subaccounts } = props;
+  const { subaccounts } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const refreshReportOptions = useCallback(
@@ -186,10 +181,10 @@ const ReportOptionsContextProvider = props => {
       return dispatch({
         type: 'UPDATE_REPORT_OPTIONS',
         payload,
-        meta: { useMetricsRollup, subaccounts },
+        meta: { subaccounts },
       });
     },
-    [dispatch, useMetricsRollup, subaccounts],
+    [dispatch, subaccounts],
   );
 
   const addFilters = useCallback(
@@ -259,7 +254,6 @@ const ReportOptionsContextProvider = props => {
 
 const mapStateToProps = state => ({
   subaccounts: state.subaccounts.list,
-  useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
 });
 
 export const ReportBuilderContextProvider = connect(mapStateToProps)(ReportOptionsContextProvider);

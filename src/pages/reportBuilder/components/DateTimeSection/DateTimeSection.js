@@ -8,9 +8,6 @@ import config from 'src/config';
 import styles from '../ReportOptions.module.scss';
 import _ from 'lodash';
 
-import { connect } from 'react-redux';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
-
 const { metricsRollupPrecisionMap } = config;
 const RELATIVE_DATE_OPTIONS = ['hour', 'day', '7days', '30days', '90days', 'custom'];
 const PRECISION_OPTIONS = metricsRollupPrecisionMap.map(({ value }) => ({
@@ -23,7 +20,6 @@ export const DateTimeSection = ({
   reportLoading,
   handleTimezoneSelect,
   refreshReportOptions,
-  useMetricsRollup,
 }) => {
   const [shownPrecision, setShownPrecision] = useState('');
   const updateShownPrecision = useCallback(
@@ -34,15 +30,11 @@ export const DateTimeSection = ({
   );
 
   const isForcedUTC =
-    useMetricsRollup &&
-    reportOptions.precision &&
-    isForcedUTCRollupPrecision(reportOptions.precision);
+    reportOptions.precision && isForcedUTCRollupPrecision(reportOptions.precision);
 
-  const isShownForcedUTC =
-    useMetricsRollup && shownPrecision && isForcedUTCRollupPrecision(shownPrecision);
+  const isShownForcedUTC = shownPrecision && isForcedUTCRollupPrecision(shownPrecision);
 
-  const timezoneDisabled =
-    !useMetricsRollup || reportLoading || (isForcedUTC && shownPrecision === '');
+  const timezoneDisabled = reportLoading || (isForcedUTC && shownPrecision === '');
 
   return (
     <Grid>
@@ -55,7 +47,6 @@ export const DateTimeSection = ({
           roundToPrecision={true}
           selectPrecision={true}
           label="Date Range"
-          useMetricsRollup={useMetricsRollup}
           updateShownPrecision={updateShownPrecision}
         />
       </Grid.Column>
@@ -86,8 +77,7 @@ export const DateTimeSection = ({
             selectedPrecision={reportOptions.precision}
             changeTime={refreshReportOptions}
             ready={reportOptions.isReady}
-            disabled={reportLoading || !useMetricsRollup}
-            useMetricsRollup={useMetricsRollup}
+            disabled={reportLoading}
           />
         ) : (
           <Select
@@ -95,7 +85,7 @@ export const DateTimeSection = ({
             id="precision-select"
             options={PRECISION_OPTIONS}
             value={shownPrecision}
-            disabled={reportLoading || !useMetricsRollup}
+            disabled={reportLoading}
             readOnly
           />
         )}
@@ -104,8 +94,4 @@ export const DateTimeSection = ({
   );
 };
 
-const mapStateToProps = state => ({
-  useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
-});
-
-export default connect(mapStateToProps)(DateTimeSection);
+export default DateTimeSection;
