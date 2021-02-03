@@ -1,10 +1,8 @@
 import React from 'react';
-import { Box, Pagination } from 'src/components/matchbox';
-import styles from './Pagination.module.scss';
+import { Box, Columns, Column, Pagination } from 'src/components/matchbox';
 import { DEFAULT_PER_PAGE_BUTTONS, DEFAULT_PAGE_RANGE } from 'src/constants';
 import PerPageButtons from './PerPageButtons';
 import SaveCSVButton from './SaveCSVButton';
-import { useHibana } from 'src/context/HibanaContext';
 
 const CollectionPagination = ({
   currentPage,
@@ -16,9 +14,6 @@ const CollectionPagination = ({
   perPageButtons,
   saveCsv,
 }) => {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
   const renderPageButtons = () => {
     if (data.length <= perPage) {
       return null;
@@ -38,30 +33,19 @@ const CollectionPagination = ({
     return null;
   }
 
-  if (!isHibanaEnabled) {
-    return (
-      <div>
-        <div className={styles.PageButtons} data-id="pagination-pages">
-          {renderPageButtons()}
-        </div>
-        <div className={styles.PerPageButtons} data-id="pagination-per-page">
-          <PerPageButtons
-            totalCount={data.length}
-            data={data}
-            perPage={perPage}
-            perPageButtons={perPageButtons}
-            onPerPageChange={onPerPageChange}
-          />
-          <SaveCSVButton data={data} saveCsv={saveCsv} />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <Box display="flex" justifyContent="space-between">
-      <Box data-id="pagination-pages">{renderPageButtons()}</Box>
-      <Box display="flex" alignItems="center" data-id="pagination-per-page">
+    <Columns collapseBelow="xs" align="center">
+      {renderPageButtons() ? (
+        <Column data-id="pagination-pages">{renderPageButtons()}</Column>
+      ) : null}
+
+      <Box
+        as={Column}
+        data-id="pagination-per-page"
+        display="flex"
+        alignItems="center"
+        justifyContent={['flex-start', 'flex-start', 'flex-end']}
+      >
         <PerPageButtons
           totalCount={data.length}
           data={data}
@@ -71,7 +55,7 @@ const CollectionPagination = ({
         />
         <SaveCSVButton size="small" outline data={data} saveCsv={saveCsv} />
       </Box>
-    </Box>
+    </Columns>
   );
 };
 
