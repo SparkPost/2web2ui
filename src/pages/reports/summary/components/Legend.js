@@ -6,7 +6,6 @@ import styles from './Legend.module.scss';
 function renderMetric(metric, uniqueLabel) {
   return (
     <div className={styles.Metric} key={metric.name}>
-      {/* This whole directory is getting deleted shortly so no need to fix this */}
       {/* eslint-disable-next-line */}
       <span className={styles.Color} style={{ backgroundColor: metric.stroke }} />
       {metric.isUniquePerTimePeriod && uniqueLabel
@@ -25,7 +24,7 @@ export const Legend = props => {
   return (
     <div className={styles.Legend}>
       {metrics &&
-        metrics.map(metric => renderMetric(metric, (precisionObj && precisionObj.uniqueLabel: '')))}
+        metrics.map(metric => renderMetric(metric, precisionObj && precisionObj.uniqueLabel))}
     </div>
   );
 };
