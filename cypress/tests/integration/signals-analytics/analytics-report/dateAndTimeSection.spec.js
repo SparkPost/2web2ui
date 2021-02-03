@@ -18,10 +18,10 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     const now = Cypress.moment(timestamp)
       .local()
       .format('MMM Do YYYY h:mma');
-    getDatePickerText = startDateTime => `${startDateTime} – ${now}`; //Use this dash: '–' ¯\_(ツ)_/¯
+    getDatePickerText = startDateTime => `${startDateTime} – ${now}`; // Correctly uses the en dash rather than the em dash - https://www.thepunctuationguide.com/en-dash.html
   });
 
-  it('default date and precision is applied correctly (Hibana)', () => {
+  it('default date and precision is applied correctly', () => {
     cy.visit(PAGE_URL);
 
     const weekAgo = Cypress.moment(timestamp).subtract(7, 'day');
@@ -38,7 +38,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     cy.findByLabelText('Precision').should('have.value', 'hour');
   });
 
-  it('changing date picker values changes the precision correctly (Hibana)', () => {
+  it('changing date picker values changes the precision correctly', () => {
     cy.visit(PAGE_URL);
     cy.findByLabelText('Precision').should('have.value', 'hour');
     cy.findByLabelText('Date Range').click();
