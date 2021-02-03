@@ -109,7 +109,7 @@ function StatusCell({ row }) {
             <TranslatableText>Bounce</TranslatableText>
 
             {defaultBounceDomain && (
-              <Box color="green.700">
+              <Box color="darkGray">
                 <Tooltip content={tooltipContent} id={tooltipId}>
                   <div tabIndex="0" data-id="default-bounce-domain-tooltip">
                     <Bookmark />
@@ -121,9 +121,9 @@ function StatusCell({ row }) {
         </Tag>
       )}
 
-      {readyForDKIM && <Tag color="green">DKIM Signing</Tag>}
+      {readyForDKIM && <Tag color="darkGray">DKIM Signing</Tag>}
 
-      {validSPF && <Tag color="green">SPF Valid</Tag>}
+      {validSPF && <Tag color="darkGray">SPF Valid</Tag>}
     </Inline>
   );
 }

@@ -45,7 +45,7 @@ export default function SetupForSending({ domain, isSectionVisible }) {
         </Layout.SectionTitle>
         {!readyFor.dkim && (
           <>
-            <Tag color="green" mb="200">
+            <Tag color="darkGray" mb="200">
               Recommended
             </Tag>
             <Stack>
