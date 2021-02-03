@@ -109,7 +109,7 @@ function StatusCell({ row }) {
             <TranslatableText>Bounce</TranslatableText>
 
             {defaultBounceDomain && (
-              <Box color="darkGray">
+              <Box color="green.700">
                 <Tooltip content={tooltipContent} id={tooltipId}>
                   <div tabIndex="0" data-id="default-bounce-domain-tooltip">
                     <Bookmark />
