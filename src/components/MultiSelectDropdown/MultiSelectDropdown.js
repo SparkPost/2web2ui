@@ -7,7 +7,7 @@ import Divider from 'src/components/divider';
  * @name useMultiSelect
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
-export function useMultiSelect({ checkboxes, useSelectAll = true }) {
+export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = true }) {
   const reducer = (state, action) => {
     switch (action.type) {
       case 'TOGGLE': {
@@ -54,8 +54,14 @@ export function useMultiSelect({ checkboxes, useSelectAll = true }) {
   };
 
   const mappedCheckboxes = state.checkboxes.map(checkbox => ({ ...checkbox, onChange }));
+  const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
+  const checkedCheckboxes = mainCheckboxes.every(({ isChecked }) => isChecked);
+
+  const targetCheckboxes = allowEmpty ? checkedCheckboxes : mainCheckboxes;
+
   return {
     checkboxes: mappedCheckboxes,
+    values: targetCheckboxes.map(({ name }) => name),
   };
 }
 

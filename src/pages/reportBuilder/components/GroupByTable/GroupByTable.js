@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import cx from 'classnames';
 
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
@@ -26,6 +27,9 @@ const tableWrapper = props => {
 
 export const GroupByTable = () => {
   const dispatch = useDispatch();
+  const hasD12yMetricsEnabled = useSelector(state =>
+    isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
     state: reportOptions,
@@ -35,13 +39,14 @@ export const GroupByTable = () => {
   const { groupBy, tableData = [], tableLoading } = useSelector(state => state.summaryChart);
   const group = GROUP_BY_CONFIG[groupBy];
 
-  const { checkboxes } = useMultiSelect({
+  const { checkboxes, values: _values } = useMultiSelect({
     checkboxes: [
       { name: 'sending', label: 'Sending' },
       { name: 'panel', label: 'Panel' },
       { name: 'seed_list', label: 'Seed List' },
     ],
     useSelectAll: false,
+    allowEmpty: false,
   });
 
   const getColumnHeaders = () => {
@@ -154,9 +159,11 @@ export const GroupByTable = () => {
               />
             </Column>
             <Column width={4 / 12}></Column>
-            <Column>
-              <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
-            </Column>
+            {hasD12yMetricsEnabled && (
+              <Column>
+                <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
+              </Column>
+            )}
           </Columns>
         </Panel.Section>
       </Panel>
