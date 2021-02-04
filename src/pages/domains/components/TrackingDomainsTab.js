@@ -114,7 +114,6 @@ export default function TrackingDomainsTab() {
         Header: 'DomainStatus',
         accessor: row => ({
           blocked: row.blocked,
-          defaultTrackingDomain: row.defaultTrackingDomain,
           unverified: row.unverified,
           verified: row.verified,
         }),
@@ -157,7 +156,6 @@ export default function TrackingDomainsTab() {
 
     const domainStatusValues = {
       blocked: flattenedFilters['blocked'],
-      defaultTrackingDomain: flattenedFilters['defaultTrackingDomain'],
       unverified: flattenedFilters['unverified'],
       verified: flattenedFilters['verified'],
     };
