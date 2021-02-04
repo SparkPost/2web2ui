@@ -37,9 +37,9 @@ export function SendingDomainStatusCell({ domain }) {
         </Tag>
       )}
 
-      {readyFor?.dkim && <Tag color="green">DKIM Signing</Tag>}
+      {readyFor?.dkim && <Tag color="darkGray">DKIM Signing</Tag>}
 
-      {status?.spf_status === 'valid' && <Tag color="green">SPF Valid</Tag>}
+      {status?.spf_status === 'valid' && <Tag color="darkGray">SPF Valid</Tag>}
     </Inline>
   );
 }
