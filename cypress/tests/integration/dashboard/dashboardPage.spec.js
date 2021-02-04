@@ -224,11 +224,10 @@ describe('the dashboard page', () => {
     stubGrantsRequest({ role: 'developer' });
     stubAlertsReq();
     stubAccountsReq({ fixture: 'account/200.get.json' }); // has allow_events_allow_events_ingest - meaning it's on prem, so we don't show onboarding
-    stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' }); // would normally give them the first onboarding step, but this person doesnt have the manage grant
     stubSendingDomains({ fixture: '/200.get.no-results.json' });
 
     cy.visit(PAGE_URL);
-    cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
+    cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@sendingDomainsReq']);
     cy.findByRole('heading', { name: 'Summary Report' });
   });
 
