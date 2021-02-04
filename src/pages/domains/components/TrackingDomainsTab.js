@@ -26,22 +26,22 @@ const filtersInitialState = {
     {
       label: 'Select All',
       name: 'selectAll',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Verified',
       name: 'verified',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Unverified',
       name: 'unverified',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Blocked',
       name: 'blocked',
-      isChecked: true,
+      isChecked: false,
     },
   ],
 };
