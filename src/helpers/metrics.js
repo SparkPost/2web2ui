@@ -11,10 +11,12 @@ const {
   metricsPrecisionMap: precisionMap,
   metricsRollupPrecisionMap: rollupPrecisionMap,
   apiDateFormat,
-  chartColors = [],
 } = config;
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
+/**
+ * @deprecated
+ */
 export function getQueryFromOptions({
   from,
   to,
@@ -309,8 +311,8 @@ export function getMetricFromKey(metricKey) {
   return METRICS_LIST.find(metric => metric.key === metricKey);
 }
 
-export function _getMetricsFromKeys(keys = [], isHibanaEnabled) {
-  const metricsColors = isHibanaEnabled ? HIBANA_METRICS_COLORS : chartColors;
+export function _getMetricsFromKeys(keys = []) {
+  const metricsColors = HIBANA_METRICS_COLORS;
 
   return keys.map((metric, i) => {
     const found = METRICS_LIST.find(M => M.key === metric || M.key === metric.key);
@@ -323,10 +325,7 @@ export function _getMetricsFromKeys(keys = [], isHibanaEnabled) {
   });
 }
 
-export const getMetricsFromKeys = _.memoize(
-  _getMetricsFromKeys,
-  (keys = [], isHibanaEnabled) => `${keys.join('')}${isHibanaEnabled ? 'hibana' : 'og'}`,
-);
+export const getMetricsFromKeys = _.memoize(_getMetricsFromKeys, (keys = []) => `${keys.join('')}`);
 
 export function getKeysFromMetrics(metrics = []) {
   const flattened = _.flatMap(metrics, ({ key, computeKeys }) => (computeKeys ? computeKeys : key));

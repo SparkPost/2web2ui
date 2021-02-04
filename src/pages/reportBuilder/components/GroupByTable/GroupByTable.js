@@ -8,10 +8,11 @@ import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccou
 import { TableCollection, Unit, PanelLoading } from 'src/components';
 import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
-import { Panel, Table, Box } from 'src/components/matchbox';
+import { Panel, Table, Box, Grid } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
+import MultiSelectDropdown, { useMultiSelect } from 'src/components/MultiSelectDropdown';
 
 import styles from './ReportTable.module.scss';
 
@@ -33,6 +34,15 @@ export const GroupByTable = () => {
   const subaccounts = useSelector(state => state.subaccounts.list);
   const { groupBy, tableData = [], tableLoading } = useSelector(state => state.summaryChart);
   const group = GROUP_BY_CONFIG[groupBy];
+
+  const { checkboxes } = useMultiSelect({
+    checkboxes: [
+      { name: 'sending', label: 'Sending' },
+      { name: 'panel', label: 'Panel' },
+      { name: 'seed_list', label: 'Seed List' },
+    ],
+    useSelectAll: false,
+  });
 
   const getColumnHeaders = () => {
     const primaryCol = {
@@ -121,25 +131,33 @@ export const GroupByTable = () => {
     <>
       <Panel marginBottom="-1px">
         <Panel.Section>
-          <GroupByOption
-            disabled={tableLoading || metrics.length === 0}
-            groupBy={groupBy}
-            hasSubaccounts={hasSubaccounts}
-            onChange={value => {
-              dispatch(
-                _getTableDataReportBuilder({
-                  groupBy: value,
-                  metrics,
-                  reportOptions: {
-                    ...reportOptions,
-                    filters: Boolean(reportOptions.filters.length)
-                      ? reportOptions.filters
-                      : undefined,
-                  },
-                }),
-              );
-            }}
-          />
+          <Grid>
+            <Grid.Column xs={5}>
+              <GroupByOption
+                disabled={tableLoading || metrics.length === 0}
+                groupBy={groupBy}
+                hasSubaccounts={hasSubaccounts}
+                onChange={value => {
+                  dispatch(
+                    _getTableDataReportBuilder({
+                      groupBy: value,
+                      metrics,
+                      reportOptions: {
+                        ...reportOptions,
+                        filters: Boolean(reportOptions.filters.length)
+                          ? reportOptions.filters
+                          : undefined,
+                      },
+                    }),
+                  );
+                }}
+              />
+            </Grid.Column>
+            <Grid.Column xs={4}></Grid.Column>
+            <Grid.Column xs={3}>
+              <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
+            </Grid.Column>
+          </Grid>
         </Panel.Section>
       </Panel>
       <div data-id="summary-table">{renderTable()}</div>
