@@ -10,7 +10,7 @@ import { list as listSubaccounts } from './subaccounts';
 import { list as listSendingDomains } from './sendingDomains';
 import { getRelativeDates } from 'src/helpers/date';
 import { getQueryFromOptions, getRollupPrecision } from 'src/helpers/metrics';
-import { isSameDate } from 'src/helpers/date';
+import { isSameDate, getLocalTimezone } from 'src/helpers/date';
 import { dedupeFilters } from 'src/helpers/reports';
 import _ from 'lodash';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
@@ -129,6 +129,10 @@ export function refreshReportOptions(payload) {
     let update = { ...reportOptions, ...payload };
     const getPrecision = getRollupPrecision;
     const isHibanaEnabled = isUserUiOptionSet('isHibanaEnabled')(getState());
+
+    if (!update.timezone) {
+      update.timezone = getLocalTimezone();
+    }
 
     if (!update.metrics) {
       update.metrics = isHibanaEnabled
