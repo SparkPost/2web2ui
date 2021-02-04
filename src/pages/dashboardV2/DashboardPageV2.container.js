@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ROLES } from 'src/constants';
 import hasGrants from 'src/helpers/conditions/hasGrants';
 import { hasRole, isAdmin } from 'src/helpers/conditions/user';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 import { isManuallyBilled } from 'src/selectors/accountBillingInfo';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
@@ -39,9 +40,10 @@ function mapStateToProps(state) {
   const canViewUsage = hasGrants('usage/view')(state);
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
+  const isOnPrem = hasAccountOptionEnabled('allow_events_ingest');
 
   let onboarding = 'done';
-  if (lastUsageDate === null && (isAnAdmin || isDev)) {
+  if (!isOnPrem && lastUsageDate === null && (isAnAdmin || isDev)) {
     let addSendingDomainNeeded;
     let verifySendingNeeded;
     let createApiKeyNeeded;
@@ -63,7 +65,7 @@ function mapStateToProps(state) {
 
     if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
       onboarding = 'startSending';
-  } else if (lastUsageDate === null && (isTemplatesUser || isReportingUser)) {
+  } else if (!isOnPrem && lastUsageDate === null && (isTemplatesUser || isReportingUser)) {
     onboarding = 'analyticsReportPromo';
   }
 
