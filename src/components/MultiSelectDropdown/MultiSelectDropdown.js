@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useCallback, useMemo } from 'react';
 import { Box, Label, Popover, Checkbox, ScreenReaderOnly } from 'src/components/matchbox';
 import { StatusPopoverContent, AlignedTextButton, AlignedButtonIcon, Chevron } from './styles';
 import Divider from 'src/components/divider';
@@ -7,7 +7,7 @@ import Divider from 'src/components/divider';
  * @name useMultiSelect
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
-export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = true }) {
+export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = false }) {
   const reducer = (state, action) => {
     switch (action.type) {
       case 'TOGGLE': {
@@ -27,6 +27,7 @@ export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = t
           const targetCheckboxIndex = mainCheckboxes.findIndex(({ name }) => name === action.name);
           mainCheckboxes[targetCheckboxIndex].isChecked = !mainCheckboxes[targetCheckboxIndex]
             .isChecked;
+
           if (selectAllCheckbox.length) {
             const allChecked = mainCheckboxes.every(({ isChecked }) => isChecked);
             selectAllCheckbox[0].isChecked = allChecked;
@@ -44,20 +45,27 @@ export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = t
 
   const [state, dispatch] = useReducer(reducer, {
     checkboxes: [
-      ...(useSelectAll ? [{ name: 'selectAll', label: 'Select All', isChecked: true }] : []),
-      ...checkboxes.map(checkbox => ({ ...checkbox, isChecked: true })),
+      ...(useSelectAll ? [{ name: 'selectAll', label: 'Select All', isChecked: false }] : []),
+      ...checkboxes.map(checkbox => ({ ...checkbox, isChecked: false })),
     ],
   });
 
-  const onChange = e => {
-    dispatch({ type: 'TOGGLE', name: e.target.name });
-  };
+  const onChange = useCallback(
+    e => {
+      dispatch({ type: 'TOGGLE', name: e.target.name });
+    },
+    [dispatch],
+  );
 
-  const mappedCheckboxes = state.checkboxes.map(checkbox => ({ ...checkbox, onChange }));
+  const mappedCheckboxes = useMemo(
+    () => state.checkboxes.map(checkbox => ({ ...checkbox, onChange })),
+    [state.checkboxes, onChange],
+  );
   const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
-  const checkedCheckboxes = mainCheckboxes.every(({ isChecked }) => isChecked);
+  const checkedCheckboxes = mainCheckboxes.filter(({ isChecked }) => isChecked);
 
-  const targetCheckboxes = allowEmpty ? checkedCheckboxes : mainCheckboxes;
+  const targetCheckboxes =
+    !allowEmpty && checkedCheckboxes.length === 0 ? mainCheckboxes : checkedCheckboxes;
 
   return {
     checkboxes: mappedCheckboxes,
@@ -130,7 +138,7 @@ function MultiSelectDropdown({ checkboxes, disabled, label = 'Options' }) {
         )}
 
         <Box padding="300">
-          <Checkbox.Group label="Status Filters" labelHidden>
+          <Checkbox.Group label="Filter Options" labelHidden>
             {checkboxes
               .filter(checkbox => checkbox.name !== 'selectAll') //Will remove this regardless
               .map((checkbox, index) => (

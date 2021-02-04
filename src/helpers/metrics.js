@@ -60,11 +60,12 @@ export function getQueryFromOptionsV2({
   filters = [],
   match = '',
   limit,
+  dataSource = ['sending', 'panel', 'seed'],
 }) {
   from = moment(from);
   to = moment(to);
 
-  const apiMetricsKeys = getKeysFromMetrics(metrics);
+  const apiMetricsKeys = getKeysFromMetricsV2(metrics, dataSource);
   const delimiter = getDelimiter(filters);
   const options = {
     metrics: apiMetricsKeys.join(delimiter),
@@ -330,6 +331,29 @@ export const getMetricsFromKeys = _.memoize(_getMetricsFromKeys, (keys = []) => 
 export function getKeysFromMetrics(metrics = []) {
   const flattened = _.flatMap(metrics, ({ key, computeKeys }) => (computeKeys ? computeKeys : key));
   return _.uniq(flattened);
+}
+
+export function getKeysFromMetricsV2(metrics = [], dataSource) {
+  const hasSending = dataSource.includes('sending');
+  const hasSeed = dataSource.includes('seed');
+  const hasPanel = dataSource.includes('panel');
+  const d12yMetrics = ['count_inbox', 'count_spam', 'inbox_folder_rate', 'spam_folder_rate'];
+
+  const filteredMetrics = metrics.filter(
+    ({ key }) => hasSending || ((hasSeed || hasPanel) && d12yMetrics.includes(key)),
+  );
+  const flattened = _.flatMap(filteredMetrics, ({ key, computeKeys }) =>
+    computeKeys ? computeKeys : key,
+  );
+  const uniqueValues = _.uniq(flattened);
+
+  return uniqueValues.reduce((acc, curr) => {
+    if (!d12yMetrics.includes(curr)) {
+      return [...acc, curr];
+    } else {
+      return [...acc, hasPanel && `${curr}_panel`, hasSeed && `${curr}_seed`];
+    }
+  }, []);
 }
 
 export function computeKeysForItem(metrics = []) {

@@ -1,12 +1,12 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import cx from 'classnames';
 
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 
-import { TableCollection, Unit, PanelLoading } from 'src/components';
+import { ApiErrorBanner, PanelLoading, TableCollection, Unit } from 'src/components';
 import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
 import { Panel, Table, Box, Columns, Column } from 'src/components/matchbox';
@@ -14,8 +14,12 @@ import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
 import MultiSelectDropdown, { useMultiSelect } from 'src/components/MultiSelectDropdown';
+import { useSparkPostQuery } from 'src/hooks';
+import { getDeliverability } from 'src/helpers/api/metrics';
+import EmptyCell from 'src/components/collection/EmptyCell';
 
 import styles from './ReportTable.module.scss';
+import { getQueryFromOptionsV2, transformData } from 'src/helpers/metrics';
 
 const tableWrapper = props => {
   return (
@@ -26,20 +30,18 @@ const tableWrapper = props => {
 };
 
 export const GroupByTable = () => {
-  const dispatch = useDispatch();
-  const hasD12yMetricsEnabled = useSelector(state =>
-    isAccountUiOptionSet('allow_deliverability_metrics')(state),
-  );
+  const [groupBy, setGroupBy] = useState();
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
     state: reportOptions,
   } = useReportBuilderContext();
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
-  const { groupBy, tableData = [], tableLoading } = useSelector(state => state.summaryChart);
-  const group = GROUP_BY_CONFIG[groupBy];
+  const hasD12yMetricsEnabled = useSelector(state =>
+    isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
 
-  const { checkboxes, values: _values } = useMultiSelect({
+  const { checkboxes, values } = useMultiSelect({
     checkboxes: [
       { name: 'sending', label: 'Sending' },
       { name: 'panel', label: 'Panel' },
@@ -48,6 +50,19 @@ export const GroupByTable = () => {
     useSelectAll: false,
     allowEmpty: false,
   });
+
+  const preparedOptions = getQueryFromOptionsV2({ ...reportOptions, metrics, dataSource: values });
+  const { data = [], status, refetch } = useSparkPostQuery(
+    () => getDeliverability(preparedOptions, groupBy),
+    {
+      refetchOnWindowFocus: false,
+      enabled: reportOptions.isReady && groupBy,
+    },
+  );
+
+  const formattedData = transformData(data, metrics);
+
+  const group = GROUP_BY_CONFIG[groupBy];
 
   const getColumnHeaders = () => {
     const primaryCol = {
@@ -93,7 +108,11 @@ export const GroupByTable = () => {
     const primaryCol = <AddFilterLink newFilter={newFilter} />;
     const metricCols = metrics.map(({ key, unit }) => (
       <Box textAlign="right" key={key}>
-        <Unit value={row[key]} unit={unit} />
+        {row[key] !== undefined && row[key] !== null ? (
+          <Unit value={row[key]} unit={unit} />
+        ) : (
+          <EmptyCell />
+        )}
       </Box>
     ));
 
@@ -105,11 +124,26 @@ export const GroupByTable = () => {
       return null;
     }
 
-    if (tableLoading) {
+    if (status === 'error') {
+      return (
+        <Panel>
+          <Panel.Section>
+            <ApiErrorBanner
+              reload={refetch}
+              status="muted"
+              title="Unable to load report"
+              message="Please try again"
+            />
+          </Panel.Section>
+        </Panel>
+      );
+    }
+
+    if (status === 'loading') {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!tableData.length) {
+    if (!formattedData.length) {
       return (
         <Panel.LEGACY>
           <Empty message="There is no data to display" />
@@ -124,7 +158,7 @@ export const GroupByTable = () => {
         getRowData={getRowData}
         pagination
         defaultPerPage={10}
-        rows={tableData}
+        rows={formattedData}
         defaultSortColumn={metrics[0].key}
         defaultSortDirection="desc"
         wrapperComponent={tableWrapper}
@@ -139,23 +173,10 @@ export const GroupByTable = () => {
           <Columns collapseBelow="sm">
             <Column width={5 / 12}>
               <GroupByOption
-                disabled={tableLoading || metrics.length === 0}
+                disabled={status === 'loading' || metrics.length === 0}
                 groupBy={groupBy}
                 hasSubaccounts={hasSubaccounts}
-                onChange={value => {
-                  dispatch(
-                    _getTableDataReportBuilder({
-                      groupBy: value,
-                      metrics,
-                      reportOptions: {
-                        ...reportOptions,
-                        filters: Boolean(reportOptions.filters.length)
-                          ? reportOptions.filters
-                          : undefined,
-                      },
-                    }),
-                  );
-                }}
+                onChange={setGroupBy}
               />
             </Column>
             <Column width={4 / 12}></Column>

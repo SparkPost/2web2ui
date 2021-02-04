@@ -92,7 +92,11 @@ export const CompareByTable = () => {
     const comparisonCol = <Tag>{row[comparisonType]}</Tag>;
     const metricCols = metrics.map(({ key, unit }) => (
       <Box textAlign="right" key={key}>
-        {row[key] ? <Unit value={row[key]} unit={unit} /> : <EmptyCell />}
+        {row[key] !== undefined && row[key] !== null ? (
+          <Unit value={row[key]} unit={unit} />
+        ) : (
+          <EmptyCell />
+        )}
       </Box>
     ));
 

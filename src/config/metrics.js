@@ -1,5 +1,5 @@
 import { rate, average } from '../helpers/metrics';
-
+import { safeRate } from '../helpers/math';
 const injection = 'Injection';
 const delivery = 'Delivery';
 const deliverability = 'Deliverability';
@@ -511,37 +511,14 @@ export const list = [
     description: 'Percentage of Sent messages that were accepted.',
     inSummary: true,
   },
-  // {
-  //   key: 'inbox_rate',
-  //   label: 'Moved to Inbox Rate',
-  //   category: deliverability,
-  //   calculateKeys: ['count_moved_to_inbox', 'count_spam_panel'],
-  // },
-  // {
-  //   label: 'Moved to Spam Rate',
-  //   category: 'deliverability',
-  //   calculateKeys: ['count_moved_to_spam', 'count_inbox_panel'],
-  // },
-  // {
-  //   key: 'count_inbox_seed',
-  //   label: 'Inbox Folder Count',
-  //   type: 'total',
-  //   unit: 'number',
-  //   category: deliverability,
-  // },
-  // {
-  //   key: 'count_spam_seed',
-  //   label: 'Inbox Folder Count',
-  //   type: 'total',
-  //   unit: 'number',
-  //   category: deliverability,
-  // },
   {
     key: 'count_inbox',
     label: 'Inbox Folder Count',
     type: 'total',
     unit: 'number',
     category: deliverability,
+    compute: ({ count_inbox_panel, count_inbox_seed }) => count_inbox_panel + count_inbox_seed,
+    computeKeys: ['count_inbox_panel', 'count_inbox_seed'],
     inReportBuilder: true,
   },
   {
@@ -549,6 +526,8 @@ export const list = [
     label: 'Spam Folder Count',
     type: 'total',
     unit: 'number',
+    compute: ({ count_spam_panel, count_spam_seed }) => count_spam_panel + count_spam_seed,
+    computeKeys: ['count_spam_panel', 'count_spam_seed'],
     category: deliverability,
     inReportBuilder: true,
   },
@@ -558,26 +537,28 @@ export const list = [
     unit: 'percent',
     type: 'percentage',
     category: deliverability,
+    compute: ({ count_inbox_panel, count_inbox_seed, count_spam_panel, count_spam_seed }) => {
+      return safeRate(
+        (count_inbox_panel + count_inbox_seed) /
+          (count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed),
+      );
+    },
+    computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
     inReportBuilder: true,
-    calculateKeys: [
-      'count_inbox_panel',
-      'count_spam_panel',
-      'count_inbox_seed',
-      'count_inbox_panel',
-    ],
   },
   {
     key: 'spam_folder_rate',
     label: 'Spam Folder Rate',
     unit: 'percent',
     type: 'percentage',
-    calculateKeys: [
-      'count_inbox_panel',
-      'count_spam_panel',
-      'count_inbox_seed',
-      'count_inbox_panel',
-    ],
     category: deliverability,
+    compute: ({ count_inbox_panel, count_inbox_seed, count_spam_panel, count_spam_seed }) => {
+      return safeRate(
+        (count_spam_panel + count_spam_seed) /
+          (count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed),
+      );
+    },
+    computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
     inReportBuilder: true,
   },
 ];
