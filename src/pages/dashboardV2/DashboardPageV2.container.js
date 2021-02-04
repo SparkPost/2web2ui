@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ROLES } from 'src/constants';
 import hasGrants from 'src/helpers/conditions/hasGrants';
 import { hasRole, isAdmin } from 'src/helpers/conditions/user';
-import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
+import { getAccountUiOptionValue } from 'src/helpers/conditions/account';
 import { isManuallyBilled } from 'src/selectors/accountBillingInfo';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
@@ -40,7 +40,7 @@ function mapStateToProps(state) {
   const canViewUsage = hasGrants('usage/view')(state);
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
-  const isOnPrem = hasAccountOptionEnabled('allow_events_ingest')(state);
+  const isOnPrem = getAccountUiOptionValue('allow_events_ingest')(state);
 
   let onboarding = 'done';
   if (!isOnPrem && lastUsageDate === null && (isAnAdmin || isDev)) {

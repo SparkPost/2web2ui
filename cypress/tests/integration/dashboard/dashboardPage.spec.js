@@ -229,7 +229,6 @@ describe('the dashboard page', () => {
 
     cy.visit(PAGE_URL);
     cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
-
     cy.findByRole('heading', { name: 'Summary Report' });
   });
 
