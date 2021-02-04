@@ -1,7 +1,6 @@
 export { default as ActiveComparisons } from './ActiveComparisons';
 export { default as ActiveMetrics } from './ActiveMetrics';
 export { default as Charts } from './Charts';
-export { default as InfoBanner } from './InfoBanner';
 export { default as CompareByForm } from './CompareByForm';
 export { default as FiltersForm } from './FiltersForm';
 export { default as MetricsDrawer } from './MetricsDrawer';
@@ -9,4 +8,3 @@ export { default as ReportOptions } from './ReportOptions';
 export { default as SaveReportModal } from './SavedReportsSection/SaveReportModal';
 export { default as GroupByTable } from './GroupByTable/GroupByTable';
 export { default as CompareByGroupByTable } from './GroupByTable/CompareByGroupByTable';
-export { default as ReportBuilderEmptyState } from './ReportBuilderEmptyState';
