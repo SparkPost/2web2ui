@@ -223,7 +223,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     };
 
     if (!renderBounceOnly) {
-      // domainStatusValues['defaultBounceDomain'] = flattenedFilters['defaultBounceDomain'];
       domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
     }
 
