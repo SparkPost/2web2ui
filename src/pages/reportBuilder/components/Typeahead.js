@@ -35,6 +35,7 @@ function Typeahead(props) {
         ...lookaheadOptions,
         match: inputValue,
         limit: METRICS_API_LIMIT,
+        staleTime: 1000 * 30, // 30 seconds
       }),
     { enabled: Boolean(inputValue && inputValue.length >= 3), refetchOnWindowFocus: false },
   );
