@@ -1,7 +1,7 @@
 import React from 'react';
-import { DateTimeSection } from '../DateTimeSection';
 import { render } from '@testing-library/react';
-import TestApp from 'src/__testHelpers__/TestApp';
+import { TestApp } from 'src/__testHelpers__';
+import { DateTimeSection } from '../DateTimeSection';
 
 describe('DateTimeSection', () => {
   const defaultProps = {
@@ -16,14 +16,9 @@ describe('DateTimeSection', () => {
     );
   };
 
-  it('should disable fields when not using metrics rollup', () => {
-    const { getByLabelText } = subject({ useMetricsRollup: false });
-    expect(getByLabelText('Precision')).toHaveAttribute('disabled');
-    expect(getByLabelText('Time Zone')).toHaveAttribute('disabled');
-  });
+  it('should not disable fields', () => {
+    const { getByLabelText } = subject();
 
-  it('should not disable fields when using metrics rollup', () => {
-    const { getByLabelText } = subject({ useMetricsRollup: true });
     expect(getByLabelText('Precision')).not.toHaveAttribute('disabled');
     expect(getByLabelText('Time Zone')).not.toHaveAttribute('disabled');
   });

@@ -52,12 +52,6 @@ describe('Component: Summary Chart Legend', () => {
     return shallow(<Legend {...defaults} {...props} />);
   };
 
-  it('should not render with "per" labels without metrics rollup', () => {
-    const wrapper = subject();
-    expect(wrapper).not.toHaveTextContent('B per minute');
-    expect(wrapper).not.toHaveTextContent('C per minute');
-  });
-
   it('should render using "per minute" labels for unique metrics for 1min precision', () => {
     const wrapper = subject({ featureFlaggedMetrics: { useMetricsRollup: true } });
     expect(wrapper).not.toHaveTextContent('B per minute');
