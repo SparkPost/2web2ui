@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useReducer } from 'react';
+import React, { useCallback, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
@@ -11,7 +11,6 @@ import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import {
   getReactTableFilters,
   customDomainStatusFilter,
-  getActiveStatusFilters,
   setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
@@ -27,42 +26,41 @@ const filtersInitialState = {
     {
       label: 'Select All',
       name: 'selectAll',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Verified',
       name: 'readyForSending',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'DKIM Signing',
       name: 'readyForDKIM',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Bounce',
       name: 'readyForBounce',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'SPF Valid',
       name: 'validSPF',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Unverified',
       name: 'unverified',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Blocked',
       name: 'blocked',
-      isChecked: true,
+      isChecked: false,
     },
   ],
 };
 
-// For usePageFilters
 const initFiltersForSending = {
   domainName: { defaultValue: undefined },
   readyForSending: {
@@ -149,18 +147,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
-  const previousRenderBounceOnly = useRef(renderBounceOnly);
-  if (renderBounceOnly !== previousRenderBounceOnly.current) {
-    // filtersInitialState -> selectAll was being set to false after first reset... huh...
-    filtersInitialState.checkboxes.map(checkbox => {
-      checkbox.isChecked = true;
-      return checkbox;
-    }); // force selectAll true again...
-    filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
-    resetFilters();
-    previousRenderBounceOnly.current = renderBounceOnly; // set previous after dispatching resets
-  }
-
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
   const filter = React.useMemo(() => customDomainStatusFilter, []);
@@ -179,7 +165,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         accessor: row => ({
           readyForBounce: row.readyForBounce,
           blocked: row.blocked,
-          defaultBounceDomain: row.defaultBounceDomain,
           readyForDKIM: row.readyForDKIM,
           readyForSending: row.readyForSending,
           unverified: row.unverified,
@@ -224,44 +209,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const isEmpty = !listPending && rows?.length === 0;
 
-  // synce query params -> page state
-  const firstLoad = useRef(true);
-  useEffect(() => {
-    if (!rows || (rows && rows.length === 0) || listPending) {
-      return;
-    }
-
-    if (firstLoad.current) {
-      const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName');
-      const activeStatusFilters = getActiveStatusFilters(filters);
-      const statusFiltersToApply = !activeStatusFilters.length
-        ? allStatusCheckboxNames
-        : activeStatusFilters.map(i => i.name);
-
-      firstLoad.current = false;
-
-      const newFiltersState = {
-        ...filtersState,
-        checkboxes: filtersState.checkboxes.map(checkbox => {
-          return {
-            ...checkbox,
-            isChecked: statusFiltersToApply.indexOf(checkbox.name) >= 0,
-          };
-        }),
-      };
-      newFiltersState['domainName'] = filters['domainName'];
-
-      filtersStateDispatch({
-        type: 'LOAD',
-        filtersState: newFiltersState,
-      }); // NOTE: Sets the filters display
-
-      batchDispatchUrlAndTable(newFiltersState);
-      return;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rows, listPending]);
-
   function batchDispatchUrlAndTable(newFiltersState) {
     const flattenedFilters = filterStateToParams(newFiltersState);
 
@@ -276,7 +223,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     };
 
     if (!renderBounceOnly) {
-      domainStatusValues['defaultBounceDomain'] = flattenedFilters['defaultBounceDomain'];
+      // domainStatusValues['defaultBounceDomain'] = flattenedFilters['defaultBounceDomain'];
       domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
     }
 

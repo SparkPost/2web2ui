@@ -6,6 +6,15 @@
 const customDomainStatusFilter = function(rows, columnIds, value) {
   const appliedFilters = value;
   const tableColumnName = columnIds[0];
+  const noneSelected = Object.keys(appliedFilters)
+    .map(i => appliedFilters[i])
+    .every(i => i === false);
+
+  // none = all, dont filter
+  if (noneSelected) {
+    return rows;
+  }
+
   const mappedRows = rows
     .map(row => {
       let trueForAtleastOne = 0;

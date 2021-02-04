@@ -177,7 +177,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
             {/* This content is purely visual and is not exposed to screen readers, rather, "Domain Status" is always exposed for those users */}
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
-              {!hasCheckedCheckboxes && 'None'}
+              {!hasCheckedCheckboxes && 'All'}
               {hasCheckedCheckboxes && allCheckboxesChecked && 'All'}
               {hasCheckedCheckboxes && !allCheckboxesChecked && activeStatusLabels}
             </StatusPopoverContent>
