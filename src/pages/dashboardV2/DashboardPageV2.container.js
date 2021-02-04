@@ -40,7 +40,7 @@ function mapStateToProps(state) {
   const canViewUsage = hasGrants('usage/view')(state);
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
-  const isOnPrem = hasAccountOptionEnabled('allow_events_ingest');
+  const isOnPrem = hasAccountOptionEnabled('allow_events_ingest')(state);
 
   let onboarding = 'done';
   if (!isOnPrem && lastUsageDate === null && (isAnAdmin || isDev)) {
