@@ -1,4 +1,4 @@
-import { commonBeforeSteps } from './analytics-report/helpers';
+import { commonBeforeSteps } from './helpers';
 
 const PAGE_URL = '/signals/analytics';
 
