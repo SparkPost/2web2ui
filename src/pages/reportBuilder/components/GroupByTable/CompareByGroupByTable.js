@@ -1,11 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import cx from 'classnames';
 import _ from 'lodash';
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 import { ApiErrorBanner, Empty, PanelLoading, TableCollection, Unit } from 'src/components';
-import { Panel, Table, Box, Tag } from 'src/components/matchbox';
+import MultiSelectDropdown from 'src/components/MultiSelectDropdown';
+import { Box, Column, Columns, Panel, Table, Tag } from 'src/components/matchbox';
 import EmptyCell from 'src/components/collection/EmptyCell';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
@@ -30,10 +32,14 @@ export const CompareByTable = () => {
     groupBy,
     comparisonType,
     refetchAll,
+    checkboxes,
   } = useGroupByTable();
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
   } = useReportBuilderContext();
+  const hasD12yMetricsEnabled = useSelector(state =>
+    isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
   const group = GROUP_BY_CONFIG[groupBy];
@@ -154,12 +160,22 @@ export const CompareByTable = () => {
     <>
       <Panel marginBottom="-1px">
         <Panel.Section>
-          <GroupByOption
-            disabled={statuses.includes('loading') || metrics.length === 0}
-            groupBy={groupBy}
-            hasSubaccounts={hasSubaccounts}
-            onChange={setGroupBy}
-          />
+          <Columns collapseBelow="sm">
+            <Column width={5 / 12}>
+              <GroupByOption
+                disabled={statuses.includes('loading') || metrics.length === 0}
+                groupBy={groupBy}
+                hasSubaccounts={hasSubaccounts}
+                onChange={setGroupBy}
+              />
+            </Column>
+            <Column width={4 / 12}>{/* TODO: Include search bar for later */}</Column>
+            {hasD12yMetricsEnabled && groupBy && (
+              <Column>
+                <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
+              </Column>
+            )}
+          </Columns>
         </Panel.Section>
       </Panel>
       <div data-id="summary-table">

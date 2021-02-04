@@ -73,7 +73,12 @@ export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = f
   };
 }
 
-function MultiSelectDropdown({ checkboxes, disabled, label = 'Options' }) {
+function MultiSelectDropdown({
+  checkboxes,
+  disabled,
+  label = 'Options',
+  id = 'multi-select-dropdown',
+}) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
@@ -90,6 +95,7 @@ function MultiSelectDropdown({ checkboxes, disabled, label = 'Options' }) {
     <Box mb="400">
       <Label label={label} />
       <Popover
+        id={id}
         left
         as="div"
         width="100%"

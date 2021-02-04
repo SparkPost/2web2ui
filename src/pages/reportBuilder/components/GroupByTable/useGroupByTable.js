@@ -9,6 +9,7 @@ import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
+import { useMultiSelect } from 'src/components/MultiSelectDropdown';
 
 const separateCompareOptions = reportOptions => {
   const { comparisons } = reportOptions;
@@ -30,7 +31,15 @@ const separateCompareOptions = reportOptions => {
 
 export default function useGroupByTable() {
   const [groupBy, setGroupBy] = useState();
-
+  const { checkboxes, values } = useMultiSelect({
+    checkboxes: [
+      { name: 'sending', label: 'Sending' },
+      { name: 'panel', label: 'Panel' },
+      { name: 'seed', label: 'Seed List' },
+    ],
+    useSelectAll: false,
+    allowEmpty: false,
+  });
   const { state: reportOptions } = useReportBuilderContext();
   const { metrics, comparisons } = reportOptions;
 
@@ -42,7 +51,10 @@ export default function useGroupByTable() {
   const separatedOptions = separateCompareOptions(reportOptions);
   const separatedRequests = separatedOptions.map(options => {
     return () =>
-      getDeliverability(getQueryFromOptions({ ...options, metrics: formattedMetrics }), groupBy);
+      getDeliverability(
+        getQueryFromOptions({ ...options, metrics: formattedMetrics, dataSources: values }),
+        groupBy,
+      );
   });
 
   const queries = useSparkPostQueries([...separatedRequests], {
@@ -95,5 +107,6 @@ export default function useGroupByTable() {
     statuses,
     refetchAll,
     comparisonType,
+    checkboxes,
   };
 }

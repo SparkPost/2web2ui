@@ -45,7 +45,7 @@ export const GroupByTable = () => {
     checkboxes: [
       { name: 'sending', label: 'Sending' },
       { name: 'panel', label: 'Panel' },
-      { name: 'seed_list', label: 'Seed List' },
+      { name: 'seed', label: 'Seed List' },
     ],
     useSelectAll: false,
     allowEmpty: false,
@@ -179,10 +179,14 @@ export const GroupByTable = () => {
                 onChange={setGroupBy}
               />
             </Column>
-            <Column width={4 / 12}></Column>
-            {hasD12yMetricsEnabled && (
+            <Column width={4 / 12}>{/* TODO: Include search bar for later */}</Column>
+            {hasD12yMetricsEnabled && groupBy && (
               <Column>
-                <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
+                <MultiSelectDropdown
+                  checkboxes={checkboxes}
+                  id="group-by-dropdown"
+                  label="Data Sources"
+                />
               </Column>
             )}
           </Columns>

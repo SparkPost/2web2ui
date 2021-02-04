@@ -8,6 +8,11 @@ jest.mock('src/context/HibanaContext', () => ({
   useHibana: jest.fn().mockReturnValue([{ isHibanaEnabled: false }]),
 }));
 
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useSelector: jest.fn(),
+}));
+
 // this uses the src/config/__mocks__/metrics.js file automatically
 jest.mock('src/config/metrics');
 
