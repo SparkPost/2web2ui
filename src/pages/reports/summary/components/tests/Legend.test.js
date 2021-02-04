@@ -42,9 +42,6 @@ describe('Component: Summary Chart Legend', () => {
         { name: 'count_b', label: 'B', stroke: '#bbb' },
         { name: 'count_c', label: 'C', stroke: '#ccc', isUniquePerTimePeriod: true },
       ],
-      featureFlaggedMetrics: {
-        useMetricsRollup: false,
-      },
       reportOptions: {
         precision: '1min',
       },
@@ -53,14 +50,13 @@ describe('Component: Summary Chart Legend', () => {
   };
 
   it('should render using "per minute" labels for unique metrics for 1min precision', () => {
-    const wrapper = subject({ featureFlaggedMetrics: { useMetricsRollup: true } });
+    const wrapper = subject();
     expect(wrapper).not.toHaveTextContent('B per minute');
     expect(wrapper).toHaveTextContent('C per minute');
   });
 
   it('should render using "per hour" labels for unique metrics for hour precision', () => {
     const wrapper = subject({
-      featureFlaggedMetrics: { useMetricsRollup: true },
       reportOptions: {
         precision: 'hour',
       },
@@ -70,7 +66,6 @@ describe('Component: Summary Chart Legend', () => {
 
   it('should render using "per day" labels for unique metrics for month precision', () => {
     const wrapper = subject({
-      featureFlaggedMetrics: { useMetricsRollup: true },
       reportOptions: {
         precision: 'month',
       },
