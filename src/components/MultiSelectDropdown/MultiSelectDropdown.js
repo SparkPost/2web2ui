@@ -3,46 +3,47 @@ import { Box, Label, Popover, Checkbox, ScreenReaderOnly } from 'src/components/
 import { StatusPopoverContent, AlignedTextButton, AlignedButtonIcon, Chevron } from './styles';
 import Divider from 'src/components/divider';
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'TOGGLE': {
+      if (action.name === 'selectAll') {
+        // Toggles select all
+        const selectAllCheckboxState = state.checkboxes[0]?.isChecked; //Should be the first to even get this option
+        return {
+          ...state,
+          checkboxes: state.checkboxes.map(checkbox => ({
+            ...checkbox,
+            isChecked: !selectAllCheckboxState,
+          })),
+        };
+      } else {
+        const selectAllCheckbox = state.checkboxes.filter(({ name }) => name === 'selectAll');
+        const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
+        const targetCheckboxIndex = mainCheckboxes.findIndex(({ name }) => name === action.name);
+        mainCheckboxes[targetCheckboxIndex].isChecked = !Boolean(
+          mainCheckboxes[targetCheckboxIndex].isChecked,
+        );
+
+        if (selectAllCheckbox.length) {
+          const allChecked = mainCheckboxes.every(({ isChecked }) => isChecked);
+          selectAllCheckbox[0].isChecked = allChecked;
+        }
+        return {
+          ...state,
+          checkboxes: [...selectAllCheckbox, ...mainCheckboxes],
+        };
+      }
+    }
+    default:
+      throw new Error('This is not a valid action for this reducer');
+  }
+};
+
 /**
  * @name useMultiSelect
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
 export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = false }) {
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'TOGGLE': {
-        if (action.name === 'selectAll') {
-          // Toggles select all
-          const selectAllCheckboxState = state.checkboxes[0]?.isChecked; //Should be the first to even get this option
-          return {
-            ...state,
-            checkboxes: state.checkboxes.map(checkbox => ({
-              ...checkbox,
-              isChecked: !selectAllCheckboxState,
-            })),
-          };
-        } else {
-          const selectAllCheckbox = state.checkboxes.filter(({ name }) => name === 'selectAll');
-          const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
-          const targetCheckboxIndex = mainCheckboxes.findIndex(({ name }) => name === action.name);
-          mainCheckboxes[targetCheckboxIndex].isChecked = !mainCheckboxes[targetCheckboxIndex]
-            .isChecked;
-
-          if (selectAllCheckbox.length) {
-            const allChecked = mainCheckboxes.every(({ isChecked }) => isChecked);
-            selectAllCheckbox[0].isChecked = allChecked;
-          }
-          return {
-            ...state,
-            checkboxes: [...selectAllCheckbox, ...mainCheckboxes],
-          };
-        }
-      }
-      default:
-        throw new Error('This is not a valid action for this reducer');
-    }
-  };
-
   const [state, dispatch] = useReducer(reducer, {
     checkboxes: [
       ...(useSelectAll ? [{ name: 'selectAll', label: 'Select All', isChecked: false }] : []),
