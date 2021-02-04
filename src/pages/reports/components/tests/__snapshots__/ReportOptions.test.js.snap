@@ -9,46 +9,7 @@ exports[`Component: Report Options should mount and render correctly 1`] = `
       <Grid>
         <Grid.Column
           md={6}
-          xs={12}
-        >
-          <div
-            className="FieldWrapper"
-          >
-            <DatePicker
-              filters={Array []}
-              from={2018-02-15T12:00:00.000Z}
-              id="date-picker"
-              onChange={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      Object {},
-                    ],
-                  ],
-                  "results": undefined,
-                }
-              }
-              preventFuture={true}
-              relativeDateOptions={
-                Array [
-                  "hour",
-                  "day",
-                  "7days",
-                  "30days",
-                  "90days",
-                  "custom",
-                ]
-              }
-              relativeRange="day"
-              roundToPrecision={true}
-              to={2018-02-15T12:00:00.000Z}
-            />
-          </div>
-        </Grid.Column>
-        <Grid.Column
-          md={4}
-          xl={5}
-          xs={8}
+          xs={9}
         >
           <Connect(Typeahead)
             items={Array []}
@@ -67,22 +28,13 @@ exports[`Component: Report Options should mount and render correctly 1`] = `
         </Grid.Column>
         <Grid.Column
           md={2}
-          xl={1}
-          xs={4}
+          mdOffset={4}
+          xs={3}
         >
           <withRouter(Connect(ShareModal)) />
         </Grid.Column>
       </Grid>
     </Panel.LEGACY.Section>
-  </Panel.LEGACY>
-</div>
-`;
-
-exports[`Component: Report Options with active filters should render 1`] = `
-<div
-  data-id="report-options"
->
-  <Panel.LEGACY>
     <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
@@ -90,27 +42,13 @@ exports[`Component: Report Options with active filters should render 1`] = `
           xs={12}
         >
           <div
-            className="FieldWrapper"
+            className="FieldWrapperMetricsRollup"
           >
             <DatePicker
-              filters={
-                Array [
-                  Object {
-                    "type": "A",
-                    "value": "aaa",
-                  },
-                  Object {
-                    "type": "B",
-                    "value": "bbb",
-                  },
-                  Object {
-                    "type": "C",
-                    "value": "ccc",
-                  },
-                ]
-              }
+              filters={Array []}
               from={2018-02-15T12:00:00.000Z}
               id="date-picker"
+              label="Date Range"
               onChange={
                 [MockFunction] {
                   "calls": Array [
@@ -134,14 +72,65 @@ exports[`Component: Report Options with active filters should render 1`] = `
               }
               relativeRange="day"
               roundToPrecision={true}
+              selectPrecision={true}
               to={2018-02-15T12:00:00.000Z}
+              updateShownPrecision={[Function]}
             />
           </div>
         </Grid.Column>
         <Grid.Column
           md={4}
-          xl={5}
-          xs={8}
+          xs={6}
+        >
+          <div
+            className="TimezoneTooltipWrapper"
+          >
+            <Tooltip
+              content="Day, week, and month precision only support UTC."
+              disabled={true}
+            >
+              <TimezoneTypeahead
+                disabledAndUTCOnly={false}
+                onChange={[Function]}
+              />
+            </Tooltip>
+          </div>
+        </Grid.Column>
+        <Grid.Column
+          md={2}
+          xs={6}
+        >
+          <PrecisionSelector
+            changeTime={
+              [MockFunction] {
+                "calls": Array [
+                  Array [
+                    Object {},
+                  ],
+                ],
+                "results": undefined,
+              }
+            }
+            from={2018-02-15T12:00:00.000Z}
+            to={2018-02-15T12:00:00.000Z}
+          />
+        </Grid.Column>
+      </Grid>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</div>
+`;
+
+exports[`Component: Report Options with active filters should render 1`] = `
+<div
+  data-id="report-options"
+>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
+      <Grid>
+        <Grid.Column
+          md={6}
+          xs={9}
         >
           <Connect(Typeahead)
             items={Array []}
@@ -188,10 +177,107 @@ exports[`Component: Report Options with active filters should render 1`] = `
         </Grid.Column>
         <Grid.Column
           md={2}
-          xl={1}
-          xs={4}
+          mdOffset={4}
+          xs={3}
         >
           <withRouter(Connect(ShareModal)) />
+        </Grid.Column>
+      </Grid>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
+      <Grid>
+        <Grid.Column
+          md={6}
+          xs={12}
+        >
+          <div
+            className="FieldWrapperMetricsRollup"
+          >
+            <DatePicker
+              filters={
+                Array [
+                  Object {
+                    "type": "A",
+                    "value": "aaa",
+                  },
+                  Object {
+                    "type": "B",
+                    "value": "bbb",
+                  },
+                  Object {
+                    "type": "C",
+                    "value": "ccc",
+                  },
+                ]
+              }
+              from={2018-02-15T12:00:00.000Z}
+              id="date-picker"
+              label="Date Range"
+              onChange={
+                [MockFunction] {
+                  "calls": Array [
+                    Array [
+                      Object {},
+                    ],
+                  ],
+                  "results": undefined,
+                }
+              }
+              preventFuture={true}
+              relativeDateOptions={
+                Array [
+                  "hour",
+                  "day",
+                  "7days",
+                  "30days",
+                  "90days",
+                  "custom",
+                ]
+              }
+              relativeRange="day"
+              roundToPrecision={true}
+              selectPrecision={true}
+              to={2018-02-15T12:00:00.000Z}
+              updateShownPrecision={[Function]}
+            />
+          </div>
+        </Grid.Column>
+        <Grid.Column
+          md={4}
+          xs={6}
+        >
+          <div
+            className="TimezoneTooltipWrapper"
+          >
+            <Tooltip
+              content="Day, week, and month precision only support UTC."
+              disabled={true}
+            >
+              <TimezoneTypeahead
+                disabledAndUTCOnly={false}
+                onChange={[Function]}
+              />
+            </Tooltip>
+          </div>
+        </Grid.Column>
+        <Grid.Column
+          md={2}
+          xs={6}
+        >
+          <PrecisionSelector
+            changeTime={
+              [MockFunction] {
+                "calls": Array [
+                  Array [
+                    Object {},
+                  ],
+                ],
+                "results": undefined,
+              }
+            }
+            from={2018-02-15T12:00:00.000Z}
+            to={2018-02-15T12:00:00.000Z}
+          />
         </Grid.Column>
       </Grid>
     </Panel.LEGACY.Section>
