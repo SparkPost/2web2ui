@@ -78,6 +78,7 @@ function MultiSelectDropdown({ checkboxes, disabled, label = 'Options' }) {
       <Popover
         left
         as="div"
+        width="100%"
         open={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
         trigger={

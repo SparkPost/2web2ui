@@ -1,12 +1,9 @@
-import { Panel, Button } from 'src/components/matchbox';
+import { Button } from 'src/components/matchbox';
 import { ChevronRight } from '@sparkpost/matchbox-icons';
 import styled from 'styled-components';
 
 export const StatusPopoverContent = styled.span`
   display: inline-block; /* Necessary to supply width & cut ellipse joined string */
-  width: calc(
-    100% - ${props => props.theme.space['400']}
-  ); /* NOTE: Works in conjunction with AlignedButtonIcon */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -33,13 +30,7 @@ export const AlignedTextButton = styled(Button)`
     vertical-align: middle; /* Note: Fixes text and button alignment so they're all the same vertical alignment (v align the children of the button) */
   }
 
-  @media (min-width: ${props => props.theme.breakpoints[1]}) {
-    width: 150px;
-  }
-
-  @media (min-width: ${props => props.theme.breakpoints[2]}) {
-    width: 250px;
-  }
+  width: 100%;
 `;
 
 export const AlignedButtonIcon = styled(Button.Icon)`
@@ -50,18 +41,4 @@ export const AlignedButtonIcon = styled(Button.Icon)`
 export const Chevron = styled(ChevronRight)`
   color: ${props => props.theme.colors.blue['700']};
   transform: rotate(90deg);
-`;
-
-export const DomainsListPanel = styled(Panel)``;
-
-export const DomainsListPanelSection = styled(Panel.Section)`
-  > div > div {
-    margin-left: 0; /* FORCE OVERRIDE OF MARGIN LEFT UNTIL MATCHBOX FIXES */
-  }
-
-  @media (min-width: ${props => props.theme.breakpoints[0]}) {
-    > div > div {
-      margin-left: -${props => props.theme.space['300']}; /* FORCE OVERRIDE OF MARGIN LEFT UNTIL MATCHBOX FIXES */
-    }
-  }
 `;

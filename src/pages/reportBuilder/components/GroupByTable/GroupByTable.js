@@ -8,7 +8,7 @@ import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccou
 import { TableCollection, Unit, PanelLoading } from 'src/components';
 import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
-import { Panel, Table, Box, Grid } from 'src/components/matchbox';
+import { Panel, Table, Box, Columns, Column } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
@@ -131,8 +131,8 @@ export const GroupByTable = () => {
     <>
       <Panel marginBottom="-1px">
         <Panel.Section>
-          <Grid>
-            <Grid.Column xs={5}>
+          <Columns collapseBelow="sm">
+            <Column width={5 / 12}>
               <GroupByOption
                 disabled={tableLoading || metrics.length === 0}
                 groupBy={groupBy}
@@ -152,12 +152,12 @@ export const GroupByTable = () => {
                   );
                 }}
               />
-            </Grid.Column>
-            <Grid.Column xs={4}></Grid.Column>
-            <Grid.Column xs={3}>
+            </Column>
+            <Column width={4 / 12}></Column>
+            <Column>
               <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
-            </Grid.Column>
-          </Grid>
+            </Column>
+          </Columns>
         </Panel.Section>
       </Panel>
       <div data-id="summary-table">{renderTable()}</div>

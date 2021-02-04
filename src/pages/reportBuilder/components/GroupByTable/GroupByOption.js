@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
-import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
+import { Box, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
@@ -70,23 +70,18 @@ export default function GroupByOption(props) {
   };
 
   return (
-    <Grid>
-      <Grid.Column xs={12} md={5} lg={4}>
-        <Select
-          label="Break Down By"
-          id={selectId}
-          options={getSelectOptions()}
-          value={GROUP_BY_CONFIG[groupBy] ? groupBy : 'placeholder'}
-          disabled={disabled}
-          onChange={handleGroupChange}
-          placeholder="Select Resource"
-          placeholderValue="placeholder"
-        />
-      </Grid.Column>
-
-      <Grid.Column xs={12} md={4} mdOffset={3} lg={3} lgOffset={5}>
-        {renderDomainsCheckbox()}
-      </Grid.Column>
-    </Grid>
+    <>
+      <Select
+        label="Break Down By"
+        id={selectId}
+        options={getSelectOptions()}
+        value={GROUP_BY_CONFIG[groupBy] ? groupBy : 'placeholder'}
+        disabled={disabled}
+        onChange={handleGroupChange}
+        placeholder="Select Resource"
+        placeholderValue="placeholder"
+      />
+      {renderDomainsCheckbox()}
+    </>
   );
 }
