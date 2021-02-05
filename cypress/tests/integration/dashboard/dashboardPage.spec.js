@@ -538,7 +538,7 @@ describe('the dashboard page', () => {
     cy.visit(PAGE_URL);
     cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
 
-    cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
+    cy.findByRole('heading', { name: 'Get Started!' }).should('not.exist');
 
     // onboarding step 1 text...
     cy.get('p')
