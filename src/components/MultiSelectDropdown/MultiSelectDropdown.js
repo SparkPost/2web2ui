@@ -79,6 +79,7 @@ function MultiSelectDropdown({
   disabled,
   label = 'Options',
   id = 'multi-select-dropdown',
+  allowEmpty = true,
 }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -114,8 +115,9 @@ function MultiSelectDropdown({
             {/* This content is purely visual and is not exposed to screen readers, rather, "Domain Status" is always exposed for those users */}
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
-              {!hasCheckedCheckboxes && 'None'}
-              {hasCheckedCheckboxes && allCheckboxesChecked && 'All'}
+              {!hasCheckedCheckboxes && allowEmpty && 'None'}
+              {(hasCheckedCheckboxes && allCheckboxesChecked) ||
+                (!allowEmpty && !hasCheckedCheckboxes && 'All')}
               {hasCheckedCheckboxes && !allCheckboxesChecked && checkboxLabels}
             </StatusPopoverContent>
 
@@ -155,6 +157,7 @@ function MultiSelectDropdown({
                   id={checkbox.name}
                   name={checkbox.name}
                   onChange={checkbox.onChange}
+                  disabled={checkbox.disabled}
                   checked={checkbox.isChecked}
                 />
               ))}

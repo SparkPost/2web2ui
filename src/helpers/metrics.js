@@ -1,6 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { list as METRICS_LIST } from 'src/config/metrics';
+import { list as METRICS_LIST, INBOX_TRACKER_METRICS } from 'src/config/metrics';
 import config from 'src/config';
 import { HIBANA_METRICS_COLORS, REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getRelativeDates } from 'src/helpers/date';
@@ -419,4 +419,59 @@ export function getFilterByComparison(comparison) {
       },
     },
   };
+}
+
+export function splitInboxMetric(metric, dataSource) {
+  if (!INBOX_TRACKER_METRICS.includes(metric.key)) {
+    return metric;
+  }
+
+  const hasPanel = dataSource.includes('panel');
+  const hasSeed = dataSource.includes('seed');
+  const hasBoth = hasSeed && hasPanel;
+  const targetString = hasPanel ? 'panel' : 'seed';
+
+  if (!hasPanel && !hasSeed) {
+    return metric;
+  }
+  if (hasBoth) {
+    return metric;
+  }
+
+  switch (metric.key) {
+    case 'count_inbox':
+      return {
+        ...metric,
+        computeKeys: [`count_inbox_${targetString}`],
+        compute: data => data[`count_inbox_${targetString}`],
+      };
+    case 'count_spam':
+      return {
+        ...metric,
+        computeKeys: [`count_spam_${targetString}`],
+        compute: data => data[`count_inbox_${targetString}`],
+      };
+    case 'inbox_folder_rate':
+      return {
+        ...metric,
+        computeKeys: [`count_spam_${targetString}`, `count_inbox_${targetString}`],
+        compute: data =>
+          safeRate(
+            data[`count_inbox_${targetString}`],
+            data[`count_inbox_${targetString}`] + data[`count_spam_${targetString}`],
+          ),
+      };
+    case 'spam_folder_rate':
+      return {
+        ...metric,
+        computeKeys: [`count_spam_${targetString}`, `count_inbox_${targetString}`],
+        compute: data =>
+          safeRate(
+            data[`count_spam_${targetString}`],
+            data[`count_inbox_${targetString}`] + data[`count_spam_${targetString}`],
+          ),
+      };
+    default:
+      return metric;
+  }
 }

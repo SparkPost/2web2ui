@@ -17,9 +17,10 @@ import MultiSelectDropdown, { useMultiSelect } from 'src/components/MultiSelectD
 import { useSparkPostQuery } from 'src/hooks';
 import { getDeliverability } from 'src/helpers/api/metrics';
 import EmptyCell from 'src/components/collection/EmptyCell';
+import { INBOX_TRACKER_METRICS } from 'src/config/metrics';
 
 import styles from './ReportTable.module.scss';
-import { getQueryFromOptionsV2, transformData } from 'src/helpers/metrics';
+import { getQueryFromOptionsV2, transformData, splitInboxMetric } from 'src/helpers/metrics';
 
 const tableWrapper = props => {
   return (
@@ -41,26 +42,36 @@ export const GroupByTable = () => {
     isAccountUiOptionSet('allow_deliverability_metrics')(state),
   );
 
+  const inboxTrackerMetrics = metrics.filter(({ key }) => INBOX_TRACKER_METRICS.includes(key));
+  const sendingMetrics = metrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
+  const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
+  const hasSendingMetrics = Boolean(sendingMetrics.length);
   const { checkboxes, values } = useMultiSelect({
     checkboxes: [
-      { name: 'sending', label: 'Sending' },
-      { name: 'panel', label: 'Panel' },
-      { name: 'seed', label: 'Seed List' },
+      { name: 'sending', label: 'Sending', disabled: !hasSendingMetrics },
+      { name: 'panel', label: 'Panel', disabled: !hasInboxTrackingMetrics },
+      { name: 'seed', label: 'Seed List', disabled: !hasInboxTrackingMetrics },
     ],
     useSelectAll: false,
     allowEmpty: false,
   });
 
-  const preparedOptions = getQueryFromOptionsV2({ ...reportOptions, metrics, dataSource: values });
+  const reformattedMetrics = metrics.map(metric => splitInboxMetric(metric, values));
+
+  const preparedOptions = getQueryFromOptionsV2({
+    ...reportOptions,
+    metrics: reformattedMetrics,
+    dataSource: values,
+  });
   const { data = [], status, refetch } = useSparkPostQuery(
     () => getDeliverability(preparedOptions, groupBy),
     {
       refetchOnWindowFocus: false,
-      enabled: reportOptions.isReady && groupBy,
+      enabled: reportOptions.isReady && groupBy && reformattedMetrics.length,
     },
   );
 
-  const formattedData = transformData(data, metrics);
+  const formattedData = transformData(data, reformattedMetrics);
 
   const group = GROUP_BY_CONFIG[groupBy];
 
@@ -143,7 +154,7 @@ export const GroupByTable = () => {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!formattedData.length) {
+    if (!formattedData.length || !reformattedMetrics.length) {
       return (
         <Panel.LEGACY>
           <Empty message="There is no data to display" />
@@ -171,18 +182,16 @@ export const GroupByTable = () => {
       <Panel marginBottom="-1px">
         <Panel.Section>
           <Columns collapseBelow="sm">
-            <Column width={5 / 12}>
-              <GroupByOption
-                disabled={status === 'loading' || metrics.length === 0}
-                groupBy={groupBy}
-                hasSubaccounts={hasSubaccounts}
-                onChange={setGroupBy}
-              />
-            </Column>
-            <Column width={4 / 12}>{/* TODO: Include search bar for later */}</Column>
+            <GroupByOption
+              disabled={status === 'loading' || metrics.length === 0}
+              groupBy={groupBy}
+              hasSubaccounts={hasSubaccounts}
+              onChange={setGroupBy}
+            />
             {hasD12yMetricsEnabled && groupBy && (
               <Column>
                 <MultiSelectDropdown
+                  allowEmpty={false}
                   checkboxes={checkboxes}
                   id="group-by-dropdown"
                   label="Data Sources"

@@ -4,6 +4,8 @@ import { useSparkPostQueries } from 'src/hooks';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
+  transformData,
+  splitInboxMetric,
 } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
@@ -45,8 +47,8 @@ export default function useGroupByTable() {
 
   // Prepares params for request
   const formattedMetrics = useMemo(() => {
-    return getMetricsFromKeys(metrics, true);
-  }, [metrics]);
+    return getMetricsFromKeys(metrics, true).map(metric => splitInboxMetric(metric, values));
+  }, [metrics, values]);
 
   const separatedOptions = separateCompareOptions(reportOptions);
   const separatedRequests = separatedOptions.map(options => {
@@ -95,7 +97,7 @@ export default function useGroupByTable() {
   };
 
   const generatedRows = queries.every(query => query.status === 'success')
-    ? formatData(queries.map(query => query.data))
+    ? transformData(formatData(queries.map(query => query.data)), formattedMetrics)
     : [];
 
   const comparisonType = comparisons[0].type;

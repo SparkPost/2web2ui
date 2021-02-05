@@ -7,6 +7,13 @@ const engagement = 'Engagement';
 
 export const categories = [injection, delivery, deliverability, engagement];
 
+export const INBOX_TRACKER_METRICS = [
+  'count_inbox',
+  'count_spam',
+  'inbox_folder_rate',
+  'spam_folder_rate',
+];
+
 export const list = [
   {
     key: 'count_targeted',
@@ -539,8 +546,8 @@ export const list = [
     category: deliverability,
     compute: ({ count_inbox_panel, count_inbox_seed, count_spam_panel, count_spam_seed }) => {
       return safeRate(
-        (count_inbox_panel + count_inbox_seed) /
-          (count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed),
+        count_inbox_panel + count_inbox_seed,
+        count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed,
       );
     },
     computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
@@ -554,8 +561,8 @@ export const list = [
     category: deliverability,
     compute: ({ count_inbox_panel, count_inbox_seed, count_spam_panel, count_spam_seed }) => {
       return safeRate(
-        (count_spam_panel + count_spam_seed) /
-          (count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed),
+        count_spam_panel + count_spam_seed,
+        count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed,
       );
     },
     computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],

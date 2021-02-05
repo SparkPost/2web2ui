@@ -161,15 +161,12 @@ export const CompareByTable = () => {
       <Panel marginBottom="-1px">
         <Panel.Section>
           <Columns collapseBelow="sm">
-            <Column width={5 / 12}>
-              <GroupByOption
-                disabled={statuses.includes('loading') || metrics.length === 0}
-                groupBy={groupBy}
-                hasSubaccounts={hasSubaccounts}
-                onChange={setGroupBy}
-              />
-            </Column>
-            <Column width={4 / 12}>{/* TODO: Include search bar for later */}</Column>
+            <GroupByOption
+              disabled={statuses.includes('loading') || metrics.length === 0}
+              groupBy={groupBy}
+              hasSubaccounts={hasSubaccounts}
+              onChange={setGroupBy}
+            />
             {hasD12yMetricsEnabled && groupBy && (
               <Column>
                 <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />

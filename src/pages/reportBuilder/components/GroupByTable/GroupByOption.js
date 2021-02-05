@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
-import { Box, Checkbox, Select } from 'src/components/matchbox';
+import { Box, Checkbox, Select, Column } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
@@ -57,7 +56,7 @@ export default function GroupByOption(props) {
     }
 
     return (
-      <Box marginTop="500" className={styles.TopDomainsCheckbox}>
+      <Box marginTop="600">
         <Checkbox
           id="watchedDomains"
           label="Top Domains Only"
@@ -71,17 +70,19 @@ export default function GroupByOption(props) {
 
   return (
     <>
-      <Select
-        label="Break Down By"
-        id={selectId}
-        options={getSelectOptions()}
-        value={GROUP_BY_CONFIG[groupBy] ? groupBy : 'placeholder'}
-        disabled={disabled}
-        onChange={handleGroupChange}
-        placeholder="Select Resource"
-        placeholderValue="placeholder"
-      />
-      {renderDomainsCheckbox()}
+      <Column width={5 / 12}>
+        <Select
+          label="Break Down By"
+          id={selectId}
+          options={getSelectOptions()}
+          value={GROUP_BY_CONFIG[groupBy] ? groupBy : 'placeholder'}
+          disabled={disabled}
+          onChange={handleGroupChange}
+          placeholder="Select Resource"
+          placeholderValue="placeholder"
+        />
+      </Column>
+      <Column width={4 / 12}>{renderDomainsCheckbox()}</Column>
     </>
   );
 }
