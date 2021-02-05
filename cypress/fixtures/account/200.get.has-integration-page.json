@@ -49,7 +49,6 @@
         "hideTerminatedSubaccounts": true,
         "amp_html": true,
         "new_navigation": false,
-        "allow_events_ingest": true,
         "abtests": true,
         "allow_health_score_V3": true,
         "recipverif": true,

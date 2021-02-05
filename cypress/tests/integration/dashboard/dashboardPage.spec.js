@@ -223,7 +223,9 @@ describe('the dashboard page', () => {
   it('Doesnt show onboarding for on prem users', () => {
     stubGrantsRequest({ role: 'developer' });
     stubAlertsReq();
-    stubAccountsReq({ fixture: 'account/200.get.json' }); // has allow_events_allow_events_ingest - meaning it's on prem, so we don't show onboarding
+
+    // has allow_events_allow_events_ingest - meaning it's on prem, so we don't show onboarding
+    stubAccountsReq({ fixture: 'account/200.get.json' });
     stubSendingDomains({ fixture: '/200.get.no-results.json' });
 
     cy.visit(PAGE_URL);
