@@ -1,0 +1,92 @@
+{
+  "results": {
+    "anniversary_date": "2019-12-02T08:00:00.000Z",
+    "company_name": null,
+    "country_code": "",
+    "created": "2019-09-12T15:31:52.731Z",
+    "customer_id": 279139,
+    "service_level": "standard",
+    "status": "active",
+    "status_reason_category": "",
+    "status_updated": "2019-09-12T15:31:52.731Z",
+    "tfa_required": false,
+    "updated": "2019-12-30T16:44:52.413Z",
+    "subscription": {
+      "code": "250K-premier-0519",
+      "name": "250K Premier",
+      "plan_volume": 250000,
+      "period": "month",
+      "recurring_charge": 170,
+      "overage": 0.7,
+      "self_serve": true,
+      "type": "default"
+    },
+    "options": {
+      "transactional_default": false,
+      "inbox_placement": true,
+      "click_tracking": true,
+      "allow_events_ingest": true,
+      "rest_tracking_default": true,
+      "byoip_customer": true,
+      "ui": {
+        "developer_and_email_roles": true,
+        "prototype_signals_details": true,
+        "isGuideAtBottom": true,
+        "recipientverif": true,
+        "allow_health_score_v3": true,
+        "sendTestEmail": true,
+        "messaging_onboarding": true,
+        "stepName": "Show Me SparkPost",
+        "snippets": true,
+        "onboarding": {
+          "active_step": "Show Me SparkPost",
+          "invite_collaborator_completed": true,
+          "explore_analytics_completed": true,
+          "send_test_email_completed": true,
+          "isGuideAtBottom": true
+        },
+        "recipientValidationV2": false,
+        "recipient_validation": false,
+        "feature_signals_v2": true,
+        "Send Test Email": null,
+        "spamTrapHitsByType": true,
+        "inbox_placement": false,
+        "subaccount_reporting": true,
+        "message_onboarding": true,
+        "active_guide_step": "Show Me SparkPost",
+        "hideTerminatedSubaccounts": true,
+        "amp_html": true,
+        "new_navigation": false,
+        "abtests": true,
+        "allow_health_score_V3": true,
+        "recipverif": true,
+        "account_feature_flags": false,
+        "templatesV2": true,
+        "alerts": true,
+        "onbaording": { "isGuideAtBottom": true },
+        "signals": true,
+        "onboarding_active_step": "Show Me SparkPost",
+        "feature_alerts": true,
+        "ip_auto_warmup": true
+      },
+      "initial_open_pixel_tracking": true,
+      "smtp_tracking_default": true,
+      "blocklist_monitors": true,
+      "recipient_validation": true,
+      "auto_verify_domains": false
+    },
+    "support": {
+      "phone": true,
+      "online": true
+    },
+    "pending_subscription": {
+      "code": "50K-starter-0519",
+      "name": "50K Starter",
+      "plan_volume": 50000,
+      "period": "month",
+      "recurring_charge": 20,
+      "overage": 1,
+      "effective_date": "2020-01-02T08:00:00.000Z"
+    }
+  }
+}
