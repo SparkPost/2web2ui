@@ -22,6 +22,7 @@ export default function TrackingDomainsTable({ tableInstance }) {
       <tbody>
         {page?.map((row, index) => {
           prepareRow(row);
+
           return (
             <Table.Row key={`table-row-${index}`}>
               <Table.Cell>
@@ -29,7 +30,7 @@ export default function TrackingDomainsTable({ tableInstance }) {
               </Table.Cell>
 
               <Table.Cell>
-                <TrackingDomainStatusCell domainStatus={row?.values?.DomainStatus} />
+                <TrackingDomainStatusCell row={row?.values} />
               </Table.Cell>
             </Table.Row>
           );

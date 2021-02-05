@@ -160,6 +160,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
+      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain', canFilter: false },
       {
         Header: 'DomainStatus',
         accessor: row => ({

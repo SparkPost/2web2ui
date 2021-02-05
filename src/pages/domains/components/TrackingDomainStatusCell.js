@@ -4,8 +4,9 @@ import { Box, Inline, Tag, Tooltip } from 'src/components/matchbox';
 import { TranslatableText } from 'src/components/text';
 import useUniqueId from 'src/hooks/useUniqueId';
 
-export default function TrackingDomainStatusCell({ domainStatus }) {
-  const { defaultTrackingDomain, unverified, blocked } = domainStatus;
+export default function TrackingDomainStatusCell({ row }) {
+  const { defaultTrackingDomain } = row;
+  const { unverified, blocked } = row?.DomainStatus;
   const tooltipId = useUniqueId('default-tracking-domain');
 
   if (blocked) return <Tag color="red">Blocked</Tag>;

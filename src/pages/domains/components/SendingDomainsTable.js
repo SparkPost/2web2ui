@@ -39,7 +39,7 @@ export default function SendingDomainsTable({ tableInstance }) {
                 <MainCell row={row.values} />
               </Table.Cell>
               <Table.Cell>
-                <StatusCell row={row.values} />
+                <StatusCell row={row?.values} />
               </Table.Cell>
             </Table.Row>
           );
@@ -83,13 +83,13 @@ function MainCell({ row }) {
 function StatusCell({ row }) {
   const {
     blocked,
-    defaultBounceDomain,
     readyForBounce,
     readyForDKIM,
     readyForSending,
     validSPF,
     unverified,
   } = row.DomainStatus;
+  const { defaultBounceDomain } = row;
   const { subaccountId } = row;
 
   const tooltipId = useUniqueId('default-bounce-domain');

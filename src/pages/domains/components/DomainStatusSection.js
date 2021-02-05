@@ -77,10 +77,10 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
     const isDefault = domain.defaultTrackingDomain;
     const domainStatus = {
       blocked: domain.blocked,
-      defaultTrackingDomain: domain.defaultTrackingDomain,
       unverified: domain.unverified,
       verified: domain.verified,
     };
+    const rowValues = { DomainStatus: domainStatus, defaultTrackingDomain: isDefault };
 
     return (
       <Layout>
@@ -108,7 +108,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                   <LabelValue orientation="vertical">
                     <LabelValue.Label>Status</LabelValue.Label>
                     <LabelValue.Value>
-                      <TrackingDomainStatusCell domainStatus={domainStatus} />
+                      <TrackingDomainStatusCell row={rowValues} />
                     </LabelValue.Value>
                   </LabelValue>
                 </Column>
