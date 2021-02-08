@@ -123,6 +123,20 @@ export default function TrackingDomainsTab() {
   );
 
   const sortBy = React.useMemo(() => [{ id: 'domainName', desc: false }], []);
+
+  const flattenedFilters = filterStateToParams(filtersState);
+
+  const domainStatusValues = {
+    blocked: flattenedFilters['blocked'],
+    unverified: flattenedFilters['unverified'],
+    verified: flattenedFilters['verified'],
+  };
+
+  const reactTableFilters = getReactTableFilters({
+    domainName: flattenedFilters['domainName'],
+    DomainStatus: domainStatusValues,
+  });
+
   const tableInstance = useTable(
     {
       columns,
@@ -131,7 +145,7 @@ export default function TrackingDomainsTab() {
       initialState: {
         pageIndex: DEFAULT_CURRENT_PAGE - 1, // react-table takes a 0 base pageIndex
         pageSize: DEFAULT_PER_PAGE,
-        filters: [],
+        filters: reactTableFilters,
         sortBy: [
           {
             id: 'domainName',
