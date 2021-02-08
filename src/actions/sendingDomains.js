@@ -1,5 +1,6 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
 import setSubaccountHeader from 'src/actions/helpers/setSubaccountHeader';
+import { SENDING_DOMAIN_TOKEN_TYPE } from 'src/constants';
 
 export function list() {
   return sparkpostApiRequest({
@@ -114,15 +115,15 @@ function verifyToken({ id, subaccount, type, token }) {
 }
 
 export function verifyMailboxToken({ id, token, subaccount }) {
-  return verifyToken({ id, subaccount, type: 'verification_mailbox', token });
+  return verifyToken({ id, subaccount, type: SENDING_DOMAIN_TOKEN_TYPE['MAILBOX'], token });
 }
 
 export function verifyPostmasterToken({ id, token, subaccount }) {
-  return verifyToken({ id, subaccount, type: 'postmaster_at', token });
+  return verifyToken({ id, subaccount, type: SENDING_DOMAIN_TOKEN_TYPE['POSTMASTER'], token });
 }
 
 export function verifyAbuseToken({ id, token, subaccount }) {
-  return verifyToken({ id, subaccount, type: 'abuse_at', token });
+  return verifyToken({ id, subaccount, type: SENDING_DOMAIN_TOKEN_TYPE['ABUSE'], token });
 }
 
 export const clearSendingDomain = () => ({ type: 'CLEAR_SENDING_DOMAIN' });

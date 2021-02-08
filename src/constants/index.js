@@ -248,6 +248,12 @@ export const RECIPIENT_VALIDATION_TIERS = [
   { volumeMin: 1000000, volumeMax: Infinity, cost: 0.00075, displayedCost: '$0.00075' },
 ];
 
+export const SENDING_DOMAIN_TOKEN_TYPE = {
+  MAILBOX: 'verification_mailbox',
+  POSTMASTER: 'postmaster_at',
+  ABUSE: 'abuse_at',
+};
+
 export const HIBANA_METRICS_COLORS = [
   tokens.color_blue_700,
   tokens.color_teal_600,

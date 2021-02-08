@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { usePrevious } from 'src/hooks';
 import _ from 'lodash';
 import useDomains from '../hooks/useDomains';
+import { SENDING_DOMAIN_TOKEN_TYPE } from 'src/constants';
 
 export function VerifyToken({
   domains,
@@ -20,7 +20,6 @@ export function VerifyToken({
     tokenStatus,
     verifyTokenError,
   } = useDomains();
-  const prevTokenStatus = usePrevious(tokenStatus);
 
   useEffect(() => {
     if (
@@ -39,16 +38,26 @@ export function VerifyToken({
             ? sendingDomain.subaccount_id
             : undefined;
           let verifyAction = verifyMailboxToken;
+          let tokenType = SENDING_DOMAIN_TOKEN_TYPE['MAILBOX'];
 
           if (mailbox === 'abuse') {
             verifyAction = verifyAbuseToken;
+            tokenType = SENDING_DOMAIN_TOKEN_TYPE['ABUSE'];
           }
 
           if (mailbox === 'postmaster') {
             verifyAction = verifyPostmasterToken;
+            tokenType = SENDING_DOMAIN_TOKEN_TYPE['POSTMASTER'];
           }
 
-          return verifyAction({ id: domain, token, subaccount });
+          return verifyAction({ id: domain, token, subaccount }).then(result => {
+            if (result[`${tokenType}_status`] !== 'valid') {
+              showAlert({ type: 'error', message: `Unable to verify ${domain}` });
+            } else {
+              showAlert({ type: 'success', message: `${domain} has been verified` });
+              history.push(`/domains/details/sending-bounce/${domain}`);
+            }
+          });
         }
       }
 
@@ -56,29 +65,18 @@ export function VerifyToken({
     }
   }, [
     domains,
+    history,
     isTracking,
     loading,
     queryParams,
     sendingDomainsListError,
+    showAlert,
     tokenStatus,
     verifyAbuseToken,
     verifyMailboxToken,
     verifyPostmasterToken,
     verifyTokenError,
   ]);
-
-  useEffect(() => {
-    // Api returns a 200 even if domain has not been verified
-    // Manually check if this domain has been verified
-    if (!prevTokenStatus && tokenStatus) {
-      if (tokenStatus[`${tokenStatus.type}_status`] !== 'valid') {
-        showAlert({ type: 'error', message: `Unable to verify ${tokenStatus.domain}` });
-      } else {
-        showAlert({ type: 'success', message: `${tokenStatus.domain} has been verified` });
-        history.push(`/domains/details/sending-bounce/${tokenStatus.domain}`);
-      }
-    }
-  }, [history, prevTokenStatus, showAlert, tokenStatus]);
 
   return <></>;
 }
