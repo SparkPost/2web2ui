@@ -1,5 +1,5 @@
 const testConfig = {
-  apiBase: 'http://fake-api-test-host.com',
+  apiBase: 'http://mock.sparkpost.test',
   splashPage: '/dashboard',
   release: 'test-release',
   segment: {

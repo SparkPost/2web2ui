@@ -52,7 +52,6 @@ Object.defineProperty(global.window, 'matchMedia', {
   }),
 });
 Object.defineProperty(global.window, 'scrollTo', { value: jest.fn(), configurable: true });
-Object.defineProperty(global.window.location, 'assign', { value: jest.fn(), configurable: true });
 
 // Show a stack track for unhandled rejections to help
 // track them down.

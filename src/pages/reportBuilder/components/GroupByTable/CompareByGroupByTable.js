@@ -23,7 +23,14 @@ const tableWrapper = props => {
 };
 
 export const CompareByTable = () => {
-  const { data, status, setGroupBy, groupBy, comparisonType, refetch } = useGroupByTable();
+  const {
+    data,
+    statuses = [],
+    setGroupBy,
+    groupBy,
+    comparisonType,
+    refetchAll,
+  } = useGroupByTable();
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
   } = useReportBuilderContext();
@@ -97,12 +104,12 @@ export const CompareByTable = () => {
       return null;
     }
 
-    if (status === 'error') {
+    if (statuses.includes('error')) {
       return (
         <Panel>
           <Panel.Section>
             <ApiErrorBanner
-              reload={refetch}
+              reload={refetchAll}
               status="muted"
               title="Unable to load report"
               message="Please try again"
@@ -112,7 +119,7 @@ export const CompareByTable = () => {
       );
     }
 
-    if (status === 'loading') {
+    if (statuses.includes('loading')) {
       return <PanelLoading minHeight="250px" />;
     }
 
@@ -144,7 +151,7 @@ export const CompareByTable = () => {
       <Panel marginBottom="-1px">
         <Panel.Section>
           <GroupByOption
-            disabled={status === 'loading' || metrics.length === 0}
+            disabled={statuses.includes('loading') || metrics.length === 0}
             groupBy={groupBy}
             hasSubaccounts={hasSubaccounts}
             onChange={setGroupBy}

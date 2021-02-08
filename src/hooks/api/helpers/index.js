@@ -1,69 +1,41 @@
-import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery, useQueryCache } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { refresh, logout } from 'src/actions/auth';
-import { useRefreshToken } from 'src/helpers/http';
 import { showAlert } from 'src/actions/globalAlert';
 import { fetch as fetchAccount } from 'src/actions/account';
-import { defaultQuery } from 'src/helpers/api';
+import { useRefreshToken } from 'src/helpers/http';
 
-export function useSparkPostQueries(queries, config = {}, queryKey) {
-  const queryCache = useQueryCache();
+/**
+ * Common preparation steps composed of other hooks
+ */
+export function usePrepareQuery() {
+  const queryClient = useQueryClient();
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  //Prepares the query by generating query metadata w/ query handler
-  const queryRequests = () =>
-    queries.map(queryFn => {
-      const { url, method, params, headers } = queryFn();
-      return defaultQuery(url, { method, params, headers, auth });
-    });
-
-  //Joins queries as single promise
-  const queryFn = () =>
-    Promise.all(queryRequests()).then(res => {
-      return res;
-    });
-
-  return useQuery({
-    // Passed in similarly to dependency array in other hooks
-    queryKey,
-    config: {
-      ...config,
-      onError: error => handleError({ error, queryCache, auth, dispatch }),
-    },
-    queryFn,
-  });
+  return {
+    queryClient,
+    auth,
+    dispatch,
+  };
 }
 
-export function useSparkPostQuery(queryFn, config = {}) {
-  const queryCache = useQueryCache();
-  const auth = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-  const { url, method, params, headers } = queryFn();
-  // See: https://react-query.tanstack.com/docs/guides/queries#query-keys
-  // Generate a unique queryKey based on passed in query function values
-  const queryKey = [url, { method, params, headers, auth }];
-
-  // And: https://react-query.tanstack.com/docs/api#usequery
-  return useQuery({
-    queryKey,
-    config: {
-      // Pass in a custom handler for handling errors
-      onError: error => handleError({ error, method, queryCache, auth, dispatch }),
-      // Allow config overriding on a case-by-case basis, for any value not manually updated,
-      // `react-query` defaults are used.
-      ...config,
-    },
-  });
-}
-
-function handleError({ error, method, queryCache, auth, dispatch }) {
+/**
+ * Handle errors based on the response from a failed query
+ *
+ * @param {object} error - error returned from a failed API request
+ * @param {string} method - HTTP request method
+ * @param {object} queryClient - `react-query` queryClient - https://react-query.tanstack.com/reference/QueryClient
+ * @param {object} auth - auth state stored in global Redux store
+ * @param {function} dispatch - `react-redux` dispatch method, typically derived from `useDispatch()`
+ *
+ */
+export function handleError({ error, method, queryClient, auth, dispatch }) {
   const { response = {} } = error;
 
   if (response.status === 401 && auth.refreshToken) {
     // Invalidate any in-progress queries
-    queryCache.invalidateQueries();
+    queryClient.invalidateQueries();
 
     return (
       // This isn't actually a hook 🤔
@@ -78,8 +50,8 @@ function handleError({ error, method, queryCache, auth, dispatch }) {
           // refresh token request succeeded
           async () => {
             // Refetch queries when the refresh token is successful
-            // See: https://react-query.tanstack.com/docs/api/#querycacherefetchqueries
-            return await queryCache.refetchQueries();
+            // See: https://react-query.tanstack.com/docs/api/#queryClientrefetchqueries
+            return await queryClient.refetchQueries();
           },
           // refresh token request failed
           err => {
@@ -121,4 +93,18 @@ function handleError({ error, method, queryCache, auth, dispatch }) {
       details: error.message,
     }),
   );
+}
+
+/**
+ * Derive query key from passed in queryFn and auth state from Redux store. This would have been a custom hook, however, needed to be run within a callback - impossible with a hook.
+ * See: https://react-query.tanstack.com/docs/guides/queries#query-keys
+ *
+ * @param {function} queryFn - query function derived from `src/helpers/api` helpers
+ * @param {object} auth - auth Redux state
+ *
+ */
+export function deriveQueryKey({ queryFn, auth }) {
+  const { url, method, params, headers } = queryFn();
+
+  return [url, { method, params, headers, auth }];
 }

@@ -11,7 +11,7 @@ exports[`Webhook Component: Test Tab renders correctly 1`] = `
       </p>
       <CodeBlock
         code="POST /phoenix.co HTTP/1.1
-Host: phoenix.test
+Host: mock.sparkpost.test
 Content-Type: application/json
 X-MessageSystems-Batch-ID: 77c2b630-d712-11e4-9642-efc2723b99c1
 X-MessageSystems-Webhook-Token: 123

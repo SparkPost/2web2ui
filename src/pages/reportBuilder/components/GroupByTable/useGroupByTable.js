@@ -45,14 +45,16 @@ export default function useGroupByTable() {
       getDeliverability(getQueryFromOptions({ ...options, metrics: formattedMetrics }), groupBy);
   });
 
-  const { data = [], status, refetch } = useSparkPostQueries(
-    [...separatedRequests],
-    {
-      enabled: reportOptions.isReady && groupBy,
-      refetchOnWindowFocus: false,
-    },
-    [groupBy, reportOptions],
-  );
+  const queries = useSparkPostQueries([...separatedRequests], {
+    enabled: Boolean(reportOptions.isReady && groupBy),
+    refetchOnWindowFocus: false,
+  });
+
+  const refetchAll = () => {
+    queries.forEach(query => query.refetch());
+  };
+
+  const statuses = queries.map(query => query.status);
 
   const formatData = rawData => {
     if (!rawData) {
@@ -80,15 +82,18 @@ export default function useGroupByTable() {
     }, []);
   };
 
-  const generatedRows = status === 'success' ? formatData(data) : [];
+  const generatedRows = queries.every(query => query.status === 'success')
+    ? formatData(queries.map(query => query.data))
+    : [];
 
   const comparisonType = comparisons[0].type;
+
   return {
     groupBy,
     setGroupBy,
     data: generatedRows,
-    status,
-    refetch,
+    statuses,
+    refetchAll,
     comparisonType,
   };
 }

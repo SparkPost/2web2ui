@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { METRICS_API_LIMIT } from 'src/constants';
-import sortMatch from 'src/helpers/sortMatch';
 import { useDebouncedCallback } from 'use-debounce';
-
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@sparkpost/matchbox-icons';
+import { METRICS_API_LIMIT } from 'src/constants';
+import sortMatch from 'src/helpers/sortMatch';
 import { ActionList, Box, Inline, TextField } from 'src/components/matchbox';
 import { LoadingSVG } from 'src/components';
 import { useSparkPostQuery } from 'src/hooks';
@@ -228,10 +227,13 @@ function Typeahead({ id, onChange, lookaheadRequest, lookaheadOptions, selector,
         match: inputValue,
         limit: METRICS_API_LIMIT,
       }),
-    { enabled: inputValue && inputValue.length >= 3, refetchOnWindowFocus: false },
+    {
+      enabled: Boolean(inputValue && inputValue.length >= 3),
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 30, // 30 seconds
+    },
   );
   const results = selector(data);
-
   const filteredResults = useMemo(() => {
     return sortMatch(results, inputValue, a => a.value);
   }, [inputValue, results]);
