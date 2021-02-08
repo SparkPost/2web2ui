@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react';
+import React, { useEffect, useCallback, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
@@ -11,6 +11,7 @@ import TrackingDomainsTable from './TrackingDomainsTable';
 import {
   getReactTableFilters,
   customDomainStatusFilter,
+  getActiveStatusFilters,
   setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
@@ -148,6 +149,39 @@ export default function TrackingDomainsTab() {
   const { rows, setAllFilters, toggleSortBy, state, gotoPage, setPageSize } = tableInstance;
 
   const isEmpty = !listPending && rows?.length === 0;
+
+  // synce query params -> page state
+  const firstLoad = useRef(true);
+  useEffect(() => {
+    if (!rows || (rows && rows.length === 0) || listPending) {
+      return;
+    }
+
+    if (firstLoad.current) {
+      firstLoad.current = false;
+      const activeStatusFilters = getActiveStatusFilters(filters);
+      let newFiltersState = {
+        ...filtersState,
+        checkboxes: filtersState.checkboxes.map(checkbox => {
+          return {
+            ...checkbox,
+            isChecked: activeStatusFilters.findIndex(i => i.name === checkbox.name) >= 0,
+          };
+        }),
+      };
+      newFiltersState['domainName'] = filters['domainName'];
+
+      filtersStateDispatch({
+        type: 'LOAD',
+        filtersState: newFiltersState,
+      }); // NOTE: Sets the filters display
+
+      batchDispatchUrlAndTable(newFiltersState);
+
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, listPending]);
 
   function batchDispatchUrlAndTable(newFiltersState) {
     const flattenedFilters = filterStateToParams(newFiltersState);

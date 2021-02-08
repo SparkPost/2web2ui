@@ -1,9 +1,9 @@
-import React, { useCallback, useReducer } from 'react';
+import React, { useEffect, useCallback, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
-import { usePageFilters } from 'src/hooks';
+import { usePageFilters, usePrevious } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
@@ -11,6 +11,7 @@ import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import {
   getReactTableFilters,
   customDomainStatusFilter,
+  getActiveStatusFilters,
   setCheckboxIsChecked,
   filterStateToParams,
 } from '../helpers';
@@ -210,10 +211,84 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const isEmpty = !listPending && rows?.length === 0;
 
+  const firstLoad = useRef(true);
+  const previousFirstLoad = usePrevious(firstLoad.current);
+  // Because we need tab changes from sending and bounce to behave differently
+  useEffect(() => {
+    if (firstLoad.current || (!firstLoad.current && previousFirstLoad)) {
+      return;
+    }
+
+    // NOTE: Handles tab changes, ignores page load
+
+    if (renderBounceOnly === true) {
+      filtersInitialState.checkboxes.map(checkbox => {
+        checkbox.isChecked = false;
+        return checkbox;
+      });
+      filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
+      resetFilters(); // reset url to have no params
+    } else {
+      const flattenedFilters = filterStateToParams(filtersState);
+      const domainStatusValues = {
+        blocked: flattenedFilters['blocked'],
+        readyForDKIM: flattenedFilters['readyForDKIM'],
+        readyForSending: flattenedFilters['readyForSending'],
+        unverified: flattenedFilters['unverified'],
+        validSPF: flattenedFilters['validSPF'],
+      };
+      if (!renderBounceOnly) {
+        domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
+      }
+      const reactTableFilters = getReactTableFilters({
+        domainName: flattenedFilters['domainName'],
+        DomainStatus: domainStatusValues, // NOTE: DomainStatus is the Header Key for react-table (needs to match)
+      });
+      setAllFilters(reactTableFilters); // table update
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstLoad.current, renderBounceOnly]);
+
+  // synce query params -> page state on page load, and handle tab switching (sending and bounce)
+  useEffect(() => {
+    if (!rows || (rows && rows.length === 0) || listPending) {
+      return;
+    }
+
+    // NOTE: Handles page load, ignores tab changes
+
+    if (firstLoad.current) {
+      firstLoad.current = false;
+      const activeStatusFilters = getActiveStatusFilters(filters);
+      const newFiltersState = {
+        ...filtersState,
+        checkboxes: filtersState.checkboxes.map(checkbox => {
+          return {
+            ...checkbox,
+            isChecked: activeStatusFilters.findIndex(i => i.name === checkbox.name) >= 0,
+          };
+        }),
+      };
+      newFiltersState['domainName'] = filters['domainName'];
+
+      filtersStateDispatch({
+        type: 'LOAD',
+        filtersState: newFiltersState,
+      }); // Update domain status filters
+
+      // update url and table
+      batchDispatchUrlAndTable(newFiltersState);
+
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, listPending]);
+
   function batchDispatchUrlAndTable(newFiltersState) {
     const flattenedFilters = filterStateToParams(newFiltersState);
 
-    updateFilters(flattenedFilters);
+    updateFilters(flattenedFilters); // url update
 
     const domainStatusValues = {
       blocked: flattenedFilters['blocked'],
@@ -232,7 +307,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       DomainStatus: domainStatusValues, // NOTE: DomainStatus is the Header Key for react-table (needs to match)
     });
 
-    setAllFilters(reactTableFilters);
+    setAllFilters(reactTableFilters); // table update
   }
 
   const throttleDomainHandler = useCallback(_.throttle(batchDispatchUrlAndTable, 1000), []);
