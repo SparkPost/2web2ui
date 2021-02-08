@@ -97,8 +97,6 @@ export default function TrackingDomainsTab() {
     trackingDomainsListError,
   } = useDomains();
 
-  // TODO: Persist the selection
-  // eslint-disable-next-line no-unused-vars
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
