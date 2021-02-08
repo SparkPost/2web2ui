@@ -62,6 +62,7 @@ const filtersInitialState = {
   ],
 };
 
+// For URL params
 const initFiltersForSending = {
   domainName: { defaultValue: undefined },
   readyForSending: {
@@ -186,6 +187,25 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     [],
   );
 
+  const flattenedFilters = filterStateToParams(filtersState);
+
+  const domainStatusValues = {
+    blocked: flattenedFilters['blocked'],
+    readyForDKIM: flattenedFilters['readyForDKIM'],
+    readyForSending: flattenedFilters['readyForSending'],
+    unverified: flattenedFilters['unverified'],
+    validSPF: flattenedFilters['validSPF'],
+  };
+
+  if (!renderBounceOnly) {
+    domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
+  }
+
+  const reactTableFilters = getReactTableFilters({
+    domainName: flattenedFilters['domainName'],
+    DomainStatus: domainStatusValues, // NOTE: DomainStatus is the Header Key for react-table (needs to match)
+  });
+
   const tableInstance = useTable(
     {
       columns,
@@ -194,7 +214,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       initialState: {
         pageIndex: DEFAULT_CURRENT_PAGE - 1, // react-table takes a 0 base pageIndex
         pageSize: DEFAULT_PER_PAGE,
-        filters: [],
+        filters: reactTableFilters,
         sortBy: [
           {
             id: 'creationTime',
