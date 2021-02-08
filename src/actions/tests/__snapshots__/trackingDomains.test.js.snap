@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Action Creator: Tracking Domains  chained dispatches Action Creator: Tracking Domains createTrackingDomain description 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "data": Object {},
+      "headers": Object {},
+      "method": "POST",
+      "url": "/v1/tracking-domains",
+    },
+    "type": "CREATE_TRACKING_DOMAIN",
+  },
+  Object {
+    "payload": Object {
+      "message": "Successfully added undefined",
+      "type": "success",
+    },
+    "type": "SHOW_GLOBAL_ALERT",
+  },
+]
+`;
+
+exports[`Action Creator: Tracking Domains  chained dispatches Action Creator: Tracking Domains deleteTrackingDomain description 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "domain": undefined,
+      "headers": Object {},
+      "method": "DELETE",
+      "url": "/v1/tracking-domains/undefined",
+    },
+    "type": "DELETE_TRACKING_DOMAIN",
+  },
+  Object {
+    "payload": Object {
+      "message": "Successfully deleted undefined",
+      "type": "success",
+    },
+    "type": "SHOW_GLOBAL_ALERT",
+  },
+]
+`;
+
+exports[`Action Creator: Tracking Domains  chained dispatches Action Creator: Tracking Domains updateTrackingDomain description 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "data": Object {},
+      "domain": undefined,
+      "headers": Object {},
+      "method": "PUT",
+      "url": "/v1/tracking-domains/undefined",
+    },
+    "type": "UPDATE_TRACKING_DOMAIN",
+  },
+  Object {
+    "payload": Object {
+      "message": "Successfully updated undefined",
+      "type": "success",
+    },
+    "type": "SHOW_GLOBAL_ALERT",
+  },
+]
+`;
+
+exports[`Action Creator: Tracking Domains  chained dispatches Action Creator: Tracking Domains verifyTrackingDomains description 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "domain": undefined,
+      "headers": Object {},
+      "method": "POST",
+      "url": "/v1/tracking-domains/undefined/verify",
+    },
+    "type": "VERIFY_TRACKING_DOMAIN",
+  },
+  Object {
+    "payload": Object {
+      "message": "Successfully verified CNAME for undefined",
+      "type": "success",
+    },
+    "type": "SHOW_GLOBAL_ALERT",
+  },
+]
+`;
+
+exports[`Action Creator: Tracking Domains  non-chained dispatches Action Creator: Tracking Domains listTrackingDomains description 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "method": "GET",
+      "showErrorAlert": false,
+      "url": "/v1/tracking-domains",
+    },
+    "type": "LIST_TRACKING_DOMAINS",
+  },
+]
+`;

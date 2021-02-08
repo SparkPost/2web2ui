@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Layout, Stack, Select, Text } from 'src/components/matchbox';
 import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText, TranslatableText } from 'src/components/text';
-import { Telegram } from '@sparkpost/matchbox-icons';
+import { Telegram, Autorenew } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
 import { ExternalLink, PageLink, SubduedLink } from 'src/components/links';
 import { useForm, Controller } from 'react-hook-form';
@@ -111,6 +111,10 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                   record for the Hostname and Value for this domain at your DNS provider.
                 </TranslatableText>
               </p>
+              <Panel.Action onClick={onSubmit}>
+                <TranslatableText>Re-Verify Domain </TranslatableText>
+                <Autorenew size={18} />
+              </Panel.Action>
             </Panel.Section>
           )}
           <form onSubmit={handleSubmit(onSubmit)}>

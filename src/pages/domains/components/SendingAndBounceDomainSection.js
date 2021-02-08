@@ -10,7 +10,7 @@ import useDomains from '../hooks/useDomains';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { CopyField } from 'src/components';
 import { TranslatableText } from 'src/components/text';
-import { Telegram } from '@sparkpost/matchbox-icons';
+import { Autorenew, Telegram } from '@sparkpost/matchbox-icons';
 import { EXTERNAL_LINKS } from '../constants';
 
 export default function SendingAndBounceDomainSection({ domain, isSectionVisible }) {
@@ -31,8 +31,8 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
 
   const readyFor = resolveReadyFor(domain.status);
 
-  const onSubmit = () => {
-    if (!readyFor.bounce) {
+  const onSubmit = ({ reVerify = false }) => {
+    if (!readyFor.bounce || reVerify) {
       const type = watchVerificationType.toLowerCase();
 
       verify({ id, subaccount: subaccount_id, type }).then(result => {
@@ -51,7 +51,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
       });
     }
 
-    if (!readyFor.dkim) {
+    if (!readyFor.dkim || reVerify) {
       const { id, subaccount_id: subaccount } = domain;
 
       verifyDkim({ id, subaccount }).then(results => {
@@ -130,6 +130,10 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
             ) : (
               <Panel.Section>
                 Below is the records for this domain at your DNS provider
+                <Panel.Action onClick={() => onSubmit({ reVerify: true })}>
+                  <TranslatableText>Re-Verify Domain </TranslatableText>
+                  <Autorenew size={18} />
+                </Panel.Action>
               </Panel.Section>
             )}
 

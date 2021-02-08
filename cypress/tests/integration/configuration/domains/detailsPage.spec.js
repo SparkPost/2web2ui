@@ -10,7 +10,7 @@ describe('The domains details page', () => {
     cy.login({ isStubbed: true });
   });
 
-  describe('The domains details page - hibana version', () => {
+  describe('The domains details page', () => {
     beforeEach(() => {
       cy.stubRequest({
         url: '/api/v1/account',
@@ -106,6 +106,13 @@ describe('The domains details page', () => {
           requestAlias: 'deleteDomain',
         });
 
+        cy.stubRequest({
+          method: 'POST',
+          url: `/api/v1/tracking-domains/${domainName}/verify`,
+          fixture: 'tracking-domains/verify/200.post.json',
+          request: 'reverifyDomain',
+        });
+
         cy.visit(`${TRACKING_DETAILS_URL}/${domainName}`);
 
         cy.wait(['@accountDomainsReq', '@trackingDomainsList', '@subaccountList']);
@@ -115,6 +122,11 @@ describe('The domains details page', () => {
         cy.findByText('Subaccount Assignment').should('be.visible');
         cy.findByText('Fake Subaccount 4 (104)').should('be.visible');
         cy.findByRole('checkbox', { label: 'Set as Default Tracking Domain' }).should('be.checked');
+
+        cy.findByRole('button', { name: 'Re-Verify Domain' }).should('be.visible');
+        cy.findByRole('button', { name: 'Re-Verify Domain' }).click();
+        cy.findByText('Successfully verified CNAME for track1.spappteam.com').should('be.visible');
+
         cy.findByRole('heading', { name: 'Tracking' }).should('be.visible');
         cy.findByRole('button', { name: 'Verify Domain' }).should('not.exist');
         cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
@@ -439,6 +451,12 @@ describe('The domains details page', () => {
           fixture: 'sending-domains/200.get.all-verified.json',
           requestAlias: 'verifiedDomains',
         });
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/sending-domains/bounce2.spappteam.com/verify',
+          fixture: 'sending-domains/verify/200.post.json',
+          requestAlias: 'verifyDomain',
+        });
         cy.visit(`${SENDING_BOUNCE_DETAILS_URL}/bounce2.spappteam.com`);
         cy.wait(['@verifiedDomains']);
         cy.wait('@accountDomainsReq');
@@ -451,6 +469,15 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Bounce' }).should('not.exist');
         cy.findByRole('heading', { name: 'DNS Verification' }).should('not.exist');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.exist');
+
+        cy.findByRole('button', { name: 'Re-Verify Domain' }).should('be.visible');
+        cy.findByRole('button', { name: 'Re-Verify Domain' }).click();
+        cy.findByText('You have successfully verified DKIM record of bounce2.spappteam.com').should(
+          'be.visible',
+        );
+        cy.findByText(
+          'You have successfully verified cname record of bounce2.spappteam.com',
+        ).should('be.visible');
       });
 
       it('renders correct sections for verified bounce domain and unverified sending domain', () => {
@@ -458,6 +485,12 @@ describe('The domains details page', () => {
           url: '/api/v1/sending-domains/bounce2.spappteam.com',
           fixture: 'sending-domains/200.get.bounce-verified-sending-unverified.json',
           requestAlias: 'verifiedDomains',
+        });
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/sending-domains/bounce2.spappteam.com/verify',
+          fixture: 'sending-domains/verify/200.post.json',
+          requestAlias: 'verifyDomain',
         });
         cy.visit(`${SENDING_BOUNCE_DETAILS_URL}/bounce2.spappteam.com`);
         cy.wait(['@verifiedDomains', '@accountDomainsReq']);
@@ -470,6 +503,12 @@ describe('The domains details page', () => {
         cy.findByRole('button', { name: 'Verify Domain' }).should('be.visible');
         cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('be.visible');
+
+        cy.findByRole('button', { name: 'Re-Verify Domain' }).should('be.visible');
+        cy.findByRole('button', { name: 'Re-Verify Domain' }).click();
+        cy.findByText('Successfully verified cname record of bounce2.spappteam.com').should(
+          'be.visible',
+        );
       });
 
       it('renders snackbar after sharing and un-sharing the domain.', () => {

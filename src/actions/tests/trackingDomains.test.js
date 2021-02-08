@@ -4,16 +4,13 @@ jest.mock('../helpers/sparkpostApiRequest');
 
 // https://github.com/facebook/jest/issues/2582#issuecomment-346886018
 // TODO: Finish the tests for tracking domains actions
-describe.skip('Action Creator: Tracking Domains ', () => {
+describe('Action Creator: Tracking Domains ', () => {
   describe('non-chained dispatches', () => {
     const trackingDomains = require('../trackingDomains');
 
-    snapshotActionCases('Action Creator: Sending Domains', {
+    snapshotActionCases('Action Creator: Tracking Domains', {
       'listTrackingDomains description': {
         actionCreator: () => trackingDomains.listTrackingDomains({}),
-      },
-      'verifyTrackingDomains description': {
-        actionCreator: () => trackingDomains.verifyTrackingDomains({}),
       },
     });
   });
@@ -27,7 +24,7 @@ describe.skip('Action Creator: Tracking Domains ', () => {
 
     const trackingDomains = require('../trackingDomains');
 
-    snapshotActionCases('Action Creator: Sending Domains', {
+    snapshotActionCases('Action Creator: Tracking Domains', {
       'createTrackingDomain description': {
         actionCreator: () => trackingDomains.createTrackingDomain({}),
       },
@@ -36,6 +33,9 @@ describe.skip('Action Creator: Tracking Domains ', () => {
       },
       'deleteTrackingDomain description': {
         actionCreator: () => trackingDomains.deleteTrackingDomain({}),
+      },
+      'verifyTrackingDomains description': {
+        actionCreator: () => trackingDomains.verifyTrackingDomain({}),
       },
     });
   });
