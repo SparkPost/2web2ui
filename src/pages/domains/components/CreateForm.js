@@ -5,6 +5,7 @@ import { LINKS } from 'src/constants';
 import { Abbreviation } from 'src/components';
 import {
   Box,
+  Banner,
   Button,
   Layout,
   Panel,
@@ -187,12 +188,15 @@ export default function CreateForm() {
         <Layout>
           <Layout.Section annotated>
             <Layout.SectionTitle>Domain and Assignment</Layout.SectionTitle>
-
-            <SubduedText fontSize="200">
-              We recommend using a subdomain e.g. mail.mydomain.com. Depending on how you want to
-              use your domain, you may not be able to completely configure your DNS records if you
-              use your organizational domain.
-            </SubduedText>
+            <Banner status="warning" size="small">
+              <p>We recommend using a subdomain e.g. sub.domain.com</p>
+            </Banner>
+            <Box mt="400">
+              <SubduedText fontSize="200">
+                It may not be possible to completely configure your DNS records if you use your
+                organizational domain.
+              </SubduedText>
+            </Box>
           </Layout.Section>
 
           <Layout.Section>
