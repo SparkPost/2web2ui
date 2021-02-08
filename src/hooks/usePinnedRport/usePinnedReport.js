@@ -12,19 +12,26 @@ import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 
 const defaultReportName = 'Summary Report';
 
-export default function usePinnedReport(onboarding) {
+export default function usePinnedReport(onboarding, reportsFromProps) {
   const pinnedReport = { options: {}, name: '', linkToReportBuilder: '/' };
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (onboarding === 'done') {
       dispatch(listSubaccounts());
-      dispatch(getReports());
     }
   }, [dispatch, onboarding]);
 
-  const { list: reports, listLoading: reportsLoading } = useSelector(state => state.reports);
+  useEffect(() => {
+    if (!reportsFromProps) {
+      dispatch(getReports());
+    }
+  }, [dispatch, reportsFromProps]);
 
+  const { list: reportsFromState, listLoading: reportsLoading } = useSelector(
+    state => state.reports,
+  );
+  const reports = reportsFromProps ? reportsFromProps : reportsFromState;
   const { list: subaccounts, listLoading: subaccountsLoading } = useSelector(
     state => state.subaccounts,
   );
@@ -47,7 +54,7 @@ export default function usePinnedReport(onboarding) {
     .query_string;
   const summaryReportOptions = parseSearch(summaryReportQueryString);
 
-  const report = _.find(reports, { id: pinnedReportId });
+  const report = _.find([...reports, ...PRESET_REPORT_CONFIGS], { id: pinnedReportId });
   if (report) {
     const options = parseSearch(report.query_string);
     pinnedReport.name = report.name;

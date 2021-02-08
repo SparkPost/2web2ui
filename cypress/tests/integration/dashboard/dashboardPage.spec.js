@@ -68,6 +68,17 @@ describe('the dashboard page', () => {
       // arbitary wait was added because of this issue https://sparkpost.atlassian.net/browse/FE-1284
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(0);
+      //Check that preset reports are present
+      cy.findByText('All Reports').click();
+      cy.findByRole('cell', { name: 'Summary Report' })
+        .scrollIntoView()
+        .should('be.visible');
+      cy.findByRole('cell', { name: 'Bounce Report' }).should('be.visible');
+      cy.findByRole('cell', { name: 'Engagement Report' }).should('be.visible');
+      cy.findByRole('cell', { name: 'Delayed Report' }).should('be.visible');
+      cy.findByRole('cell', { name: 'Rejections Report' }).should('be.visible');
+      cy.findByRole('cell', { name: 'Accepted Report' }).should('be.visible');
+
       cy.get('[type="radio"]').check('d50d8475-d4e8-4df0-950f-b142f77df0bf', { force: true });
 
       cy.findByRole('button', { name: 'Change Report' }).click();

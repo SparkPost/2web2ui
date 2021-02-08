@@ -14,6 +14,7 @@ import {
 } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
 import { ButtonLink, PageLink } from 'src/components/links';
+import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants';
 
 const PinToDashboardAction = styled(ActionList.Action)`
   &[disabled] {
@@ -202,6 +203,7 @@ export const AllReportsTab = ({
   const allReportsColumns = report => {
     const { name, modified, creator, subaccount_id, current_user_can_edit, isLast } = report;
 
+    //The ternary options are for preset reports, which don't have subaccount and last modified date
     const allColumns = [
       <ButtonLink
         onClick={() => {
@@ -210,11 +212,15 @@ export const AllReportsTab = ({
       >
         {name}
       </ButtonLink>,
-      <div>{formatDateTime(modified)}</div>,
+      <div>{modified ? formatDateTime(modified) : ''}</div>,
       <div>{creator}</div>,
-      <Tag>
-        <Subaccount id={subaccount_id} master={subaccount_id === 0} shrinkLength={12} />
-      </Tag>,
+      <>
+        {subaccount_id !== undefined ? (
+          <Tag>
+            <Subaccount id={subaccount_id} master={subaccount_id === 0} shrinkLength={12} />
+          </Tag>
+        ) : null}
+      </>,
       <Icons report={report} pinnedReport={pinnedReport}></Icons>,
       <Actions
         id={`popover-allreports-${report.id}`}
@@ -237,7 +243,7 @@ export const AllReportsTab = ({
 
   return (
     <TableCollection
-      rows={reports}
+      rows={[...reports, ...PRESET_REPORT_CONFIGS]}
       columns={getColumnsForAllReports()}
       rowComponent={getAllReportRowComponent}
       wrapperComponent={Table}

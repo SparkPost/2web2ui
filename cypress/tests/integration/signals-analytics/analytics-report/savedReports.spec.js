@@ -312,6 +312,15 @@ describe('Analytics Report Saved Reports', () => {
           .last()
           .should('be.visible');
         cy.findByText('Your Sending Report').should('be.visible');
+        //Check preset reports
+        cy.findByRole('cell', { name: 'Summary Report' })
+          .scrollIntoView()
+          .should('be.visible');
+        cy.findByRole('cell', { name: 'Bounce Report' }).should('be.visible');
+        cy.findByRole('cell', { name: 'Engagement Report' }).should('be.visible');
+        cy.findByRole('cell', { name: 'Delayed Report' }).should('be.visible');
+        cy.findByRole('cell', { name: 'Rejections Report' }).should('be.visible');
+        cy.findByRole('cell', { name: 'Accepted Report' }).should('be.visible');
       });
     });
 

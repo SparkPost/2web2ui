@@ -99,7 +99,7 @@ export const SavedReportsSection = props => {
               <TypeSelect.Item
                 label={report.name}
                 itemToString={item => item.key}
-                meta={report.creator || 'Default'}
+                meta={report.creator}
               />
             )}
             results={[

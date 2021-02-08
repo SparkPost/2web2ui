@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { ReportsListModal } from '../ReportsListModal';
 import TestApp from 'src/__testHelpers__/TestApp';
 
@@ -67,13 +67,17 @@ describe('ReportsListModal', () => {
     screen.getByText('All Reports').click();
     expect(screen.queryByTestId('popover-allreports-0')).toBeInTheDocument();
     expect(screen.queryByTestId('popover-allreports-1')).toBeInTheDocument();
-    screen.queryByTestId('popover-allreports-1').click();
+    act(() => {
+      screen.queryByTestId('popover-allreports-1').click();
+    });
     expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Pin to Dashboard' })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Schedule' })).toBeInTheDocument();
+    act(() => {
+      screen.queryByTestId('popover-allreports-0').click();
+    });
 
-    screen.queryByTestId('popover-allreports-0').click();
     expect(screen.queryByRole('button', { name: 'Edit' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Delete' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Pin to Dashboard' })).toBeInTheDocument();
@@ -98,5 +102,19 @@ describe('ReportsListModal', () => {
     expect(defaults.handleEdit).toHaveBeenCalledWith(
       expect.objectContaining({ id: 0, name: 'My Saved Report' }),
     );
+  });
+
+  it('Shows the preset reports in the All Reports tab', async () => {
+    subject();
+    expect(screen.queryByText('Summary Report')).not.toBeInTheDocument();
+    screen.getByText('All Reports').click();
+    await waitFor(() => {
+      expect(screen.getByText('Summary Report')).toBeVisible();
+      expect(screen.getByText('Bounce Report')).toBeVisible();
+      expect(screen.getByText('Engagement Report')).toBeVisible();
+      expect(screen.getByText('Delayed Report')).toBeVisible();
+      expect(screen.getByText('Rejections Report')).toBeVisible();
+      expect(screen.getByText('Accepted Report')).toBeVisible();
+    });
   });
 });

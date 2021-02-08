@@ -79,9 +79,11 @@ export function ReportBuilder({
   }, [refreshReportBuilder, reportOptions, isEmpty]);
 
   useEffect(() => {
-    getSubscription();
+    if (reportsStatus === 'success') {
+      getSubscription();
+    }
     //Updates subscription with reports to make sure product count is up to date
-  }, [getSubscription, reports]);
+  }, [getSubscription, reports, reportsStatus]);
 
   useEffect(() => {
     getSubaccountsList();

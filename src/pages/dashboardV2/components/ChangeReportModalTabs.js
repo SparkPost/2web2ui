@@ -3,6 +3,7 @@ import { TableCollection, Subaccount } from 'src/components';
 import { Box, Radio, Table, Tag, Tooltip } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
 import { shrinkToFit } from 'src/helpers/string';
+import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants';
 
 const FilterBoxWrapper = props => (
   <Box borderBottom="400" padding="400">
@@ -77,7 +78,7 @@ export const AllReportsTabWithSelectableRows = ({ reports, register }) => {
         key={id}
         ref={register}
         label={
-          <Tooltip dark content={name}>
+          <Tooltip id={id} dark content={name}>
             {/* can't find a better way to do this and stop making the Modal scroll horizontally when the reports have huge names*/}
             {/* label text is not getting wrapped vertically for Radio */}
             {shrinkToFit(name, SHRINK_LENGTH)}
@@ -86,16 +87,20 @@ export const AllReportsTabWithSelectableRows = ({ reports, register }) => {
         name="reportId"
         maxWidth="200"
       />,
-      <div>{formatDateTime(modified)}</div>,
+      <div>{modified ? formatDateTime(modified) : ''}</div>,
       <div>{creator}</div>,
-      <Tag>
-        <Subaccount id={subaccount_id} master={subaccount_id === 0} shrinkLength={12} />
-      </Tag>,
+      <>
+        {subaccount_id !== undefined ? (
+          <Tag>
+            <Subaccount id={subaccount_id} master={subaccount_id === 0} shrinkLength={12} />
+          </Tag>
+        ) : null}
+      </>,
     ];
   };
   return (
     <TableCollection
-      rows={reports}
+      rows={[...reports, ...PRESET_REPORT_CONFIGS]}
       columns={getColumnsForAllReports()}
       getRowData={allReportsRows}
       wrapperComponent={TableWrapper}

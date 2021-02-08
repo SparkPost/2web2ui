@@ -92,7 +92,7 @@ export default function DashboardPageV2() {
 
   const { closeModal, openModal, isModalOpen, meta: { name } = {} } = useModal();
 
-  const { pinnedReport } = usePinnedReport(onboarding);
+  const { pinnedReport } = usePinnedReport(onboarding, reports);
 
   const prevReportQueryString = usePrevious(pinnedReport.query_string);
 
