@@ -12,6 +12,7 @@ import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useMultiSelect } from 'src/components/MultiSelectDropdown';
+import { INBOX_TRACKER_METRICS } from 'src/config/metrics';
 
 const separateCompareOptions = reportOptions => {
   const { comparisons } = reportOptions;
@@ -50,17 +51,26 @@ export default function useGroupByTable() {
     return getMetricsFromKeys(metrics, true).map(metric => splitInboxMetric(metric, values));
   }, [metrics, values]);
 
+  const filteredMetrics = formattedMetrics.filter(metric => {
+    if (INBOX_TRACKER_METRICS.includes(metric.key)) {
+      return values.includes('panel') || values.includes('seed');
+    } else {
+      return values.includes('sending');
+    }
+  });
+  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
+
   const separatedOptions = separateCompareOptions(reportOptions);
   const separatedRequests = separatedOptions.map(options => {
     return () =>
       getDeliverability(
-        getQueryFromOptions({ ...options, metrics: formattedMetrics, dataSources: values }),
+        getQueryFromOptions({ ...options, metrics: reformattedMetrics, dataSources: values }),
         groupBy,
       );
   });
 
   const queries = useSparkPostQueries([...separatedRequests], {
-    enabled: Boolean(reportOptions.isReady && groupBy),
+    enabled: Boolean(reportOptions.isReady && groupBy && reformattedMetrics.length),
     refetchOnWindowFocus: false,
   });
 
@@ -110,5 +120,6 @@ export default function useGroupByTable() {
     refetchAll,
     comparisonType,
     checkboxes,
+    apiMetrics: reformattedMetrics,
   };
 }

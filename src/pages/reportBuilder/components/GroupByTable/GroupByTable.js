@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import {
+  isAccountUiOptionSet,
+  hasProductOnBillingSubscription,
+} from 'src/helpers/conditions/account';
 import cx from 'classnames';
+
+import { CheckboxWithLink } from './components';
 
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
@@ -9,7 +14,7 @@ import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccou
 import { ApiErrorBanner, PanelLoading, TableCollection, Unit } from 'src/components';
 import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
-import { Panel, Table, Box, Columns, Column } from 'src/components/matchbox';
+import { Box, Column, Columns, Panel, Table } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
@@ -33,7 +38,7 @@ const tableWrapper = props => {
 export const GroupByTable = () => {
   const [groupBy, setGroupBy] = useState();
   const {
-    selectors: { selectSummaryMetricsProcessed: metrics },
+    selectors: { selectSummaryMetricsProcessed: displayMetrics },
     state: reportOptions,
   } = useReportBuilderContext();
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
@@ -41,22 +46,38 @@ export const GroupByTable = () => {
   const hasD12yMetricsEnabled = useSelector(state =>
     isAccountUiOptionSet('allow_deliverability_metrics')(state),
   );
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const hasSendingProduct = useSelector(state =>
+    hasProductOnBillingSubscription('messaging')(state),
+  );
 
-  const inboxTrackerMetrics = metrics.filter(({ key }) => INBOX_TRACKER_METRICS.includes(key));
-  const sendingMetrics = metrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
+  const inboxTrackerMetrics = displayMetrics.filter(({ key }) =>
+    INBOX_TRACKER_METRICS.includes(key),
+  );
+  const sendingMetrics = displayMetrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
   const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
   const hasSendingMetrics = Boolean(sendingMetrics.length);
+
   const { checkboxes, values } = useMultiSelect({
     checkboxes: [
-      { name: 'sending', label: 'Sending', disabled: !hasSendingMetrics },
-      { name: 'panel', label: 'Panel', disabled: !hasInboxTrackingMetrics },
-      { name: 'seed', label: 'Seed List', disabled: !hasInboxTrackingMetrics },
+      { name: 'sending', label: 'Sending', disabgled: !hasSendingMetrics || !hasSendingProduct },
+      { name: 'panel', label: 'Panel', disabled: !hasInboxTrackingMetrics || !hasD12yProduct },
+      { name: 'seed', label: 'Seed List', disabled: !hasInboxTrackingMetrics || !hasD12yProduct },
     ],
     useSelectAll: false,
     allowEmpty: false,
   });
 
-  const reformattedMetrics = metrics.map(metric => splitInboxMetric(metric, values));
+  const filteredMetrics = displayMetrics.filter(metric => {
+    if (INBOX_TRACKER_METRICS.includes(metric.key)) {
+      return values.includes('panel') || values.includes('seed');
+    } else {
+      return values.includes('sending');
+    }
+  });
+  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
 
   const preparedOptions = getQueryFromOptionsV2({
     ...reportOptions,
@@ -83,7 +104,7 @@ export const GroupByTable = () => {
       sortKey: group.keyName,
     };
 
-    const metricCols = metrics.map(({ label, key }) => ({
+    const metricCols = displayMetrics.map(({ label, key }) => ({
       key,
       label: <Box textAlign="right">{label}</Box>,
       className: cx(styles.HeaderCell, styles.NumericalHeader),
@@ -117,7 +138,7 @@ export const GroupByTable = () => {
         : { type: group.label, value: filterKey };
 
     const primaryCol = <AddFilterLink newFilter={newFilter} />;
-    const metricCols = metrics.map(({ key, unit }) => (
+    const metricCols = displayMetrics.map(({ key, unit }) => (
       <Box textAlign="right" key={key}>
         {row[key] !== undefined && row[key] !== null ? (
           <Unit value={row[key]} unit={unit} />
@@ -131,7 +152,7 @@ export const GroupByTable = () => {
   };
 
   const renderTable = () => {
-    if (!group || metrics.length === 0) {
+    if (!group || displayMetrics.length === 0) {
       return null;
     }
 
@@ -154,7 +175,7 @@ export const GroupByTable = () => {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!formattedData.length || !reformattedMetrics.length) {
+    if (!Boolean(formattedData.length) || !Boolean(reformattedMetrics.length)) {
       return (
         <Panel.LEGACY>
           <Empty message="There is no data to display" />
@@ -170,7 +191,7 @@ export const GroupByTable = () => {
         pagination
         defaultPerPage={10}
         rows={formattedData}
-        defaultSortColumn={metrics[0].key}
+        defaultSortColumn={displayMetrics[0].key}
         defaultSortDirection="desc"
         wrapperComponent={tableWrapper}
       />
@@ -183,7 +204,7 @@ export const GroupByTable = () => {
         <Panel.Section>
           <Columns collapseBelow="sm">
             <GroupByOption
-              disabled={status === 'loading' || metrics.length === 0}
+              disabled={status === 'loading' || displayMetrics.length === 0}
               groupBy={groupBy}
               hasSubaccounts={hasSubaccounts}
               onChange={setGroupBy}
@@ -195,6 +216,7 @@ export const GroupByTable = () => {
                   checkboxes={checkboxes}
                   id="group-by-dropdown"
                   label="Data Sources"
+                  checkboxComponent={CheckboxWithLink({ hasSendingProduct, hasD12yProduct })}
                 />
               </Column>
             )}

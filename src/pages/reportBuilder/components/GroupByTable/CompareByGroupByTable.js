@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import cx from 'classnames';
 import _ from 'lodash';
+
+import { CheckboxWithLink } from './components';
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 import { ApiErrorBanner, Empty, PanelLoading, TableCollection, Unit } from 'src/components';
@@ -15,6 +16,10 @@ import AddFilterLink from '../AddFilterLink';
 import styles from './ReportTable.module.scss';
 import useGroupByTable from './useGroupByTable';
 import GroupByOption from './GroupByOption';
+import {
+  isAccountUiOptionSet,
+  hasProductOnBillingSubscription,
+} from 'src/helpers/conditions/account';
 
 const tableWrapper = props => {
   return (
@@ -33,12 +38,19 @@ export const CompareByTable = () => {
     comparisonType,
     refetchAll,
     checkboxes,
+    apiMetrics,
   } = useGroupByTable();
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
   } = useReportBuilderContext();
   const hasD12yMetricsEnabled = useSelector(state =>
     isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const hasSendingProduct = useSelector(state =>
+    hasProductOnBillingSubscription('messaging')(state),
   );
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
@@ -133,7 +145,7 @@ export const CompareByTable = () => {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!tableData.length) {
+    if (!Boolean(tableData.length) || Boolean(apiMetrics.length)) {
       return (
         <Panel>
           <Empty message="There is no data to display" />
@@ -169,7 +181,13 @@ export const CompareByTable = () => {
             />
             {hasD12yMetricsEnabled && groupBy && (
               <Column>
-                <MultiSelectDropdown checkboxes={checkboxes} label="Data Sources" />
+                <MultiSelectDropdown
+                  allowEmpty={false}
+                  checkboxes={checkboxes}
+                  id="group-by-dropdown"
+                  label="Data Sources"
+                  checkboxComponent={CheckboxWithLink({ hasSendingProduct, hasD12yProduct })}
+                />{' '}
               </Column>
             )}
           </Columns>

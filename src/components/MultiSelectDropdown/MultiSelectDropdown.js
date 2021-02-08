@@ -80,8 +80,10 @@ function MultiSelectDropdown({
   label = 'Options',
   id = 'multi-select-dropdown',
   allowEmpty = true,
+  checkboxComponent,
 }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const CheckboxComponent = checkboxComponent ? checkboxComponent : Checkbox;
 
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
   const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
@@ -116,8 +118,9 @@ function MultiSelectDropdown({
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
               {!hasCheckedCheckboxes && allowEmpty && 'None'}
-              {(hasCheckedCheckboxes && allCheckboxesChecked) ||
-                (!allowEmpty && !hasCheckedCheckboxes && 'All')}
+              {((hasCheckedCheckboxes && allCheckboxesChecked) ||
+                (!allowEmpty && !hasCheckedCheckboxes)) &&
+                'All'}
               {hasCheckedCheckboxes && !allCheckboxesChecked && checkboxLabels}
             </StatusPopoverContent>
 
@@ -134,7 +137,7 @@ function MultiSelectDropdown({
                 unchecked they are hidden from the table.
               </ScreenReaderOnly>
 
-              <Checkbox
+              <CheckboxComponent
                 label="Select All"
                 id="select-all"
                 name="selectAll"
@@ -151,7 +154,7 @@ function MultiSelectDropdown({
             {checkboxes
               .filter(checkbox => checkbox.name !== 'selectAll') //Will remove this regardless
               .map((checkbox, index) => (
-                <Checkbox
+                <CheckboxComponent
                   key={`${checkbox.name}-${index}`}
                   label={checkbox.label}
                   id={checkbox.name}
