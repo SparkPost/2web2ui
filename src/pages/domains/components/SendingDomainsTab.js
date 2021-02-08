@@ -221,7 +221,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
     // NOTE: Handles tab changes, ignores page load
 
-    if (renderBounceOnly === true) {
+    if (Boolean(renderBounceOnly)) {
       filtersInitialState.checkboxes.map(checkbox => {
         checkbox.isChecked = false;
         return checkbox;
@@ -237,9 +237,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         unverified: flattenedFilters['unverified'],
         validSPF: flattenedFilters['validSPF'],
       };
-      if (!renderBounceOnly) {
-        domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
-      }
+      domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
       const reactTableFilters = getReactTableFilters({
         domainName: flattenedFilters['domainName'],
         DomainStatus: domainStatusValues, // NOTE: DomainStatus is the Header Key for react-table (needs to match)
