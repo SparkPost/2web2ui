@@ -1,4 +1,5 @@
 import { reportBuilder, reports, signals } from 'src/pages';
+import { AnalyticsReportPage } from 'src/pages/analyticsReport';
 import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
@@ -120,6 +121,14 @@ const hibanaReportsRoutes = [
     layout: App,
     title: 'Analytics Report | Signals Analytics',
     supportDocSearch: 'reporting',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+  },
+  {
+    path: '/signals/analyticsV2',
+    component: AnalyticsReportPage,
+    layout: App,
+    title: 'Analytics Report V2 | SIgnals Analytics',
     category: 'Signals Analytics',
     subcategory: 'Analytics Report',
   },
