@@ -9,12 +9,13 @@ const reducer = (state, action) => {
       if (action.name === 'selectAll') {
         // Toggles select all
         const selectAllCheckboxState = state.checkboxes[0]?.isChecked; //Should be the first to even get this option
+        const newCheckboxes = state.checkboxes.map(checkbox => ({
+          ...checkbox,
+          isChecked: !selectAllCheckboxState,
+        }));
         return {
           ...state,
-          checkboxes: state.checkboxes.map(checkbox => ({
-            ...checkbox,
-            isChecked: !selectAllCheckboxState,
-          })),
+          checkboxes: newCheckboxes,
         };
       } else {
         const selectAllCheckbox = state.checkboxes.filter(({ name }) => name === 'selectAll');
@@ -43,7 +44,7 @@ const reducer = (state, action) => {
  * @name useMultiSelect
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
-export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = false }) {
+export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = true }) {
   const [state, dispatch] = useReducer(reducer, {
     checkboxes: [
       ...(useSelectAll ? [{ name: 'selectAll', label: 'Select All', isChecked: false }] : []),
@@ -62,6 +63,7 @@ export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = f
     () => state.checkboxes.map(checkbox => ({ ...checkbox, onChange })),
     [state.checkboxes, onChange],
   );
+
   const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
   const checkedCheckboxes = mainCheckboxes.filter(({ isChecked }) => isChecked);
 
