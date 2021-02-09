@@ -119,7 +119,6 @@ function MultiSelectDropdown({
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
             disabled={disabled}
           >
-            {/* This content is purely visual and is not exposed to screen readers, rather, "Domain Status" is always exposed for those users */}
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
               {!hasCheckedCheckboxes && allowEmpty && 'None'}
@@ -137,11 +136,6 @@ function MultiSelectDropdown({
         {selectAllCheckbox && (
           <>
             <Box padding="300">
-              <ScreenReaderOnly as="p">
-                Checkboxes filter the table. When checked, table elements are visible, when
-                unchecked they are hidden from the table.
-              </ScreenReaderOnly>
-
               <CheckboxComponent
                 label="Select All"
                 id="select-all"
