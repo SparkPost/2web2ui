@@ -66,6 +66,7 @@
     "@sparkpost/matchbox-icons": "~4.7.3",
     "@sparkpost/matchbox-media": "~4.7.3",
     "@styled-system/props": "^5.1.5",
+    "@xstate/react": "^1.2.2",
     "bowser": "2.1.2",
     "classnames": "^2.2.5",
     "color": "^3.0.0",
@@ -114,7 +115,8 @@
     "styled-components": "^5.2.1",
     "use-debounce": "^3.0.1",
     "uuid": "^3.2.1",
-    "validator": "^10.2.0"
+    "validator": "^10.2.0",
+    "xstate": "^4.16.2"
   },
   "devDependencies": {
     "@babel/core": "7.10.5",
