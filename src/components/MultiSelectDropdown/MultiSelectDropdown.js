@@ -5,35 +5,32 @@ import Divider from 'src/components/divider';
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'TOGGLE_ALL':
+      const selectAllCheckboxState = state.checkboxes[0]?.isChecked; //Should be the first to even get this option
+      const newCheckboxes = state.checkboxes.map(checkbox => ({
+        ...checkbox,
+        isChecked: !selectAllCheckboxState,
+      }));
+      return {
+        ...state,
+        checkboxes: newCheckboxes,
+      };
     case 'TOGGLE': {
-      if (action.name === 'selectAll') {
-        // Toggles select all
-        const selectAllCheckboxState = state.checkboxes[0]?.isChecked; //Should be the first to even get this option
-        const newCheckboxes = state.checkboxes.map(checkbox => ({
-          ...checkbox,
-          isChecked: !selectAllCheckboxState,
-        }));
-        return {
-          ...state,
-          checkboxes: newCheckboxes,
-        };
-      } else {
-        const selectAllCheckbox = state.checkboxes.filter(({ name }) => name === 'selectAll');
-        const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
-        const targetCheckboxIndex = mainCheckboxes.findIndex(({ name }) => name === action.name);
-        mainCheckboxes[targetCheckboxIndex].isChecked = !Boolean(
-          mainCheckboxes[targetCheckboxIndex].isChecked,
-        );
+      const selectAllCheckbox = state.checkboxes.filter(({ name }) => name === 'selectAll');
+      const mainCheckboxes = state.checkboxes.filter(({ name }) => name !== 'selectAll');
+      const targetCheckboxIndex = mainCheckboxes.findIndex(({ name }) => name === action.name);
+      mainCheckboxes[targetCheckboxIndex].isChecked = !Boolean(
+        mainCheckboxes[targetCheckboxIndex].isChecked,
+      );
 
-        if (selectAllCheckbox.length) {
-          const allChecked = mainCheckboxes.every(({ isChecked }) => isChecked);
-          selectAllCheckbox[0].isChecked = allChecked;
-        }
-        return {
-          ...state,
-          checkboxes: [...selectAllCheckbox, ...mainCheckboxes],
-        };
+      if (selectAllCheckbox.length) {
+        const allChecked = mainCheckboxes.every(({ isChecked }) => isChecked);
+        selectAllCheckbox[0].isChecked = allChecked;
       }
+      return {
+        ...state,
+        checkboxes: [...selectAllCheckbox, ...mainCheckboxes],
+      };
     }
     default:
       throw new Error('This is not a valid action for this reducer');
@@ -56,7 +53,11 @@ export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = t
 
   const onChange = useCallback(
     e => {
-      dispatch({ type: 'TOGGLE', name: e.target.name });
+      if (e.target.name === 'selectAll') {
+        dispatch({ type: 'TOGGLE_ALL' });
+      } else {
+        dispatch({ type: 'TOGGLE', name: e.target.name });
+      }
     },
     [dispatch],
   );
