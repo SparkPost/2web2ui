@@ -15,17 +15,25 @@ const Right = styled(Inline)`
   flex: 0;
 `;
 
-export const CheckboxWithLink = ({ hasSendingProduct, hasD12yProduct }) => checkboxProps => {
+export const CheckboxWithLink = ({
+  hasSendingProduct,
+  hasD12yProduct,
+  hasSendingMetrics,
+  hasInboxTrackingMetrics,
+}) => checkboxProps => {
   const isInbox = checkboxProps.name === 'seed' || checkboxProps.name === 'panel';
   const isSending = checkboxProps.name === 'sending';
   const link = isSending
     ? '/account/billing/plan'
     : 'https://www.sparkpost.com/features/email-deliverability/';
   const showLink = (isSending && !hasSendingProduct) || (isInbox && !hasD12yProduct);
+  const disabled =
+    (isSending && (!hasSendingProduct || !hasSendingMetrics)) ||
+    (isInbox && (!hasD12yProduct || !hasInboxTrackingMetrics));
   return (
     <CheckboxContainer>
       <Left>
-        <Checkbox {...checkboxProps} />
+        <Checkbox {...checkboxProps} disabled={disabled} />
       </Left>
       {showLink && (
         <Right space="100">

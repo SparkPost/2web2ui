@@ -62,9 +62,9 @@ export const GroupByTable = () => {
 
   const { checkboxes, values } = useMultiSelect({
     checkboxes: [
-      { name: 'sending', label: 'Sending', disabgled: !hasSendingMetrics || !hasSendingProduct },
-      { name: 'panel', label: 'Panel', disabled: !hasInboxTrackingMetrics || !hasD12yProduct },
-      { name: 'seed', label: 'Seed List', disabled: !hasInboxTrackingMetrics || !hasD12yProduct },
+      { name: 'sending', label: 'Sending' },
+      { name: 'panel', label: 'Panel' },
+      { name: 'seed', label: 'Seed List' },
     ],
     useSelectAll: false,
     allowEmpty: false,
@@ -77,13 +77,14 @@ export const GroupByTable = () => {
       return values.includes('sending');
     }
   });
-  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
 
+  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
   const preparedOptions = getQueryFromOptionsV2({
     ...reportOptions,
     metrics: reformattedMetrics,
     dataSource: values,
   });
+
   const { data = [], status, refetch } = useSparkPostQuery(
     () => getDeliverability(preparedOptions, groupBy),
     {
@@ -216,7 +217,12 @@ export const GroupByTable = () => {
                   checkboxes={checkboxes}
                   id="group-by-dropdown"
                   label="Data Sources"
-                  checkboxComponent={CheckboxWithLink({ hasSendingProduct, hasD12yProduct })}
+                  checkboxComponent={CheckboxWithLink({
+                    hasSendingProduct,
+                    hasD12yProduct,
+                    hasSendingMetrics,
+                    hasInboxTrackingMetrics,
+                  })}
                 />
               </Column>
             )}

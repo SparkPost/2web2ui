@@ -12,7 +12,12 @@ export const DeliverabilityBanner = () => {
 
   return (
     <Box padding="500" pb="100">
-      <Banner status="muted" size="small" onDismiss={() => setBannerOpen(false)}>
+      <Banner
+        data-id="deliverability-metrics-banner"
+        status="muted"
+        size="small"
+        onDismiss={() => setBannerOpen(false)}
+      >
         <Inline>
           <Box color="brand.orange">
             <Rocket />

@@ -1,0 +1,17 @@
+{
+  "results": {
+    "bill_cycle_day": 19,
+    "pending_downgrades": [],
+    "products": [
+      {
+        "plan": "free500-0419",
+        "product": "messaging"
+      },
+      {
+        "plan": "deliverability-something",
+        "product": "deliverability"
+      }
+    ],
+    "type": "active"
+  }
+}

@@ -527,6 +527,7 @@ export const list = [
     compute: ({ count_inbox_panel, count_inbox_seed }) => count_inbox_panel + count_inbox_seed,
     computeKeys: ['count_inbox_panel', 'count_inbox_seed'],
     inReportBuilder: true,
+    product: 'deliverability',
   },
   {
     key: 'count_spam',
@@ -537,6 +538,7 @@ export const list = [
     computeKeys: ['count_spam_panel', 'count_spam_seed'],
     category: deliverability,
     inReportBuilder: true,
+    product: 'deliverability',
   },
   {
     key: 'inbox_folder_rate',
@@ -552,6 +554,7 @@ export const list = [
     },
     computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
     inReportBuilder: true,
+    product: 'deliverability',
   },
   {
     key: 'spam_folder_rate',
@@ -567,6 +570,51 @@ export const list = [
     },
     computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
     inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'count_moved_to_inbox',
+    label: 'Moved to Inbox Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'count_moved_to_spam',
+    label: 'Moved to Spam Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'moved_to_inbox_rate',
+    label: 'Moved to Inbox Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    compute: ({ count_moved_to_inbox, count_spam_panel, count_spam_seed }) => {
+      return safeRate(count_moved_to_inbox, count_spam_panel + count_spam_seed);
+    },
+    computeKeys: ['count_moved_to_inbox', 'count_spam_panel', 'count_spam_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'moved_to_spam_rate',
+    label: 'Moved to Spam Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    compute: ({ count_moved_to_spam, count_inbox_panel, count_inbox_seed }) => {
+      return safeRate(count_moved_to_spam, count_inbox_panel + count_inbox_seed);
+    },
+    computeKeys: ['count_moved_to_spam', 'count_inbox_panel', 'count_inbox_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
   },
 ];
 

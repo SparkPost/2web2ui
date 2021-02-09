@@ -50,9 +50,6 @@ export default function MetricsForm(props) {
   const hasD12yProduct = useSelector(state =>
     hasProductOnBillingSubscription('deliverability')(state),
   );
-  const disabledCheckboxes = hasD12yProduct
-    ? []
-    : ['count_spam', 'count_inbox', 'inbox_folder_rate', 'spam_folder_rate'];
 
   useEffect(() => {
     const newSelectedMetrics = getStateFromProps();
@@ -115,7 +112,7 @@ export default function MetricsForm(props) {
                                 key={`${category}-${metric.key}`}
                                 onChange={() => handleCheckbox(metric.key)}
                                 checked={selectedMetrics[metric.key]}
-                                disabled={disabledCheckboxes.includes(metric.key)}
+                                disabled={metric.product === 'deliverability' && !hasD12yProduct}
                                 label={metric.label}
                               />
                             </Box>
