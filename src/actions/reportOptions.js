@@ -9,7 +9,7 @@ import {
 import { list as listSubaccounts } from './subaccounts';
 import { list as listSendingDomains } from './sendingDomains';
 import { getRelativeDates } from 'src/helpers/date';
-import { getQueryFromOptions, getRollupPrecision } from 'src/helpers/metrics';
+import { getQueryFromOptions, getRollupPrecision as getPrecision } from 'src/helpers/metrics';
 import { isSameDate, getLocalTimezone } from 'src/helpers/date';
 import { dedupeFilters } from 'src/helpers/reports';
 import _ from 'lodash';
@@ -127,7 +127,6 @@ export function refreshReportOptions(payload) {
   return (dispatch, getState) => {
     const { reportOptions } = getState();
     let update = { ...reportOptions, ...payload };
-    const getPrecision = getRollupPrecision;
     const isHibanaEnabled = isUserUiOptionSet('isHibanaEnabled')(getState());
 
     if (!update.timezone) {
@@ -148,22 +147,19 @@ export function refreshReportOptions(payload) {
       update.relativeRange = isHibanaEnabled ? '7days' : 'day'; //Default relative range
     }
 
-    //old version of update
-
-    const rollupPrecision = update.precision;
     if (update.relativeRange !== 'custom') {
       const { from, to } = getRelativeDates(update.relativeRange, {
-        precision: rollupPrecision,
+        precision: update.precision,
       });
-      //for metrics rollup, when using the relative dates, get the precision, else use the given precision
-      //If precision is not in the URL, get the recommended precision.
-      const precision = getPrecision({ from, to, precision: rollupPrecision });
+      // For metrics rollup, when using the relative dates, get the precision, else use the given precision
+      // If precision is not in the URL, get the recommended precision.
+      const precision = getPrecision({ from, to, precision: update.precision });
       update = { ...update, from, to, precision };
     } else {
       const precision = getPrecision({
         from: update.from,
         to: moment(update.to),
-        precision: rollupPrecision,
+        precision: update.precision,
       });
       update = { ...update, precision };
     }

@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useMemo, useReducer, createContext } fr
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { getRelativeDates } from 'src/helpers/date';
-import { getMetricsFromKeys, getRollupPrecision } from 'src/helpers/metrics';
+import { getMetricsFromKeys, getRollupPrecision as getPrecision } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
@@ -37,7 +37,6 @@ const reducer = (state, action) => {
       const { payload, meta } = action;
       const { subaccounts } = meta;
       let update = { ...state, ...payload };
-      const getPrecision = getRollupPrecision;
 
       if (!update.timezone) {
         update.timezone = getLocalTimezone();
@@ -55,22 +54,21 @@ const reducer = (state, action) => {
         update.relativeRange = '7days';
       }
 
-      //old version of update
+      const updatePrecision = update.precision || 'hour'; // Default to hour since it's the recommended rollup precision for 7 days
 
-      const rollupPrecision = update.precision || 'hour'; //Default to hour since it's the recommended rollup precision for 7 days
       if (update.relativeRange !== 'custom') {
         const { from, to } = getRelativeDates(update.relativeRange, {
-          precision: rollupPrecision,
+          precision: updatePrecision,
         });
         //for metrics rollup, when using the relative dates, get the precision, else use the given precision
         //If precision is not in the URL, get the recommended precision.
-        const precision = getPrecision({ from, to, precision: rollupPrecision });
+        const precision = getPrecision({ from, to, precision: updatePrecision });
         update = { ...update, from, to, precision };
       } else {
         const precision = getPrecision({
           from: update.from,
           to: moment(update.to),
-          precision: rollupPrecision,
+          precision: updatePrecision,
         });
 
         update = { ...update, precision };
