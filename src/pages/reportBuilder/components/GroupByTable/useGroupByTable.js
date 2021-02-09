@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { getDeliverability } from 'src/helpers/api/metrics';
-import { useSparkPostQueries } from 'src/hooks';
+import { useSelector } from 'react-redux';
+import { hasProductOnBillingSubscription } from 'src/helpers/conditions/account';
+import { useSparkPostQueries, useSparkPostQuery } from 'src/hooks';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
@@ -32,7 +34,78 @@ const separateCompareOptions = reportOptions => {
   // Appends each compared filter as a new filter for individual requests
 };
 
-export default function useGroupByTable() {
+export function useGroupByTable() {
+  const [groupBy, setGroupBy] = useState();
+  const {
+    selectors: { selectSummaryMetricsProcessed: displayMetrics },
+    state: reportOptions,
+  } = useReportBuilderContext();
+
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const hasSendingProduct = useSelector(state =>
+    hasProductOnBillingSubscription('messaging')(state),
+  );
+
+  const inboxTrackerMetrics = displayMetrics.filter(({ key }) =>
+    INBOX_TRACKER_METRICS.includes(key),
+  );
+  const sendingMetrics = displayMetrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
+  const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
+  const hasSendingMetrics = Boolean(sendingMetrics.length);
+
+  const { checkboxes, values } = useMultiSelect({
+    checkboxes: [
+      { name: 'sending', label: 'Sending' },
+      { name: 'panel', label: 'Panel' },
+      { name: 'seed', label: 'Seed List' },
+    ],
+    useSelectAll: false,
+    allowEmpty: false,
+  });
+
+  const filteredMetrics = displayMetrics.filter(metric => {
+    if (INBOX_TRACKER_METRICS.includes(metric.key)) {
+      return values.includes('panel') || values.includes('seed');
+    } else {
+      return values.includes('sending');
+    }
+  });
+
+  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
+  const preparedOptions = getQueryFromOptions({
+    ...reportOptions,
+    metrics: reformattedMetrics,
+    dataSource: values,
+  });
+
+  const { data = [], status, refetch } = useSparkPostQuery(
+    () => getDeliverability(preparedOptions, groupBy),
+    {
+      refetchOnWindowFocus: false,
+      enabled: Boolean(reportOptions.isReady && groupBy && reformattedMetrics.length),
+    },
+  );
+
+  const formattedData = transformData(data, reformattedMetrics);
+
+  return {
+    data: formattedData,
+    status,
+    groupBy,
+    setGroupBy,
+    refetch,
+    checkboxes,
+    apiMetrics: reformattedMetrics,
+    hasSendingMetrics,
+    hasSendingProduct,
+    hasInboxTrackingMetrics,
+    hasD12yProduct,
+  };
+}
+
+export function useCompareByGroupByTable() {
   const [groupBy, setGroupBy] = useState();
   const { checkboxes, values } = useMultiSelect({
     checkboxes: [
@@ -50,6 +123,20 @@ export default function useGroupByTable() {
   const formattedMetrics = useMemo(() => {
     return getMetricsFromKeys(metrics, true).map(metric => splitInboxMetric(metric, values));
   }, [metrics, values]);
+
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const hasSendingProduct = useSelector(state =>
+    hasProductOnBillingSubscription('messaging')(state),
+  );
+
+  const inboxTrackerMetrics = formattedMetrics.filter(({ key }) =>
+    INBOX_TRACKER_METRICS.includes(key),
+  );
+  const sendingMetrics = formattedMetrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
+  const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
+  const hasSendingMetrics = Boolean(sendingMetrics.length);
 
   const filteredMetrics = formattedMetrics.filter(metric => {
     if (INBOX_TRACKER_METRICS.includes(metric.key)) {
@@ -121,5 +208,9 @@ export default function useGroupByTable() {
     comparisonType,
     checkboxes,
     apiMetrics: reformattedMetrics,
+    hasSendingMetrics,
+    hasInboxTrackingMetrics,
+    hasSendingProduct,
+    hasD12yProduct,
   };
 }

@@ -14,12 +14,9 @@ import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
 import styles from './ReportTable.module.scss';
-import useGroupByTable from './useGroupByTable';
+import { useCompareByGroupByTable } from './useGroupByTable';
 import GroupByOption from './GroupByOption';
-import {
-  isAccountUiOptionSet,
-  hasProductOnBillingSubscription,
-} from 'src/helpers/conditions/account';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 const tableWrapper = props => {
   return (
@@ -39,19 +36,18 @@ export const CompareByTable = () => {
     refetchAll,
     checkboxes,
     apiMetrics,
-  } = useGroupByTable();
+    hasSendingMetrics,
+    hasInboxTrackingMetrics,
+    hasSendingProduct,
+    hasD12yProduct,
+  } = useCompareByGroupByTable();
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
   } = useReportBuilderContext();
   const hasD12yMetricsEnabled = useSelector(state =>
     isAccountUiOptionSet('allow_deliverability_metrics')(state),
   );
-  const hasD12yProduct = useSelector(state =>
-    hasProductOnBillingSubscription('deliverability')(state),
-  );
-  const hasSendingProduct = useSelector(state =>
-    hasProductOnBillingSubscription('messaging')(state),
-  );
+
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
   const group = GROUP_BY_CONFIG[groupBy];
@@ -186,8 +182,13 @@ export const CompareByTable = () => {
                   checkboxes={checkboxes}
                   id="group-by-dropdown"
                   label="Data Sources"
-                  checkboxComponent={CheckboxWithLink({ hasSendingProduct, hasD12yProduct })}
-                />{' '}
+                  checkboxComponent={CheckboxWithLink({
+                    hasSendingProduct,
+                    hasD12yProduct,
+                    hasSendingMetrics,
+                    hasInboxTrackingMetrics,
+                  })}
+                />
               </Column>
             )}
           </Columns>

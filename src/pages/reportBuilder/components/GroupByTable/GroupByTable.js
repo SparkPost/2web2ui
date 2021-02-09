@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  isAccountUiOptionSet,
-  hasProductOnBillingSubscription,
-} from 'src/helpers/conditions/account';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import cx from 'classnames';
 
 import { CheckboxWithLink } from './components';
@@ -18,14 +15,10 @@ import { Box, Column, Columns, Panel, Table } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
-import MultiSelectDropdown, { useMultiSelect } from 'src/components/MultiSelectDropdown';
-import { useSparkPostQuery } from 'src/hooks';
-import { getDeliverability } from 'src/helpers/api/metrics';
+import MultiSelectDropdown from 'src/components/MultiSelectDropdown';
 import EmptyCell from 'src/components/collection/EmptyCell';
-import { INBOX_TRACKER_METRICS } from 'src/config/metrics';
-
+import { useGroupByTable } from './useGroupByTable';
 import styles from './ReportTable.module.scss';
-import { getQueryFromOptionsV2, transformData, splitInboxMetric } from 'src/helpers/metrics';
 
 const tableWrapper = props => {
   return (
@@ -36,64 +29,28 @@ const tableWrapper = props => {
 };
 
 export const GroupByTable = () => {
-  const [groupBy, setGroupBy] = useState();
+  const {
+    data,
+    status,
+    setGroupBy,
+    groupBy,
+    refetch,
+    checkboxes,
+    apiMetrics,
+    hasSendingMetrics,
+    hasInboxTrackingMetrics,
+    hasSendingProduct,
+    hasD12yProduct,
+  } = useGroupByTable();
   const {
     selectors: { selectSummaryMetricsProcessed: displayMetrics },
-    state: reportOptions,
   } = useReportBuilderContext();
+
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
   const hasD12yMetricsEnabled = useSelector(state =>
     isAccountUiOptionSet('allow_deliverability_metrics')(state),
   );
-  const hasD12yProduct = useSelector(state =>
-    hasProductOnBillingSubscription('deliverability')(state),
-  );
-  const hasSendingProduct = useSelector(state =>
-    hasProductOnBillingSubscription('messaging')(state),
-  );
-
-  const inboxTrackerMetrics = displayMetrics.filter(({ key }) =>
-    INBOX_TRACKER_METRICS.includes(key),
-  );
-  const sendingMetrics = displayMetrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
-  const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
-  const hasSendingMetrics = Boolean(sendingMetrics.length);
-
-  const { checkboxes, values } = useMultiSelect({
-    checkboxes: [
-      { name: 'sending', label: 'Sending' },
-      { name: 'panel', label: 'Panel' },
-      { name: 'seed', label: 'Seed List' },
-    ],
-    useSelectAll: false,
-    allowEmpty: false,
-  });
-
-  const filteredMetrics = displayMetrics.filter(metric => {
-    if (INBOX_TRACKER_METRICS.includes(metric.key)) {
-      return values.includes('panel') || values.includes('seed');
-    } else {
-      return values.includes('sending');
-    }
-  });
-
-  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
-  const preparedOptions = getQueryFromOptionsV2({
-    ...reportOptions,
-    metrics: reformattedMetrics,
-    dataSource: values,
-  });
-
-  const { data = [], status, refetch } = useSparkPostQuery(
-    () => getDeliverability(preparedOptions, groupBy),
-    {
-      refetchOnWindowFocus: false,
-      enabled: reportOptions.isReady && groupBy && reformattedMetrics.length,
-    },
-  );
-
-  const formattedData = transformData(data, reformattedMetrics);
 
   const group = GROUP_BY_CONFIG[groupBy];
 
@@ -176,7 +133,7 @@ export const GroupByTable = () => {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!Boolean(formattedData.length) || !Boolean(reformattedMetrics.length)) {
+    if (!Boolean(data.length) || !Boolean(apiMetrics.length)) {
       return (
         <Panel.LEGACY>
           <Empty message="There is no data to display" />
@@ -191,7 +148,7 @@ export const GroupByTable = () => {
         getRowData={getRowData}
         pagination
         defaultPerPage={10}
-        rows={formattedData}
+        rows={data}
         defaultSortColumn={displayMetrics[0].key}
         defaultSortDirection="desc"
         wrapperComponent={tableWrapper}
