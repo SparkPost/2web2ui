@@ -189,7 +189,7 @@ export default function CreateForm() {
           <Layout.Section annotated>
             <Layout.SectionTitle>Domain and Assignment</Layout.SectionTitle>
             <Banner status="warning" size="small">
-              <p>We recommend using a subdomain e.g. sub.domain.com</p>
+              <p>Using a subdomain is recommended e.g. sub.domain.com</p>
             </Banner>
             <Box mt="400">
               <SubduedText fontSize="200">
