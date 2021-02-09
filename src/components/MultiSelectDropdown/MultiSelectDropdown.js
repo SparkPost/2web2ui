@@ -42,6 +42,8 @@ const reducer = (state, action) => {
 
 /**
  * @name useMultiSelect
+ * @param {Boolean} useSelectAll Attaches a checkbox at the top for selecting all checkboxes. Will retur
+ * @param {Boolean} allowEmpty Turning off allowEmpty forces if all checkboxes are emtpy, all values are returned instead of an empty array
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
 export function useMultiSelect({ checkboxes, useSelectAll = true, allowEmpty = true }) {
