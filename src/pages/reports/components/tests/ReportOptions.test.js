@@ -43,9 +43,6 @@ describe('Component: Report Options', () => {
       initTypeaheadCache: jest.fn(),
       refreshReportOptions: jest.fn(),
       refreshTypeaheadCache: jest.fn(),
-      featureFlaggedMetrics: {
-        useMetricsRollup: false,
-      },
       styles,
     };
     wrapper = shallow(<ReportOptions {...testProps} />);
@@ -103,7 +100,7 @@ describe('Component: Report Options', () => {
     expect(wrapper.find('PrecisionSelector')).toExist();
   });
 
-  it('should mount and render metrics rollup option correctly with only the display selector', () => {
+  it('should mount and render metrics correctly with only the display selector', () => {
     wrapper.setState({ shownPrecision: 'hour' });
     wrapper.update();
     expect(wrapper.find('PrecisionSelector')).not.toExist();
@@ -112,7 +109,6 @@ describe('Component: Report Options', () => {
   });
 
   it('should set the disabledAndUTCOnly prop when shownPrecision is day, month, or week', () => {
-    wrapper.setProps({ featureFlaggedMetrics: { useMetricsRollup: true } });
     wrapper.setState({ shownPrecision: 'day' });
     wrapper.update();
 
