@@ -13,7 +13,7 @@ import GlobalBanner from 'src/context/GlobalBanner';
 import config from 'src/config';
 
 import { BrowserRouter } from 'react-router-dom';
-
+const isbot = require('isbot');
 const App = ({ RouterComponent = BrowserRouter }) => (
   <>
     <RouterComponent>
@@ -22,7 +22,7 @@ const App = ({ RouterComponent = BrowserRouter }) => (
         <BoomerangBanner />
         {config.gtmId && <GoogleTagManager id={config.gtmId} />}
         <VisualWebsiteOptimizer />
-        <Segment />
+        {!isbot(window.navigator.userAgent) && <Segment />}
         <AuthenticationGate />
         <SuspensionAlerts />
         <CookieConsent />
