@@ -15,7 +15,6 @@
       "access_level": "admin",
       "options": {
         "ui": {
-          "use-metrics-rollup": true,
           "allow_saved_reports": true
         }
       },

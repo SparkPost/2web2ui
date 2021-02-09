@@ -1,16 +1,9 @@
-import { USERNAME } from 'cypress/constants';
 import { PAGE_URL } from './constants';
 import { commonBeforeSteps } from './helpers';
 
 describe('Analytics Report Saved Reports', () => {
   beforeEach(() => {
     commonBeforeSteps();
-
-    cy.stubRequest({
-      url: `/api/v1/users/${USERNAME}`,
-      fixture: 'users/200.get.metrics-rollup.json',
-      requestAlias: 'userReq',
-    });
 
     cy.stubRequest({
       url: '/api/v1/reports',
@@ -27,13 +20,7 @@ describe('Analytics Report Saved Reports', () => {
 
   it('loads a preset report in addition to relevant query params', () => {
     cy.visit(`${PAGE_URL}&report=engagement`);
-    cy.wait([
-      '@userReq',
-      '@reportsReq',
-      '@billingSubscriptionReq',
-      '@getTimeSeries',
-      '@getDeliverability',
-    ]);
+    cy.wait(['@reportsReq', '@billingSubscriptionReq', '@getTimeSeries', '@getDeliverability']);
     cy.findByLabelText('Report').should('have.value', 'Engagement Report');
     cy.findAllByText('Sent').should('be.visible');
     cy.findAllByText('Accepted').should('be.visible');
@@ -41,7 +28,7 @@ describe('Analytics Report Saved Reports', () => {
     cy.findAllByText('Opens').should('be.visible');
 
     cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
-    cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
+    cy.wait(['@reportsReq', '@billingSubscriptionReq']);
     cy.findAllByText('Sent').should('be.visible');
     cy.findAllByText('Accepted').should('be.visible');
     cy.findAllByText('Clicks').should('be.visible');
@@ -52,7 +39,7 @@ describe('Analytics Report Saved Reports', () => {
     cy.visit(
       `${PAGE_URL}&report=engagement&metrics%5B0%5D=count_policy_rejection&filters=Campaign:Christmas`,
     );
-    cy.wait(['@userReq', '@reportsReq', '@billingSubscriptionReq']);
+    cy.wait(['@reportsReq', '@billingSubscriptionReq']);
     // Additional params
     cy.findAllByText('Christmas').should('be.visible');
     cy.findAllByText('Policy Rejections').should('be.visible');
@@ -174,13 +161,7 @@ describe('Analytics Report Saved Reports', () => {
 
   it('removes report id if saving a new report using an existing report', () => {
     cy.visit(`${PAGE_URL}&report=d50d8475-d4e8-4df0-950f-b142f77df0bf`);
-    cy.wait([
-      '@userReq',
-      '@reportsReq',
-      '@billingSubscriptionReq',
-      '@getTimeSeries',
-      '@getDeliverability',
-    ]);
+    cy.wait(['@reportsReq', '@billingSubscriptionReq', '@getTimeSeries', '@getDeliverability']);
 
     cy.findByRole('button', { name: 'Save New Report' }).click();
 

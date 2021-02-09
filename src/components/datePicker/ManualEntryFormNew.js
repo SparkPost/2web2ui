@@ -5,7 +5,6 @@ import { Grid, TextField } from 'src/components/matchbox';
 import { formatInputDate, formatInputTime, parseDatetime } from 'src/helpers/date';
 import {
   getValidDateRange,
-  getPrecision as getRawPrecision,
   getRollupPrecision,
   getMomentPrecisionByDate,
 } from 'src/helpers/metrics';
@@ -48,7 +47,7 @@ export function ManualEntryForm(props) {
     }
   }, initialState);
 
-  const getPrecision = props.useMetricsRollup ? getRollupPrecision : getRawPrecision;
+  const getPrecision = getRollupPrecision;
 
   const syncPropsToState = useCallback(({ to, from }) => {
     dispatch({

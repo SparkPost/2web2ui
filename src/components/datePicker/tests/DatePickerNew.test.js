@@ -67,20 +67,8 @@ describe('Component: DatePicker', () => {
     );
   });
 
-  it('should change date range correctly using rollup-precision', () => {
-    subject({ useMetricsRollup: true });
-    screen.getByLabelText('Date Picker').click();
-    screen.getByText('Last 7 Days').click();
-    screen.getByRole('button', { name: 'Apply' }).click();
-    expect(screen.queryByText('Last 7 Days')).not.toBeVisible();
-    expect(screen.getByLabelText('Date Picker')).toHaveAttribute(
-      'value',
-      'Feb 8th 2019 7:00am – Feb 15th 2019 7:00am',
-    );
-  });
-
-  it('should change date range correctly using rollup-precision when given valid precision option', () => {
-    subject({ useMetricsRollup: true, precision: 'day', selectPrecision: true });
+  it('should change date range correctly when given valid precision option', () => {
+    subject({ precision: 'day', selectPrecision: true });
     screen.getByLabelText('Date Picker').click();
     screen.getByText('Last 7 Days').click();
     screen.getByRole('button', { name: 'Apply' }).click();
@@ -91,8 +79,8 @@ describe('Component: DatePicker', () => {
     );
   });
 
-  it('should change date range correctly using recommended rollup-precision if given precision is not an option', () => {
-    subject({ useMetricsRollup: true, precision: '15min', selectPrecision: true });
+  it('should change date range correctly using recommended precision if given precision is not an option', () => {
+    subject({ precision: '15min', selectPrecision: true });
     screen.getByLabelText('Date Picker').click();
     screen.getByText('Last 7 Days').click();
     screen.getByRole('button', { name: 'Apply' }).click();

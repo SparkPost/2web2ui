@@ -1,13 +1,8 @@
 import React, { useCallback, useContext, useMemo, useReducer, createContext } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { getRelativeDates } from 'src/helpers/date';
-import {
-  getMetricsFromKeys,
-  getPrecision as getRawPrecision,
-  getRollupPrecision,
-} from 'src/helpers/metrics';
+import { getMetricsFromKeys, getRollupPrecision as getPrecision } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
@@ -40,11 +35,10 @@ const reducer = (state, action) => {
     }
     case 'UPDATE_REPORT_OPTIONS': {
       const { payload, meta } = action;
-      const { useMetricsRollup, subaccounts } = meta;
+      const { subaccounts } = meta;
       let update = { ...state, ...payload };
-      const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
 
-      if (!update.timezone || !useMetricsRollup) {
+      if (!update.timezone) {
         update.timezone = getLocalTimezone();
       }
 
@@ -60,22 +54,21 @@ const reducer = (state, action) => {
         update.relativeRange = '7days';
       }
 
-      //old version of update
+      const updatePrecision = update.precision || 'hour'; // Default to hour since it's the recommended rollup precision for 7 days
 
-      const rollupPrecision = useMetricsRollup && (update.precision || 'hour'); //Default to hour since it's the recommended rollup precision for 7 days
       if (update.relativeRange !== 'custom') {
         const { from, to } = getRelativeDates(update.relativeRange, {
-          precision: rollupPrecision,
+          precision: updatePrecision,
         });
         //for metrics rollup, when using the relative dates, get the precision, else use the given precision
         //If precision is not in the URL, get the recommended precision.
-        const precision = getPrecision({ from, to, precision: rollupPrecision });
+        const precision = getPrecision({ from, to, precision: updatePrecision });
         update = { ...update, from, to, precision };
       } else {
         const precision = getPrecision({
           from: update.from,
           to: moment(update.to),
-          precision: rollupPrecision,
+          precision: updatePrecision,
         });
 
         update = { ...update, precision };
@@ -178,7 +171,7 @@ const getSelectors = reportOptions => {
 };
 
 const ReportOptionsContextProvider = props => {
-  const { useMetricsRollup, subaccounts } = props;
+  const { subaccounts } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const refreshReportOptions = useCallback(
@@ -186,10 +179,10 @@ const ReportOptionsContextProvider = props => {
       return dispatch({
         type: 'UPDATE_REPORT_OPTIONS',
         payload,
-        meta: { useMetricsRollup, subaccounts },
+        meta: { subaccounts },
       });
     },
-    [dispatch, useMetricsRollup, subaccounts],
+    [dispatch, subaccounts],
   );
 
   const addFilters = useCallback(
@@ -259,7 +252,6 @@ const ReportOptionsContextProvider = props => {
 
 const mapStateToProps = state => ({
   subaccounts: state.subaccounts.list,
-  useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
 });
 
 export const ReportBuilderContextProvider = connect(mapStateToProps)(ReportOptionsContextProvider);

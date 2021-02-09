@@ -1,15 +1,11 @@
+import moment from 'moment';
 import * as reportOptions from '../reportOptions';
 import * as metrics from 'src/actions/metrics';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { getRelativeDates, isSameDate } from 'src/helpers/date';
 import { getPrecision, getRollupPrecision } from 'src/helpers/metrics';
-import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
-import moment from 'moment';
 
-jest.mock('src/selectors/metrics', () => ({
-  selectFeatureFlaggedMetrics: jest.fn(() => () => ({ useMetricsRollup: false })),
-}));
 jest.mock('src/helpers/date');
 jest.mock('src/helpers/metrics');
 jest.mock('src/actions/metrics');
@@ -186,8 +182,7 @@ describe('Action Creator: Report Options', () => {
       expect(dispatchMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should use rollup precision getter when metrics rollup is enabled', () => {
-      selectFeatureFlaggedMetrics.mockImplementationOnce(() => ({ useMetricsRollup: true }));
+    it('should use the rollup precision getter', () => {
       reportOptions.refreshReportOptions({
         from: updatedFrom,
         relativeRange: 'custom',
@@ -195,17 +190,6 @@ describe('Action Creator: Report Options', () => {
       })(dispatchMock, getStateMock);
       expect(getPrecision).not.toHaveBeenCalled();
       expect(getRollupPrecision).toHaveBeenCalled();
-      expect(dispatchMock).toHaveBeenCalledTimes(1);
-    });
-
-    it('should use regular precision getter when metrics rollup is not enabled.', () => {
-      selectFeatureFlaggedMetrics.mockImplementationOnce(() => ({ useMetricsRollup: false }));
-      reportOptions.refreshReportOptions({
-        relativeRange: 'custom',
-        precision: 'week',
-      })(dispatchMock, getStateMock);
-      expect(getPrecision).toHaveBeenCalled();
-      expect(getRollupPrecision).not.toHaveBeenCalled();
       expect(dispatchMock).toHaveBeenCalledTimes(1);
     });
   });

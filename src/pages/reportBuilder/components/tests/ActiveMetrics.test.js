@@ -48,36 +48,16 @@ describe('Component: Report Builder ActiveMetrics', () => {
         { name: 'count_c', label: 'C', stroke: '#ccc', isUniquePerTimePeriod: true },
       ],
     };
-    const defaultStore = {
-      currentUser: {
-        options: {
-          ui: {
-            'use-metrics-rollup': false,
-          },
-        },
-      },
-    };
 
     return render(
-      <TestApp isHibanaEnabled={true} store={{ ...defaultStore, ...store }}>
+      <TestApp store={store}>
         <ActiveMetrics {...defaultProps} {...props} />
       </TestApp>,
     );
   };
 
   it('should render using "per minute" labels for unique metrics for 1min precision', () => {
-    subject(
-      {},
-      {
-        currentUser: {
-          options: {
-            ui: {
-              'use-metrics-rollup': true,
-            },
-          },
-        },
-      },
-    );
+    subject({});
     expect(screen.queryByText('B per minute')).not.toBeInTheDocument();
     expect(screen.getByText('C per minute')).toBeInTheDocument();
   });
@@ -90,18 +70,7 @@ describe('Component: Report Builder ActiveMetrics', () => {
         },
       };
     });
-    subject(
-      {},
-      {
-        currentUser: {
-          options: {
-            ui: {
-              'use-metrics-rollup': true,
-            },
-          },
-        },
-      },
-    );
+    subject();
 
     expect(screen.getByText('C per hour')).toBeInTheDocument();
   });
@@ -114,18 +83,7 @@ describe('Component: Report Builder ActiveMetrics', () => {
         },
       };
     });
-    subject(
-      {},
-      {
-        currentUser: {
-          options: {
-            ui: {
-              'use-metrics-rollup': true,
-            },
-          },
-        },
-      },
-    );
+    subject();
 
     expect(screen.getByText('C per day')).toBeInTheDocument();
   });

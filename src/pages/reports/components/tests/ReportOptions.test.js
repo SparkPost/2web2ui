@@ -43,9 +43,6 @@ describe('Component: Report Options', () => {
       initTypeaheadCache: jest.fn(),
       refreshReportOptions: jest.fn(),
       refreshTypeaheadCache: jest.fn(),
-      featureFlaggedMetrics: {
-        useMetricsRollup: false,
-      },
       styles,
     };
     wrapper = shallow(<ReportOptions {...testProps} />);
@@ -98,20 +95,12 @@ describe('Component: Report Options', () => {
     expect(wrapper.find('withRouter(Connect(CustomReports))')).toExist();
   });
 
-  it('should mount and render Timezone and Precision Selectors metrics rollup option with metrics rollup option on', () => {
-    wrapper.setProps({ featureFlaggedMetrics: { useMetricsRollup: true } });
+  it('should mount and render Timezone and Precision Selectors', () => {
     expect(wrapper.find('TimezoneTypeahead')).toExist();
     expect(wrapper.find('PrecisionSelector')).toExist();
   });
 
-  it('should mount and render Timezone and Precision Selectors metrics rollup option with metrics rollup option off', () => {
-    wrapper.setProps({ featureFlaggedMetrics: { useMetricsRollup: false } });
-    expect(wrapper.find('TimezoneTypeahead')).not.toExist();
-    expect(wrapper.find('PrecisionSelector')).not.toExist();
-  });
-
-  it('should mount and render metrics rollup option correctly with only the display selector', () => {
-    wrapper.setProps({ featureFlaggedMetrics: { useMetricsRollup: true } });
+  it('should mount and render metrics correctly with only the display selector', () => {
     wrapper.setState({ shownPrecision: 'hour' });
     wrapper.update();
     expect(wrapper.find('PrecisionSelector')).not.toExist();
@@ -120,7 +109,6 @@ describe('Component: Report Options', () => {
   });
 
   it('should set the disabledAndUTCOnly prop when shownPrecision is day, month, or week', () => {
-    wrapper.setProps({ featureFlaggedMetrics: { useMetricsRollup: true } });
     wrapper.setState({ shownPrecision: 'day' });
     wrapper.update();
 
