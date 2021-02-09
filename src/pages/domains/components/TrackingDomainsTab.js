@@ -165,7 +165,7 @@ export default function TrackingDomainsTab() {
   // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    if (!rows || (rows && rows.length === 0) || listPending) {
+    if (!rows || rows.length === 0 || listPending) {
       return;
     }
 

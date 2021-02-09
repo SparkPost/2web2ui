@@ -270,7 +270,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   // synce query params -> page state on page load, and handle tab switching (sending and bounce)
   useEffect(() => {
-    if (!rows || (rows && rows.length === 0) || listPending) {
+    if (!rows || rows.length === 0 || listPending) {
       return;
     }
 
