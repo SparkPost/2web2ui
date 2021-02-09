@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Banner, Inline, Box } from 'src/components/matchbox';
+import { Banner, Inline, Box, Text } from 'src/components/matchbox';
 import { ExternalLink } from 'src/components/links';
 import { Rocket } from '@sparkpost/matchbox-icons';
 
@@ -19,9 +19,9 @@ export const DeliverabilityBanner = () => {
         onDismiss={() => setBannerOpen(false)}
       >
         <Inline>
-          <Box color="brand.orange">
+          <Text color="brand.orange">
             <Rocket />
-          </Box>
+          </Text>
           <Box>
             <span>Gain access to </span>
             <ExternalLink
