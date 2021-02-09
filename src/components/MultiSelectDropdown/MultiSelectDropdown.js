@@ -91,8 +91,8 @@ function MultiSelectDropdown({
   const CheckboxComponent = checkboxComponent ? checkboxComponent : Checkbox;
 
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
-  const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
-  const allCheckboxesChecked = checkedCheckboxes?.length === checkboxes.length;
+  const hasCheckedCheckboxes = Boolean(checkedCheckboxes?.length > 0);
+  const allCheckboxesChecked = Boolean(checkedCheckboxes?.length === checkboxes.length);
 
   const checkboxLabels = checkedCheckboxes
     .filter(({ name }) => name !== 'selectAll')
