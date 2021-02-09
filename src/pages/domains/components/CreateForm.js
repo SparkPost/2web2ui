@@ -193,8 +193,8 @@ export default function CreateForm() {
             </Banner>
             <Box mt="400">
               <SubduedText fontSize="200">
-                It may not be possible to completely configure your DNS records if you use your
-                organizational domain.
+                It may not be possible to completely configure DNS records using the organizational
+                domain.
               </SubduedText>
             </Box>
           </Layout.Section>
