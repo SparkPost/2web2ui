@@ -1,7 +1,8 @@
+/* eslint-disable */
 import { Machine, assign } from 'xstate';
 import { getLocalTimezone } from 'src/helpers/date';
 import config from 'src/config';
-import { addMetricsMachine } from './addMetricsMachine';
+import { metricsFormMachine, METRICS_FORM_MACHINE_ID } from './metricsFormMachine';
 
 const DEFAULT_REPORT_STATE = {
   METRICS: config.reportBuilder.defaultMetrics, // TODO: Why is this stored globally? Could it just be stored here as an of values?
@@ -10,61 +11,10 @@ const DEFAULT_REPORT_STATE = {
   PRECISION: 'hour',
 };
 
-/* eslint-disable */
-const savingNewReportMachine = Machine({
-  id: 'savingNewReport',
-  initial: 'editing',
-  states: {
-    editing: {
-      on: {
-        NAME_CHANGE: {
-          actions: setNewReportName,
-        },
-        DESCRIPTION_CHANGE: {},
-        ALLOW_OTHERS_TO_EDIT_CHANGE: {},
-        FORM_SUBMIT: {
-          target: 'saving',
-        },
-      },
-    },
-    saving: {
-      // TODO Need to incorporate API request here
-      after: {
-        1000: 'saved',
-      },
-    },
-    saved: {
-      type: 'final',
-    },
-    cancelled: {
-      type: 'final',
-    },
-  },
-});
-
-const addingMetricsMachine = Machine({
-  id: 'addingMetrics',
-  initial: 'editing',
-  states: {
-    editing: {
-      on: {
-        METRIC_CHANGE: {},
-        APPLY_METRICS_CLICK: {
-          target: 'applied',
-        },
-        CLEAR_METRICS_CLICK: {},
-      },
-    },
-    applied: {
-      // TODO: Send data to parent
-      type: 'final',
-    },
-  },
-});
-/* eslint-enable */
+const ANALYTICS_REPORT_MACHINE_ID = 'analyticsReport';
 
 export const analyticsReportMachine = Machine({
-  id: 'analyticsReport',
+  id: ANALYTICS_REPORT_MACHINE_ID,
   initial: 'parsingURL',
   context: {
     report: undefined, // The currently selected saved report
@@ -82,19 +32,19 @@ export const analyticsReportMachine = Machine({
     updatingURL: {
       // TODO: Add URL updating logic here
       after: {
-        1000: 'parsingURL',
+        250: 'parsingURL',
       },
     },
     parsingURL: {
       // TODO: Add URL parsing logic here
       after: {
-        1000: 'fetching',
+        250: 'fetching',
       },
     },
     fetching: {
       // TODO: Add fetching logic here
       after: {
-        1000: 'editing',
+        250: 'editing',
       },
     },
     editing: {
@@ -125,22 +75,12 @@ export const analyticsReportMachine = Machine({
     },
     editingSavedReportDetails: {},
     savingNewReport: {},
-    // savingNewReport: {
-    //   invoke: {
-    //     src: savingNewReportMachine,
-    //     onDone: 'updatingURL',
-    //   },
-    //   on: {
-    //     CLOSE_MODAL: {
-    //       target: 'editing',
-    //     },
-    //   },
-    // },
     addingMetrics: {
       invoke: {
-        id: 'addMetricsMachine',
-        src: addMetricsMachine,
+        id: METRICS_FORM_MACHINE_ID,
+        src: metricsFormMachine,
         onDone: 'updatingURL',
+        onError: {}, // TODO: handle this error
       },
       on: {
         CLOSE_DRAWER: {
@@ -151,7 +91,6 @@ export const analyticsReportMachine = Machine({
   },
 });
 
-/* eslint-disable */
 // ⚔️ Actions ⚔️ - https://xstate.js.org/docs/guides/actions.html
 
 function setDefaultMetrics() {
@@ -223,5 +162,3 @@ function hasRange(context) {
 function hasTimezone(context) {
   return Boolean(context.timezone);
 }
-
-/* eslint-enable */

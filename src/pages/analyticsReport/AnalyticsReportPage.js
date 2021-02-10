@@ -1,28 +1,25 @@
-/* eslint-disable */
 import React from 'react';
-import { useMachine, useService, useActor } from '@xstate/react';
-import { analyticsReportMachine } from './machines';
+import { useMachine, useService } from '@xstate/react';
 import {
   Box,
   Button,
   Drawer,
   Expandable,
   Inline,
-  Modal,
   Page,
   Panel,
   ScreenReaderOnly,
   Select,
   Stack,
-  TextField,
-  Tag,
 } from 'src/components/matchbox';
 import { Heading } from 'src/components/text';
 import Divider from 'src/components/divider';
+import { analyticsReportMachine, METRICS_FORM_MACHINE_ID } from './machines';
 
+/* eslint-disable no-console */
 export function AnalyticsReportPage() {
   const [state, send, service] = useMachine(analyticsReportMachine);
-  const addMetricsMachine = service.children.get('addMetricsMachine');
+  const addMetricsMachine = service.children.get(METRICS_FORM_MACHINE_ID);
   console.log('addMetricsMachine', addMetricsMachine);
 
   // Live state machine debugging: https://xstate.js.org/docs/packages/xstate-react/#services
@@ -34,9 +31,6 @@ export function AnalyticsReportPage() {
 
     return subscription.unsubscribe;
   }, [service]); // note: service should never change
-
-  // eslint-disable-next-line
-  console.log('state.value', state.value);
 
   return (
     <>
@@ -121,51 +115,46 @@ export function AnalyticsReportPage() {
         </Stack>
       </Page>
 
-      {/* <SaveNewReportModal /> */}
-
-      {state.matches('addingMetrics') ? <AddMetricsForm stateMachine={addMetricsMachine} /> : null}
-
       <Drawer
-        position="right"
         open={state.matches('addingMetrics')}
         onClose={() => send('CLOSE_DRAWER')}
+        position="right"
         portalId="drawer-portal"
       >
         <Drawer.Header showCloseButton />
 
         <Drawer.Content p="0">
-          <form id="addingMetricsForm" onSubmit={() => {}}>
-            <p>Adding metrics!</p>
-          </form>
+          {state.matches('addingMetrics') ? <MetricsForm stateMachine={addMetricsMachine} /> : null}
         </Drawer.Content>
-
-        <Drawer.Footer>
-          <Box display="flex">
-            <Box mr="200" flex="1">
-              <Button width="100%" variant="primary" type="submit" form="addingMetricsForm">
-                Apply Metrics
-              </Button>
-            </Box>
-
-            <Box flex="1">
-              <Button width="100%" variant="secondary">
-                Clear Metrics
-              </Button>
-            </Box>
-          </Box>
-        </Drawer.Footer>
       </Drawer>
     </>
   );
 }
 
-function AddMetricsForm({ stateMachine }) {
-  /* eslint-disable */
-  const [state, send] = useService(stateMachine);
-  console.log('state', state);
-  /* eslint-enable */
+function MetricsForm({ stateMachine }) {
+  const [_state, send] = useService(stateMachine);
 
-  return <></>;
+  return (
+    <form id="addingMetricsForm" onSubmit={() => send('SUBMIT_FORM')}>
+      <p>// TODO: Metrics checkboxes go here</p>
+
+      <Drawer.Footer>
+        <Box display="flex">
+          <Box mr="200" flex="1">
+            <Button width="100%" variant="primary" type="submit">
+              Apply Metrics
+            </Button>
+          </Box>
+
+          <Box flex="1">
+            <Button width="100%" variant="secondary">
+              Clear Metrics
+            </Button>
+          </Box>
+        </Box>
+      </Drawer.Footer>
+    </form>
+  );
 }
 
 // function SaveNewReportModal({ saveNewReportRef }) {

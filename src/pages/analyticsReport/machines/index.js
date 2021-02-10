@@ -1,2 +1,2 @@
-export { analyticsReportMachine } from './analyticsReportMachine';
-export { addMetricsMachine } from './addMetricsMachine';
+export * from './analyticsReportMachine';
+export * from './metricsFormMachine';
