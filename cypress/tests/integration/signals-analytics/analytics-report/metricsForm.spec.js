@@ -2,7 +2,22 @@ import { PAGE_URL, INBOX_METRICS } from './constants';
 import { commonBeforeSteps } from './helpers';
 
 describe('Metrics form', () => {
-  describe('regular', () => {});
+  describe('without d12y product', () => {
+    beforeEach(() => {
+      commonBeforeSteps();
+    });
+
+    it('should not render components related to deliverability without the feature flag', () => {
+      cy.visit(PAGE_URL);
+      cy.wait('@getSubscription');
+      cy.findByLabelText('Break Down By')
+        .scrollIntoView()
+        .select('Recipient Domain', { force: true });
+      cy.findByRole('button', { name: 'Data Sources' }).should('not.exist');
+      openMetricsDrawer();
+      cy.findByText('Deliverability Metrics').should('not.exist');
+    });
+  });
 
   describe('with d12y product', () => {
     beforeEach(() => {
