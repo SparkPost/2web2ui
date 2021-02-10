@@ -530,7 +530,7 @@ describe('the dashboard page', () => {
     stubAlertsReq();
 
     // Note: would normally give them the first onboarding step, but the account has allow_events_ingest
-    stubAccountsReq({ fixture: 'account/200.get.on-prem.json' });
+    stubAccountsReq({ fixture: 'account/200.get.has-on-prem.json' });
 
     stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
     stubSendingDomains({ fixture: '/200.get.no-results.json' });
