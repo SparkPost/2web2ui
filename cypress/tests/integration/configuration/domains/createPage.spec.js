@@ -29,6 +29,15 @@ describe('The domains create page', () => {
       .should('be.checked');
     cy.findByLabelText('Assign to Primary Account').should('be.visible');
     cy.findByLabelText('Assign to Subaccount').should('be.visible');
+
+    cy.get('p')
+      .contains('Using a subdomain is recommended e.g. sub.domain.com')
+      .should('be.visible');
+    cy.get('p')
+      .contains(
+        'It may not be possible to completely configure DNS records using the organizational domain.',
+      )
+      .should('be.visible');
   });
 
   it('creates a new sending domain assigned to all subaccounts', () => {
@@ -191,6 +200,7 @@ describe('The domains create page', () => {
     cy.title().should('include', 'Verify Bounce Domain | Domains');
     cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
   });
+
   it('creates a new bounce domain for the Assign to Primary Account', () => {
     commonBeforeSteps();
     stubSendingDomainsPostReq();
@@ -218,6 +228,7 @@ describe('The domains create page', () => {
     cy.title().should('include', 'Verify Bounce Domain | Domains');
     cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
   });
+
   it('creates a new Bounce domain for the assigned subaccount', () => {
     commonBeforeSteps();
     stubSendingDomainsPostReq();
@@ -251,6 +262,7 @@ describe('The domains create page', () => {
     cy.title().should('include', 'Verify Bounce Domain | Domains');
     cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
   });
+
   it('creates a new tracking domain', () => {
     commonBeforeSteps();
     stubTrackingDomainsPostReq();
