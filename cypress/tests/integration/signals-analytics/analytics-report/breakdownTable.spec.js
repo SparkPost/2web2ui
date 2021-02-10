@@ -360,6 +360,7 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders an empty state when no results are returned', () => {
     cy.clock(STABLE_UNIX_DATE);
+    cy.visit(PAGE_URL);
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/ip-pool**/*',
       fixture: '200.get.no-results.json',

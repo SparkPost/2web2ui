@@ -141,7 +141,7 @@ export const CompareByTable = () => {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!Boolean(tableData.length) || Boolean(apiMetrics.length)) {
+    if (!Boolean(tableData.length) || !Boolean(apiMetrics.length)) {
       return (
         <Panel>
           <Empty message="There is no data to display" />
