@@ -27,22 +27,22 @@ const filtersInitialState = {
     {
       label: 'Select All',
       name: 'selectAll',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Verified',
       name: 'verified',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Unverified',
       name: 'unverified',
-      isChecked: true,
+      isChecked: false,
     },
     {
       label: 'Blocked',
       name: 'blocked',
-      isChecked: true,
+      isChecked: false,
     },
   ],
 };
@@ -113,7 +113,6 @@ export default function TrackingDomainsTab() {
         Header: 'DomainStatus',
         accessor: row => ({
           blocked: row.blocked,
-          defaultTrackingDomain: row.defaultTrackingDomain,
           unverified: row.unverified,
           verified: row.verified,
         }),
@@ -124,6 +123,20 @@ export default function TrackingDomainsTab() {
   );
 
   const sortBy = React.useMemo(() => [{ id: 'domainName', desc: false }], []);
+
+  const flattenedFilters = filterStateToParams(filtersState);
+
+  const domainStatusValues = {
+    blocked: flattenedFilters['blocked'],
+    unverified: flattenedFilters['unverified'],
+    verified: flattenedFilters['verified'],
+  };
+
+  const reactTableFilters = getReactTableFilters({
+    domainName: flattenedFilters['domainName'],
+    DomainStatus: domainStatusValues,
+  });
+
   const tableInstance = useTable(
     {
       columns,
@@ -132,7 +145,7 @@ export default function TrackingDomainsTab() {
       initialState: {
         pageIndex: DEFAULT_CURRENT_PAGE - 1, // react-table takes a 0 base pageIndex
         pageSize: DEFAULT_PER_PAGE,
-        filters: [],
+        filters: reactTableFilters,
         sortBy: [
           {
             id: 'domainName',
@@ -152,25 +165,19 @@ export default function TrackingDomainsTab() {
   // synce query params -> page state
   const firstLoad = useRef(true);
   useEffect(() => {
-    if (!rows || (rows && rows.length === 0) || listPending) {
+    if (!rows || rows.length === 0 || listPending) {
       return;
     }
 
     if (firstLoad.current) {
-      const allStatusCheckboxNames = Object.keys(filters).filter(i => i !== 'domainName'); // remove the domainName
-      const activeStatusFilters = getActiveStatusFilters(filters);
-      const statusFiltersToApply = !activeStatusFilters.length
-        ? allStatusCheckboxNames
-        : activeStatusFilters.map(i => i.name);
-
       firstLoad.current = false;
-
+      const activeStatusFilters = getActiveStatusFilters(filters);
       let newFiltersState = {
         ...filtersState,
         checkboxes: filtersState.checkboxes.map(checkbox => {
           return {
             ...checkbox,
-            isChecked: statusFiltersToApply.indexOf(checkbox.name) >= 0,
+            isChecked: activeStatusFilters.findIndex(i => i.name === checkbox.name) >= 0,
           };
         }),
       };
@@ -180,7 +187,9 @@ export default function TrackingDomainsTab() {
         type: 'LOAD',
         filtersState: newFiltersState,
       }); // NOTE: Sets the filters display
+
       batchDispatchUrlAndTable(newFiltersState);
+
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -193,7 +202,6 @@ export default function TrackingDomainsTab() {
 
     const domainStatusValues = {
       blocked: flattenedFilters['blocked'],
-      defaultTrackingDomain: flattenedFilters['defaultTrackingDomain'],
       unverified: flattenedFilters['unverified'],
       verified: flattenedFilters['verified'],
     };
