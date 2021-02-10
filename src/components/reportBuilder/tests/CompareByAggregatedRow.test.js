@@ -5,7 +5,8 @@ import CompareByAggregatedRow from '../CompareByAggregatedRow';
 import { useSparkPostQuery } from 'src/hooks';
 jest.mock('src/hooks/api/useSparkPostQuery');
 
-const defaultProps = {
+const METRICS_GRID_ID = 'metrics-grid';
+const DEFAULT_PROPS = {
   comparison: {
     id: '141',
     type: 'Subaccount',
@@ -27,7 +28,7 @@ const defaultProps = {
       'count_sent',
       'count_unique_confirmed_opened_approx',
       'count_accepted',
-      'count_bounce',
+      'count_unique_clicked_approx',
     ],
     from: '2020-12-09T16:00:00.000Z',
     to: '2020-12-16T16:10:10.839Z',
@@ -42,7 +43,7 @@ const defaultProps = {
 function renderSubject(props) {
   return render(
     <TestApp isHibanaEnabled={true}>
-      <CompareByAggregatedRow {...defaultProps} {...props} />
+      <CompareByAggregatedRow {...DEFAULT_PROPS} {...props} />
     </TestApp>,
   );
 }
@@ -72,7 +73,7 @@ describe('CompareByAggregatedRow', () => {
 
     expect(screen.getByText('Fake Subaccount Name (ID 141)')).toBeInTheDocument();
 
-    const metricsGrid = screen.getByTestId('metrics-grid');
+    const metricsGrid = screen.getByTestId(METRICS_GRID_ID);
 
     expect(within(metricsGrid).getByText('Sent')).toBeInTheDocument();
     expect(within(metricsGrid).getByText('325K')).toBeInTheDocument();
@@ -84,15 +85,34 @@ describe('CompareByAggregatedRow', () => {
     expect(within(metricsGrid).getByText('150K')).toBeInTheDocument();
   });
 
+  it('renders calculated aggregated data for metrics that are not returned directly by the API', () => {
+    mockQuery({
+      status: 'success',
+      data: [
+        {
+          count_sent: 500,
+          count_accepted: 250,
+        },
+      ],
+    });
+
+    renderSubject({ reportOptions: { metrics: ['accepted_rate'] } });
+
+    const metricsGrid = screen.getByTestId(METRICS_GRID_ID);
+
+    expect(within(metricsGrid).getByText('Accepted Rate')).toBeInTheDocument();
+    expect(within(metricsGrid).getByText('50%')).toBeInTheDocument();
+  });
+
   it('does not render aggregated metrics when there are no active metrics available via `reportOptions`', () => {
     mockQuery({
       status: 'success',
       data: [],
     });
-    renderSubject();
+    renderSubject({ reportOptions: { metrics: [] } });
 
     expect(screen.getByText('Fake Subaccount Name (ID 141)')).toBeInTheDocument();
-    expect(screen.queryByTestId('metrics-grid')).not.toBeInTheDocument();
+    expect(screen.queryByTestId(METRICS_GRID_ID)).not.toBeInTheDocument();
   });
 
   it('renders nothing when the deliverability request throws an error', () => {

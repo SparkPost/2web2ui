@@ -153,7 +153,16 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Properly submits the form and renders multiple charts', () => {
+  it('Submits the compare by form and renders multiple charts along with aggregated data below the charts', () => {
+    // Add metrics that align with the fixture response *and* contain a dynamically calculated metric ('Accepted Rate' in this case)
+    cy.findByRole('button', { name: 'Add Metrics' }).click();
+    cy.withinDrawer(() => {
+      cy.findByRole('checkbox', { name: 'Bounces' }).uncheck({ force: true });
+      cy.findByRole('checkbox', { name: 'Unique Clicks' }).check({ force: true });
+      cy.findByRole('checkbox', { name: 'Accepted Rate' }).check({ force: true });
+      cy.findByRole('button', { name: 'Apply Metrics' }).click();
+    });
+    cy.wait(['@getDeliverability', '@getTimeSeries']);
     openCompareByModal();
     fillOutForm();
     cy.withinDrawer(() => {
@@ -161,23 +170,27 @@ describe('Analytics Report - Compare By', () => {
     });
     cy.wait(['@getDeliverability', '@getTimeSeries']);
 
-    cy.get('.recharts-wrapper').should('have.length', 2);
+    cy.get('.recharts-wrapper').should('have.length', 4);
     cy.findByRole('heading', { name: 'Fake Subaccount 1 (ID 101)' }).should('be.visible');
     cy.findByRole('heading', { name: 'Fake Subaccount 3 (ID 103)' }).should('be.visible');
 
     // TODO: When we have access to `cy.intercept()` we can separately stub each request and produce different results
-    cy.findByDataId('compare-by-aggregated-metrics').within(() => {
-      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
-      cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
-      cy.findAllByText('Sent').should('have.length', 2);
-      cy.findAllByText('325K').should('have.length', 2);
-      cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
-      cy.findAllByText('250K').should('have.length', 2);
-      cy.findAllByText('Accepted').should('have.length', 2);
-      cy.findAllByText('200K').should('have.length', 2);
-      cy.findAllByText('Unique Clicks').should('have.length', 2);
-      cy.findAllByText('150K').should('have.length', 2);
-    });
+    cy.findByDataId('compare-by-aggregated-metrics')
+      .scrollIntoView()
+      .within(() => {
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+        cy.findAllByText('Sent').should('have.length', 2);
+        cy.findAllByText('325K').should('have.length', 2);
+        cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
+        cy.findAllByText('250K').should('have.length', 2);
+        cy.findAllByText('Accepted').should('have.length', 2);
+        cy.findAllByText('200K').should('have.length', 2);
+        cy.findAllByText('Unique Clicks').should('have.length', 2);
+        cy.findAllByText('150K').should('have.length', 2);
+        cy.findAllByText('Accepted Rate').should('have.length', 2);
+        cy.findAllByText('61.54%').should('have.length', 2); // `count_accepted` divided by `count_sent`
+      });
   });
 
   it('Shows form error if form contains less than 2 filters', () => {

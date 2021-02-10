@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { getDeliverability } from 'src/helpers/api/metrics';
-import { getMetricsFromKeys, getFilterByComparison } from 'src/helpers/metrics';
+import { getMetricsFromKeys, getFilterByComparison, transformData } from 'src/helpers/metrics';
 import { LegendCircle, Unit } from 'src/components';
 import Divider from 'src/components/divider';
 import { Box, Columns, Column, LabelValue, Stack } from 'src/components/matchbox';
@@ -15,6 +15,8 @@ const MetricsGrid = styled.div`
 `;
 
 export default function CompareByAggregatedRow({ comparison, reportOptions, hasDivider }) {
+  const { metrics } = reportOptions;
+  const aggregatedMetrics = getMetricsFromKeys(metrics, true);
   const requestParams = usePrepareRequestParams({ comparison, reportOptions });
   const { status, data } = useSparkPostQuery(() => getDeliverability(requestParams), {
     refetchOnWindowFocus: false,
@@ -22,15 +24,17 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
 
   if (status === 'loading' || status === 'error') return null;
 
-  const aggregatedMetricsObj = Boolean(data.length) ? data[0] : {};
-  const aggregatedMetricsKeys = Object.keys(aggregatedMetricsObj);
-  const aggregatedMetrics = getMetricsFromKeys(aggregatedMetricsKeys, true).map(metric => {
+  const transformedData = transformData([data[0]], aggregatedMetrics);
+  const renderedData = aggregatedMetrics.map(({ key, label, unit, stroke }) => {
     return {
-      value: aggregatedMetricsObj[metric.key],
-      ...metric,
+      label,
+      value: transformedData[0][key],
+      key,
+      unit,
+      stroke,
     };
   });
-  const hasMetrics = Boolean(aggregatedMetrics.length);
+  const hasData = Boolean(renderedData.length) && Boolean(metrics.length);
 
   return (
     <Stack>
@@ -43,10 +47,10 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
           </LabelValue>
         </Column>
 
-        {hasMetrics ? (
+        {hasData ? (
           <Column>
             <MetricsGrid data-id="metrics-grid">
-              {aggregatedMetrics.map((metric, metricIndex) => {
+              {renderedData.map((metric, metricIndex) => {
                 const { label, key, stroke, unit, value } = metric;
 
                 return (

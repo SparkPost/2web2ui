@@ -10,14 +10,14 @@
   "scripts": {
     "lint": "npx eslint src/",
     "start": "REACT_APP_VERSION=local-$USER-$(git rev-parse HEAD) node scripts/start.js",
-    "serve-app": "npx serve -s build",
+    "serve": "npx serve -s build",
     "build": "node scripts/build.js",
     "analyze": "source-map-explorer build/static/js/main.*",
     "test": "node scripts/test.js --env=jsdom --config=./jest.config.js",
     "test-ci": "CI=true npm test -- --colors --maxWorkers=2",
     "test-integration": "TZ=America/New_York cypress open --config-file cypress.dev.json",
     "test-integration-headless": "TZ=America/New_York cypress run --config-file cypress.dev.json",
-    "test-integration-ci": "npm run serve-app & wait-on http://localhost:5000 && TZ=America/New_York cypress run --config-file cypress.ci.json"
+    "test-integration-ci": "npm run serve & wait-on http://localhost:5000 && TZ=America/New_York cypress run --config-file cypress.ci.json"
   },
   "husky": {
     "hooks": {
