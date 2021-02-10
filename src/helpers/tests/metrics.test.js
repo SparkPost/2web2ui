@@ -611,4 +611,88 @@ describe('metrics helpers', () => {
       });
     });
   });
+
+  describe('splitInboxMetric', () => {
+    it('returns the metric if not an inbox metric', () => {
+      const dataSource = ['sending', 'seed', 'panel'];
+      const metric = {
+        key: 'not_inbox',
+      };
+
+      expect(metricsHelpers.splitInboxMetric(metric, dataSource)).toEqual(metric);
+    });
+
+    it('returns the metric if it is not panel or seed', () => {
+      const dataSource = ['sending'];
+      const metric = {
+        key: 'count_inbox',
+      };
+
+      expect(metricsHelpers.splitInboxMetric(metric, dataSource)).toEqual(metric);
+    });
+
+    it('returns the metric if both panel and seed', () => {
+      const dataSource = ['seed', 'panel'];
+      const metric = {
+        key: 'count_inbox',
+      };
+
+      expect(metricsHelpers.splitInboxMetric(metric, dataSource)).toEqual(metric);
+    });
+
+    it('returns the metric if with correct information if it is seed', () => {
+      const dataSource = ['sending', 'seed'];
+      expect(
+        metricsHelpers.splitInboxMetric(
+          {
+            key: 'count_inbox',
+          },
+          dataSource,
+        ),
+      ).toEqual(expect.objectContaining({ key: 'count_inbox', computeKeys: ['count_inbox_seed'] }));
+
+      expect(
+        metricsHelpers.splitInboxMetric(
+          {
+            key: 'inbox_folder_rate',
+          },
+          dataSource,
+        ),
+      ).toEqual(
+        expect.objectContaining({
+          key: 'inbox_folder_rate',
+          computeKeys: ['count_spam_seed', 'count_inbox_seed'],
+        }),
+      );
+    });
+
+    it('returns the metric if with correct information if it is panel', () => {
+      const dataSource = ['sending', 'panel'];
+
+      expect(
+        metricsHelpers.splitInboxMetric(
+          {
+            key: 'count_inbox',
+          },
+          dataSource,
+        ),
+      ).toEqual(
+        expect.objectContaining({ key: 'count_inbox', computeKeys: ['count_inbox_panel'] }),
+      );
+
+      expect(
+        metricsHelpers.splitInboxMetric(
+          {
+            key: 'inbox_folder_rate',
+          },
+          dataSource,
+        ),
+      ).toEqual(
+        expect.objectContaining({
+          key: 'inbox_folder_rate',
+          computeKeys: ['count_spam_panel', 'count_inbox_panel'],
+        }),
+      );
+    });
+  });
 });

@@ -472,6 +472,6 @@ export function splitInboxMetric(metric, dataSource) {
           ),
       };
     default:
-      return metric;
+      throw new Error('Invalid state. Should not be here');
   }
 }
