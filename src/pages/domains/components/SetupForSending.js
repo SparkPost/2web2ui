@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Layout, Stack, Tag, Text } from 'src/components/matchbox';
 import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText, TranslatableText } from 'src/components/text';
-import { Telegram } from '@sparkpost/matchbox-icons';
+import { Autorenew, Telegram } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
 import { ExternalLink, SubduedLink } from 'src/components/links';
@@ -105,6 +105,10 @@ export default function SetupForSending({ domain, isSectionVisible }) {
                     record for the Hostname and DKIM value of this domain.
                   </TranslatableText>
                 </p>
+                <Panel.Action onClick={onSubmit}>
+                  <TranslatableText>Re-Verify Domain </TranslatableText>
+                  <Autorenew size={18} />
+                </Panel.Action>
               </Panel.Section>
             )}
             <Panel.Section>

@@ -66,13 +66,20 @@ export function deleteTrackingDomain({ domain, subaccountId }) {
 }
 
 export function verifyTrackingDomain({ domain, subaccountId }) {
-  return sparkpostApiRequest({
-    type: 'VERIFY_TRACKING_DOMAIN',
-    meta: {
-      method: 'POST',
-      url: `/v1/tracking-domains/${domain}/verify`,
-      headers: setSubaccountHeader(subaccountId),
-      domain,
-    },
-  });
+  return dispatch =>
+    dispatch(
+      sparkpostApiRequest({
+        type: 'VERIFY_TRACKING_DOMAIN',
+        meta: {
+          method: 'POST',
+          url: `/v1/tracking-domains/${domain}/verify`,
+          headers: setSubaccountHeader(subaccountId),
+          domain,
+        },
+      }),
+    ).then(() =>
+      dispatch(
+        showAlert({ type: 'success', message: `Successfully verified CNAME for ${domain}` }),
+      ),
+    );
 }

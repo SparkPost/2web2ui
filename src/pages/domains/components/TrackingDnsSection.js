@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Layout, Stack, Text } from 'src/components/matchbox';
-import { Panel, Checkbox } from 'src/components/matchbox';
+import { Button, Layout, Stack, Text, Panel, Checkbox } from 'src/components/matchbox';
+import { Autorenew } from '@sparkpost/matchbox-icons';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import useDomains from '../hooks/useDomains';
@@ -71,6 +71,10 @@ export default function TrackingDnsSection({ domain, isSectionVisible, title }) 
                   </Text>
                   <TranslatableText>record for this domain at your DNS provider.</TranslatableText>
                 </p>
+                <Panel.Action onClick={onSubmit}>
+                  <TranslatableText>Re-Verify Domain </TranslatableText>
+                  <Autorenew size={18} />
+                </Panel.Action>
               </Panel.Section>
             )}
             <Panel.Section>
