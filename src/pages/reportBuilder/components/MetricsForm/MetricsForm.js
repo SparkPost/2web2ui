@@ -105,6 +105,7 @@ export default function MetricsForm(props) {
                             id={metric.key}
                             content={metric.description}
                             portalID="tooltip-portal"
+                            disabled={!Boolean(metric.description)}
                           >
                             <Box marginRight="300" width="200px" paddingLeft="100">
                               <Checkbox
