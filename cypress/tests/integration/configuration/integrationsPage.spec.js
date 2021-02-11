@@ -6,7 +6,7 @@ describe('The Signals integration page', () => {
     cy.login({ isStubbed: true });
     cy.stubRequest({
       url: '/api/v1/account**',
-      fixture: 'account/200.get.has-integration-page.json',
+      fixture: 'account/200.get.has-on-prem.json',
       requestAlias: 'accountReq',
     });
   });

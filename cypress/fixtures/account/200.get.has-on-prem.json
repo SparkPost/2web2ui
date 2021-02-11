@@ -1,27 +1,33 @@
 {
   "results": {
-    "anniversary_date": "2019-12-09T08:00:00.000Z",
-    "company_name": "Fake Company",
-    "country_code": "US",
-    "created": "2014-12-30T17:43:18.954Z",
-    "customer_id": 123,
+    "anniversary_date": "2019-12-02T08:00:00.000Z",
+    "company_name": null,
+    "country_code": "",
+    "created": "2019-09-12T15:31:52.731Z",
+    "customer_id": 279139,
     "service_level": "standard",
     "status": "active",
-    "status_reason_category": "200.02",
-    "status_updated": "2018-10-12T14:30:10.500Z",
+    "status_reason_category": "",
+    "status_updated": "2019-09-12T15:31:52.731Z",
     "tfa_required": false,
-    "updated": "2019-12-10T21:00:45.997Z",
+    "updated": "2019-12-30T16:44:52.413Z",
     "subscription": {
-      "code": "100K-premier-0519",
-      "name": "100K Premier",
-      "plan_volume": 50000,
+      "code": "250K-premier-0519",
+      "name": "250K Premier",
+      "plan_volume": 250000,
       "period": "month",
-      "recurring_charge": 20,
-      "overage": 1,
+      "recurring_charge": 170,
+      "overage": 0.7,
       "self_serve": true,
       "type": "default"
     },
     "options": {
+      "transactional_default": false,
+      "inbox_placement": true,
+      "click_tracking": true,
+      "allow_events_ingest": true,
+      "rest_tracking_default": true,
+      "byoip_customer": true,
       "ui": {
         "developer_and_email_roles": true,
         "prototype_signals_details": true,
@@ -39,6 +45,8 @@
           "send_test_email_completed": true,
           "isGuideAtBottom": true
         },
+        "recipientValidationV2": false,
+        "recipient_validation": false,
         "feature_signals_v2": true,
         "Send Test Email": null,
         "spamTrapHitsByType": true,
@@ -49,7 +57,6 @@
         "hideTerminatedSubaccounts": true,
         "amp_html": true,
         "new_navigation": false,
-        "allow_events_ingest": true,
         "abtests": true,
         "allow_health_score_V3": true,
         "recipverif": true,
@@ -60,31 +67,26 @@
         "signals": true,
         "onboarding_active_step": "Show Me SparkPost",
         "feature_alerts": true,
-        "ip_auto_warmup": true,
-        "allow_injection_alerts": true
+        "ip_auto_warmup": true
       },
-      "allow_events_ingest": true,
       "initial_open_pixel_tracking": true,
       "smtp_tracking_default": true,
       "blocklist_monitors": true,
       "recipient_validation": true,
-      "inbox_placement": true,
       "auto_verify_domains": false
     },
-    "support": { "phone": false, "online": true },
-    "usage": {
-      "timestamp": "2019-12-13T16:34:00.000Z",
-      "day": {
-        "used": 259823,
-        "start": "2019-12-12T16:45:00.000Z",
-        "end": "2019-12-13T16:45:00.000Z"
-      },
-      "month": {
-        "used": 1141451,
-        "start": "2019-12-09T08:00:00.000Z",
-        "end": "2020-01-09T08:00:00.000Z"
-      },
-      "sandbox": { "limit": 5, "used": 123083 }
+    "support": {
+      "phone": true,
+      "online": true
+    },
+    "pending_subscription": {
+      "code": "50K-starter-0519",
+      "name": "50K Starter",
+      "plan_volume": 50000,
+      "period": "month",
+      "recurring_charge": 20,
+      "overage": 1,
+      "effective_date": "2020-01-02T08:00:00.000Z"
     }
   }
 }

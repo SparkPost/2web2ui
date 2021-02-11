@@ -243,9 +243,11 @@ describe('the dashboard page', () => {
 
     cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
 
-    cy.get('p').contains(
-      'At least one verified sending domain is required in order to start or enable analytics.',
-    );
+    cy.get('p')
+      .contains(
+        'At least one verified sending domain is required in order to start or enable analytics.',
+      )
+      .should('be.visible');
 
     cy.verifyLink({
       content: 'Add Sending Domain',
@@ -528,6 +530,43 @@ describe('the dashboard page', () => {
 
     // step 4 text...
     cy.findByRole('heading', { name: 'Start Sending!' }).should('not.exist');
+    cy.findByText(
+      'Follow the Getting Started documentation to set up sending via API or SMTP.',
+    ).should('not.exist');
+  });
+
+  it('Doesnt show onboarding for on prem users', () => {
+    // Note: (Shows add sending domain setup, but with on prem flag)
+    stubGrantsRequest({ role: 'developer' });
+    stubAlertsReq();
+
+    // Note: would normally give them the first onboarding step, but the account has allow_events_ingest
+    stubAccountsReq({ fixture: 'account/200.get.has-on-prem.json' });
+
+    stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+    stubSendingDomains({ fixture: '/200.get.no-results.json' });
+
+    cy.visit(PAGE_URL);
+    cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
+
+    cy.findByRole('heading', { name: 'Get Started!' }).should('not.exist');
+
+    // onboarding step 1 text...
+    cy.get('p')
+      .contains(
+        'At least one verified sending domain is required in order to start or enable analytics.',
+      )
+      .should('not.exist');
+
+    // onboarding step 2 text...
+    cy.findAllByText('Once a sending domain has been added, it needs to be').should('not.exist');
+
+    // onboarding step 3 text...
+    cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+      'not.exist',
+    );
+
+    // onboarding step 4 text
     cy.findByText(
       'Follow the Getting Started documentation to set up sending via API or SMTP.',
     ).should('not.exist');

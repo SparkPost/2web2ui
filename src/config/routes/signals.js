@@ -251,6 +251,7 @@ const signalsRoutes = [
   {
     path: '/signals/integration',
     component: signals.IntegrationPage,
+
     condition: hasAccountOptionEnabled('allow_events_ingest'),
     layout: App,
     title: 'Signals Integration',
