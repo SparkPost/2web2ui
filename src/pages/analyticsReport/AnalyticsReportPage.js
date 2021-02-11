@@ -3,23 +3,31 @@ import { useMachine, useService } from '@xstate/react';
 import {
   Box,
   Button,
+  Checkbox,
   Drawer,
   Expandable,
   Inline,
+  Modal,
   Page,
   Panel,
   ScreenReaderOnly,
   Select,
   Stack,
+  TextField,
 } from 'src/components/matchbox';
 import { Heading } from 'src/components/text';
 import Divider from 'src/components/divider';
-import { analyticsReportMachine, METRICS_FORM_MACHINE_ID } from './machines';
+import {
+  analyticsReportMachine,
+  METRICS_FORM_MACHINE_ID,
+  CREATE_REPORT_FORM_MACHINE_ID,
+} from './machines';
 
 /* eslint-disable no-console */
 export function AnalyticsReportPage() {
   const [state, send, service] = useMachine(analyticsReportMachine);
   const addMetricsMachine = service.children.get(METRICS_FORM_MACHINE_ID);
+  const createReportMachine = service.children.get(CREATE_REPORT_FORM_MACHINE_ID);
   console.log('addMetricsMachine', addMetricsMachine);
 
   // Live state machine debugging: https://xstate.js.org/docs/packages/xstate-react/#services
@@ -50,7 +58,7 @@ export function AnalyticsReportPage() {
 
               <Stack>
                 <Box>
-                  <p>// TODO: Report Typeahead goes here</p>
+                  <p>TODO: Report Typeahead goes here</p>
                 </Box>
 
                 <Inline>
@@ -119,6 +127,7 @@ export function AnalyticsReportPage() {
         open={state.matches('addingMetrics')}
         onClose={() => send('CLOSE_DRAWER')}
         position="right"
+        id="analytics-report-drawer"
         portalId="drawer-portal"
       >
         <Drawer.Header showCloseButton />
@@ -127,6 +136,11 @@ export function AnalyticsReportPage() {
           {state.matches('addingMetrics') ? <MetricsForm stateMachine={addMetricsMachine} /> : null}
         </Drawer.Content>
       </Drawer>
+
+      {/* TODO: Animation does not work - truthfully, Drawer and Modal should open/close on mount/unmount vs. a prop */}
+      {state.matches('creatingReport') && (
+        <CreateReportModal onClose={() => send('CLOSE_MODAL')} stateMachine={createReportMachine} />
+      )}
     </>
   );
 }
@@ -136,7 +150,7 @@ function MetricsForm({ stateMachine }) {
 
   return (
     <form id="addingMetricsForm" onSubmit={() => send('SUBMIT_FORM')}>
-      <p>// TODO: Metrics checkboxes go here</p>
+      <p>TODO: Metrics checkboxes go here</p>
 
       <Drawer.Footer>
         <Box display="flex">
@@ -157,11 +171,56 @@ function MetricsForm({ stateMachine }) {
   );
 }
 
+function CreateReportModal({ onClose, stateMachine }) {
+  const [_state, send] = useService(stateMachine);
+
+  return (
+    <Modal open={true} onClose={onClose}>
+      <Modal.Header showCloseButton>Saving New Report</Modal.Header>
+
+      <Modal.Content>
+        <form id="createReportForm" onSubmit={() => send('SUBMIT_FORM')}>
+          <Stack>
+            <TextField label="Name" name="name" id="create-report-name" type="text" value="" />
+
+            <TextField
+              label="Description"
+              name="description"
+              id="create-report-description"
+              placeholder="Enter short description for your report"
+              multiline
+              value=""
+            />
+
+            <Checkbox.Group label="Editable">
+              <Checkbox
+                id="create-report-editable"
+                label="Allow others to edit report"
+                checked=""
+              />
+            </Checkbox.Group>
+          </Stack>
+        </form>
+      </Modal.Content>
+
+      <Modal.Footer>
+        <Button variant="primary" type="submit" form="createReportForm">
+          Save Report
+        </Button>
+
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
 // function SaveNewReportModal({ saveNewReportRef }) {
 
 //   return (
 //     <Modal
-//       open={state.matches('savingNewReport')}
+//       open={state.matches('creatingReport')}
 //       onClose={() => send('CLOSE_MODAL')}
 //       closeOnEscape
 //       closeOnOutsideClick
@@ -175,7 +234,7 @@ function MetricsForm({ stateMachine }) {
 //               id="save-new-report-name"
 //               label="Name"
 //               name="name"
-//               onChange={e => send('NAME_CHANGE', { to: 'savingNewReport', value: e.target.value })}
+//               onChange={e => send('NAME_CHANGE', { to: 'creatingReport', value: e.target.value })}
 //               value=""
 //             />
 //           </Stack>

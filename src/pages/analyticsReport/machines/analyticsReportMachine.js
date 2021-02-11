@@ -3,6 +3,7 @@ import { Machine, assign } from 'xstate';
 import { getLocalTimezone } from 'src/helpers/date';
 import config from 'src/config';
 import { metricsFormMachine, METRICS_FORM_MACHINE_ID } from './metricsFormMachine';
+import { createReportMachine, CREATE_REPORT_FORM_MACHINE_ID } from './createReportMachine';
 
 const DEFAULT_REPORT_STATE = {
   METRICS: config.reportBuilder.defaultMetrics, // TODO: Why is this stored globally? Could it just be stored here as an of values?
@@ -51,7 +52,7 @@ export const analyticsReportMachine = Machine({
       on: {
         SAVED_REPORT_CHANGE: {},
         SAVE_NEW_REPORT_CLICK: {
-          target: 'savingNewReport',
+          target: 'creatingReport',
         },
         EDIT_DETAILS_CLICK: {
           target: 'editingSavedReportDetails',
@@ -74,7 +75,19 @@ export const analyticsReportMachine = Machine({
       },
     },
     editingSavedReportDetails: {},
-    savingNewReport: {},
+    creatingReport: {
+      invoke: {
+        id: CREATE_REPORT_FORM_MACHINE_ID,
+        src: createReportMachine,
+        onDone: 'updatingURL',
+        onError: {}, // TODO: handle this error
+      },
+      on: {
+        CLOSE_MODAL: {
+          target: 'editing',
+        },
+      },
+    },
     addingMetrics: {
       invoke: {
         id: METRICS_FORM_MACHINE_ID,

@@ -12,10 +12,12 @@ export const metricsFormMachine = Machine({
         METRIC_CHANGE: {},
         SUBMIT_FORM: {
           target: 'applied',
+          // TODO: Add `cond` to check if a value is selected - throw error if not
         },
         CLEAR_METRICS_CLICK: {},
       },
     },
+    error: {},
     applied: {
       // TODO: Send data to parent
       type: 'final',
