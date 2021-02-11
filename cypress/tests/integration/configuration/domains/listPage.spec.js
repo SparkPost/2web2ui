@@ -147,7 +147,7 @@ describe('The domains list page', () => {
         domainName: 'spf-valid.com',
         creationDate: 'Aug 5, 2017',
         subaccount: 'Assignment: Primary Account',
-        statusTags: ['SPF Valid'],
+        statusTags: [],
       });
       verifyTableRow({
         rowIndex: 3,
@@ -419,7 +419,7 @@ describe('The domains list page', () => {
         rowIndex: 5,
         domainName: 'spf-valid.com',
         creationDate: 'Aug 5, 2017',
-        statusTags: ['SPF Valid'],
+        statusTags: [],
       });
       verifyTableRow({
         rowIndex: 6,
@@ -443,7 +443,7 @@ describe('The domains list page', () => {
         rowIndex: 1,
         domainName: 'spf-valid.com',
         creationDate: 'Aug 5, 2017',
-        statusTags: ['SPF Valid'],
+        statusTags: ['Sending'],
       });
       verifyTableRow({
         rowIndex: 2,
@@ -505,7 +505,7 @@ describe('The domains list page', () => {
         rowIndex: 2,
         domainName: 'spf-valid.com',
         creationDate: 'Aug 5, 2017',
-        statusTags: ['SPF Valid'],
+        statusTags: [],
       });
       verifyTableRow({
         rowIndex: 3,
@@ -563,7 +563,7 @@ describe('The domains list page', () => {
         rowIndex: 4,
         domainName: 'spf-valid.com',
         creationDate: 'Aug 5, 2017',
-        statusTags: ['SPF Valid'],
+        statusTags: [],
       });
       verifyTableRow({
         rowIndex: 5,
@@ -591,14 +591,12 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').uncheck({ force: true });
       cy.findByLabelText('Unverified').uncheck({ force: true });
       cy.findByLabelText('Blocked').uncheck({ force: true });
-      cy.findByLabelText('SPF Valid').uncheck({ force: true });
       cy.findByLabelText('Bounce').uncheck({ force: true });
       cy.findByLabelText('DKIM Signing').uncheck({ force: true });
       cy.findByLabelText('Select All').check({ force: true });
       cy.findByLabelText('Verified').should('be.checked');
       cy.findByLabelText('Unverified').should('be.checked');
       cy.findByLabelText('Blocked').should('be.checked');
-      cy.findByLabelText('SPF Valid').should('be.checked');
       cy.findByLabelText('Bounce').should('be.checked');
       cy.findByLabelText('DKIM Signing').should('be.checked');
 
@@ -617,7 +615,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('be.visible');
       cy.findByLabelText('Unverified').should('be.visible');
       cy.findByLabelText('Blocked').should('be.visible');
-      cy.findByLabelText('SPF Valid').should('be.visible');
       cy.findByLabelText('Bounce').should('be.visible');
       cy.findByLabelText('DKIM Signing').should('be.visible');
 
@@ -636,9 +633,6 @@ describe('The domains list page', () => {
         creationDate: 'Aug 6, 2017',
         statusTags: ['Blocked'],
       });
-      cy.get('tbody tr')
-        .eq(1)
-        .should('not.exist');
 
       cy.findByLabelText('Unverified').check({ force: true });
       verifyTableRow({
@@ -663,35 +657,6 @@ describe('The domains list page', () => {
         .eq(3)
         .should('not.exist');
 
-      cy.findByLabelText('SPF Valid').check({ force: true });
-      verifyTableRow({
-        rowIndex: 0,
-        domainName: 'with-a-subaccount.com',
-        creationDate: 'Aug 7, 2017',
-        statusTags: ['Unverified'],
-      });
-      verifyTableRow({
-        rowIndex: 1,
-        domainName: 'blocked.com',
-        creationDate: 'Aug 6, 2017',
-        statusTags: ['Blocked'],
-      });
-      verifyTableRow({
-        rowIndex: 2,
-        domainName: 'spf-valid.com',
-        creationDate: 'Aug 5, 2017',
-        statusTags: ['Sending', 'SPF Valid'],
-      });
-      verifyTableRow({
-        rowIndex: 3,
-        domainName: 'fake1.domain.com',
-        creationDate: 'Aug 3, 2017',
-        statusTags: ['Unverified'],
-      });
-      cy.get('tbody tr')
-        .eq(4)
-        .should('not.exist');
-
       cy.findByLabelText('Bounce').check({ force: true });
       verifyTableRow({
         rowIndex: 0,
@@ -707,18 +672,12 @@ describe('The domains list page', () => {
       });
       verifyTableRow({
         rowIndex: 2,
-        domainName: 'spf-valid.com',
-        creationDate: 'Aug 5, 2017',
-        statusTags: ['Sending', 'SPF Valid'],
-      });
-      verifyTableRow({
-        rowIndex: 3,
         domainName: 'fake1.domain.com',
         creationDate: 'Aug 3, 2017',
         statusTags: ['Unverified'],
       });
       verifyTableRow({
-        rowIndex: 4,
+        rowIndex: 3,
         domainName: 'default-bounce.com',
         creationDate: 'Aug 1, 2017',
         statusTags: ['Sending', 'Bounce'],
@@ -742,30 +701,24 @@ describe('The domains list page', () => {
       });
       verifyTableRow({
         rowIndex: 2,
-        domainName: 'spf-valid.com',
-        creationDate: 'Aug 5, 2017',
-        statusTags: ['Sending', 'SPF Valid'],
-      });
-      verifyTableRow({
-        rowIndex: 3,
         domainName: 'dkim-signing.com',
         creationDate: 'Aug 4, 2017',
         statusTags: ['Sending', 'DKIM Signing'],
       });
       verifyTableRow({
-        rowIndex: 4,
+        rowIndex: 3,
         domainName: 'fake1.domain.com',
         creationDate: 'Aug 3, 2017',
         statusTags: ['Unverified'],
       });
       verifyTableRow({
-        rowIndex: 5,
+        rowIndex: 4,
         domainName: 'default-bounce.com',
         creationDate: 'Aug 1, 2017',
         statusTags: ['Sending', 'Bounce'],
       });
       cy.get('tbody tr')
-        .eq(6)
+        .eq(5)
         .should('not.exist');
 
       cy.findByLabelText('Verified').check({ force: true });
@@ -782,28 +735,10 @@ describe('The domains list page', () => {
         statusTags: ['Blocked'],
       });
       verifyTableRow({
-        rowIndex: 2,
-        domainName: 'spf-valid.com',
-        creationDate: 'Aug 5, 2017',
-        statusTags: ['Sending', 'SPF Valid'],
-      });
-      verifyTableRow({
-        rowIndex: 3,
-        domainName: 'dkim-signing.com',
-        creationDate: 'Aug 4, 2017',
-        statusTags: ['Sending', 'DKIM Signing'],
-      });
-      verifyTableRow({
         rowIndex: 4,
         domainName: 'fake1.domain.com',
         creationDate: 'Aug 3, 2017',
         statusTags: ['Unverified'],
-      });
-      verifyTableRow({
-        rowIndex: 5,
-        domainName: 'ready-for-sending.com',
-        creationDate: 'Aug 2, 2017',
-        statusTags: ['Sending'],
       });
       verifyTableRow({
         rowIndex: 6,
@@ -825,7 +760,7 @@ describe('The domains list page', () => {
       verifyTableRow({
         rowIndex: 0,
         domainName: 'spf-valid.com',
-        statusTags: ['Sending', 'SPF Valid'],
+        statusTags: ['Sending'],
       });
     });
 
@@ -839,14 +774,13 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
       verifyTableRow({
         rowIndex: 0,
         domainName: 'spf-valid.com',
-        statusTags: ['Sending', 'SPF Valid'],
+        statusTags: ['Sending'],
       });
       verifyTableRow({
         rowIndex: 1,
@@ -875,7 +809,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
     });
@@ -890,7 +823,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
     });
@@ -905,7 +837,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
     });
@@ -920,7 +851,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
     });
@@ -935,7 +865,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('be.checked');
     });
@@ -952,7 +881,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('be.checked');
 
@@ -961,7 +889,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Select All').should('not.be.checked');
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
@@ -988,7 +915,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Select All').should('not.be.checked');
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
@@ -1017,7 +943,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
       cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
     });
@@ -1065,7 +990,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Verified').should('be.visible');
       cy.findByLabelText('Unverified').should('be.visible');
       cy.findByLabelText('Blocked').should('be.visible');
-      cy.findByLabelText('SPF Valid').should('be.visible');
       cy.findByLabelText('Bounce').should('not.exist');
       cy.findByLabelText('DKIM Signing').should('be.visible');
     });
@@ -1197,7 +1121,6 @@ describe('The domains list page', () => {
       cy.findByRole('button', { name: 'Domain Status' }).click();
       cy.findByLabelText('Verified').should('be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
@@ -1220,7 +1143,6 @@ describe('The domains list page', () => {
       cy.findByRole('button', { name: 'Domain Status' }).click();
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
@@ -1239,7 +1161,6 @@ describe('The domains list page', () => {
       cy.findByRole('button', { name: 'Domain Status' }).click();
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
@@ -1258,7 +1179,6 @@ describe('The domains list page', () => {
       cy.findByRole('button', { name: 'Domain Status' }).click();
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('be.checked');
       cy.findByLabelText('Blocked').should('not.be.checked');
 
@@ -1277,7 +1197,6 @@ describe('The domains list page', () => {
       cy.findByRole('button', { name: 'Domain Status' }).click();
       cy.findByLabelText('Verified').should('not.be.checked');
       cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('SPF Valid').should('not.be.checked');
       cy.findByLabelText('Unverified').should('not.be.checked');
       cy.findByLabelText('Blocked').should('be.checked');
 
