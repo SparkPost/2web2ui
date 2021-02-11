@@ -25,15 +25,6 @@ function getBillingBundles({ fixture = 'billing/bundles/200.get.json' } = {}) {
     requestAlias: 'bundlesGet',
   });
 }
-
-function getSendingIps({ fixture = 'sending-ips/200.get.json' } = {}) {
-  cy.stubRequest({
-    url: '/api/v1/sending-ips',
-    fixture: fixture,
-    requestAlias: 'sendingIpsRequest',
-  });
-}
-
 function getBillingSubscription({
   fixture = 'billing/subscription/200.get.json',
   requestAlias = 'billingsubscription',
@@ -64,7 +55,6 @@ describe('Billing Page', () => {
     getBillingInformation();
     getBillingPlans();
     getBillingBundles();
-    getSendingIps();
     getInvoices();
 
     cy.stubRequest({

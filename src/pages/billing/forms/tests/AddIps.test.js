@@ -18,9 +18,9 @@ describe('AddIps', () => {
     plan = {};
     const props = {
       currentPlan: plan,
-      sendingIps: [],
       handleSubmit: jest.fn(),
       account: {},
+      quantityOfDedicatedIps: 0,
       limitOnDedicatedIps: 4,
       priceOfEachDedicatedIp: 20,
       billingPeriodOfDedicatedIp: 'month',
@@ -37,7 +37,7 @@ describe('AddIps', () => {
   });
 
   it('renders correctly when user reaches max ip limit', () => {
-    wrapper.setProps({ sendingIps: new Array(4) });
+    wrapper.setProps({ quantityOfDedicatedIps: 4 });
     expect(wrapper).toMatchSnapshot();
   });
 

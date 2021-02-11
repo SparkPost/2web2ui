@@ -1,6 +1,5 @@
 import { formatContactData } from 'src/helpers/billing';
 import { fetch as fetchAccount, getBillingInfo } from './account';
-import { list as getSendingIps } from './sendingIps';
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
 import zuoraRequest from 'src/actions/helpers/zuoraRequest';
 
@@ -157,7 +156,7 @@ export function addDedicatedIps({ ip_pool, isAwsAccount, quantity }) {
     },
   };
 
-  return dispatch => dispatch(sparkpostApiRequest(action)).then(() => dispatch(getSendingIps())); // refresh list
+  return dispatch => dispatch(sparkpostApiRequest(action)).then(() => dispatch(getSubscription())); // refresh list
 }
 
 export function createZuoraAccount({ data, token, signature, meta = {} }) {

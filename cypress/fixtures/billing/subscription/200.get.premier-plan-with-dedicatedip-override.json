@@ -31,7 +31,7 @@
       {
         "plan": "ip-0519",
         "product": "dedicated_ip",
-        "quantity": 1,
+        "quantity": 2,
         "limit": 14,
         "price": 20,
         "volume": 1,

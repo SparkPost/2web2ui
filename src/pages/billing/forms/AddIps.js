@@ -78,12 +78,12 @@ export class AddIps extends Component {
       handleSubmit,
       onClose,
       submitting,
+      quantityOfDedicatedIps,
       limitOnDedicatedIps,
       priceOfEachDedicatedIp,
       billingPeriodOfDedicatedIp,
     } = this.props;
-    const remainingCount =
-      limitOnDedicatedIps - Math.min(this.props.sendingIps.length, limitOnDedicatedIps);
+    const remainingCount = limitOnDedicatedIps - quantityOfDedicatedIps;
 
     // This form should not be rendered if the account has no remaining IP addresses
     const isDisabled = submitting || remainingCount === 0;
@@ -166,7 +166,6 @@ export class AddIps extends Component {
 const mapStateToProps = state => ({
   account: state.account,
   currentPlan: getCurrentAccountPlan(state),
-  sendingIps: state.sendingIps.list,
   initialValues: {
     ipPool: {
       action: 'new',

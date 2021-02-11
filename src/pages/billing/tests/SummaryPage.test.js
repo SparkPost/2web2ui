@@ -13,16 +13,12 @@ describe('Page: BillingSummaryPage', () => {
       },
       billingInfo: { onZuoraPlan: true },
       loading: false,
-      sendingIps: {
-        list: [],
-      },
       getBillingInfo: jest.fn(),
       getBundles: jest.fn(),
       getPlans: jest.fn(),
       getSubscription: jest.fn(),
       fetchAccount: jest.fn(),
       getUsage: jest.fn(),
-      getSendingIps: jest.fn(),
       getInvoices: jest.fn(),
       accountAgeInDays: 5,
     };
@@ -42,7 +38,6 @@ describe('Page: BillingSummaryPage', () => {
     expect(props.getSubscription).toHaveBeenCalledTimes(1);
     expect(props.fetchAccount).toHaveBeenCalledTimes(1);
     expect(props.getBillingInfo).toHaveBeenCalledTimes(1);
-    expect(props.getSendingIps).toHaveBeenCalledTimes(1);
     expect(props.getInvoices).toHaveBeenCalledTimes(1);
     expect(props.getUsage).toHaveBeenCalledTimes(1);
   });

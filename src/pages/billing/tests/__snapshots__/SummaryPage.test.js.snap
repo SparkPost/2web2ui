@@ -36,11 +36,6 @@ exports[`Page: BillingSummaryPage should render correctly when not loading 1`] =
       condition={[Function]}
       key="billing-summary"
       onZuoraPlan={true}
-      sendingIps={
-        Object {
-          "list": Array [],
-        }
-      }
     />
   </Connect(ConditionSwitch)>
 </Page>
