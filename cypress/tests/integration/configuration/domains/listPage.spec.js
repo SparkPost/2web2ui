@@ -827,20 +827,6 @@ describe('The domains list page', () => {
       cy.findByLabelText('Blocked').should('not.be.checked');
     });
 
-    it('syncs query param validSPF checkbox', () => {
-      stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
-      stubSubaccounts();
-      cy.visit(`${PAGE_URL}/list/sending?validSPF=true`);
-      cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
-
-      cy.findByRole('button', { name: 'Domain Status' }).click();
-      cy.findByLabelText('Verified').should('not.be.checked');
-      cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('Bounce').should('not.be.checked');
-      cy.findByLabelText('Unverified').should('not.be.checked');
-      cy.findByLabelText('Blocked').should('not.be.checked');
-    });
-
     it('syncs query param unverified checkbox', () => {
       stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
       stubSubaccounts();
@@ -1149,24 +1135,6 @@ describe('The domains list page', () => {
       cy.findByText('There is no data to display').should('be.visible');
       cy.location().should(loc => {
         expect(loc.search).to.eq('?readyForDKIM=true');
-      });
-    });
-
-    it('syncs query param validSPF checkbox', () => {
-      stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
-      stubSubaccounts();
-      cy.visit(`${PAGE_URL}/list/bounce?validSPF=true`);
-      cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
-
-      cy.findByRole('button', { name: 'Domain Status' }).click();
-      cy.findByLabelText('Verified').should('not.be.checked');
-      cy.findByLabelText('DKIM Signing').should('not.be.checked');
-      cy.findByLabelText('Unverified').should('not.be.checked');
-      cy.findByLabelText('Blocked').should('not.be.checked');
-
-      cy.findByText('There is no data to display').should('be.visible');
-      cy.location().should(loc => {
-        expect(loc.search).to.eq('?validSPF=true');
       });
     });
 
