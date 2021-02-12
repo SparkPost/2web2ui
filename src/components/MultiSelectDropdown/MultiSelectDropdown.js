@@ -103,7 +103,7 @@ function MultiSelectDropdown({
   const selectAllCheckbox = checkboxes.find(({ name }) => name === 'selectAll');
 
   return (
-    <Box mb="400">
+    <Box>
       <Label label={label} />
       <Popover
         id={id}
