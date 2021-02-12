@@ -626,6 +626,7 @@ describe('metrics helpers', () => {
       const dataSource = ['sending'];
       const metric = {
         key: 'count_inbox',
+        product: 'deliverability',
       };
 
       expect(metricsHelpers.splitDeliverabilityMetric(metric, dataSource)).toEqual(metric);
@@ -635,6 +636,7 @@ describe('metrics helpers', () => {
       const dataSource = ['seed', 'panel'];
       const metric = {
         key: 'count_inbox',
+        product: 'deliverability',
       };
 
       expect(metricsHelpers.splitDeliverabilityMetric(metric, dataSource)).toEqual(metric);
@@ -646,6 +648,7 @@ describe('metrics helpers', () => {
         metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'count_inbox',
+            product: 'deliverability',
           },
           dataSource,
         ),
@@ -655,6 +658,7 @@ describe('metrics helpers', () => {
         metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'inbox_folder_rate',
+            product: 'deliverability',
           },
           dataSource,
         ),
@@ -673,6 +677,7 @@ describe('metrics helpers', () => {
         metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'count_inbox',
+            product: 'deliverability',
           },
           dataSource,
         ),
@@ -684,6 +689,7 @@ describe('metrics helpers', () => {
         metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'inbox_folder_rate',
+            product: 'deliverability',
           },
           dataSource,
         ),
