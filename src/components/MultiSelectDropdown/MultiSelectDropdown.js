@@ -23,7 +23,7 @@ const reducer = (state, action) => {
         mainCheckboxes[targetCheckboxIndex].isChecked,
       );
 
-      if (selectAllCheckbox.length) {
+      if (Boolean(selectAllCheckbox.length)) {
         const allChecked = mainCheckboxes.every(({ isChecked }) => isChecked);
         selectAllCheckbox[0].isChecked = allChecked;
       }
@@ -45,6 +45,7 @@ const reducer = (state, action) => {
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
 export function useMultiSelect({ checkboxes, allowSelectAll = true, allowEmpty = true }) {
+  //TODO: Allow for a more calculated initial state for checkboxes instead of having empty as the default.
   const [state, dispatch] = useReducer(reducer, {
     checkboxes: [
       ...(allowSelectAll ? [{ name: 'selectAll', label: 'Select All', isChecked: false }] : []),
@@ -123,9 +124,7 @@ function MultiSelectDropdown({
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
               {!hasCheckedCheckboxes && allowEmpty && 'None'}
-              {((hasCheckedCheckboxes && allCheckboxesChecked) ||
-                (!allowEmpty && !hasCheckedCheckboxes)) &&
-                'All'}
+              {(allCheckboxesChecked || (!allowEmpty && !hasCheckedCheckboxes)) && 'All'}
               {hasCheckedCheckboxes && !allCheckboxesChecked && checkboxLabels}
             </StatusPopoverContent>
 
