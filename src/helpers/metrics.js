@@ -421,6 +421,12 @@ export function getFilterByComparison(comparison) {
   };
 }
 
+/**
+ * @name splitInboxMetric
+ * @description Will split metric to either source from exclusively seed or panel for deliverability metrics
+ * @param {Object} metric - Object to split
+ * @param {Array[String]} dataSource - Array of values included for data source
+ */
 export function splitInboxMetric(metric, dataSource) {
   if (!INBOX_TRACKER_METRICS.includes(metric.key)) {
     return metric;
