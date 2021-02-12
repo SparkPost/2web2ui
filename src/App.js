@@ -11,9 +11,9 @@ import AppRoutes from 'src/components/appRoutes';
 import GlobalBanner from 'src/context/GlobalBanner';
 
 import config from 'src/config';
-
+import isbot from 'isbot';
 import { BrowserRouter } from 'react-router-dom';
-const isbot = require('isbot');
+
 const App = ({ RouterComponent = BrowserRouter }) => (
   <>
     <RouterComponent>
