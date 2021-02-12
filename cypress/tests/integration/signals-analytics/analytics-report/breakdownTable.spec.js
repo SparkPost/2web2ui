@@ -109,6 +109,8 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders data broken down by "Sending Domain"', () => {
     cy.clock(STABLE_UNIX_DATE);
+    cy.visit(PAGE_URL);
+
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/sending-domain**/*',
       fixture: 'metrics/deliverability/sending-domain/200.get.json',
@@ -146,6 +148,8 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders data broken down by "Campaign"', () => {
     cy.clock(STABLE_UNIX_DATE);
+    cy.visit(PAGE_URL);
+
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/campaign**/*',
       fixture: 'metrics/deliverability/campaign/200.get.json',
@@ -174,6 +178,8 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders data broken down by "Template"', () => {
     cy.clock(STABLE_UNIX_DATE);
+    cy.visit(PAGE_URL);
+
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/template**/*',
       fixture: 'metrics/deliverability/template/200.get.json',
@@ -268,6 +274,8 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders data broken down by "Sending IP"', () => {
     cy.clock(STABLE_UNIX_DATE);
+    cy.visit(PAGE_URL);
+
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/sending-ip**/*',
       fixture: 'metrics/deliverability/sending-ip/200.get.json',
@@ -314,6 +322,8 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders data broken down by "IP Pool"', () => {
     cy.clock(STABLE_UNIX_DATE);
+    cy.visit(PAGE_URL);
+
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/ip-pool**/*',
       fixture: 'metrics/deliverability/ip-pool/200.get.json',
@@ -406,6 +416,8 @@ describe('Analytics Report breakdown table', () => {
   });
 
   it('filters with new comparators when clicking on a resource', () => {
+    cy.visit(PAGE_URL);
+
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/template**/*',
       fixture: 'metrics/deliverability/template/200.get.json',
