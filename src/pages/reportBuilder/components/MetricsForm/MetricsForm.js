@@ -83,7 +83,7 @@ export default function MetricsForm(props) {
     <>
       <Box padding="500" paddingBottom="100px">
         <Stack>
-          {Boolean(hasD12yMetricsEnabled && !hasD12yProduct) || (true && <DeliverabilityBanner />)}
+          {Boolean(hasD12yMetricsEnabled && !hasD12yProduct) && <DeliverabilityBanner />}
 
           {/* Renders categories */}
           {categorizedMetricsList.map(({ category, metrics }) => {

@@ -37,7 +37,7 @@ export const CheckboxWithLink = ({
       </Left>
       {showLink && (
         <Right space="100">
-          <UnstyledLink to={link} external={isInbox}>
+          <UnstyledLink title="Upgrade" to={link} external={isInbox}>
             Upgrade
           </UnstyledLink>
           <Box color="brand.orange">

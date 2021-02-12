@@ -40,8 +40,11 @@ describe('Metrics form', () => {
       cy.findByRole('checkbox', { name: 'Panel' }).should('be.disabled');
       cy.findByRole('checkbox', { name: 'Seed List' }).should('be.disabled');
       cy.findByRole('checkbox', { name: 'Sending' }).should('not.be.disabled');
-
-      cy.findAllByText('Upgrade').should('have.length', 2);
+      cy.findByDataId('popover-content').within(() => {
+        cy.findAllByRole('link', { name: 'Upgrade' })
+          .should('have.length', 2)
+          .should('be.visible');
+      });
 
       openMetricsDrawer();
       cy.findByDataId('deliverability-metrics-banner').should('be.visible');
