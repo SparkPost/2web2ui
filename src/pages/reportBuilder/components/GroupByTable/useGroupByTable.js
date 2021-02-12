@@ -7,14 +7,15 @@ import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
-  splitInboxMetric,
+  splitDeliverabilityMetric,
 } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useMultiSelect } from 'src/components/MultiSelectDropdown';
-import { INBOX_TRACKER_METRICS } from 'src/config/metrics';
+
+const DELIVERABILITY_PRODUCT = 'deliverability';
 
 const separateCompareOptions = reportOptions => {
   const { comparisons } = reportOptions;
@@ -48,10 +49,10 @@ export function useGroupByTable() {
     hasProductOnBillingSubscription('messaging')(state),
   );
 
-  const inboxTrackerMetrics = displayMetrics.filter(({ key }) =>
-    INBOX_TRACKER_METRICS.includes(key),
+  const inboxTrackerMetrics = displayMetrics.filter(
+    ({ product }) => product === DELIVERABILITY_PRODUCT,
   );
-  const sendingMetrics = displayMetrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
+  const sendingMetrics = displayMetrics.filter(({ product }) => product !== DELIVERABILITY_PRODUCT);
   const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
   const hasSendingMetrics = Boolean(sendingMetrics.length);
 
@@ -66,14 +67,16 @@ export function useGroupByTable() {
   });
 
   const filteredMetrics = displayMetrics.filter(metric => {
-    if (INBOX_TRACKER_METRICS.includes(metric.key)) {
+    if (metric.product === DELIVERABILITY_PRODUCT) {
       return values.includes('panel') || values.includes('seed');
     } else {
       return values.includes('sending');
     }
   });
 
-  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
+  const reformattedMetrics = filteredMetrics.map(metric =>
+    splitDeliverabilityMetric(metric, values),
+  );
   const preparedOptions = getQueryFromOptions({
     ...reportOptions,
     metrics: reformattedMetrics,
@@ -121,7 +124,9 @@ export function useCompareByGroupByTable() {
 
   // Prepares params for request
   const formattedMetrics = useMemo(() => {
-    return getMetricsFromKeys(metrics, true).map(metric => splitInboxMetric(metric, values));
+    return getMetricsFromKeys(metrics, true).map(metric =>
+      splitDeliverabilityMetric(metric, values),
+    );
   }, [metrics, values]);
 
   const hasD12yProduct = useSelector(state =>
@@ -131,21 +136,25 @@ export function useCompareByGroupByTable() {
     hasProductOnBillingSubscription('messaging')(state),
   );
 
-  const inboxTrackerMetrics = formattedMetrics.filter(({ key }) =>
-    INBOX_TRACKER_METRICS.includes(key),
+  const inboxTrackerMetrics = formattedMetrics.filter(
+    ({ product }) => product === DELIVERABILITY_PRODUCT,
   );
-  const sendingMetrics = formattedMetrics.filter(({ key }) => !INBOX_TRACKER_METRICS.includes(key));
+  const sendingMetrics = formattedMetrics.filter(
+    ({ product }) => product === DELIVERABILITY_PRODUCT,
+  );
   const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
   const hasSendingMetrics = Boolean(sendingMetrics.length);
 
   const filteredMetrics = formattedMetrics.filter(metric => {
-    if (INBOX_TRACKER_METRICS.includes(metric.key)) {
+    if (metric.product === DELIVERABILITY_PRODUCT) {
       return values.includes('panel') || values.includes('seed');
     } else {
       return values.includes('sending');
     }
   });
-  const reformattedMetrics = filteredMetrics.map(metric => splitInboxMetric(metric, values));
+  const reformattedMetrics = filteredMetrics.map(metric =>
+    splitDeliverabilityMetric(metric, values),
+  );
 
   const separatedOptions = separateCompareOptions(reportOptions);
   const separatedRequests = separatedOptions.map(options => {

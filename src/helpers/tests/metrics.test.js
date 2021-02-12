@@ -612,14 +612,14 @@ describe('metrics helpers', () => {
     });
   });
 
-  describe('splitInboxMetric', () => {
+  describe('splitDeliverabilityMetric', () => {
     it('returns the metric if not an inbox metric', () => {
       const dataSource = ['sending', 'seed', 'panel'];
       const metric = {
         key: 'not_inbox',
       };
 
-      expect(metricsHelpers.splitInboxMetric(metric, dataSource)).toEqual(metric);
+      expect(metricsHelpers.splitDeliverabilityMetric(metric, dataSource)).toEqual(metric);
     });
 
     it('returns the metric if it is not panel or seed', () => {
@@ -628,7 +628,7 @@ describe('metrics helpers', () => {
         key: 'count_inbox',
       };
 
-      expect(metricsHelpers.splitInboxMetric(metric, dataSource)).toEqual(metric);
+      expect(metricsHelpers.splitDeliverabilityMetric(metric, dataSource)).toEqual(metric);
     });
 
     it('returns the metric if both panel and seed', () => {
@@ -637,13 +637,13 @@ describe('metrics helpers', () => {
         key: 'count_inbox',
       };
 
-      expect(metricsHelpers.splitInboxMetric(metric, dataSource)).toEqual(metric);
+      expect(metricsHelpers.splitDeliverabilityMetric(metric, dataSource)).toEqual(metric);
     });
 
     it('returns the metric if with correct information if it is seed', () => {
       const dataSource = ['sending', 'seed'];
       expect(
-        metricsHelpers.splitInboxMetric(
+        metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'count_inbox',
           },
@@ -652,7 +652,7 @@ describe('metrics helpers', () => {
       ).toEqual(expect.objectContaining({ key: 'count_inbox', computeKeys: ['count_inbox_seed'] }));
 
       expect(
-        metricsHelpers.splitInboxMetric(
+        metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'inbox_folder_rate',
           },
@@ -670,7 +670,7 @@ describe('metrics helpers', () => {
       const dataSource = ['sending', 'panel'];
 
       expect(
-        metricsHelpers.splitInboxMetric(
+        metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'count_inbox',
           },
@@ -681,7 +681,7 @@ describe('metrics helpers', () => {
       );
 
       expect(
-        metricsHelpers.splitInboxMetric(
+        metricsHelpers.splitDeliverabilityMetric(
           {
             key: 'inbox_folder_rate',
           },

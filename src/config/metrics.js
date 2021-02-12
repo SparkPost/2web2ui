@@ -7,13 +7,6 @@ const engagement = 'Engagement';
 
 export const categories = [injection, delivery, deliverability, engagement];
 
-export const INBOX_TRACKER_METRICS = [
-  'count_inbox',
-  'count_spam',
-  'inbox_folder_rate',
-  'spam_folder_rate',
-];
-
 export const list = [
   {
     key: 'count_targeted',

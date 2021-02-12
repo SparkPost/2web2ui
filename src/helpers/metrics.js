@@ -1,6 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { list as METRICS_LIST, INBOX_TRACKER_METRICS } from 'src/config/metrics';
+import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
 import { HIBANA_METRICS_COLORS, REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getRelativeDates } from 'src/helpers/date';
@@ -51,6 +51,18 @@ export function getQueryFromOptions({
 }
 
 // TODO: Replace original once OG theme is removed
+/**
+ * @name getQueryFromOptionsV2
+ * @description Converts various report options into API ready content
+ * @param {Date} from
+ * @param {Date} from
+ * @param {string} timezone
+ * @param {string} precision
+ * @param {Array[Object]} metrics - array of metrics objects (not just the keys)
+ * @param {Array[Object]} filters
+ * @param {Array} match
+ * @param {Number} count
+ */
 export function getQueryFromOptionsV2({
   from,
   to,
@@ -60,12 +72,11 @@ export function getQueryFromOptionsV2({
   filters = [],
   match = '',
   limit,
-  dataSource = ['sending', 'panel', 'seed'],
 }) {
   from = moment(from);
   to = moment(to);
 
-  const apiMetricsKeys = getKeysFromMetricsV2(metrics, dataSource);
+  const apiMetricsKeys = getKeysFromMetrics(metrics);
   const delimiter = getDelimiter(filters);
   const options = {
     metrics: apiMetricsKeys.join(delimiter),
@@ -333,29 +344,6 @@ export function getKeysFromMetrics(metrics = []) {
   return _.uniq(flattened);
 }
 
-export function getKeysFromMetricsV2(metrics = [], dataSource) {
-  const hasSending = dataSource.includes('sending');
-  const hasSeed = dataSource.includes('seed');
-  const hasPanel = dataSource.includes('panel');
-  const d12yMetrics = ['count_inbox', 'count_spam', 'inbox_folder_rate', 'spam_folder_rate'];
-
-  const filteredMetrics = metrics.filter(
-    ({ key }) => hasSending || ((hasSeed || hasPanel) && d12yMetrics.includes(key)),
-  );
-  const flattened = _.flatMap(filteredMetrics, ({ key, computeKeys }) =>
-    computeKeys ? computeKeys : key,
-  );
-  const uniqueValues = _.uniq(flattened);
-
-  return uniqueValues.reduce((acc, curr) => {
-    if (!d12yMetrics.includes(curr)) {
-      return [...acc, curr];
-    } else {
-      return [...acc, hasPanel && `${curr}_panel`, hasSeed && `${curr}_seed`];
-    }
-  }, []);
-}
-
 export function computeKeysForItem(metrics = []) {
   return item =>
     metrics.reduce((acc, metric) => {
@@ -422,13 +410,13 @@ export function getFilterByComparison(comparison) {
 }
 
 /**
- * @name splitInboxMetric
+ * @name splitDeliverabilityMetric
  * @description Will split metric to either source from exclusively seed or panel for deliverability metrics
  * @param {Object} metric - Object to split
  * @param {Array[String]} dataSource - Array of values included for data source
  */
-export function splitInboxMetric(metric, dataSource) {
-  if (!INBOX_TRACKER_METRICS.includes(metric.key)) {
+export function splitDeliverabilityMetric(metric, dataSource) {
+  if (metric.product !== 'deliverability') {
     return metric;
   }
 
@@ -478,6 +466,6 @@ export function splitInboxMetric(metric, dataSource) {
           ),
       };
     default:
-      throw new Error('Invalid state. Should not be here');
+      return metric; //Other deliverability metrics have no changes
   }
 }

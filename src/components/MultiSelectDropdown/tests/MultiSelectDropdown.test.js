@@ -76,7 +76,7 @@ describe('MultiSelectDropdown', () => {
   };
   const subject = (props = {}) =>
     render(
-      <TestApp isHibanaEnabled={true}>
+      <TestApp>
         <MultiSelectDropdown {...defaultProps} {...props} />
       </TestApp>,
     );
