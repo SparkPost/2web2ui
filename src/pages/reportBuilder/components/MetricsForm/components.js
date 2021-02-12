@@ -11,7 +11,7 @@ export const DeliverabilityBanner = () => {
   }
 
   return (
-    <Box padding="500" pb="100">
+    <Box>
       <Banner
         data-id="deliverability-metrics-banner"
         status="muted"

@@ -81,9 +81,10 @@ export default function MetricsForm(props) {
   const { DrawerFooter = Drawer.Footer } = props;
   return (
     <>
-      {Boolean(hasD12yMetricsEnabled && !hasD12yProduct) && <DeliverabilityBanner />}
       <Box padding="500" paddingBottom="100px">
         <Stack>
+          {Boolean(hasD12yMetricsEnabled && !hasD12yProduct) || (true && <DeliverabilityBanner />)}
+
           {/* Renders categories */}
           {categorizedMetricsList.map(({ category, metrics }) => {
             if (!hasD12yMetricsEnabled && category === 'Deliverability') return null;
