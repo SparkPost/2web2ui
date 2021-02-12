@@ -121,7 +121,7 @@ function MultiCheckboxDropdown({
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
             disabled={disabled}
           >
-            <StatusPopoverContent aria-hidden="true">
+            <StatusPopoverContent aria-hidden="true" data-id="multi-checkbox-button-content">
               {/* Render the checked filters that visually replace the button's content */}
               {!hasCheckedCheckboxes && allowEmpty && 'None'}
               {(allCheckboxesChecked || (!allowEmpty && !hasCheckedCheckboxes)) && 'All'}

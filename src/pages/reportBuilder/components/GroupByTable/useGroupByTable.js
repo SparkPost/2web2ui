@@ -13,7 +13,7 @@ import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
-import { useMultiSelect } from 'src/components/MultiSelectDropdown';
+import { useMultiSelect } from 'src/components/MultiCheckboxDropdown';
 
 const DELIVERABILITY_PRODUCT = 'deliverability';
 

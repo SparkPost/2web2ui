@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { render } from '@testing-library/react';
-import MultiSelectDropdown, { useMultiSelect } from '../MultiCheckboxDropdown';
+import MultiCheckboxDropdown, { useMultiSelect } from '../MultiCheckboxDropdown';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 describe('useMultiSelect', () => {
@@ -67,7 +67,7 @@ describe('useMultiSelect', () => {
   });
 });
 
-describe('MultiSelectDropdown', () => {
+describe('MultiCheckboxDropdown', () => {
   const defaultProps = {
     checkboxes: [
       { name: 'checkbox1', label: 'Checkbox 1', isChecked: false, onChange: jest.fn() },
@@ -77,16 +77,52 @@ describe('MultiSelectDropdown', () => {
   const subject = (props = {}) =>
     render(
       <TestApp>
-        <MultiSelectDropdown {...defaultProps} {...props} />
+        <MultiCheckboxDropdown {...defaultProps} {...props} />
       </TestApp>,
     );
 
   it('should open with a click', () => {
-    const { queryByRole, queryAllByRole } = subject();
+    const { queryByRole, queryAllByRole, queryByTestId } = subject();
     expect(queryAllByRole('checkbox')).toHaveLength(0);
+
+    expect(queryByTestId('multi-checkbox-button-content').textContent).toEqual('Checkbox 2');
 
     queryByRole('button').click();
     expect(queryAllByRole('checkbox')[0].checked).toEqual(false);
     expect(queryAllByRole('checkbox')[1].checked).toEqual(true);
+  });
+
+  it('should say "All" if all values of checkboxes are checked', () => {
+    const { queryByTestId } = subject({
+      checkboxes: [
+        { name: 'checkbox1', label: 'Checkbox 1', isChecked: true, onChange: jest.fn() },
+        { name: 'checkbox2', label: 'Checkbox 2', isChecked: true, onChange: jest.fn() },
+      ],
+    });
+
+    expect(queryByTestId('multi-checkbox-button-content').textContent).toEqual('All');
+  });
+
+  it('should say "None" if all values of checkboxes are not checked', () => {
+    const { queryByTestId } = subject({
+      checkboxes: [
+        { name: 'checkbox1', label: 'Checkbox 1', isChecked: false, onChange: jest.fn() },
+        { name: 'checkbox2', label: 'Checkbox 2', isChecked: false, onChange: jest.fn() },
+      ],
+    });
+
+    expect(queryByTestId('multi-checkbox-button-content').textContent).toEqual('None');
+  });
+
+  it('should say "All" if all values of checkboxes are not checked and allowEmpty is false', () => {
+    const { queryByTestId } = subject({
+      checkboxes: [
+        { name: 'checkbox1', label: 'Checkbox 1', isChecked: false, onChange: jest.fn() },
+        { name: 'checkbox2', label: 'Checkbox 2', isChecked: false, onChange: jest.fn() },
+      ],
+      allowEmpty: false,
+    });
+
+    expect(queryByTestId('multi-checkbox-button-content').textContent).toEqual('All');
   });
 });

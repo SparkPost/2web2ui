@@ -56,7 +56,7 @@ export default function GroupByOption(props) {
     }
 
     return (
-      <Box marginTop="600">
+      <Box marginTop="500">
         <Checkbox
           id="watchedDomains"
           label="Top Domains Only"
