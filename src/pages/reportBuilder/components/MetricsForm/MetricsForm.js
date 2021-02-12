@@ -29,7 +29,7 @@ const DESCRIPTIONS = {
   Injection: 'Processing of messages through SparkPost',
   Delivery: 'Transmission of messages to the mailbox',
   Deliverability: 'Placement of messages in the inbox',
-  Engagement: 'Interaction in messages in the inbox',
+  Engagement: 'Interaction with messages in the inbox',
 };
 
 export default function MetricsForm(props) {
