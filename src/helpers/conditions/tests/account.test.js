@@ -13,6 +13,7 @@ import {
   isAccountUiOptionSet,
   hasAccountOptionEnabled,
   getAccountUiOptionValue,
+  hasProductOnBillingSubscription,
 } from '../account';
 
 import cases from 'jest-in-case';
@@ -269,6 +270,21 @@ describe('Condition: hasAccountOptionEnabled', () => {
   it('should return default value (false) if parent prop does not exist', () => {
     state.account.options = null;
     expect(hasAccountOptionEnabled('auto_verify_domains')(state)).toEqual(false);
+  });
+});
+
+describe('Condition: hasProductOnbBillingSubscription', () => {
+  it('should return if any item in the subscription has matching product', () => {
+    const state = {
+      billing: {
+        subscription: {
+          products: [{ product: 'cool-thing' }, { product: 'cool-thing-2' }],
+        },
+      },
+    };
+    expect(hasProductOnBillingSubscription('cool-thing')(state)).toEqual(true);
+    expect(hasProductOnBillingSubscription('cool-thing-2')(state)).toEqual(true);
+    expect(hasProductOnBillingSubscription('not-cool')(state)).toEqual(false);
   });
 });
 
