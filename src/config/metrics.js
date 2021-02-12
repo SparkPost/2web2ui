@@ -45,6 +45,7 @@ export const list = [
     inSummary: true,
   },
   {
+    //TODO: Remove once deliverability metrics are released
     key: 'count_accepted',
     label: 'Accepted',
     type: 'total',
@@ -279,6 +280,7 @@ export const list = [
     tab: 'rejection',
   },
   {
+    //TODO: Remove once deliverability metrics are released
     key: 'accepted_rate',
     label: 'Accepted Rate',
     category: delivery,
