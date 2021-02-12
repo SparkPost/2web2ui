@@ -24,10 +24,7 @@ export const DeliverabilityBanner = () => {
           </Text>
           <Box>
             <span>Gain access to </span>
-            <ExternalLink
-              showIcon={false}
-              to="https://www.sparkpost.com/features/email-deliverability/"
-            >
+            <ExternalLink to="https://www.sparkpost.com/features/email-deliverability/">
               deliverability metrics
             </ExternalLink>
           </Box>
