@@ -61,7 +61,7 @@ export function useGroupByTable() {
       { name: 'panel', label: 'Panel' },
       { name: 'seed', label: 'Seed List' },
     ],
-    useSelectAll: false,
+    allowSelectAll: false,
     allowEmpty: false,
   });
 
@@ -113,7 +113,7 @@ export function useCompareByGroupByTable() {
       { name: 'panel', label: 'Panel' },
       { name: 'seed', label: 'Seed List' },
     ],
-    useSelectAll: false,
+    allowSelectAll: false,
     allowEmpty: false,
   });
   const { state: reportOptions } = useReportBuilderContext();

@@ -30,8 +30,8 @@ describe('useMultiSelect', () => {
     expect(values.length).toEqual(2);
   });
 
-  it('omits selectAll checkbox if "useSelectAll" set to false', () => {
-    const hook = subject({ useSelectAll: false });
+  it('omits selectAll checkbox if "allowSelectAll" set to false', () => {
+    const hook = subject({ allowSelectAll: false });
     const { checkboxes } = hookReturn(hook);
     expect(checkboxes.length).toEqual(2);
     expect(findSelectAllCheckbox(checkboxes)).toEqual(undefined);
