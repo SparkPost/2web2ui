@@ -34,8 +34,8 @@ export function VerifyToken({
         const sendingDomain = _.find(domains, { domainName: domain });
 
         if (sendingDomain && mailbox && domain && token) {
-          const subaccount = !isNaN(parseInt(sendingDomain.subaccount_id))
-            ? sendingDomain.subaccount_id
+          const subaccount = !isNaN(parseInt(sendingDomain.subaccountId))
+            ? sendingDomain.subaccountId
             : undefined;
           let verifyAction = verifyMailboxToken;
           let tokenType = SENDING_DOMAIN_TOKEN_TYPE['MAILBOX'];
@@ -49,7 +49,6 @@ export function VerifyToken({
             verifyAction = verifyPostmasterToken;
             tokenType = SENDING_DOMAIN_TOKEN_TYPE['POSTMASTER'];
           }
-
           return verifyAction({ id: domain, token, subaccount }).then(result => {
             if (result[`${tokenType}_status`] !== 'valid') {
               showAlert({ type: 'error', message: `Unable to verify ${domain}` });
