@@ -78,7 +78,7 @@ describe('Metrics form', () => {
       });
     });
 
-    it('should allow you to select data sources', () => {
+    it('allows the user to select data sources after adding deliverability metrics', () => {
       cy.stubRequest({
         url: '/api/v1/billing/subscription',
         fixture: 'billing/subscription/200.get.include-deliverability.json',
@@ -122,6 +122,6 @@ describe('Metrics form', () => {
   });
 });
 
-const openMetricsDrawer = () => {
+function openMetricsDrawer() {
   cy.findByRole('button', { name: 'Add Metrics' }).click();
-};
+}
