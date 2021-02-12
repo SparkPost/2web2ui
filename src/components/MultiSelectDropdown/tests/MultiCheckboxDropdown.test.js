@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { render } from '@testing-library/react';
-import MultiSelectDropdown, { useMultiSelect } from '../MultiSelectDropdown';
+import MultiSelectDropdown, { useMultiSelect } from '../MultiCheckboxDropdown';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 describe('useMultiSelect', () => {

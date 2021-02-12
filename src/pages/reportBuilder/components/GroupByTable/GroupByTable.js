@@ -15,7 +15,7 @@ import { Box, Column, Columns, Panel, Table } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
-import MultiSelectDropdown from 'src/components/MultiSelectDropdown';
+import MultiCheckboxDropdown from 'src/components/MultiCheckboxDropdown';
 import EmptyCell from 'src/components/collection/EmptyCell';
 import { useGroupByTable } from './useGroupByTable';
 import styles from './ReportTable.module.scss';
@@ -169,7 +169,7 @@ export const GroupByTable = () => {
             />
             {hasD12yMetricsEnabled && groupBy && (
               <Column>
-                <MultiSelectDropdown
+                <MultiCheckboxDropdown
                   allowEmpty={false}
                   checkboxes={checkboxes}
                   id="group-by-dropdown"

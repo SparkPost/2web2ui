@@ -1,1 +1,1 @@
-export { default, useMultiSelect } from './MultiSelectDropdown';
+export { default, useMultiSelect } from './MultiCheckboxDropdown';

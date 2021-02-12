@@ -81,7 +81,7 @@ export function useMultiSelect({ checkboxes, allowSelectAll = true, allowEmpty =
   };
 }
 
-function MultiSelectDropdown({
+function MultiCheckboxDropdown({
   checkboxes,
   disabled,
   label = 'Options',
@@ -170,4 +170,4 @@ function MultiSelectDropdown({
   );
 }
 
-export default MultiSelectDropdown;
+export default MultiCheckboxDropdown;

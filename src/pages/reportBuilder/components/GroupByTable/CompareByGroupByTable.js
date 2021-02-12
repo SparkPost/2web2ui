@@ -7,7 +7,7 @@ import { CheckboxWithLink } from './components';
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 import { ApiErrorBanner, Empty, PanelLoading, TableCollection, Unit } from 'src/components';
-import MultiSelectDropdown from 'src/components/MultiSelectDropdown';
+import MultiCheckboxDropdown from 'src/components/MultiCheckboxDropdown';
 import { Box, Column, Columns, Panel, Table, Tag } from 'src/components/matchbox';
 import EmptyCell from 'src/components/collection/EmptyCell';
 import { GROUP_BY_CONFIG } from '../../constants';
@@ -177,7 +177,7 @@ export const CompareByTable = () => {
             />
             {hasD12yMetricsEnabled && groupBy && (
               <Column>
-                <MultiSelectDropdown
+                <MultiCheckboxDropdown
                   allowEmpty={false}
                   checkboxes={checkboxes}
                   id="group-by-dropdown"
