@@ -85,7 +85,6 @@ function MultiCheckboxDropdown({
   checkboxes,
   disabled,
   label = 'Options',
-  screenReaderDirections,
   id = 'multi-select-dropdown',
   allowEmpty = true,
   checkboxComponent,
@@ -105,7 +104,7 @@ function MultiCheckboxDropdown({
 
   return (
     <Box>
-      <Label label={label} />
+      <Label label={label} aria-hidden="true" />
       <Popover
         id={id}
         left
@@ -130,11 +129,11 @@ function MultiCheckboxDropdown({
             </StatusPopoverContent>
 
             <AlignedButtonIcon as={Chevron} size={25} />
+
+            <ScreenReaderOnly>{label}</ScreenReaderOnly>
           </AlignedTextButton>
         }
       >
-        <ScreenReaderOnly>{screenReaderDirections}</ScreenReaderOnly>
-
         {selectAllCheckbox && (
           <>
             <Box padding="300">

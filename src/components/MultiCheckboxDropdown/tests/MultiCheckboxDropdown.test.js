@@ -125,11 +125,4 @@ describe('MultiCheckboxDropdown', () => {
 
     expect(queryByTestId('multi-checkbox-button-content').textContent).toEqual('All');
   });
-
-  it('renders with passed in `screenReaderDirections` when the popover is open', () => {
-    const { getByText, getByRole } = subject({ screenReaderDirections: 'Hello, world.' });
-
-    getByRole('button').click();
-    expect(getByText('Hello, world.')).toBeInTheDocument();
-  });
 });
