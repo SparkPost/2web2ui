@@ -104,6 +104,7 @@ function MultiCheckboxDropdown({
 
   return (
     <Box>
+      {/* This label is intentionally hidden from screen readers - the button's content serves the purpose of labeling for those users */}
       <div aria-hidden="true">
         <Label label={label} />
       </div>
