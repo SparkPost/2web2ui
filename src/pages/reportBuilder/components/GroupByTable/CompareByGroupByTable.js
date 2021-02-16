@@ -182,6 +182,7 @@ export const CompareByTable = () => {
                   checkboxes={checkboxes}
                   id="group-by-dropdown"
                   label="Data Sources"
+                  screenReaderDirections="Filter the table by the selected checkboxes"
                   checkboxComponent={CheckboxWithLink({
                     hasSendingProduct,
                     hasD12yProduct,
