@@ -156,6 +156,18 @@ export const GroupByTable = () => {
     );
   };
 
+  //TODO: Make a more reusable version of this component (without the double function call)
+  const checkboxComponent = React.useMemo(
+    () =>
+      CheckboxWithLink({
+        hasSendingProduct,
+        hasD12yProduct,
+        hasSendingMetrics,
+        hasInboxTrackingMetrics,
+      }),
+    [hasSendingMetrics, hasSendingProduct, hasD12yProduct, hasInboxTrackingMetrics],
+  );
+
   return (
     <>
       <Panel marginBottom="-1px">
@@ -175,12 +187,7 @@ export const GroupByTable = () => {
                   id="group-by-dropdown"
                   label="Data Sources"
                   screenReaderDirections="Filter the table by the selected checkboxes"
-                  checkboxComponent={CheckboxWithLink({
-                    hasSendingProduct,
-                    hasD12yProduct,
-                    hasSendingMetrics,
-                    hasInboxTrackingMetrics,
-                  })}
+                  checkboxComponent={checkboxComponent}
                 />
               </Column>
             )}
