@@ -104,7 +104,10 @@ function MultiCheckboxDropdown({
 
   return (
     <Box>
-      <Label label={label} aria-hidden="true" />
+      <div aria-hidden="true">
+        <Label label={label} />
+      </div>
+
       <Popover
         id={id}
         left
