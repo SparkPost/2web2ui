@@ -140,7 +140,7 @@ export default class BillingSummary extends Component {
             </LabelledValue>
           </Panel.LEGACY.Section>
           <DedicatedIpSummarySection
-            count={this.props.sendingIps.length}
+            count={dedicatedIpProduct.quantity}
             plan={this.props.currentPlan}
             canPurchaseIps={this.props.canPurchaseIps}
             onClick={this.handleIpModal}
@@ -165,6 +165,7 @@ export default class BillingSummary extends Component {
           {show === IP_MODAL && (
             <AddIps
               onClose={this.handleModal}
+              quantityOfDedicatedIps={dedicatedIpProduct.quantity}
               limitOnDedicatedIps={dedicatedIpProduct.limit}
               priceOfEachDedicatedIp={dedicatedIpProduct.price}
               billingPeriodOfDedicatedIp={dedicatedIpProduct.billing_period}

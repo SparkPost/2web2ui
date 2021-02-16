@@ -16,9 +16,10 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "url": "/v1/sending-ips",
+      "params": Object {},
+      "url": "/v1/billing/subscription",
     },
-    "type": "LIST_SENDING_IPS",
+    "type": "GET_SUBSCRIPTION",
   },
 ]
 `;
@@ -39,9 +40,10 @@ Array [
   Object {
     "meta": Object {
       "method": "GET",
-      "url": "/v1/sending-ips",
+      "params": Object {},
+      "url": "/v1/billing/subscription",
     },
-    "type": "LIST_SENDING_IPS",
+    "type": "GET_SUBSCRIPTION",
   },
 ]
 `;

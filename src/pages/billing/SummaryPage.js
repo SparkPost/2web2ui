@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Page } from 'src/components/matchbox';
 import { fetch as fetchAccount, getBillingInfo, getUsage } from 'src/actions/account';
-import { list as getSendingIps } from 'src/actions/sendingIps';
 import { selectBillingInfo, selectAccountBilling } from 'src/selectors/accountBillingInfo';
 import { selectAccountAgeInDays } from 'src/selectors/accountAge';
 import ConditionSwitch, { defaultCase } from 'src/components/auth/ConditionSwitch';
@@ -23,7 +22,6 @@ export class BillingSummaryPage extends Component {
       getBundles,
       getSubscription,
       getBillingInfo,
-      getSendingIps,
       getInvoices,
       getUsage,
     } = this.props;
@@ -32,7 +30,6 @@ export class BillingSummaryPage extends Component {
     getBundles();
     getSubscription();
     getBillingInfo();
-    getSendingIps();
     getInvoices();
     getUsage();
   }
@@ -42,14 +39,7 @@ export class BillingSummaryPage extends Component {
     }
   }
   renderBillingSummary = () => {
-    const {
-      account,
-      billingInfo,
-      sendingIps,
-      invoices,
-      accountAgeInDays,
-      subscription,
-    } = this.props;
+    const { account, billingInfo, invoices, accountAgeInDays, subscription } = this.props;
     const suspendedBilling = (
       <SuspendedForBilling
         condition={isSuspendedForBilling}
@@ -72,7 +62,6 @@ export class BillingSummaryPage extends Component {
         subscription={subscription}
         {...billingInfo}
         invoices={invoices}
-        sendingIps={sendingIps}
         accountAgeInDays={accountAgeInDays}
         key="billing-summary"
       />
@@ -99,13 +88,11 @@ const mapStateToProps = state => {
     subscription: state.billing.subscription || {},
     accountAgeInDays: selectAccountAgeInDays(state),
     billingInfo: selectBillingInfo(state),
-    sendingIps: state.sendingIps.list,
     invoices: state.invoices.list,
   };
 };
 export default connect(mapStateToProps, {
   getInvoices,
-  getSendingIps,
   fetchAccount,
   getBillingInfo,
   getUsage,
