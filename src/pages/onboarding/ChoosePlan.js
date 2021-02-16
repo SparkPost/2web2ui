@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Grid, Button, Panel } from 'src/components/matchbox';
 import { Heading } from 'src/components/text';
 import { showAlert } from 'src/actions/globalAlert';
@@ -27,20 +28,21 @@ export function OnboardingPlanPage({
   getBundles,
   getBillingCountries,
   billingCreate,
+  billingCreateSuccess,
   showAlert,
-  history,
+  submitting,
   billing,
   verifyPromoCode,
   clearPromoCode,
   currentPlan,
   loading,
-  submitting,
   selectedPlan = {},
   handleSubmit,
   hasError,
   bundles,
 }) {
   const next_step = DASHBOARD_ROUTE;
+  const history = useHistory();
   useEffect(() => {
     getPlans();
   }, [getPlans]);
@@ -123,13 +125,13 @@ export function OnboardingPlanPage({
     clearPromoCode,
   };
 
-  if (loading || !bundles.length) {
+  if (loading || !bundles.length || billingCreateSuccess) {
     return <Loading />;
   }
+
   const disableSubmit = submitting || promoPending;
 
   const buttonText = submitting ? 'Updating Subscription...' : 'Get Started';
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CenteredLogo />

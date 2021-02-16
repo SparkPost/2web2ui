@@ -17,8 +17,10 @@ export const choosePlanMSTP = formName =>
         state.account.loading ||
           state.billing.countriesLoading ||
           state.billing.bundlesLoading ||
-          state.billing.bundlePlansLoading,
+          state.billing.bundlePlansLoading ||
+          state.billingCreate.loading,
       ),
+    billingCreateSuccess: state => state.billingCreate.loading,
     billing: state => state.billing,
     bundles: state => selectAvailableBundles(state),
     initialValues: getChoosePlanInitialValues,

@@ -11,6 +11,7 @@ import alerts from './alerts';
 import apiKeys from './api-keys';
 import auth from './auth';
 import billing from './billing';
+import billingCreate from './billingCreate';
 import bounceReport from './bounceReport';
 import blocklist from './blocklist';
 import cookieConsent from './cookieConsent';
@@ -62,6 +63,7 @@ const appReducer = combineReducers({
   apiKeys,
   auth,
   billing,
+  billingCreate,
   blocklist,
   bounceReport,
   cookieConsent,
