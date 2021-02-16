@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMachine, useService } from '@xstate/react';
+import { useMachine, useActor, asEffect } from '@xstate/react';
 import {
   Box,
   Button,
@@ -146,7 +146,7 @@ export function AnalyticsReportPage() {
 }
 
 function MetricsForm({ stateMachine }) {
-  const [_state, send] = useService(stateMachine);
+  const [_state, send] = useActor(stateMachine);
 
   return (
     <form id="addingMetricsForm" onSubmit={() => send('SUBMIT_FORM')}>
@@ -172,16 +172,43 @@ function MetricsForm({ stateMachine }) {
 }
 
 function CreateReportModal({ onClose, stateMachine }) {
-  const [_state, send] = useService(stateMachine);
+  console.log('stateMachine', stateMachine);
+  const nameInputRef = React.useRef(null);
+  const [state, send] = useActor(stateMachine);
+  const { name, description, editable } = state.context;
+
+  // TODO: This shouldn't need to be here...but I can't figure out a way to pass actions or context values to an invoked actor
+  React.useEffect(() => {
+    if (state.value === 'error') {
+      nameInputRef.current && nameInputRef.current.focus();
+    }
+  }, [state.value]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    send('SUBMIT_FORM');
+  }
 
   return (
     <Modal open={true} onClose={onClose}>
       <Modal.Header showCloseButton>Saving New Report</Modal.Header>
 
       <Modal.Content>
-        <form id="createReportForm" onSubmit={() => send('SUBMIT_FORM')}>
+        <form id="createReportForm" onSubmit={handleSubmit}>
           <Stack>
-            <TextField label="Name" name="name" id="create-report-name" type="text" value="" />
+            <TextField
+              ref={nameInputRef}
+              label="Name"
+              name="name"
+              id="create-report-name"
+              type="text"
+              value={name.value}
+              error={state.matches('error') ? 'Name is required' : null}
+              onChange={e =>
+                send({ type: 'CHANGE_FIELD_VALUE', name: e.target.name, value: e.target.value })
+              }
+            />
 
             <TextField
               label="Description"
@@ -189,14 +216,21 @@ function CreateReportModal({ onClose, stateMachine }) {
               id="create-report-description"
               placeholder="Enter short description for your report"
               multiline
-              value=""
+              onChange={e =>
+                send({ type: 'CHANGE_FIELD_VALUE', name: e.target.name, value: e.target.value })
+              }
+              value={description.value}
             />
 
             <Checkbox.Group label="Editable">
               <Checkbox
                 id="create-report-editable"
+                name="editable"
                 label="Allow others to edit report"
-                checked=""
+                onChange={e =>
+                  send({ type: 'CHANGE_FIELD_VALUE', name: e.target.name, value: !editable })
+                }
+                checked={editable.value}
               />
             </Checkbox.Group>
           </Stack>

@@ -36,6 +36,7 @@ export const analyticsReportMachine = Machine({
         250: 'parsingURL',
       },
     },
+    invalidURLError: {},
     parsingURL: {
       // TODO: Add URL parsing logic here
       after: {
