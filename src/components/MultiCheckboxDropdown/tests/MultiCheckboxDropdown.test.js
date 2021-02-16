@@ -1,10 +1,10 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { render } from '@testing-library/react';
-import MultiCheckboxDropdown, { useMultiSelect } from '../MultiCheckboxDropdown';
+import MultiCheckboxDropdown, { useMultiCheckbox } from '../MultiCheckboxDropdown';
 import TestApp from 'src/__testHelpers__/TestApp';
 
-describe('useMultiSelect', () => {
+describe('useMultiCheckbox', () => {
   const defaultProps = {
     checkboxes: [
       { name: 'checkbox1', label: 'Checkbox 1' },
@@ -13,7 +13,7 @@ describe('useMultiSelect', () => {
   };
 
   const findSelectAllCheckbox = checkboxes => checkboxes.find(({ name }) => name === 'selectAll');
-  const subject = (props = {}) => renderHook(() => useMultiSelect({ ...defaultProps, ...props }));
+  const subject = (props = {}) => renderHook(() => useMultiCheckbox({ ...defaultProps, ...props }));
   const hookReturn = subject => subject.result.current;
 
   it('provides default values for the checkbox', () => {

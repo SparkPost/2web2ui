@@ -38,13 +38,13 @@ const reducer = (state, action) => {
 };
 
 /**
- * @name useMultiSelect
+ * @name useMultiCheckbox
  * @param {Array[Object]} checkboxes Array of checkboxes. Format is array of objects as { label: 'Checkbox Label', name: 'checkboxName' }
  * @param {Boolean} useSelectAll Attaches a checkbox at the top for selecting all checkboxes. Will retur
  * @param {Boolean} allowEmpty Turning off allowEmpty forces if all checkboxes are emtpy, all values are returned instead of an empty array
  * @description Attaches selectAll and click behavior for the checkboxes.
  */
-export function useMultiSelect({ checkboxes, allowSelectAll = true, allowEmpty = true }) {
+export function useMultiCheckbox({ checkboxes, allowSelectAll = true, allowEmpty = true }) {
   //TODO: Allow for a more calculated initial state for checkboxes instead of having empty as the default.
   const [state, dispatch] = useReducer(reducer, {
     checkboxes: [

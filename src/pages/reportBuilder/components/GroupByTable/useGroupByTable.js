@@ -13,7 +13,7 @@ import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
-import { useMultiSelect } from 'src/components/MultiCheckboxDropdown';
+import { useMultiCheckbox } from 'src/components/MultiCheckboxDropdown';
 
 const DELIVERABILITY_PRODUCT = 'deliverability';
 
@@ -56,7 +56,7 @@ export function useGroupByTable() {
   const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
   const hasSendingMetrics = Boolean(sendingMetrics.length);
 
-  const { checkboxes, values } = useMultiSelect({
+  const { checkboxes, values } = useMultiCheckbox({
     checkboxes: [
       { name: 'sending', label: 'Sending' },
       { name: 'panel', label: 'Panel' },
@@ -110,7 +110,7 @@ export function useGroupByTable() {
 
 export function useCompareByGroupByTable() {
   const [groupBy, setGroupBy] = useState();
-  const { checkboxes, values } = useMultiSelect({
+  const { checkboxes, values } = useMultiCheckbox({
     checkboxes: [
       { name: 'sending', label: 'Sending' },
       { name: 'panel', label: 'Panel' },
