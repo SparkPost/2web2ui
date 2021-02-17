@@ -91,13 +91,10 @@ export function OnboardingPlanPage({
     }
 
     // Note: billingCreate will update the subscription if the account is AWS
-    return action
-      .then(({ discount_id }) => {
-        newValues.discountId = discount_id;
-        return billingCreate({ ...newValues, billingId });
-      })
-      .then(() => history.push(next_step))
-      .then(() => showAlert({ type: 'success', message: 'Added your plan' }));
+    return action.then(({ discount_id }) => {
+      newValues.discountId = discount_id;
+      return billingCreate({ ...newValues, billingId });
+    });
   };
 
   const applyPromoCode = promoCode => {
@@ -125,7 +122,14 @@ export function OnboardingPlanPage({
     clearPromoCode,
   };
 
-  if (loading || !bundles.length || billingCreateSuccess) {
+  useEffect(() => {
+    if (billingCreateSuccess) {
+      history.push(next_step);
+      showAlert({ type: 'success', message: 'Added your plan' });
+    }
+  }, [billingCreateSuccess, history, next_step, showAlert]);
+
+  if (loading || !bundles.length) {
     return <Loading />;
   }
 

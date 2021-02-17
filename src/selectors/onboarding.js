@@ -20,7 +20,7 @@ export const choosePlanMSTP = formName =>
           state.billing.bundlePlansLoading ||
           state.billingCreate.loading,
       ),
-    billingCreateSuccess: state => state.billingCreate.loading,
+    billingCreateSuccess: state => state.billingCreate.success,
     billing: state => state.billing,
     bundles: state => selectAvailableBundles(state),
     initialValues: getChoosePlanInitialValues,
