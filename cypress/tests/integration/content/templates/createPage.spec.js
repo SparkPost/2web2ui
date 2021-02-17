@@ -213,6 +213,14 @@ describe('The create template page', () => {
       cy.findByRole('button', { name: 'Save and Publish' }).click();
     });
     cy.wait('@publishTemplate');
+    cy.url().should('include', 'published');
+    cy.wait([
+      '@getTemplate',
+      '@stubbedSendingDomains',
+      '@getSubaccounts',
+      '@getPublishedTemplate',
+      '@getPreview',
+    ]);
     cy.findByRole('button', { name: 'Open Menu' }).click();
     cy.findByRole('button', { name: 'Duplicate' }).click();
 
