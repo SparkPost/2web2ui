@@ -41,7 +41,7 @@ function LinkTrackingDomainSection({ domain, isSectionVisible, trackingDomainOpt
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Link Tracking Domain</Layout.SectionTitle>
         <Stack>
-          <SubduedText fontSize="200">Assign a tracking domain?</SubduedText>
+          <SubduedText fontSize="200">Assign a tracking domain.</SubduedText>
           <SubduedLink
             as={ExternalLink}
             to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}

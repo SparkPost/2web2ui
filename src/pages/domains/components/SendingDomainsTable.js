@@ -81,14 +81,7 @@ function MainCell({ row }) {
 }
 
 function StatusCell({ row }) {
-  const {
-    blocked,
-    readyForBounce,
-    readyForDKIM,
-    readyForSending,
-    validSPF,
-    unverified,
-  } = row.DomainStatus;
+  const { blocked, readyForBounce, readyForDKIM, readyForSending, unverified } = row.DomainStatus;
   const { defaultBounceDomain } = row;
   const { subaccountId } = row;
 
@@ -122,8 +115,6 @@ function StatusCell({ row }) {
       )}
 
       {readyForDKIM && <Tag color="darkGray">DKIM Signing</Tag>}
-
-      {validSPF && <Tag color="darkGray">SPF Valid</Tag>}
     </Inline>
   );
 }

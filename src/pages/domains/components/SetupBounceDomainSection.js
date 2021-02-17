@@ -12,7 +12,12 @@ import { CopyField } from 'src/components';
 import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 
-export default function SetupBounceDomainSection({ domain, isSectionVisible, title }) {
+export default function SetupBounceDomainSection({
+  domain,
+  isSectionVisible,
+  title,
+  isBounceOnly,
+}) {
   const { id, status, subaccount_id } = domain;
   const { verify, showAlert, userName, isByoipAccount, verifyBounceLoading } = useDomains();
   const readyFor = resolveReadyFor(status);
@@ -50,16 +55,7 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
           {!readyFor.bounce && (
             <SubduedText fontSize="200">
               Adding the CNAME record in your DNS provider settings will set this domain up for
-              Bounce as well resulting in SPF (sender policy framework) authentication which is a
-              sending best practice.
-            </SubduedText>
-          )}
-          {!readyFor.bounce && (
-            <SubduedText fontSize="200">
-              SPF is an email authentication method used to determine if a bounce domain is allowed
-              to be used with a given sending IP. SPF failures can cause mail to be rejected at some
-              providers, so SparkPost requires our CNAME record to be published in DNS for all
-              bounce domains to ensure that they pass SPF checks.
+              Bounce which is a sending best practice.
             </SubduedText>
           )}
 
@@ -70,9 +66,11 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
           >
             Bounce Domain Documentation
           </SubduedLink>
-          <PageLink to="/domains/create" fontSize="200">
-            Create a seperate bounce subdomain
-          </PageLink>
+          {!isBounceOnly && !readyFor.bounce && (
+            <PageLink to="/domains/create" fontSize="200">
+              Create a seperate bounce subdomain
+            </PageLink>
+          )}
         </Stack>
       </Layout.Section>
       <Layout.Section>

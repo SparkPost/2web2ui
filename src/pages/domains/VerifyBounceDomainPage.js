@@ -38,6 +38,7 @@ function VerifyBounceDomainPage(props) {
         <Domains.SetupBounceDomainSection
           title="DNS Verification"
           domain={domain}
+          isBounceOnly={true}
           isSectionVisible={true}
         />
       </Page>

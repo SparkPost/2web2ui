@@ -45,11 +45,6 @@ const filtersInitialState = {
       isChecked: false,
     },
     {
-      label: 'SPF Valid',
-      name: 'validSPF',
-      isChecked: false,
-    },
-    {
       label: 'Unverified',
       name: 'unverified',
       isChecked: false,
@@ -78,12 +73,6 @@ const initFiltersForSending = {
     },
   },
   readyForBounce: {
-    defaultValue: undefined,
-    validate: val => {
-      return val === 'true' || val === 'false' || typeof val === 'boolean';
-    },
-  },
-  validSPF: {
     defaultValue: undefined,
     validate: val => {
       return val === 'true' || val === 'false' || typeof val === 'boolean';
@@ -171,7 +160,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
           readyForDKIM: row.readyForDKIM,
           readyForSending: row.readyForSending,
           unverified: row.unverified,
-          validSPF: row.validSPF,
         }),
         filter,
       },
@@ -194,7 +182,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     readyForDKIM: flattenedFilters['readyForDKIM'],
     readyForSending: flattenedFilters['readyForSending'],
     unverified: flattenedFilters['unverified'],
-    validSPF: flattenedFilters['validSPF'],
   };
 
   if (!renderBounceOnly) {
@@ -255,7 +242,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         readyForDKIM: flattenedFilters['readyForDKIM'],
         readyForSending: flattenedFilters['readyForSending'],
         unverified: flattenedFilters['unverified'],
-        validSPF: flattenedFilters['validSPF'],
       };
       domainStatusValues['readyForBounce'] = flattenedFilters['readyForBounce'];
       const reactTableFilters = getReactTableFilters({
@@ -313,7 +299,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       readyForDKIM: flattenedFilters['readyForDKIM'],
       readyForSending: flattenedFilters['readyForSending'],
       unverified: flattenedFilters['unverified'],
-      validSPF: flattenedFilters['validSPF'],
     };
 
     if (!renderBounceOnly) {

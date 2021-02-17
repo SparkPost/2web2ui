@@ -7,9 +7,10 @@ import useUniqueId from 'src/hooks/useUniqueId';
 
 export function SendingDomainStatusCell({ domain }) {
   const tooltipId = useUniqueId('default-bounce-domain');
-  const resolvedStatus = resolveStatus(domain.status);
-  const readyFor = resolveReadyFor(domain.status);
   const { is_default_bounce_domain, status } = domain;
+
+  const resolvedStatus = resolveStatus(status);
+  const readyFor = resolveReadyFor(status);
 
   if (resolvedStatus === 'blocked') return <Tag color="red">Blocked</Tag>;
 
@@ -38,8 +39,6 @@ export function SendingDomainStatusCell({ domain }) {
       )}
 
       {readyFor?.dkim && <Tag color="darkGray">DKIM Signing</Tag>}
-
-      {status?.spf_status === 'valid' && <Tag color="darkGray">SPF Valid</Tag>}
     </Inline>
   );
 }
