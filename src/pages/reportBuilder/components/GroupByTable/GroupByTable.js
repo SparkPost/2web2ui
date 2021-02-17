@@ -1,18 +1,23 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import cx from 'classnames';
+
+import { CheckboxWithLink } from './components';
 
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 
-import { TableCollection, Unit, PanelLoading } from 'src/components';
+import { ApiErrorBanner, PanelLoading, TableCollection, Unit } from 'src/components';
 import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
-import { Panel, Table, Box } from 'src/components/matchbox';
+import { Box, Column, Columns, Panel, Table } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
-
+import MultiCheckboxDropdown from 'src/components/MultiCheckboxDropdown';
+import EmptyCell from 'src/components/collection/EmptyCell';
+import { useGroupByTable } from './useGroupByTable';
 import styles from './ReportTable.module.scss';
 
 const tableWrapper = props => {
@@ -24,14 +29,29 @@ const tableWrapper = props => {
 };
 
 export const GroupByTable = () => {
-  const dispatch = useDispatch();
   const {
-    selectors: { selectSummaryMetricsProcessed: metrics },
-    state: reportOptions,
+    data,
+    status,
+    setGroupBy,
+    groupBy,
+    refetch,
+    checkboxes,
+    apiMetrics,
+    hasSendingMetrics,
+    hasInboxTrackingMetrics,
+    hasSendingProduct,
+    hasD12yProduct,
+  } = useGroupByTable();
+  const {
+    selectors: { selectSummaryMetricsProcessed: displayMetrics },
   } = useReportBuilderContext();
+
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
-  const { groupBy, tableData = [], tableLoading } = useSelector(state => state.summaryChart);
+  const hasD12yMetricsEnabled = useSelector(state =>
+    isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
+
   const group = GROUP_BY_CONFIG[groupBy];
 
   const getColumnHeaders = () => {
@@ -42,7 +62,7 @@ export const GroupByTable = () => {
       sortKey: group.keyName,
     };
 
-    const metricCols = metrics.map(({ label, key }) => ({
+    const metricCols = displayMetrics.map(({ label, key }) => ({
       key,
       label: <Box textAlign="right">{label}</Box>,
       className: cx(styles.HeaderCell, styles.NumericalHeader),
@@ -76,9 +96,13 @@ export const GroupByTable = () => {
         : { type: group.label, value: filterKey };
 
     const primaryCol = <AddFilterLink newFilter={newFilter} />;
-    const metricCols = metrics.map(({ key, unit }) => (
+    const metricCols = displayMetrics.map(({ key, unit }) => (
       <Box textAlign="right" key={key}>
-        <Unit value={row[key]} unit={unit} />
+        {row[key] !== undefined && row[key] !== null ? (
+          <Unit value={row[key]} unit={unit} />
+        ) : (
+          <EmptyCell />
+        )}
       </Box>
     ));
 
@@ -86,15 +110,30 @@ export const GroupByTable = () => {
   };
 
   const renderTable = () => {
-    if (!group || metrics.length === 0) {
+    if (!group || displayMetrics.length === 0) {
       return null;
     }
 
-    if (tableLoading) {
+    if (status === 'error') {
+      return (
+        <Panel>
+          <Panel.Section>
+            <ApiErrorBanner
+              reload={refetch}
+              status="muted"
+              title="Unable to load report"
+              message="Please try again"
+            />
+          </Panel.Section>
+        </Panel>
+      );
+    }
+
+    if (status === 'loading') {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!tableData.length) {
+    if (!Boolean(data.length) || !Boolean(apiMetrics.length)) {
       return (
         <Panel.LEGACY>
           <Empty message="There is no data to display" />
@@ -109,37 +148,50 @@ export const GroupByTable = () => {
         getRowData={getRowData}
         pagination
         defaultPerPage={10}
-        rows={tableData}
-        defaultSortColumn={metrics[0].key}
+        rows={data}
+        defaultSortColumn={displayMetrics[0].key}
         defaultSortDirection="desc"
         wrapperComponent={tableWrapper}
       />
     );
   };
 
+  //TODO: Make a more reusable version of this component (without the double function call)
+  const checkboxComponent = React.useMemo(
+    () =>
+      CheckboxWithLink({
+        hasSendingProduct,
+        hasD12yProduct,
+        hasSendingMetrics,
+        hasInboxTrackingMetrics,
+      }),
+    [hasSendingMetrics, hasSendingProduct, hasD12yProduct, hasInboxTrackingMetrics],
+  );
+
   return (
     <>
       <Panel marginBottom="-1px">
         <Panel.Section>
-          <GroupByOption
-            disabled={tableLoading || metrics.length === 0}
-            groupBy={groupBy}
-            hasSubaccounts={hasSubaccounts}
-            onChange={value => {
-              dispatch(
-                _getTableDataReportBuilder({
-                  groupBy: value,
-                  metrics,
-                  reportOptions: {
-                    ...reportOptions,
-                    filters: Boolean(reportOptions.filters.length)
-                      ? reportOptions.filters
-                      : undefined,
-                  },
-                }),
-              );
-            }}
-          />
+          <Columns collapseBelow="sm">
+            <GroupByOption
+              disabled={status === 'loading' || displayMetrics.length === 0}
+              groupBy={groupBy}
+              hasSubaccounts={hasSubaccounts}
+              onChange={setGroupBy}
+            />
+            {hasD12yMetricsEnabled && groupBy && (
+              <Column>
+                <MultiCheckboxDropdown
+                  allowEmpty={false}
+                  checkboxes={checkboxes}
+                  id="group-by-dropdown"
+                  label="Data Sources"
+                  screenReaderDirections="Filter the table by the selected checkboxes"
+                  checkboxComponent={checkboxComponent}
+                />
+              </Column>
+            )}
+          </Columns>
         </Panel.Section>
       </Panel>
       <div data-id="summary-table">{renderTable()}</div>

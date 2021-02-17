@@ -183,3 +183,14 @@ export const METRICS = [
     queryParam: 'count_unsubscribe',
   },
 ];
+
+export const INBOX_METRICS = [
+  { name: 'Inbox Folder Count' },
+  { name: 'Spam Folder Count' },
+  { name: 'Inbox Folder Rate' },
+  { name: 'Spam Folder Rate' },
+  { name: 'Moved to Inbox Count' },
+  { name: 'Moved to Spam Count' },
+  { name: 'Moved to Inbox Rate' },
+  { name: 'Moved to Spam Rate' },
+];

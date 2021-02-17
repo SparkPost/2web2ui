@@ -4,13 +4,7 @@ import { Tabs, Loading } from 'src/components';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
-import {
-  ActiveMetrics,
-  ActiveComparisons,
-  CompareByForm,
-  FiltersForm,
-  MetricsDrawer,
-} from './index';
+import { ActiveMetrics, ActiveComparisons, CompareByForm, FiltersForm, MetricsForm } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import { usePageFilters } from 'src/hooks';
@@ -137,7 +131,7 @@ export function ReportOptions(props) {
         <Drawer.Content p="0">
           <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabs}>
             <Tabs.Item>
-              <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
+              <MetricsForm selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
             </Tabs.Item>
             <Tabs.Item>
               <FiltersForm handleSubmit={handleSubmit} />

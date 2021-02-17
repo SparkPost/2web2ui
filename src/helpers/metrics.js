@@ -11,10 +11,12 @@ const {
   metricsPrecisionMap: precisionMap,
   metricsRollupPrecisionMap: rollupPrecisionMap,
   apiDateFormat,
-  chartColors = [],
 } = config;
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
+/**
+ * @deprecated
+ */
 export function getQueryFromOptions({
   from,
   to,
@@ -49,6 +51,18 @@ export function getQueryFromOptions({
 }
 
 // TODO: Replace original once OG theme is removed
+/**
+ * @name getQueryFromOptionsV2
+ * @description Converts various report options into API ready content
+ * @param {Date} from
+ * @param {Date} from
+ * @param {string} timezone
+ * @param {string} precision
+ * @param {Array[Object]} metrics - array of metrics objects (not just the keys)
+ * @param {Array[Object]} filters
+ * @param {Array} match
+ * @param {Number} count
+ */
 export function getQueryFromOptionsV2({
   from,
   to,
@@ -309,8 +323,8 @@ export function getMetricFromKey(metricKey) {
   return METRICS_LIST.find(metric => metric.key === metricKey);
 }
 
-export function _getMetricsFromKeys(keys = [], isHibanaEnabled) {
-  const metricsColors = isHibanaEnabled ? HIBANA_METRICS_COLORS : chartColors;
+export function _getMetricsFromKeys(keys = []) {
+  const metricsColors = HIBANA_METRICS_COLORS;
 
   return keys.map((metric, i) => {
     const found = METRICS_LIST.find(M => M.key === metric || M.key === metric.key);
@@ -323,10 +337,7 @@ export function _getMetricsFromKeys(keys = [], isHibanaEnabled) {
   });
 }
 
-export const getMetricsFromKeys = _.memoize(
-  _getMetricsFromKeys,
-  (keys = [], isHibanaEnabled) => `${keys.join('')}${isHibanaEnabled ? 'hibana' : 'og'}`,
-);
+export const getMetricsFromKeys = _.memoize(_getMetricsFromKeys, (keys = []) => `${keys.join('')}`);
 
 export function getKeysFromMetrics(metrics = []) {
   const flattened = _.flatMap(metrics, ({ key, computeKeys }) => (computeKeys ? computeKeys : key));
@@ -396,4 +407,65 @@ export function getFilterByComparison(comparison) {
       },
     },
   };
+}
+
+/**
+ * @name splitDeliverabilityMetric
+ * @description Will split metric to either source from exclusively seed or panel for deliverability metrics
+ * @param {Object} metric - Object to split
+ * @param {Array[String]} dataSource - Array of values included for data source
+ */
+export function splitDeliverabilityMetric(metric, dataSource) {
+  if (metric.product !== 'deliverability') {
+    return metric;
+  }
+
+  const hasPanel = dataSource.includes('panel');
+  const hasSeed = dataSource.includes('seed');
+  const hasBoth = hasSeed && hasPanel;
+  const targetString = hasPanel ? 'panel' : 'seed';
+
+  if (!hasPanel && !hasSeed) {
+    return metric;
+  }
+  if (hasBoth) {
+    return metric;
+  }
+
+  switch (metric.key) {
+    case 'count_inbox':
+      return {
+        ...metric,
+        computeKeys: [`count_inbox_${targetString}`],
+        compute: data => data[`count_inbox_${targetString}`],
+      };
+    case 'count_spam':
+      return {
+        ...metric,
+        computeKeys: [`count_spam_${targetString}`],
+        compute: data => data[`count_inbox_${targetString}`],
+      };
+    case 'inbox_folder_rate':
+      return {
+        ...metric,
+        computeKeys: [`count_spam_${targetString}`, `count_inbox_${targetString}`],
+        compute: data =>
+          safeRate(
+            data[`count_inbox_${targetString}`],
+            data[`count_inbox_${targetString}`] + data[`count_spam_${targetString}`],
+          ),
+      };
+    case 'spam_folder_rate':
+      return {
+        ...metric,
+        computeKeys: [`count_spam_${targetString}`, `count_inbox_${targetString}`],
+        compute: data =>
+          safeRate(
+            data[`count_spam_${targetString}`],
+            data[`count_inbox_${targetString}`] + data[`count_spam_${targetString}`],
+          ),
+      };
+    default:
+      return metric; //Other deliverability metrics have no changes
+  }
 }

@@ -1,11 +1,16 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import MetricsDrawer from '../MetricsDrawer';
+import MetricsForm from '../MetricsForm';
 
 //Even though Hibana will be enabled, there seems to be issues with using styled props.
 //This should only affect formatting but not the actual content
 jest.mock('src/context/HibanaContext', () => ({
   useHibana: jest.fn().mockReturnValue([{ isHibanaEnabled: false }]),
+}));
+
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useSelector: jest.fn(),
 }));
 
 // this uses the src/config/__mocks__/metrics.js file automatically
@@ -19,7 +24,7 @@ describe('Component: Summary Chart Metrics Modal', () => {
     DrawerFooter: mockDrawerFooter,
   };
 
-  const subject = props => render(<MetricsDrawer {...defaultProps} {...props} />);
+  const subject = props => render(<MetricsForm {...defaultProps} {...props} />);
 
   it('should render with no set metrics', () => {
     const { queryByLabelText } = subject();

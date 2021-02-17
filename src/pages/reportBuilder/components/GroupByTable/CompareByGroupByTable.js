@@ -2,17 +2,21 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import cx from 'classnames';
 import _ from 'lodash';
+
+import { CheckboxWithLink } from './components';
 import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 import { ApiErrorBanner, Empty, PanelLoading, TableCollection, Unit } from 'src/components';
-import { Panel, Table, Box, Tag } from 'src/components/matchbox';
+import MultiCheckboxDropdown from 'src/components/MultiCheckboxDropdown';
+import { Box, Column, Columns, Panel, Table, Tag } from 'src/components/matchbox';
 import EmptyCell from 'src/components/collection/EmptyCell';
 import { GROUP_BY_CONFIG } from '../../constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import AddFilterLink from '../AddFilterLink';
 import styles from './ReportTable.module.scss';
-import useGroupByTable from './useGroupByTable';
+import { useCompareByGroupByTable } from './useGroupByTable';
 import GroupByOption from './GroupByOption';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 const tableWrapper = props => {
   return (
@@ -30,10 +34,20 @@ export const CompareByTable = () => {
     groupBy,
     comparisonType,
     refetchAll,
-  } = useGroupByTable();
+    checkboxes,
+    apiMetrics,
+    hasSendingMetrics,
+    hasInboxTrackingMetrics,
+    hasSendingProduct,
+    hasD12yProduct,
+  } = useCompareByGroupByTable();
   const {
     selectors: { selectSummaryMetricsProcessed: metrics },
   } = useReportBuilderContext();
+  const hasD12yMetricsEnabled = useSelector(state =>
+    isAccountUiOptionSet('allow_deliverability_metrics')(state),
+  );
+
   const hasSubaccounts = useSelector(hasSubaccountsSelector);
   const subaccounts = useSelector(state => state.subaccounts.list);
   const group = GROUP_BY_CONFIG[groupBy];
@@ -92,7 +106,11 @@ export const CompareByTable = () => {
     const comparisonCol = <Tag>{row[comparisonType]}</Tag>;
     const metricCols = metrics.map(({ key, unit }) => (
       <Box textAlign="right" key={key}>
-        {row[key] ? <Unit value={row[key]} unit={unit} /> : <EmptyCell />}
+        {row[key] !== undefined && row[key] !== null ? (
+          <Unit value={row[key]} unit={unit} />
+        ) : (
+          <EmptyCell />
+        )}
       </Box>
     ));
 
@@ -123,7 +141,7 @@ export const CompareByTable = () => {
       return <PanelLoading minHeight="250px" />;
     }
 
-    if (!tableData.length) {
+    if (!Boolean(tableData.length) || !Boolean(apiMetrics.length)) {
       return (
         <Panel>
           <Empty message="There is no data to display" />
@@ -146,16 +164,42 @@ export const CompareByTable = () => {
     );
   };
 
+  //TODO: Make a more reusable version of this component (without the double function call)
+  const checkboxComponent = React.useMemo(
+    () =>
+      CheckboxWithLink({
+        hasSendingProduct,
+        hasD12yProduct,
+        hasSendingMetrics,
+        hasInboxTrackingMetrics,
+      }),
+    [hasSendingMetrics, hasSendingProduct, hasD12yProduct, hasInboxTrackingMetrics],
+  );
+
   return (
     <>
       <Panel marginBottom="-1px">
         <Panel.Section>
-          <GroupByOption
-            disabled={statuses.includes('loading') || metrics.length === 0}
-            groupBy={groupBy}
-            hasSubaccounts={hasSubaccounts}
-            onChange={setGroupBy}
-          />
+          <Columns collapseBelow="sm">
+            <GroupByOption
+              disabled={statuses.includes('loading') || metrics.length === 0}
+              groupBy={groupBy}
+              hasSubaccounts={hasSubaccounts}
+              onChange={setGroupBy}
+            />
+            {hasD12yMetricsEnabled && groupBy && (
+              <Column>
+                <MultiCheckboxDropdown
+                  allowEmpty={false}
+                  checkboxes={checkboxes}
+                  id="group-by-dropdown"
+                  label="Data Sources"
+                  screenReaderDirections="Filter the table by the selected checkboxes"
+                  checkboxComponent={checkboxComponent}
+                />
+              </Column>
+            )}
+          </Columns>
         </Panel.Section>
       </Panel>
       <div data-id="summary-table">

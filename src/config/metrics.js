@@ -1,12 +1,11 @@
-/* eslint-disable max-lines */
 import { rate, average } from '../helpers/metrics';
-
+import { safeRate } from '../helpers/math';
 const injection = 'Injection';
 const delivery = 'Delivery';
-//const d12y = 'Deliverability';
+const deliverability = 'Deliverability';
 const engagement = 'Engagement';
 
-export const categories = [injection, delivery, engagement];
+export const categories = [injection, delivery, deliverability, engagement];
 
 export const list = [
   {
@@ -39,6 +38,7 @@ export const list = [
     inSummary: true,
   },
   {
+    //TODO: Remove once deliverability metrics are released
     key: 'count_accepted',
     label: 'Accepted',
     type: 'total',
@@ -273,6 +273,7 @@ export const list = [
     tab: 'rejection',
   },
   {
+    //TODO: Remove once deliverability metrics are released
     key: 'accepted_rate',
     label: 'Accepted Rate',
     category: delivery,
@@ -492,6 +493,123 @@ export const list = [
     type: 'total',
     unit: 'number',
     description: 'Total number of messages which had at least one link selected one or more times.',
+  },
+  {
+    key: 'count_accepted',
+    label: 'Accepted',
+    type: 'total',
+    category: deliverability,
+    unit: 'number',
+    description: "Number of emails delivered that didn't subsequently bounce (Out-of-Band).",
+    inSummary: true,
+  },
+  {
+    key: 'accepted_rate',
+    label: 'Accepted Rate',
+    category: deliverability,
+    unit: 'percent',
+    computeKeys: ['count_accepted', 'count_sent'],
+    compute: rate,
+    description: 'Percentage of Sent messages that were accepted.',
+    inSummary: true,
+  },
+  {
+    key: 'count_inbox',
+    label: 'Inbox Folder Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+    compute: ({ count_inbox_panel, count_inbox_seed }) => count_inbox_panel + count_inbox_seed,
+    computeKeys: ['count_inbox_panel', 'count_inbox_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'count_spam',
+    label: 'Spam Folder Count',
+    type: 'total',
+    unit: 'number',
+    compute: ({ count_spam_panel, count_spam_seed }) => count_spam_panel + count_spam_seed,
+    computeKeys: ['count_spam_panel', 'count_spam_seed'],
+    category: deliverability,
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'inbox_folder_rate',
+    label: 'Inbox Folder Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    compute: ({ count_inbox_panel, count_inbox_seed, count_spam_panel, count_spam_seed }) => {
+      return safeRate(
+        count_inbox_panel + count_inbox_seed,
+        count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed,
+      );
+    },
+    computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'spam_folder_rate',
+    label: 'Spam Folder Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    compute: ({ count_inbox_panel, count_inbox_seed, count_spam_panel, count_spam_seed }) => {
+      return safeRate(
+        count_spam_panel + count_spam_seed,
+        count_inbox_panel + count_inbox_seed + count_spam_panel + count_spam_seed,
+      );
+    },
+    computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'count_moved_to_inbox',
+    label: 'Moved to Inbox Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'count_moved_to_spam',
+    label: 'Moved to Spam Count',
+    type: 'total',
+    unit: 'number',
+    category: deliverability,
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'moved_to_inbox_rate',
+    label: 'Moved to Inbox Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    compute: ({ count_moved_to_inbox, count_spam_panel, count_spam_seed }) => {
+      return safeRate(count_moved_to_inbox, count_spam_panel + count_spam_seed);
+    },
+    computeKeys: ['count_moved_to_inbox', 'count_spam_panel', 'count_spam_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
+  },
+  {
+    key: 'moved_to_spam_rate',
+    label: 'Moved to Spam Rate',
+    unit: 'percent',
+    type: 'percentage',
+    category: deliverability,
+    compute: ({ count_moved_to_spam, count_inbox_panel, count_inbox_seed }) => {
+      return safeRate(count_moved_to_spam, count_inbox_panel + count_inbox_seed);
+    },
+    computeKeys: ['count_moved_to_spam', 'count_inbox_panel', 'count_inbox_seed'],
+    inReportBuilder: true,
+    product: 'deliverability',
   },
 ];
 

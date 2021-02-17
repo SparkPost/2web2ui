@@ -1,14 +1,21 @@
 import { useState, useMemo } from 'react';
 import { getDeliverability } from 'src/helpers/api/metrics';
-import { useSparkPostQueries } from 'src/hooks';
+import { useSelector } from 'react-redux';
+import { hasProductOnBillingSubscription } from 'src/helpers/conditions/account';
+import { useSparkPostQueries, useSparkPostQuery } from 'src/hooks';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
+  transformData,
+  splitDeliverabilityMetric,
 } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
+import { useMultiCheckbox } from 'src/components/MultiCheckboxDropdown';
+
+const DELIVERABILITY_PRODUCT = 'deliverability';
 
 const separateCompareOptions = reportOptions => {
   const { comparisons } = reportOptions;
@@ -28,25 +35,138 @@ const separateCompareOptions = reportOptions => {
   // Appends each compared filter as a new filter for individual requests
 };
 
-export default function useGroupByTable() {
+export function useGroupByTable() {
   const [groupBy, setGroupBy] = useState();
+  const {
+    selectors: { selectSummaryMetricsProcessed: displayMetrics },
+    state: reportOptions,
+  } = useReportBuilderContext();
 
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const hasSendingProduct = useSelector(state =>
+    hasProductOnBillingSubscription('messaging')(state),
+  );
+
+  const inboxTrackerMetrics = displayMetrics.filter(
+    ({ product }) => product === DELIVERABILITY_PRODUCT,
+  );
+  const sendingMetrics = displayMetrics.filter(({ product }) => product !== DELIVERABILITY_PRODUCT);
+  const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
+  const hasSendingMetrics = Boolean(sendingMetrics.length);
+
+  const { checkboxes, values } = useMultiCheckbox({
+    checkboxes: [
+      { name: 'sending', label: 'Sending' },
+      { name: 'panel', label: 'Panel' },
+      { name: 'seed', label: 'Seed List' },
+    ],
+    allowSelectAll: false,
+    allowEmpty: false,
+  });
+
+  const filteredMetrics = displayMetrics.filter(metric => {
+    if (metric.product === DELIVERABILITY_PRODUCT) {
+      return values.includes('panel') || values.includes('seed');
+    } else {
+      return values.includes('sending');
+    }
+  });
+
+  const reformattedMetrics = filteredMetrics.map(metric =>
+    splitDeliverabilityMetric(metric, values),
+  );
+  const preparedOptions = getQueryFromOptions({
+    ...reportOptions,
+    metrics: reformattedMetrics,
+    dataSource: values,
+  });
+
+  const { data = [], status, refetch } = useSparkPostQuery(
+    () => getDeliverability(preparedOptions, groupBy),
+    {
+      refetchOnWindowFocus: false,
+      enabled: Boolean(reportOptions.isReady && groupBy && reformattedMetrics.length),
+    },
+  );
+
+  const formattedData = transformData(data, reformattedMetrics);
+
+  return {
+    data: formattedData,
+    status,
+    groupBy,
+    setGroupBy,
+    refetch,
+    checkboxes,
+    apiMetrics: reformattedMetrics,
+    hasSendingMetrics,
+    hasSendingProduct,
+    hasInboxTrackingMetrics,
+    hasD12yProduct,
+  };
+}
+
+export function useCompareByGroupByTable() {
+  const [groupBy, setGroupBy] = useState();
+  const { checkboxes, values } = useMultiCheckbox({
+    checkboxes: [
+      { name: 'sending', label: 'Sending' },
+      { name: 'panel', label: 'Panel' },
+      { name: 'seed', label: 'Seed List' },
+    ],
+    allowSelectAll: false,
+    allowEmpty: false,
+  });
   const { state: reportOptions } = useReportBuilderContext();
   const { metrics, comparisons } = reportOptions;
 
   // Prepares params for request
   const formattedMetrics = useMemo(() => {
-    return getMetricsFromKeys(metrics, true);
-  }, [metrics]);
+    return getMetricsFromKeys(metrics, true).map(metric =>
+      splitDeliverabilityMetric(metric, values),
+    );
+  }, [metrics, values]);
+
+  const hasD12yProduct = useSelector(state =>
+    hasProductOnBillingSubscription('deliverability')(state),
+  );
+  const hasSendingProduct = useSelector(state =>
+    hasProductOnBillingSubscription('messaging')(state),
+  );
+
+  const inboxTrackerMetrics = formattedMetrics.filter(
+    ({ product }) => product === DELIVERABILITY_PRODUCT,
+  );
+  const sendingMetrics = formattedMetrics.filter(
+    ({ product }) => product === DELIVERABILITY_PRODUCT,
+  );
+  const hasInboxTrackingMetrics = Boolean(inboxTrackerMetrics.length);
+  const hasSendingMetrics = Boolean(sendingMetrics.length);
+
+  const filteredMetrics = formattedMetrics.filter(metric => {
+    if (metric.product === DELIVERABILITY_PRODUCT) {
+      return values.includes('panel') || values.includes('seed');
+    } else {
+      return values.includes('sending');
+    }
+  });
+  const reformattedMetrics = filteredMetrics.map(metric =>
+    splitDeliverabilityMetric(metric, values),
+  );
 
   const separatedOptions = separateCompareOptions(reportOptions);
   const separatedRequests = separatedOptions.map(options => {
     return () =>
-      getDeliverability(getQueryFromOptions({ ...options, metrics: formattedMetrics }), groupBy);
+      getDeliverability(
+        getQueryFromOptions({ ...options, metrics: reformattedMetrics, dataSources: values }),
+        groupBy,
+      );
   });
 
   const queries = useSparkPostQueries([...separatedRequests], {
-    enabled: Boolean(reportOptions.isReady && groupBy),
+    enabled: Boolean(reportOptions.isReady && groupBy && reformattedMetrics.length),
     refetchOnWindowFocus: false,
   });
 
@@ -83,7 +203,7 @@ export default function useGroupByTable() {
   };
 
   const generatedRows = queries.every(query => query.status === 'success')
-    ? formatData(queries.map(query => query.data))
+    ? transformData(formatData(queries.map(query => query.data)), formattedMetrics)
     : [];
 
   const comparisonType = comparisons[0].type;
@@ -95,5 +215,11 @@ export default function useGroupByTable() {
     statuses,
     refetchAll,
     comparisonType,
+    checkboxes,
+    apiMetrics: reformattedMetrics,
+    hasSendingMetrics,
+    hasInboxTrackingMetrics,
+    hasSendingProduct,
+    hasD12yProduct,
   };
 }

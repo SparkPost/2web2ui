@@ -275,6 +275,7 @@ export const REPORT_BUILDER_FILTER_KEY_MAP = {
   Subaccount: 'subaccounts',
   'Sending Domain': 'sending_domains',
 };
+
 export const UNLIMITED_PLAN_VOLUME = -1;
 
 export { ROLES, SUBACCOUNT_ROLES, ROLE_LABELS } from './users';
