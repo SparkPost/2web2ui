@@ -55,8 +55,7 @@ export default function SetupBounceDomainSection({
           {!readyFor.bounce && (
             <SubduedText fontSize="200">
               Adding the CNAME record in your DNS provider settings will set this domain up for
-              Bounce as well resulting in SPF (sender policy framework) authentication which is a
-              sending best practice.
+              Bounce which is a sending best practice.
             </SubduedText>
           )}
 
