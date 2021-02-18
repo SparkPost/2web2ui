@@ -80,7 +80,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     );
     cy.wait('@getSubaccounts');
     cy.findByDataId('aggregate-metrics-date-range').within(() => {
-      cy.findByText('Jan 14th, 2021 - Jan 29th, 2021').should('be.visible');
+      cy.findByText('Jan 14th - Jan 29th, 2021').should('be.visible');
     });
     cy.findByLabelText('Time Zone')
       .focus()
