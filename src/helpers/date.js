@@ -174,7 +174,7 @@ export function getFormattedDateRangeForAggregateData(from, to, timezone = getLo
   if (!from || !to) {
     return '';
   }
-  return `${formatToTimezone(new Date(from), "MMM do',' yyyy", timezone)} - ${formatToTimezone(
+  return `${formatToTimezone(new Date(from), 'MMM do', timezone)} - ${formatToTimezone(
     new Date(to),
     "MMM do',' yyyy",
     timezone,

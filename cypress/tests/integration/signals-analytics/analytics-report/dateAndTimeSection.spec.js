@@ -89,7 +89,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     cy.tick(300);
     cy.findByRole('option', { name: '(UTC-06:00) America/Belize' }).click({ force: true });
     cy.findByDataId('aggregate-metrics-date-range').within(() => {
-      cy.findByText('Jan 13th, 2021 - Jan 29th, 2021').should('be.visible');
+      cy.findByText('Jan 13th - Jan 29th, 2021').should('be.visible');
     });
   });
 });
