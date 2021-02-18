@@ -21,7 +21,7 @@ export default function AggregatedMetrics({
   return (
     <Box padding="400" backgroundColor="gray.1000">
       <Grid>
-        <Grid.Column sm={showFiltersButton ? 9 : 3}>
+        <Grid.Column sm={showFiltersButton ? 9 : 3} data-id="aggregate-metrics-date-range">
           <LabelValue dark>
             <LabelValue.Label>Date</LabelValue.Label>
 

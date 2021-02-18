@@ -170,8 +170,15 @@ export function formatDateTimeWithoutYear(datetime) {
   return formatDateTime(datetime, `${config.dateFormatWithoutYear}, ${config.timeFormat}`);
 }
 
-export function getFormattedDateRangeForAggregateData(from, to) {
-  return `${formatDate(from, 'MMM Do')} - ${formatDate(to, 'MMM Do, YYYY')}`;
+export function getFormattedDateRangeForAggregateData(from, to, timezone = getLocalTimezone()) {
+  if (!from || !to) {
+    return '';
+  }
+  return `${formatToTimezone(new Date(from), 'MMM do', timezone)} - ${formatToTimezone(
+    new Date(to),
+    "MMM do',' yyyy",
+    timezone,
+  )}`;
 }
 // format as ISO 8601 timestamp to match SP API
 export const formatApiTimestamp = time => moment.utc(time).format();

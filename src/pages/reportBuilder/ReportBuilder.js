@@ -231,8 +231,8 @@ export function ReportBuilder({
     setShowTable(true);
   }, [tabs]);
 
-  const { to, from } = summarySearchOptions;
-  const dateValue = getFormattedDateRangeForAggregateData(from, to);
+  const { to, from, timezone } = summarySearchOptions;
+  const dateValue = getFormattedDateRangeForAggregateData(from, to, timezone);
 
   if (!reportOptions.isReady) {
     return <Loading />;

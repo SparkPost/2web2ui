@@ -24,7 +24,7 @@
     }
   },
   "lint-staged": {
-    "{config,cypress,src,.eslintplugin}/**/*[.spec][.test].js": [
+    "{config,cypress,src,.eslintplugin}/**/*.js": [
       "eslint --fix",
       "git add"
     ],

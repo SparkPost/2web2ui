@@ -115,6 +115,7 @@ export default function DashboardPageV2() {
   const dateValue = getFormattedDateRangeForAggregateData(
     pinnedReport?.options?.from,
     pinnedReport?.options?.to,
+    pinnedReport?.options?.timezone,
   );
   if (pending) return <Loading />;
 
