@@ -73,4 +73,23 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
       expect(xhr.url).to.contain(`from=2020-01-29T14:00`);
     });
   });
+
+  it.only('should show appropriate date ranges based on timezone (and not local timezone)', () => {
+    cy.visit(
+      `/signals/analytics?from=2021-01-13T23%3A00%3A00-06%3A00&to=2021-01-29T22%3A59%3A59-06%3A00&range=custom`,
+    );
+    cy.wait('@getSubaccounts');
+    cy.findByDataId('aggregate-metrics-date-range').within(() => {
+      cy.findByText('Jan 14th, 2021 - Jan 29th, 2021').should('be.visible');
+    });
+    cy.findByLabelText('Time Zone')
+      .focus()
+      .clear()
+      .type('Belize');
+    cy.tick(300);
+    cy.findByRole('option', { name: '(UTC-06:00) America/Belize' }).click({ force: true });
+    cy.findByDataId('aggregate-metrics-date-range').within(() => {
+      cy.findByText('Jan 13th, 2021 - Jan 29th, 2021').should('be.visible');
+    });
+  });
 });
