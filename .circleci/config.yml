@@ -44,7 +44,11 @@ commands:
     steps:
       - store_test_results:
           name: 'Upload test report'
-          path: /root/project/cypress/results
+          path: test_results
+      - store_artifacts:
+          name: 'Upload test results'
+          path: /root/project/test_results/cypress
+          destination: cypress-test-results
       - store_artifacts:
           name: 'Upload videos'
           path: /root/project/cypress/videos
@@ -64,10 +68,15 @@ jobs:
       - setup
       - run:
           command:
-            npm run test-ci $(circleci tests glob "./src/**/*.test.js" "./scripts/**/*.test.js" |
+            npm run test-ci $(circleci tests glob ".eslintplugin/**/*.test.js" "./src/**/*.test.js" "./scripts/**/*.test.js" |
             circleci tests split --split-by=timings)
       - store_test_results:
+          name: 'Upload test report'
           path: test_results
+      - store_artifacts:
+          name: 'Upload test results'
+          path: /home/circleci/project/test_results
+          destination: jest-test-results
 
   'Build':
     <<: *defaults
@@ -88,7 +97,7 @@ jobs:
   'Integration Testing':
     docker:
       - image: cypress/browsers
-    parallelism: 6
+    parallelism: 7
     steps:
       - setup
       # Restores the /build folder from the previous job

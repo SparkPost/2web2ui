@@ -1,4 +1,3 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
 const PAGE_URL = '/lists/recipient-lists';
 const API_URL = '/api/v1/recipient-lists';
 

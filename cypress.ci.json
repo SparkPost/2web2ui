@@ -1,5 +1,7 @@
 {
   "baseUrl": "http://localhost:5000",
   "numTestsKeptInMemory": 1,
-  "retries": 3
+  "retries": 3,
+  "reporter": "cypress-circleci-reporter",
+  "videoCompression": false
 }

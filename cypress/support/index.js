@@ -18,7 +18,3 @@ import './commands';
 // Used to help log `cy.log()` invocations to the console during headless runs.
 // See: https://github.com/cypress-io/cypress/issues/3199#issuecomment-529430701
 Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
-
-Cypress.Cookies.defaults({
-  preserve: ['website_auth', '__ssid', 'auth'], // Preserves signed-in state between route changes
-});

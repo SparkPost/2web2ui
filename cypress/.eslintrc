@@ -1,6 +1,5 @@
 {
   "rules": {
-    "no-undef": "off",
     "jest/expect-expect": "off",
     // Within the `.then()` or `.catch()` block of a Cypress promise,
     // sometimes only another browser interaction occurs rather than an assertion.

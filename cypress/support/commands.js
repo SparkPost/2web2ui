@@ -28,6 +28,9 @@ Cypress.Commands.add('login', (options = {}) => {
         cy.wait('@loginPost');
         cy.wait('@twoFactorGet');
       }
+
+      // Preserves cookies once per spec to avoid repeating login flow for each test
+      Cypress.Cookies.preserveOnce('website_auth', '__ssid', 'auth');
     }
   });
 });

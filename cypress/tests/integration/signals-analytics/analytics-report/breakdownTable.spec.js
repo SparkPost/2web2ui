@@ -37,7 +37,6 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'subaccounts/200.get.json',
       requestAlias: 'getSubaccountList',
     });
-    cy.login({ isStubbed: true });
   });
 
   it('renders data broken down by "Recipient Domain"', () => {
@@ -47,7 +46,6 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/watched-domain/200.get.json',
       requestAlias: 'getWatchedDomains',
     });
-
     cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
@@ -116,6 +114,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/sending-domain/200.get.json',
       requestAlias: 'getSendingDomain',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -155,6 +154,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/campaign/200.get.json',
       requestAlias: 'getCampaign',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -185,6 +185,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/template/200.get.json',
       requestAlias: 'getTemplate',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -217,7 +218,6 @@ describe('Analytics Report breakdown table', () => {
 
   it('renders data broken down by "Subaccount"', () => {
     cy.clock(STABLE_UNIX_DATE);
-
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/subaccount**/*',
       fixture: 'metrics/deliverability/subaccount/200.get.json',
@@ -281,6 +281,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/sending-ip/200.get.json',
       requestAlias: 'getSendingIP',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -329,6 +330,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/ip-pool/200.get.json',
       requestAlias: 'getIPPool',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -376,6 +378,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: '200.get.no-results.json',
       requestAlias: 'getIPPool',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -394,6 +397,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/template/200.get.json',
       requestAlias: 'getTemplate',
     });
+    cy.visit(PAGE_URL);
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
@@ -423,8 +427,7 @@ describe('Analytics Report breakdown table', () => {
       fixture: 'metrics/deliverability/template/200.get.json',
       requestAlias: 'getTemplate',
     });
-
-    cy.visit('/signals/analytics');
+    cy.visit(PAGE_URL);
     cy.wait('@getSubaccountList');
 
     cy.findByLabelText('Break Down By')

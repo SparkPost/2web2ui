@@ -1,29 +1,20 @@
-/**
- * The following tests have some funky behavior between each test. Since we do not clear the auth
- * cookies between tests, the logged in state is preserved after finishing the final test. In order to successfully
- * re-run the tests (typically while editing them), stopping the test runner and restarting will
- * help clear the application state. This preservation of state between tests is very helpful with other features,
- * and mainly painful on this one. A necessary tradeoff!
- */
-
 describe('The log in page', () => {
   beforeEach(() => {
-    cy.clearCookies();
+    cy.clearCookies(); // Clear auth-related cookies for this particular test
     cy.visit('/auth');
   });
 
   it('renders a "Required" error message when no email address is entered', () => {
     cy.findByText('Required').should('not.exist');
-    cy.get('[data-id="button-log-in"]').click();
+    cy.findByRole('button', { name: 'Log In' })
+      .should('be.visible')
+      .click();
 
     cy.findByText('Required').should('be.visible');
   });
 
-  it('renders a "Keep me logged in" checkbox', () => {
+  it('renders a "Keep me logged in" checkbox and has a link to the forgot password flow', () => {
     cy.findByLabelText('Keep me logged in').should('be.visible');
-  });
-
-  it('has a link to the forgot password flow', () => {
     cy.findByText('Forgot your password?').click();
 
     cy.title().should('include', 'Reset Password');
@@ -48,17 +39,16 @@ describe('The log in page', () => {
   });
 
   it('does not log in with an invalid username and password', () => {
-    cy.server();
-    cy.fixture('authenticate/400.post.json').as('authenticatePostInvalidCredentials');
-    cy.route({
-      method: 'POST',
+    cy.stubRequest({
       url: '/api/v1/authenticate',
-      status: 400,
-      response: '@authenticatePostInvalidCredentials',
+      method: 'POST',
+      statusCode: 400,
+      fixture: 'authenticate/400.post.json',
+      requestAlias: 'authenticatePostInvalidCredentials',
     });
     cy.findByLabelText('Email or Username').type('baduser123');
     cy.findByLabelText('Password').type('badpassword123');
-    cy.get('[data-id="button-log-in"]').click();
+    cy.findByRole('button', { name: 'Log In' }).click();
     cy.findByText('User credentials are invalid').should('be.visible');
   });
 

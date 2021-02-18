@@ -10,9 +10,9 @@ test-report.xml
 /cypress/screenshots
 /cypress/results
 cypress.env.json
-test-report.xml
 /cypress-coverage
 /jest-coverage
+/test_results
 
 # build report artifacts
 /build-reports
