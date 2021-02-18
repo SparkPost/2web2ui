@@ -74,7 +74,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     });
   });
 
-  it.only('should show appropriate date ranges based on timezone (and not local timezone)', () => {
+  it('should show appropriate date ranges based on timezone (and not local timezone)', () => {
     cy.visit(
       `/signals/analytics?from=2021-01-13T23%3A00%3A00-06%3A00&to=2021-01-29T22%3A59%3A59-06%3A00&range=custom`,
     );
