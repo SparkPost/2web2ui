@@ -57,7 +57,7 @@ describe('Action Creator: Billing Create', () => {
       invoiceCollect: true,
     };
     getState = () => ({ currentUser });
-    dispatch = jest.fn(a => a);
+    dispatch = jest.fn(a => Promise.resolve(a));
     accountConditions.isCustomBilling = jest.fn(() => false);
     billingActions.createZuoraAccount = jest.fn(({ meta }) => meta.onSuccess({}));
     billingActions.syncSubscription = jest.fn(({ meta }) => meta.onSuccess({}));

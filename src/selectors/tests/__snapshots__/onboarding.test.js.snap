@@ -3,6 +3,7 @@
 exports[`choosePlanMSTP should return mapped prop values 1`] = `
 Object {
   "billing": Object {},
+  "billingCreateSuccess": null,
   "bundles": Array [],
   "hasError": false,
   "initialValues": "change-plan-initial-values",
