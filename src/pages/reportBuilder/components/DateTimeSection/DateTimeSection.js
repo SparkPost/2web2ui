@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PrecisionSelector from './PrecisionSelector';
 import { isForcedUTCRollupPrecision } from 'src/helpers/metrics';
 import { Grid, Select, Tooltip } from 'src/components/matchbox';
-import DatePicker from 'src/components/datePicker/DatePickerNew';
+import DatePicker from 'src/components/datePicker/DatePickerV2';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import config from 'src/config';
 import styles from '../ReportOptions.module.scss';

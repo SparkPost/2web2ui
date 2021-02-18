@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { DatePicker } from '../DatePickerNew';
+import { DatePicker } from '../DatePickerV2';
 import styles from '../DatePicker.module.scss';
 import utc from 'src/__testHelpers__/time';
 import TestApp from 'src/__testHelpers__/TestApp';
@@ -53,6 +53,19 @@ describe('Component: DatePicker', () => {
     expect(screen.getByLabelText('From Time')).toHaveAttribute('value', '6:00am');
     expect(screen.getByLabelText('To Date')).toHaveAttribute('value', '2019-02-15');
     expect(screen.getByLabelText('To Time')).toHaveAttribute('value', '7:00am');
+  });
+
+  it('should render based on the timezone specified', () => {
+    subject({ timezone: 'Europe/Paris' });
+    screen.getByLabelText('Date Picker').click();
+    expect(screen.getByLabelText('Date Picker')).toHaveAttribute(
+      'value',
+      'Feb 14th 2019 12:00pm – Feb 15th 2019 1:00pm',
+    );
+    expect(screen.getByLabelText('From Date')).toHaveAttribute('value', '2019-02-14');
+    expect(screen.getByLabelText('From Time')).toHaveAttribute('value', '12:00pm');
+    expect(screen.getByLabelText('To Date')).toHaveAttribute('value', '2019-02-15');
+    expect(screen.getByLabelText('To Time')).toHaveAttribute('value', '1:00pm');
   });
 
   it('should change date range correctly', () => {

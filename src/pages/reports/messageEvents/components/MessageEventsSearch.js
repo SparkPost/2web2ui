@@ -92,7 +92,7 @@ export class MessageEventsSearchComponent extends Component {
                 relativeDateOptions={RELATIVE_DATE_OPTIONS}
                 disabled={loading}
                 onChange={refreshMessageEventsDateRange}
-                dateFieldFormat={FORMATS.DATETIME}
+                dateFieldFormat={FORMATS.DATE_FNS.DATETIME}
                 datePickerProps={{
                   disabledDays: {
                     after: now,

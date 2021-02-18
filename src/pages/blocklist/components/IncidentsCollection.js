@@ -6,7 +6,7 @@ import { TableCollection, DisplayDate } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Button, Box, Grid, Panel, Table, Tag } from 'src/components/matchbox';
 import styles from './IncidentsCollection.module.scss';
-import DatePicker from 'src/components/datePicker/DatePickerNew';
+import DatePicker from 'src/components/datePicker/DatePickerV2';
 
 const RELATIVE_DATE_OPTIONS = ['day', '7days', '30days', '90days', 'custom'];
 
@@ -71,7 +71,7 @@ export const IncidentsCollection = props => {
               label="Date Range"
               relativeDateOptions={RELATIVE_DATE_OPTIONS}
               onChange={updateDateRange}
-              dateFieldFormat={FORMATS.DATE}
+              dateFieldFormat={FORMATS.DATE_FNS.DATE}
               hideManualEntry
             />
           </div>

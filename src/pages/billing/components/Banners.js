@@ -8,7 +8,7 @@ import * as conversions from 'src/helpers/conversionTracking';
 import { Abbreviation } from 'src/components';
 import { ANALYTICS_PREMIUM_SUPPORT, ANALYTICS_ENTERPRISE_SUPPORT } from 'src/constants';
 import _ from 'lodash';
-const dateFormat = date => format(date, 'MMM DD, YYYY');
+const dateFormat = date => format(new Date(date), 'MMM dd, yyyy');
 
 /**
  * Renders pending plan change information

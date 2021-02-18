@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { tokens } from '@sparkpost/design-tokens-hibana';
 import { subMonths, format } from 'date-fns';
 import {
   getStartOfDay,
@@ -29,9 +28,22 @@ import ManualEntryForm from './ManualEntryForm';
 import { FORMATS } from 'src/constants';
 import OGStyles from './DatePicker.module.scss';
 import hibanaStyles from './DatePickerHibana.module.scss';
+import styled from 'styled-components';
+
+const formatDateRange = ({ from, to, dateFormat = FORMATS.DATE_FNS.LONG_DATETIME }) => {
+  if (!from || !to) {
+    return 'Invalid Date Range';
+  }
+
+  return `${format(from, dateFormat)} – ${format(to, dateFormat)}`;
+};
+
+const StyledSelect = styled(Select)`
+  min-width: ${props => props.theme.sizes['900']};
+`;
 
 export class DatePickerClassComponent extends Component {
-  DATE_FORMAT = FORMATS.LONG_DATETIME;
+  DATE_FORMAT = FORMATS.DATE_FNS.LONG_DATETIME;
   state = {
     showDatePicker: false,
     selecting: false,
@@ -241,7 +253,6 @@ export class DatePickerClassComponent extends Component {
       selectPrecision,
       id,
       styles,
-      isHibanaEnabled,
     } = this.props;
 
     const dateFormat = dateFieldFormat || this.DATE_FORMAT;
@@ -251,8 +262,7 @@ export class DatePickerClassComponent extends Component {
           Broad Date Range
         </label>
 
-        <Select
-          style={{ minWidth: isHibanaEnabled ? tokens.sizing_900 : '100%' }}
+        <StyledSelect
           id={`range-select-${id}`}
           options={getRelativeDateOptions(relativeDateOptions)}
           onChange={this.handleSelectRange}
@@ -272,7 +282,7 @@ export class DatePickerClassComponent extends Component {
           id={`date-field-${id}`}
           onClick={this.showDatePicker}
           connectLeft={rangeSelect}
-          value={`${format(from, dateFormat)} – ${format(to, dateFormat)}`}
+          value={formatDateRange({ to, from, dateFormat })}
           readOnly
           onBlur={this.handleTextUpdate}
           error={error}

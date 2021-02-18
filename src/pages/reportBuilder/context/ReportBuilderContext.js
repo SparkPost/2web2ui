@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo, useReducer, createContext } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { getRelativeDates } from 'src/helpers/date';
+import { getRelativeDates, formatToTimezone } from 'src/helpers/date';
 import { getMetricsFromKeys, getRollupPrecision as getPrecision } from 'src/helpers/metrics';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
@@ -12,6 +12,8 @@ import {
   getApiFormattedGroupings,
   hydrateFilters,
 } from '../helpers';
+
+const defaultFormat = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
 const ReportOptionsContext = createContext({});
 
@@ -120,12 +122,12 @@ const reducer = (state, action) => {
 
 const getSelectors = reportOptions => {
   const selectDateOptions = {
-    from: moment(reportOptions.from)
-      .utc()
-      .format(),
-    to: moment(reportOptions.to)
-      .utc()
-      .format(),
+    from: reportOptions.from
+      ? formatToTimezone(reportOptions.from, defaultFormat, reportOptions.timezone)
+      : undefined,
+    to: reportOptions.to
+      ? formatToTimezone(reportOptions.to, defaultFormat, reportOptions.timezone)
+      : undefined,
     range: reportOptions.relativeRange,
     timezone: reportOptions.timezone,
     precision: reportOptions.precision,

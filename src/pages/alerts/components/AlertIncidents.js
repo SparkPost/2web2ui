@@ -69,12 +69,14 @@ const AlertIncidents = ({ incidents = [], alert, subaccountIdToString }) => {
     };
 
     return [
-      <div key="alert_incident_date">{formatDateTime(first_fired, FORMATS.LONG_DATETIME_ALT)}</div>,
+      <div key="alert_incident_date">
+        {formatDateTime(first_fired, FORMATS.MOMENT.LONG_DATETIME_ALT)}
+      </div>,
       <div key="alert_incident_status">
         {status === 'Open' ? (
           <Tag color="yellow">Active</Tag>
         ) : (
-          formatDateTime(moment(last_fired).add(45, 'minutes'), FORMATS.LONG_DATETIME_ALT)
+          formatDateTime(moment(last_fired).add(45, 'minutes'), FORMATS.MOMENT.LONG_DATETIME_ALT)
         )}
       </div>,
       <div key="alert_incident_filters" className={styles.IncidentFilters}>

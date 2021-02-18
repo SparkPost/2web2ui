@@ -5,7 +5,7 @@ import { FORMATS } from 'src/constants';
 import { InlineItems } from 'src/components/structure';
 import { Bold } from 'src/components/text';
 
-const formatDateTime = start_time => moment(start_time).format(FORMATS.LONG_DATETIME_ALT);
+const formatDateTime = start_time => moment(start_time).format(FORMATS.MOMENT.LONG_DATETIME_ALT);
 
 export default function formatScheduleLine(status, start_time, end_time) {
   const formatted_start_time = formatDateTime(start_time);

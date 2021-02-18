@@ -15,7 +15,7 @@ jest.mock('../metrics');
 function getDate(hours, date = '2017-06-15T12:00') {
   const d = moment(date);
   d.hours(hours);
-  return d;
+  return d.toDate();
 }
 
 function getTimestampWithFixedHour(date, hour) {

@@ -3,13 +3,12 @@ import { shallow } from 'enzyme';
 import DisplayDate from '../DisplayDate';
 
 describe('DisplayDate Component', () => {
-
-  Date.now = () => '2017-11-17T18:08:00.000+00:00';
+  Date.now = () => new Date('2017-11-17T18:08:00.000+00:00');
 
   it('should render time ago ', () => {
     const props = {
       timestamp: '2017-11-17T15:08:00.000+00:00',
-      formattedDate: 'YYYY/MM/DD HH:mm'
+      formattedDate: 'YYYY/MM/DD HH:mm',
     };
     const wrapper = shallow(<DisplayDate {...props} />);
     expect(wrapper.find('TimeAgo').prop('date')).toEqual(props.timestamp);
@@ -18,7 +17,7 @@ describe('DisplayDate Component', () => {
   it('should render formattedDate', () => {
     const props = {
       timestamp: '2017-11-16T18:08:00.000+00:00',
-      formattedDate: 'YYYY/MM/DD HH:mm'
+      formattedDate: 'YYYY/MM/DD HH:mm',
     };
     const wrapper = shallow(<DisplayDate {...props} />);
     expect(wrapper.text()).toEqual('YYYY/MM/DD HH:mm');
@@ -29,7 +28,7 @@ describe('DisplayDate Component', () => {
       timestamp: '2017-11-17T15:08:00.000+00:00',
       formattedDate: 'YYYY/MM/DD HH:mm',
       diffScale: 'minutes',
-      diffTime: '59'
+      diffTime: '59',
     };
     const wrapper = shallow(<DisplayDate {...props} />);
     expect(wrapper.text()).toEqual('YYYY/MM/DD HH:mm');

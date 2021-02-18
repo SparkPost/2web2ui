@@ -3,7 +3,6 @@ import { differenceInHours, differenceInMinutes, differenceInSeconds } from 'dat
 import TimeAgo from 'react-timeago';
 
 const DisplayDate = ({ timestamp, formattedDate, diffTime = 23, diffScale }) => {
-
   let diffCheck;
 
   switch (diffScale) {
@@ -18,7 +17,7 @@ const DisplayDate = ({ timestamp, formattedDate, diffTime = 23, diffScale }) => 
       diffCheck = differenceInHours;
   }
 
-  if (diffCheck(Date.now(), timestamp) > diffTime) {
+  if (diffCheck(Date.now(), new Date(timestamp)) > diffTime) {
     return formattedDate;
   }
   return <TimeAgo date={timestamp} />;

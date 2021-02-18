@@ -56,7 +56,7 @@ export function CurrentHealthGauge(props) {
 
   const title =
     _.get(props, 'filters.relativeRange') === 'custom'
-      ? `Health Score for ${formatDate(props.filters.to, FORMATS.DATE)}`
+      ? `Health Score for ${formatDate(props.filters.to, FORMATS.DATE_FNS.DATE)}`
       : 'Current Health Score';
 
   return (

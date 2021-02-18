@@ -33,7 +33,7 @@ export function DateFilter({
         relativeDateOptions={OPTIONS}
         relativeRange={signalOptions.relativeRange}
         onChange={handleChange}
-        dateFieldFormat={FORMATS.DATE}
+        dateFieldFormat={FORMATS.DATE_FNS.DATE}
         datePickerProps={{
           disabledDays: {
             after: moment(now)

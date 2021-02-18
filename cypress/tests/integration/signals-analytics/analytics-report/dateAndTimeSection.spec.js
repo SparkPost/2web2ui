@@ -58,11 +58,9 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     cy.findByLabelText('Date Range').click();
     cy.findByText('Last 24 Hours').click({ force: true });
     cy.findByLabelText('Precision').should('have.value', 'hour');
-    const dayAgo = Cypress.moment(timestamp)
-      .startOf('hour')
-      .subtract(1, 'day');
-    cy.findByLabelText('From Date').should('have.value', dayAgo.local().format('YYYY-MM-DD'));
-    cy.findByLabelText('From Time').should('have.value', dayAgo.local().format('h:mma'));
+
+    cy.findByLabelText('From Date').should('have.value', '2020-01-29');
+    cy.findByLabelText('From Time').should('have.value', '2:00pm');
     //Re-stub so I can get the url params from the second call
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/time-series**',
@@ -72,7 +70,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     cy.findByText('Apply').click({ force: true });
     cy.wait('@getTimeSeries2').should(xhr => {
       expect(xhr.url).to.contain('precision=hour');
-      expect(xhr.url).to.contain(`from=${dayAgo.local().format('YYYY-MM-DDTHH:mm')}`);
+      expect(xhr.url).to.contain(`from=2020-01-29T14:00`);
     });
   });
 });

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import _ from 'lodash';
 import * as dateHelpers from 'src/helpers/date';
 import * as metricsHelpers from 'src/helpers/metrics';
-import datefns from 'date-fns';
+import * as dateFns from 'date-fns';
 import moment from 'moment';
 import { DatePickerClassComponent as DatePicker } from '../DatePicker';
 import styles from '../DatePicker.module.scss';
@@ -49,9 +49,8 @@ describe('Component: DatePicker', () => {
     }));
     metricsHelpers.getRollupPrecision = jest.fn(({ precision }) => precision);
     dateHelpers.getRelativeDateOptions = jest.fn(() => [1, 2, 3]);
-    datefns.format = jest.fn((a, b) => b);
-    datefns.subMonths = jest.fn(a => a);
-
+    dateFns.format = jest.fn((a, b) => b);
+    dateFns.subMonths = jest.fn(a => a);
     wrapper = shallow(<DatePicker {...props} />);
     instance = wrapper.instance();
 

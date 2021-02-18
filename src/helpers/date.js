@@ -2,6 +2,7 @@ import moment from 'moment';
 import config from 'src/config';
 import { roundBoundaries } from './metrics';
 import { FORMATS } from 'src/constants';
+import { format, utcToZonedTime } from 'date-fns-tz';
 
 export const relativeDateOptions = [
   { value: 'hour', label: 'Last Hour' },
@@ -142,6 +143,15 @@ export function getDuration(dates, unit = 'hours') {
   return moment(to).diff(moment(from), unit);
 }
 
+export function formatToTimezone(date, dateFormat, timeZone = getLocalTimezone()) {
+  if (!date) {
+    throw new Error('Invalid date passed in');
+  } else if (!dateFormat) {
+    throw new Error('No date formatter passed in');
+  }
+  return format(utcToZonedTime(new Date(date), timeZone), dateFormat, { timeZone });
+}
+
 export function formatDate(date, FORMAT = config.dateFormat) {
   return moment(date).format(FORMAT);
 }
@@ -165,13 +175,15 @@ export function getFormattedDateRangeForAggregateData(from, to) {
 }
 // format as ISO 8601 timestamp to match SP API
 export const formatApiTimestamp = time => moment.utc(time).format();
-export const formatApiDate = date => moment.utc(date).format(FORMATS.SHORT_DATE);
-export const formatInputDate = date => moment(date).format(FORMATS.SHORT_DATE);
-export const formatInputTime = time => moment(time).format(FORMATS.TIME);
-export const parseDate = str => moment(str, FORMATS.INPUT_DATES, true);
-export const parseTime = str => moment(str, FORMATS.INPUT_TIMES, true);
-export const parseDatetime = (...args) => moment(args.join(' '), FORMATS.INPUT_DATETIMES, true);
-
+export const formatApiDate = date => moment.utc(date).format(FORMATS.MOMENT.SHORT_DATE);
+export const formatInputDate = date => moment(date).format(FORMATS.MOMENT.SHORT_DATE);
+export const formatInputTime = time => moment(time).format(FORMATS.MOMENT.TIME);
+export const parseDate = str => moment(str, FORMATS.MOMENT.INPUT_DATES, true);
+export const parseTime = str => moment(str, FORMATS.MOMENT.INPUT_TIMES, true);
+export const parseDatetime = (...args) =>
+  moment(args.join(' '), FORMATS.MOMENT.INPUT_DATETIMES, true);
+export const parseDateTimeTz = (timezone, ...args) =>
+  moment.tz(args.join(' '), FORMATS.MOMENT.INPUT_DATETIMES, true, timezone);
 export const fillByDate = ({ dataSet, fill = {}, from, to } = {}) => {
   const orderedData = dataSet.sort((a, b) => new Date(a.date) - new Date(b.date));
   let filledDataSet = [];

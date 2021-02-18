@@ -44,6 +44,11 @@ export function ReportOptions(props) {
         ? JSON.stringify(dehydrateFilters(filters))
         : null; //Explicitly unsetting filters
 
+      if (update.range !== 'custom') {
+        update.to = null;
+        update.from = null;
+      }
+
       updateFilters({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });
     }
   }, [

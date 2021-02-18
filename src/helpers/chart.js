@@ -7,6 +7,7 @@ function getDayLines(data, precision = 'day') {
   if (getPrecisionType(precision) !== 'hour') {
     return [];
   }
+
   const lastIndex = data.length - 1;
   return data.filter(({ ts }, i) => {
     if (i === 0 || i === lastIndex) {
@@ -19,8 +20,10 @@ function getDayLines(data, precision = 'day') {
   });
 }
 
-const getTimeTickFormatter = _.memoize(precisionType => {
-  const format = tickFormat => tick => moment(tick).format(tickFormat);
+const getTimeTickFormatter = _.memoize((precisionType, { includeTimezone } = {}) => {
+  const formatFunction = includeTimezone ? moment.parseZone : moment;
+  const format = tickFormat => tick => formatFunction(tick).format(tickFormat);
+
   switch (precisionType) {
     case 'hour':
       return format('h:mma');
@@ -37,8 +40,9 @@ const getTimeTickFormatter = _.memoize(precisionType => {
   }
 });
 
-const getTooltipLabelFormatter = _.memoize(precisionType => {
-  const format = labelFormat => label => moment(label).format(labelFormat);
+const getTooltipLabelFormatter = _.memoize((precisionType, { includeTimezone } = {}) => {
+  const formatFunction = includeTimezone ? moment.parseZone : moment;
+  const format = labelFormat => label => formatFunction(label).format(labelFormat);
   switch (precisionType) {
     case 'hour':
       return format('MMM Do [at] LT');
@@ -57,26 +61,25 @@ const getTooltipLabelFormatter = _.memoize(precisionType => {
 const getWeekPrecisionFormatter = to => {
   return label => {
     const format = momentTime => momentTime.format('MMM Do');
-    const startDate = format(moment(label));
-
+    const startDate = format(moment.parseZone(label));
     //If it's the last date, make the end date the to date; else, make the to date the next Saturday
-    if (moment(label).isSame(moment(to).weekday(0), 'day')) {
-      return `${startDate} - ${format(moment(to))}`;
+    if (moment.parseZone(label).isSame(moment.parseZone(to).weekday(0), 'day')) {
+      return `${startDate} - ${format(moment.parseZone(to))}`;
     }
 
-    return `${startDate} - ${format(moment(label).weekday(6))}`;
+    return `${startDate} - ${format(moment.parseZone(label).weekday(6))}`;
   };
 };
 
-function getLineChartFormatters(precision, to = moment()) {
+function getLineChartFormatters(precision, to = moment(), { includeTimezone } = {}) {
   const formatters = {};
   const precisionType = getPrecisionType(precision);
 
-  formatters.xTickFormatter = getTimeTickFormatter(precisionType);
+  formatters.xTickFormatter = getTimeTickFormatter(precisionType, { includeTimezone });
   formatters.tooltipLabelFormatter =
     precisionType === 'week' //Can't put in case;switch in getToolTipLabelFormatter b/c memoization
       ? getWeekPrecisionFormatter(to)
-      : getTooltipLabelFormatter(precisionType);
+      : getTooltipLabelFormatter(precisionType, { includeTimezone });
 
   return formatters;
 }

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
 import { HIBANA_METRICS_COLORS, REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
-import { getRelativeDates } from 'src/helpers/date';
+import { getRelativeDates, formatToTimezone } from 'src/helpers/date';
 import { dehydrateFilters } from 'src/pages/reportBuilder/helpers';
 import { safeDivide, safeRate } from './math';
 
@@ -11,6 +11,7 @@ const {
   metricsPrecisionMap: precisionMap,
   metricsRollupPrecisionMap: rollupPrecisionMap,
   apiDateFormat,
+  apiDateFormatV2,
 } = config;
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
@@ -73,15 +74,12 @@ export function getQueryFromOptionsV2({
   match = '',
   limit,
 }) {
-  from = moment(from);
-  to = moment(to);
-
   const apiMetricsKeys = getKeysFromMetrics(metrics);
   const delimiter = getDelimiter(filters);
   const options = {
     metrics: apiMetricsKeys.join(delimiter),
-    from: from.format(apiDateFormat),
-    to: to.format(apiDateFormat),
+    from: from ? formatToTimezone(from, apiDateFormatV2, timezone) : undefined,
+    to: to ? formatToTimezone(to, apiDateFormatV2, timezone) : undefined,
     delimiter,
     timezone,
     precision,

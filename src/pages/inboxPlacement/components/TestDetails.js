@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import _ from 'lodash';
 import { Search } from '@sparkpost/matchbox-icons';
 import { FORMATS } from 'src/constants';
@@ -100,13 +100,17 @@ const TestDetails = ({
           <Grid>
             <Grid.Column xs={12} sm={4} md={4}>
               <Bold>Started</Bold>
-              <div>{format(details.start_time, FORMATS.LONG_DATETIME)}</div>
+              <div>
+                {details.start_time
+                  ? format(parseISO(details.start_time), FORMATS.DATE_FNS.LONG_DATETIME)
+                  : null}
+              </div>
             </Grid.Column>
             <Grid.Column xs={12} sm={4} md={4}>
               <Bold>Finished</Bold>
               <div>
                 {details.end_time ? (
-                  format(details.end_time, FORMATS.LONG_DATETIME)
+                  format(parseISO(details.end_time), FORMATS.DATE_FNS.LONG_DATETIME)
                 ) : (
                   <Tag className={styles.StatusTag}>{details.status}</Tag>
                 )}

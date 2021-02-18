@@ -104,7 +104,7 @@ export function Charts(props) {
     return transformData(rawChartData, formattedMetrics);
   }, [rawChartData, formattedMetrics]);
 
-  const formatters = getLineChartFormatters(precision, to);
+  const formatters = getLineChartFormatters(precision, to, { includeTimezone: true });
   //Separates the metrics into their appropriate charts
   const charts = getUniqueUnits(formattedMetrics).map(unit => ({
     metrics: formattedMetrics.filter(metric => metric.unit === unit),

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import * as metricsHelpers from 'src/helpers/metrics';
-import { ManualEntryForm } from '../ManualEntryFormNew';
+import { ManualEntryForm } from '../ManualEntryFormV2';
 import styles from '../ManualEntryFormNew.module.scss';
 import TestApp from 'src/__testHelpers__/TestApp';
 

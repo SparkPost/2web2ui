@@ -114,6 +114,12 @@ export function ReportBuilder({
     // If report is found from ID, consolidates reportOptions from URL and report
     if (report) {
       const reportOptions = parseSearch(report.query_string);
+      //If coming from scheduled report, only should have report options (rest of URL should be blank)
+      //If coming from copy and pasted URL with report and overridden filters, should have report filters, and then URL filters on top
+      //TODO: Don't have parseSearch return an empty array by default (so it doesn't overwrite report filters);
+      if (!Boolean(urlOptions.filters.length)) {
+        delete urlOptions.filters;
+      }
 
       setReport(report); // TODO: This needs to be incorporated in to the reducer since this causes state interaction
       refreshReportOptions({

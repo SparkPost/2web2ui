@@ -2,7 +2,7 @@
 
 exports[`DateFilter renders datepicker 1`] = `
 Object {
-  "dateFieldFormat": "MMM Do",
+  "dateFieldFormat": "MMM do",
   "datePickerProps": Object {
     "disabledDays": Object {
       "after": 2017-12-31T05:00:00.000Z,
