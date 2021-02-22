@@ -28,6 +28,7 @@ export function OnboardingPlanPage({
   getBundles,
   getBillingCountries,
   billingCreate,
+  billingCreateLoading,
   billingCreateSuccess,
   showAlert,
   submitting,
@@ -127,9 +128,10 @@ export function OnboardingPlanPage({
       history.push(next_step);
       showAlert({ type: 'success', message: 'Added your plan' });
     }
-  }, [billingCreateSuccess, history, next_step, showAlert]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [billingCreateSuccess]);
 
-  if (loading || !bundles.length) {
+  if (loading || !bundles.length || (!submitting && billingCreateLoading)) {
     return <Loading />;
   }
 
@@ -155,6 +157,7 @@ export function OnboardingPlanPage({
               <Panel.LEGACY.Section>
                 <PromoCodeNew
                   key={selectedPromo.promoCode || 'promocode'}
+                  disabled={disableSubmit}
                   promoCodeObj={promoCodeObj}
                   handlePromoCode={handlePromoCode}
                 />

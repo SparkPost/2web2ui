@@ -45,6 +45,6 @@ export default function billingCreate(values) {
 
     return dispatch(chainActions(...actions)())
       .then(() => dispatch({ type: 'BILLING_CREATE_SUCCESS' }))
-      .catch(() => dispatch({ type: 'BILLING_CREATE__ERROR' }));
+      .catch(() => dispatch({ type: 'BILLING_CREATE_ERROR' }));
   };
 }
