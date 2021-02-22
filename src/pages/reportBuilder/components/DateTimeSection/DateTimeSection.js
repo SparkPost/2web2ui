@@ -7,6 +7,7 @@ import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import config from 'src/config';
 import styles from '../ReportOptions.module.scss';
 import _ from 'lodash';
+import { subMonths } from 'date-fns';
 
 const { metricsRollupPrecisionMap } = config;
 const RELATIVE_DATE_OPTIONS = ['hour', 'day', '7days', '30days', '90days', 'custom'];
@@ -48,6 +49,9 @@ export const DateTimeSection = ({
           selectPrecision={true}
           label="Date Range"
           updateShownPrecision={updateShownPrecision}
+          datePickerProps={{
+            disabledDays: { after: new Date(), before: subMonths(new Date(), 6) },
+          }}
         />
       </Grid.Column>
       <Grid.Column xs={6} md={4}>

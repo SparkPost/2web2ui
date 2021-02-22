@@ -58,7 +58,7 @@ describe('the bounce reason table', () => {
     cy.get('tbody tr').within(() => {
       cy.get('td')
         .eq(0)
-        .should('have.text', '0%');
+        .should('have.text', '17 (0%)');
 
       cy.get('td')
         .eq(1)
@@ -99,7 +99,7 @@ describe('the bounce reason comparison (AKA compare by) tables', () => {
           .within(() => {
             cy.get('td')
               .eq(0)
-              .should('have.text', '0%');
+              .should('have.text', '17 (0%)');
             cy.get('td')
               .eq(1)
               .should('have.text', 'Mail Block');

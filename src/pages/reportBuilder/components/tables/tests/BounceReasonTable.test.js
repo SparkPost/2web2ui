@@ -49,7 +49,7 @@ describe('BounceReasonTable', () => {
   it('renders with the correct row information', () => {
     const { queryByText } = subject();
 
-    expect(queryByText('50%')).toBeInTheDocument();
+    expect(queryByText('5 (50%)')).toBeInTheDocument();
     expect(queryByText('Spam Block')).toBeInTheDocument();
     expect(queryByText('Block')).toBeInTheDocument();
     expect(queryByText('Because I said so')).toBeInTheDocument();

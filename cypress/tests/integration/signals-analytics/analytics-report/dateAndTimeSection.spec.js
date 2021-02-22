@@ -40,6 +40,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
 
   it('changing date picker values changes the precision correctly', () => {
     cy.visit(PAGE_URL);
+    cy.wait(['@getSubaccounts']);
     cy.findByLabelText('Precision').should('have.value', 'hour');
     cy.findByLabelText('Date Range').click();
 
@@ -92,4 +93,34 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
       cy.findByText('Jan 13th - Jan 29th, 2021').should('be.visible');
     });
   });
+
+  it('should disable invalid dates the date picker', () => {
+    cy.visit(PAGE_URL);
+    cy.wait(['@getSubaccounts']);
+    cy.findByDataId('date-field-date-picker').click({ force: true });
+    cy.tick(300); //Date picker animation
+    withinDatePicker(() => {
+      cy.findByRole('button', { name: 'Previous Month' }).click();
+      cy.findAllByRole('heading', { name: 'November 2019' }).should('be.visible');
+
+      cy.findByRole('button', { name: 'Previous Month' }).click();
+      cy.findAllByRole('heading', { name: 'October 2019' }).should('be.visible');
+
+      cy.findByRole('button', { name: 'Previous Month' }).click();
+      cy.findAllByRole('heading', { name: 'September 2019' }).should('be.visible');
+
+      cy.findByRole('button', { name: 'Previous Month' }).click();
+      cy.findAllByRole('heading', { name: 'August 2019' }).should('be.visible');
+
+      cy.findByRole('button', { name: 'Previous Month' }).click();
+      cy.findAllByRole('heading', { name: 'July 2019' }).should('be.visible');
+
+      cy.get('[aria-label="Mon Jul 29 2019"]').should('have.attr', 'aria-disabled', 'true');
+      cy.get('[aria-label="Tue Jul 30 2019"]').should('have.attr', 'aria-disabled', 'false');
+    });
+  });
 });
+
+function withinDatePicker(callback) {
+  cy.findByDataId('popover-content').within(callback);
+}

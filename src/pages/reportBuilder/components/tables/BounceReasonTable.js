@@ -24,7 +24,7 @@ const filterBoxConfig = {
 };
 
 const columns = [
-  { label: 'Count %', minWidth: '90px', sortKey: 'count_bounce' },
+  { label: 'Count (%)', minWidth: '90px', sortKey: 'count_bounce' },
   { label: 'Classification', minWidth: '900', sortKey: 'classification_id' },
   { label: 'Category', sortKey: 'bounce_category_name' },
   { label: 'Reason', minWidth: '1000', sortKey: 'reason' },
@@ -39,7 +39,9 @@ export default function BounceReasonTable({ aggregates, reasons = [], loading })
       let denominator = aggregates.countBounce;
 
       return [
-        <Percent value={safeRate(numerator, denominator)} />,
+        <span>
+          {numerator} (<Percent value={safeRate(numerator, denominator)} />)
+        </span>,
         bounce_class_name,
         <Tag>{bounce_category_name}</Tag>,
         <LongTextContainer text={reason} />,
