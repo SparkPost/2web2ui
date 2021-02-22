@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { formatDate, formatTime } from 'src/helpers/date';
 import { getJobStatus, triggerJob } from 'src/actions/recipientValidation';
 import { getBillingInfo } from 'src/actions/account';
+import { Form } from 'src/components/form';
 import Loading from 'src/components/loading';
 import { PageLink } from 'src/components/links';
 import { RedirectAndAlert } from 'src/components/globalAlert';
@@ -118,7 +119,7 @@ export function UploadedListPage(props) {
   if (addRVtoSubscriptionloading && !addRVtoSubscriptionerror) return <Loading />;
 
   return (
-    <form onSubmit={props.handleSubmit(onSubmit)}>
+    <Form onSubmit={props.handleSubmit(onSubmit)}>
       {' '}
       <Page
         title="Recipient Validation"
@@ -155,7 +156,7 @@ export function UploadedListPage(props) {
           />
         )}
       </Page>
-    </form>
+    </Form>
   );
 }
 

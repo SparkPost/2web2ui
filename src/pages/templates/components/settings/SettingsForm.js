@@ -2,6 +2,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { ToggleBlock } from 'src/components/toggleBlock';
 import SubaccountSection from 'src/components/subaccountSection';
 import { TextFieldWrapper } from 'src/components';
@@ -79,7 +80,7 @@ export default function SettingsForm(props) {
       : null;
 
   return (
-    <form onSubmit={handleSubmit(updateSettings)}>
+    <Form onSubmit={handleSubmit(updateSettings)}>
       <Panel.LEGACY.Section>
         <Stack>
           {isPublishedMode && renderPublishedIntro()}
@@ -195,6 +196,6 @@ export default function SettingsForm(props) {
           Update Settings
         </Button>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   );
 }

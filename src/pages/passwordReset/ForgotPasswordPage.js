@@ -5,6 +5,7 @@ import { showAlert } from 'src/actions/globalAlert';
 import { required } from 'src/helpers/validation';
 import { reduxForm, Field } from 'redux-form';
 import { CenteredLogo, TextFieldWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { PageLink } from 'src/components/links';
 import { Box, Button, Panel, Stack } from 'src/components/matchbox';
 import { AUTH_ROUTE } from 'src/constants';
@@ -44,7 +45,7 @@ export class ForgotPasswordPage extends Component {
       <Fragment>
         <CenteredLogo />
         <Panel.LEGACY sectioned title="Reset Your Password">
-          <form onSubmit={handleSubmit(sendPasswordResetEmail)}>
+          <Form onSubmit={handleSubmit(sendPasswordResetEmail)}>
             <Stack>
               <p>Provide your username or email and we'll send an email to reset your password.</p>
               <Field
@@ -60,7 +61,7 @@ export class ForgotPasswordPage extends Component {
                 </Button>
               </Box>
             </Stack>
-          </form>
+          </Form>
         </Panel.LEGACY>
         <Panel.LEGACY.Footer
           left={

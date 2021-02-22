@@ -6,6 +6,7 @@ import Recaptcha from 'react-recaptcha';
 import config from 'src/config';
 import { FORMS, LINKS } from 'src/constants';
 import { TextFieldWrapper, CheckboxWrapper } from 'src/components/reduxFormWrappers';
+import { Form } from 'src/components/form';
 import { ExternalLink } from 'src/components/links';
 import { Box, Button, Checkbox, Stack } from 'src/components/matchbox';
 import { required, minLength, email, endsWithWhitespace } from 'src/helpers/validation';
@@ -69,7 +70,7 @@ export class JoinForm extends Component {
     const pending = loading || submitting || !reCaptchaReady;
 
     return (
-      <form>
+      <Form>
         <Stack>
           <Field
             name="first_name"
@@ -169,7 +170,7 @@ export class JoinForm extends Component {
           onloadCallback={this.reCaptchaLoaded}
           verifyCallback={this.recaptchaVerifyCallback}
         />
-      </form>
+      </Form>
     );
   }
 }

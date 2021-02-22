@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { TextFieldWrapper, CheckboxWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { BottomPad } from 'src/components/hibana';
 import { PageLink } from 'src/components/links';
 import { Box, Button, Error, Stack } from 'src/components/matchbox';
@@ -10,7 +11,7 @@ import { required } from 'src/helpers/validation';
 import { trimWhitespaces } from 'src/helpers/string';
 
 export const LoginForm = ({ loginPending, loginError, handleSubmit }) => (
-  <form onSubmit={handleSubmit}>
+  <Form onSubmit={handleSubmit}>
     <Stack>
       {loginError && (
         <BottomPad>
@@ -45,7 +46,7 @@ export const LoginForm = ({ loginPending, loginError, handleSubmit }) => (
         </Button>
       </Box>
     </Stack>
-  </form>
+  </Form>
 );
 
 function mapStateToProps({ auth }) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ButtonWrapper } from 'src/components';
 import BackupCodesView from './BackupCodesView';
 import { Grid, Banner, Button, Panel, TextField, Modal, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 
 const initialState = {
   password: '',
@@ -64,7 +65,7 @@ export default class BackupCodesModal extends Component {
     return (
       <Modal.LEGACY open={open}>
         <Panel.LEGACY title="Generate Two-factor Backup Codes">
-          <form onSubmit={e => e.preventDefault()}>
+          <Form onSubmit={e => e.preventDefault()}>
             <Panel.LEGACY.Section>
               <Stack>
                 {!generatedCodes && hasCodes && (
@@ -100,7 +101,7 @@ export default class BackupCodesModal extends Component {
               </Stack>
             </Panel.LEGACY.Section>
             <Panel.LEGACY.Section>{this.renderButtons()}</Panel.LEGACY.Section>
-          </form>
+          </Form>
         </Panel.LEGACY>
       </Modal.LEGACY>
     );

@@ -6,6 +6,7 @@ import { Autorenew, Telegram } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
 import { ExternalLink, SubduedLink } from 'src/components/links';
+import { Form } from 'src/components/form';
 import { CopyField } from 'src/components';
 import { useForm } from 'react-hook-form';
 import { EXTERNAL_LINKS } from '../constants';
@@ -69,7 +70,7 @@ export default function SetupForSending({ domain, isSectionVisible }) {
         )}
       </Layout.Section>
       <Layout.Section>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Panel mb="0">
             {!readyFor.dkim ? (
               <Panel.Section>
@@ -144,7 +145,7 @@ export default function SetupForSending({ domain, isSectionVisible }) {
               </Panel.Section>
             )}
           </Panel>
-        </form>
+        </Form>
       </Layout.Section>
     </Layout>
   );

@@ -3,6 +3,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { ArrowForward } from '@sparkpost/matchbox-icons';
 import { Grid, TextField } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { formatInputDate, formatInputTime, parseDatetime } from 'src/helpers/date';
 import {
   getValidDateRange,
@@ -141,7 +142,7 @@ export class ManualEntryFormClassComponent extends Component {
     }
 
     return (
-      <form onKeyDown={this.handleEnter} className={styles.DateFields}>
+      <Form onKeyDown={this.handleEnter} className={styles.DateFields}>
         <Grid middle="xs">
           <Grid.Column>
             <TextField
@@ -196,7 +197,7 @@ export class ManualEntryFormClassComponent extends Component {
           </Grid.Column>
         </Grid>
         {precisionLabel}
-      </form>
+      </Form>
     );
   }
 }

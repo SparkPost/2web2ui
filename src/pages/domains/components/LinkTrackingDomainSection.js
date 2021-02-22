@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Layout, Stack } from 'src/components/matchbox';
-import { Panel } from 'src/components/matchbox';
+import { Button, Layout, Panel, Select, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { SubduedText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { useForm, Controller } from 'react-hook-form';
-import { Select } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
@@ -52,7 +51,7 @@ function LinkTrackingDomainSection({ domain, isSectionVisible, trackingDomainOpt
         </Stack>
       </Layout.Section>
       <Layout.Section>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Panel mb="0">
             <Panel.Section>
               <Controller
@@ -82,7 +81,7 @@ function LinkTrackingDomainSection({ domain, isSectionVisible, trackingDomainOpt
               </Button>
             </Panel.Section>
           </Panel>
-        </form>
+        </Form>
       </Layout.Section>
     </Layout>
   );

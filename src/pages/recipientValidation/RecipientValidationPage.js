@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ExternalLink } from 'src/components/links';
 import { Button, Page, Panel, Tabs } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { reduxForm } from 'redux-form';
 import _ from 'lodash';
 import { prepareCardInfo, isProductOnSubscription } from 'src/helpers/billing';
@@ -151,7 +152,7 @@ export function RecipientValidationPage(props) {
 
   if (addRVtoSubscriptionloading) return <Loading />;
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Page
         title="Recipient Validation"
         primaryArea={
@@ -205,7 +206,7 @@ export function RecipientValidationPage(props) {
         )}
         <RVPriceModal isOpen={showPriceModal} handleOpen={handleModal} />
       </Page>
-    </form>
+    </Form>
   );
 }
 

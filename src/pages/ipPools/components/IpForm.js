@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Label, Panel } from 'src/components/matchbox';
 import { SelectWrapper, RadioGroup } from 'src/components/reduxFormWrappers';
 import { ConfirmationModal, Abbreviation } from 'src/components';
+import { Form } from 'src/components/form';
 import { Card, CardTitle, CardContent } from 'src/components/card';
 import { ExternalLink } from 'src/components/links';
 import {
@@ -65,7 +66,7 @@ export const IpForm = props => {
 
   return (
     <Panel.LEGACY title="Sending IP Details">
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Panel.LEGACY.Section>
           <div className={styles.FieldGroup}>
             {/* NOTE: This should not be using the HTML <label> element - just a <div> with the same styles. This is a limitation of the existing component */}
@@ -173,7 +174,7 @@ export const IpForm = props => {
             {submitting ? 'Saving' : 'Update Sending IP'}
           </Button>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
 
       <ConfirmationModal
         open={isConfirmationModalOpen}

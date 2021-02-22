@@ -6,6 +6,7 @@ import { Grid, Button, Panel } from 'src/components/matchbox';
 import { getBillingCountries, updateBillingSubscription } from 'src/actions/billing';
 import billingUpdate from 'src/actions/billingUpdate';
 import { showAlert } from 'src/actions/globalAlert';
+import { Form } from 'src/components/form';
 import { Loading } from 'src/components/loading/Loading';
 import { prepareCardInfo } from 'src/helpers/billing';
 import { getFirstCountry, getFirstStateForCountry } from 'src/selectors/accountBillingForms';
@@ -43,7 +44,7 @@ export class EnableAutomaticBillingForm extends React.Component {
     }
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)}>
         <Grid>
           <Grid.Column>
             <Panel.LEGACY title="Add a Credit Card">
@@ -72,7 +73,7 @@ export class EnableAutomaticBillingForm extends React.Component {
             </Panel.LEGACY>
           </Grid.Column>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }

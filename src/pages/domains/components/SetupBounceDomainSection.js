@@ -4,6 +4,7 @@ import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { Telegram, Autorenew } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
+import { Form } from 'src/components/form';
 import { ExternalLink, PageLink, SubduedLink } from 'src/components/links';
 import { useForm, Controller } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
@@ -115,7 +116,7 @@ export default function SetupBounceDomainSection({
               </Panel.Action>
             </Panel.Section>
           )}
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <Panel.Section>
               <Stack>
                 {!readyFor.bounce && (
@@ -201,7 +202,7 @@ export default function SetupBounceDomainSection({
                 </Button>
               </Panel.Section>
             )}
-          </form>
+          </Form>
         </Panel>
       </Layout.Section>
     </Layout>

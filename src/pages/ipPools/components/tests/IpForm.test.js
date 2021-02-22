@@ -57,12 +57,12 @@ describe('Edit IP form', () => {
     expect(wrapper.find('Button')).toHaveTextContent('Update Sending IP');
   });
 
-  it('submits passed in data when the <form> is submitted', () => {
+  it('submits passed in data when the <Form> is submitted', () => {
     const mockHandleSubmit = jest.fn();
     const wrapper = subject({ handleSubmit: mockHandleSubmit });
     const formData = { ip_pool: 'abc', auto_warmup_enabled: true };
 
-    wrapper.find('form').simulate('submit', formData);
+    wrapper.find('Form').simulate('submit', formData);
 
     expect(mockHandleSubmit).toHaveBeenCalledWith(formData);
   });

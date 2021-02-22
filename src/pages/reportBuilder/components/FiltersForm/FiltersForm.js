@@ -11,6 +11,7 @@ import {
   ScreenReaderOnly,
   Stack,
 } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { Uppercase, Comparison } from 'src/components/text';
 import { getGroupingFields, getApiFormattedGroupings } from '../../helpers';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
@@ -91,7 +92,7 @@ function FiltersForm({ handleSubmit }) {
   const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <Form onSubmit={handleFormSubmit}>
       <Box padding="500" paddingBottom="8rem">
         <Stack marginBottom="500">
           {groupings.map((grouping, groupingIndex) => {
@@ -309,7 +310,7 @@ function FiltersForm({ handleSubmit }) {
           </Box>
         </Drawer.Footer>
       </Box>
-    </form>
+    </Form>
   );
 }
 

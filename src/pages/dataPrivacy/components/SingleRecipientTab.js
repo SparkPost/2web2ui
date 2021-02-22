@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { ButtonWrapper, RadioGroup, TextFieldWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { Field } from 'redux-form';
 import SubaccountSection from 'src/components/subaccountSection';
 import { required, email, maxLength } from 'src/helpers/validation';
@@ -33,7 +34,7 @@ export function SingleRecipientTab(props) {
   };
 
   return (
-    <form onSubmit={props.handleSubmit(onSubmit)}>
+    <Form onSubmit={props.handleSubmit(onSubmit)}>
       <Panel.LEGACY.Section>
         <Stack>
           <Field
@@ -78,7 +79,7 @@ export function SingleRecipientTab(props) {
           </Button>
         </ButtonWrapper>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   );
 }
 

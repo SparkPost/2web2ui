@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Page, Panel } from 'src/components/matchbox';
 import { ButtonWrapper, Loading } from 'src/components';
+import { Form } from 'src/components/form';
 import { PageLink } from 'src/components/links';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
 import CreateForm from './components/create/CreateForm';
@@ -53,7 +54,7 @@ export default class CreatePage extends Component {
 
     return (
       <Page breadcrumbAction={backAction} title="Create Template">
-        <form onSubmit={handleSubmit(this.handleCreate)}>
+        <Form onSubmit={handleSubmit(this.handleCreate)}>
           <Panel.LEGACY>
             <Panel.LEGACY.Section>
               <CreateForm formName={formName} />
@@ -71,7 +72,7 @@ export default class CreatePage extends Component {
               </ButtonWrapper>
             </Panel.LEGACY.Section>
           </Panel.LEGACY>
-        </form>
+        </Form>
       </Page>
     );
   }

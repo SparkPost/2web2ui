@@ -3,6 +3,7 @@ import { Button, Modal, Text, Radio, Stack } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';
 import { useForm } from 'react-hook-form';
 import useDomains from '../hooks/useDomains';
+import { Form } from 'src/components/form';
 
 export function DomainAlignmentModal(props) {
   const { isOpen, onSubmit, onClose } = props;
@@ -39,7 +40,7 @@ export function DomainAlignmentModal(props) {
             Use of strict or relaxed alignment is considered best practice by many mailbox
             providers. Note, there is no inherent advantage to one over the other.
           </Text>
-          <form onSubmit={handleSubmit(onSubmit)} id="domainAlignmentForm">
+          <Form onSubmit={handleSubmit(onSubmit)} id="domainAlignmentForm">
             <Radio.Group label="Verify domain for bounce for strict alignment">
               <Radio
                 ref={register}
@@ -58,7 +59,7 @@ export function DomainAlignmentModal(props) {
                 disabled={createPending}
               />
             </Radio.Group>
-          </form>
+          </Form>
         </Stack>
       </Modal.Content>
       <Modal.Footer>

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 import { reduxForm, SubmissionError } from 'redux-form';
 import { RadioGroup, ButtonWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { DownloadLink } from 'src/components/links';
 import { Button, Panel, Modal, Stack } from 'src/components/matchbox';
 import { FileFieldWrapper } from 'src/components/reduxFormWrappers';
@@ -96,7 +97,7 @@ export function MultipleRecipientsTab({
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Panel.LEGACY.Section>
           <Stack>
             <Field
@@ -142,7 +143,7 @@ export function MultipleRecipientsTab({
             </Button>
           </ButtonWrapper>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
 
       <Modal.LEGACY
         open={Boolean(dataPrivacyRequestError)}

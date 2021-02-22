@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import { Grid, TextField } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { formatToTimezone, parseDateTimeTz } from 'src/helpers/date';
 import {
   getValidDateRange,
@@ -153,7 +154,7 @@ export function ManualEntryForm(props) {
   }
 
   return (
-    <form onKeyDown={handleEnter} className={styles.DateFields}>
+    <Form onKeyDown={handleEnter} className={styles.DateFields}>
       <Grid middle="xs">
         <Grid.Column>
           <TextField
@@ -207,7 +208,7 @@ export function ManualEntryForm(props) {
         </Grid.Column>
       </Grid>
       {precisionLabel}
-    </form>
+    </Form>
   );
 }
 

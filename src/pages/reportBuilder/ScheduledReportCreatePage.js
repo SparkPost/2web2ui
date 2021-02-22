@@ -7,6 +7,7 @@ import {
   ScheduledReportDetailsForm,
   ScheduledReportTimingForm,
 } from './components/ScheduledReportForm';
+import { Form } from 'src/components/form';
 import { Loading } from 'src/components/loading';
 import { PageLink } from 'src/components/links';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
@@ -88,7 +89,7 @@ export default function ScheduledReportCreatePage() {
         Component: PageLink,
       }}
     >
-      <form onSubmit={formControls.handleSubmit(onSubmit)} id="scheduledReportForm">
+      <Form onSubmit={formControls.handleSubmit(onSubmit)} id="scheduledReportForm">
         <ScheduledReportDetailsForm
           formControls={formControls}
           disabled={isPendingCreate || formControls.formState.isSubmitting}
@@ -100,7 +101,7 @@ export default function ScheduledReportCreatePage() {
           disabled={isPendingCreate}
           report={report}
         />
-      </form>
+      </Form>
     </Page>
   );
 }

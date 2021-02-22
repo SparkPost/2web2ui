@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { PageLink } from 'src/components/links';
 import { Button, Panel, Stack } from 'src/components/matchbox';
-import { ButtonWrapper } from 'src/components';
+import { ButtonWrapper, SelectWrapper, TextFieldWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import * as supportActions from 'src/actions/support';
-import { SelectWrapper, TextFieldWrapper } from 'src/components';
 import { Heading } from 'src/components/text';
 import FileFieldWrapper from 'src/components/reduxFormWrappers/FileFieldWrapper';
 import config from 'src/config';
@@ -77,7 +77,7 @@ export class SupportForm extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)}>
         <Panel.LEGACY.Section>
           <Stack>
             <Field
@@ -135,7 +135,7 @@ export class SupportForm extends Component {
             </Button>
           </ButtonWrapper>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
     );
   }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Button, Panel, Stack, TextField, Modal } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { ButtonWrapper } from 'src/components';
 import { TranslatableText } from 'src/components/text';
 
@@ -41,7 +42,7 @@ export default class DisableTfaModal extends Component {
           }
           accent
         >
-          <form onSubmit={e => e.preventDefault()}>
+          <Form onSubmit={e => e.preventDefault()}>
             <Panel.LEGACY.Section>
               <Stack>
                 <p>
@@ -89,7 +90,7 @@ export default class DisableTfaModal extends Component {
                 </Button>
               </ButtonWrapper>
             </Panel.LEGACY.Section>
-          </form>
+          </Form>
         </Panel.LEGACY>
       </Modal.LEGACY>
     );

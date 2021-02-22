@@ -14,6 +14,7 @@ import {
   Stack,
   TextField,
 } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { useHistory } from 'react-router-dom';
@@ -119,7 +120,7 @@ export default function CreateForm() {
         onSubmit={onSubmitDomainAlignmentModal}
         onClose={closeModal}
       />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Layout>
           <Layout.Section annotated>
             <Layout.SectionTitle>Domain Type</Layout.SectionTitle>
@@ -270,7 +271,7 @@ export default function CreateForm() {
             </Button>
           </Layout.Section>
         </Layout>
-      </form>
+      </Form>
     </>
   );
 }

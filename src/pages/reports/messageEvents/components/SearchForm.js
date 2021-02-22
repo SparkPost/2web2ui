@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Inline, Panel } from 'src/components/matchbox';
 import { FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Form } from 'src/components/form';
 import OGStyles from './SearchForm.module.scss';
 import hibanaStyles from './SearchFormHibana.module.scss';
 import { FORMS } from 'src/constants';
@@ -23,7 +24,7 @@ export function SearchForm(props) {
 
   const { handleSubmit, handleApply, handleCancel, eventListing } = props;
   return (
-    <form onSubmit={handleSubmit(handleApply)}>
+    <Form onSubmit={handleSubmit(handleApply)}>
       <Panel.LEGACY title="Advanced Filters">
         <Panel.LEGACY.Section>
           <EventTypeFilters eventTypeDocs={eventListing} />
@@ -43,7 +44,7 @@ export function SearchForm(props) {
           </Inline>
         </Panel.LEGACY.Section>
       </Panel.LEGACY>
-    </form>
+    </Form>
   );
 }
 

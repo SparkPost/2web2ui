@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Label, Modal, Panel, Stack } from 'src/components/matchbox';
 import copy from 'copy-to-clipboard';
 import { PageLink } from 'src/components/links';
+import { Form } from 'src/components/form';
 import { Typeahead, TypeaheadItem } from 'src/components/typeahead/Typeahead';
 import { PanelLoading } from 'src/components/loading';
 import CopyField from 'src/components/copyField';
@@ -66,7 +67,7 @@ const InsertSnippetModal = props => {
   return (
     <ModalWrapper {...modalProps}>
       <Panel.LEGACY title="Add a snippet">
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Panel.LEGACY.Section>
             <Stack space="500">
               <p>
@@ -114,7 +115,7 @@ const InsertSnippetModal = props => {
               Copy Code
             </Button>
           </Panel.LEGACY.Section>
-        </form>
+        </Form>
       </Panel.LEGACY>
     </ModalWrapper>
   );

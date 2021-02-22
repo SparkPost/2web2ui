@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Field, reset, reduxForm } from 'redux-form';
 import { Button, Checkbox, Panel, Stack } from 'src/components/matchbox';
 import { TextFieldWrapper, CheckboxWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { showAlert } from 'src/actions/globalAlert';
 import { createOrUpdateSuppressions } from 'src/actions/suppressions';
 import SubaccountTypeaheadWrapper from 'src/components/reduxFormWrappers/SubaccountTypeaheadWrapper';
@@ -41,7 +42,7 @@ export class AddForm extends Component {
 
     return (
       <>
-        <form onSubmit={handleSubmit(this.onSubmit)}>
+        <Form onSubmit={handleSubmit(this.onSubmit)}>
           <Panel.LEGACY.Section>
             <Stack>
               <Field
@@ -81,7 +82,7 @@ export class AddForm extends Component {
               Add / Update
             </Button>
           </Panel.LEGACY.Section>
-        </form>
+        </Form>
       </>
     );
   }

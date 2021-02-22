@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, SubmissionError, reduxForm } from 'redux-form';
 import _ from 'lodash';
 import { Banner, Button, Error, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { TextFieldWrapper } from 'src/components';
 import { DownloadLink } from 'src/components/links';
 import { required, maxLength } from 'src/helpers/validation';
@@ -71,7 +72,7 @@ export class RecipientListForm extends Component {
     return (
       <div>
         {error && this.renderCsvErrors()}
-        <form onSubmit={handleSubmit(this.preSubmit)}>
+        <Form onSubmit={handleSubmit(this.preSubmit)}>
           <Panel.LEGACY>
             <Panel.LEGACY.Section>
               <Stack space="400">
@@ -128,7 +129,7 @@ export class RecipientListForm extends Component {
               </Button>
             </Panel.LEGACY.Section>
           </Panel.LEGACY>
-        </form>
+        </Form>
       </div>
     );
   }

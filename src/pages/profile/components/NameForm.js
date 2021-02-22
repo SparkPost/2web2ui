@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { required } from 'src/helpers/validation';
 import { TextFieldWrapper } from 'src/components';
 
@@ -10,7 +11,7 @@ export class NameForm extends Component {
     const { pristine, submitting, handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Panel.LEGACY.Section>
           <Stack>
             <Field
@@ -40,7 +41,7 @@ export class NameForm extends Component {
             {submitting ? 'Updating Profile' : 'Update Profile'}
           </Button>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
     );
   }
 }

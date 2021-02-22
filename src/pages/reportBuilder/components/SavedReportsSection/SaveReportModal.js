@@ -14,6 +14,7 @@ import {
   TextField,
 } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
+import { Form } from 'src/components/form';
 import { Heading } from 'src/components/text';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
@@ -118,7 +119,7 @@ export function SaveReportModal(props) {
 
   const renderContent = () => {
     return (
-      <form onSubmit={handleSubmit(onSubmit)} id="newReportForm">
+      <Form onSubmit={handleSubmit(onSubmit)} id="newReportForm">
         <Stack>
           <TextField
             label="Name"
@@ -192,7 +193,7 @@ export function SaveReportModal(props) {
             </Checkbox.Group>
           )}
         </Stack>
-      </form>
+      </Form>
     );
   };
 

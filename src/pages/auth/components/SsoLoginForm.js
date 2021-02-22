@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { TextFieldWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { FORMS } from 'src/constants';
 import { required } from 'src/helpers/validation';
 import { trimWhitespaces } from 'src/helpers/string';
@@ -18,7 +19,7 @@ export class SsoLoginForm extends React.Component {
             error={`${loginError}. Please contact login.issues@sparkpost.com for assistance.`}
           />
         )}
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Stack>
             <Field
               autoFocus
@@ -35,7 +36,7 @@ export class SsoLoginForm extends React.Component {
               </Button>
             </Box>
           </Stack>
-        </form>
+        </Form>
       </React.Fragment>
     );
   }

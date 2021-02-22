@@ -5,6 +5,7 @@ import { QRCode } from 'react-qr-svg';
 import styled from 'styled-components';
 import ButtonWrapper from 'src/components/buttonWrapper';
 import { Button, Grid, Panel, Stack, TextField } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { Loading } from 'src/components/loading/Loading';
 import { getTfaSecret, toggleTfa } from 'src/actions/tfa';
 import { showAlert } from 'src/actions/globalAlert';
@@ -86,7 +87,7 @@ export const RenderedForm = props => {
   const qrData = `otpauth://totp/${username}?secret=${encodeURIComponent(secret)}&issuer=SparkPost`;
 
   return (
-    <form onSubmit={e => e.preventDefault()}>
+    <Form onSubmit={e => e.preventDefault()}>
       <Panel.LEGACY.Section>
         <Stack space="600">
           <Grid>
@@ -150,7 +151,7 @@ export const RenderedForm = props => {
           )}
         </ButtonWrapper>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   );
 };
 
