@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { ButtonWrapper, RadioGroup, TextFieldWrapper } from 'src/components';
 import { Form } from 'src/components/form';
-import { Field } from 'redux-form';
 import SubaccountSection from 'src/components/subaccountSection';
 import { required, email, maxLength } from 'src/helpers/validation';
 import { Button, Panel, Stack } from 'src/components/matchbox';

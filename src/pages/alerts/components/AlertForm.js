@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import { Field, Form } from 'redux-form';
+import { Field } from 'redux-form';
 // Components
 import { Box, Grid, Error, Button, Expandable, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { TextFieldWrapper, SelectWrapper } from 'src/components';
 import FilterFields from './fields/FilterFields';
 import EvaluatorFields from './fields/EvaluatorFields';
