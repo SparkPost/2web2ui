@@ -13,7 +13,6 @@ import {
 export default function billingCreate(values) {
   return (dispatch, getState) => {
     const { corsData, billingData } = formatDataForCors(values);
-
     // action creator wrappers for chaining as callbacks
     const corsCreateBilling = ({ meta }) =>
       cors({ meta, context: 'create-account', data: corsData });
@@ -42,6 +41,10 @@ export default function billingCreate(values) {
         consumePromoCode({ meta, promoCode: values.promoCode, billingId: billingData.billingId });
       actions.push(consumePromo);
     }
-    return dispatch(chainActions(...actions)());
+    dispatch({ type: 'BILLING_CREATE_PENDING' });
+
+    return dispatch(chainActions(...actions)())
+      .then(() => dispatch({ type: 'BILLING_CREATE_SUCCESS' }))
+      .catch(() => dispatch({ type: 'BILLING_CREATE_ERROR' }));
   };
 }

@@ -21,6 +21,11 @@ describe('choosePlanMSTP', () => {
     state = {
       account: {},
       billing: {},
+      billingCreate: {
+        loading: null,
+        success: null,
+        error: false,
+      },
     };
     props = {
       location: {},

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Grid, Button, Panel } from 'src/components/matchbox';
 import { Heading } from 'src/components/text';
 import { showAlert } from 'src/actions/globalAlert';
@@ -27,20 +28,22 @@ export function OnboardingPlanPage({
   getBundles,
   getBillingCountries,
   billingCreate,
+  billingCreateLoading,
+  billingCreateSuccess,
   showAlert,
-  history,
+  submitting,
   billing,
   verifyPromoCode,
   clearPromoCode,
   currentPlan,
   loading,
-  submitting,
   selectedPlan = {},
   handleSubmit,
   hasError,
   bundles,
 }) {
   const next_step = DASHBOARD_ROUTE;
+  const history = useHistory();
   useEffect(() => {
     getPlans();
   }, [getPlans]);
@@ -89,13 +92,10 @@ export function OnboardingPlanPage({
     }
 
     // Note: billingCreate will update the subscription if the account is AWS
-    return action
-      .then(({ discount_id }) => {
-        newValues.discountId = discount_id;
-        return billingCreate({ ...newValues, billingId });
-      })
-      .then(() => history.push(next_step))
-      .then(() => showAlert({ type: 'success', message: 'Added your plan' }));
+    return action.then(({ discount_id }) => {
+      newValues.discountId = discount_id;
+      return billingCreate({ ...newValues, billingId });
+    });
   };
 
   const applyPromoCode = promoCode => {
@@ -123,13 +123,21 @@ export function OnboardingPlanPage({
     clearPromoCode,
   };
 
-  if (loading || !bundles.length) {
+  useEffect(() => {
+    if (billingCreateSuccess) {
+      history.push(next_step);
+      showAlert({ type: 'success', message: 'Added your plan' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [billingCreateSuccess]);
+
+  if (loading || !bundles.length || (!submitting && billingCreateLoading)) {
     return <Loading />;
   }
+
   const disableSubmit = submitting || promoPending;
 
   const buttonText = submitting ? 'Updating Subscription...' : 'Get Started';
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CenteredLogo />
@@ -149,6 +157,7 @@ export function OnboardingPlanPage({
               <Panel.LEGACY.Section>
                 <PromoCodeNew
                   key={selectedPromo.promoCode || 'promocode'}
+                  disabled={disableSubmit}
                   promoCodeObj={promoCodeObj}
                   handlePromoCode={handlePromoCode}
                 />

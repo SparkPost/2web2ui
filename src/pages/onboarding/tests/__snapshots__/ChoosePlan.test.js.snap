@@ -30,6 +30,7 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
         />
         <Panel.LEGACY.Section>
           <PromoCodeNew
+            disabled={true}
             handlePromoCode={
               Object {
                 "applyPromoCode": [Function],
@@ -102,6 +103,7 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
         />
         <Panel.LEGACY.Section>
           <PromoCodeNew
+            disabled={false}
             handlePromoCode={
               Object {
                 "applyPromoCode": [Function],
@@ -174,6 +176,7 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
         />
         <Panel.LEGACY.Section>
           <PromoCodeNew
+            disabled={false}
             handlePromoCode={
               Object {
                 "applyPromoCode": [Function],
