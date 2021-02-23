@@ -166,7 +166,7 @@ export function ComplaintsByCohortPage(props) {
       breadcrumbAction={{
         content: 'Back to Engagement Recency Overview',
         to: '/signals/engagement',
-        component: PageLink,
+        as: PageLink,
       }}
       title="Complaints by Cohort"
       facet={facet}

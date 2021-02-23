@@ -95,7 +95,7 @@ exports[`Page: Webhook List should render error when it fails 1`] = `
   }
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create Webhook",
       "to": "/webhooks/create",
     }
@@ -131,7 +131,7 @@ exports[`Page: Webhook List should render happy path 1`] = `
   }
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create Webhook",
       "to": "/webhooks/create",
     }

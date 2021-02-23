@@ -66,7 +66,7 @@ export const WatchlistAddPage = ({
       breadcrumbAction={{
         content: 'Watchlist',
         to: '/signals/blocklist/monitors',
-        component: PageLink,
+        as: PageLink,
       }}
     >
       <Panel.LEGACY>

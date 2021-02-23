@@ -25,7 +25,7 @@ export class CreatePage extends Component {
       <Page
         breadcrumbAction={{
           content: 'Back to Sending Domains',
-          component: PageLink,
+          as: PageLink,
           to: '/account/sending-domains',
         }}
         title="Add a Domain"

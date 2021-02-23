@@ -85,7 +85,7 @@ export class ListPage extends Component {
         primaryAction={{
           content: 'Create a New A/B Test',
           to: '/ab-testing/create',
-          component: PageLink,
+          as: PageLink,
         }}
         empty={{
           show: !error && abTests.length === 0,

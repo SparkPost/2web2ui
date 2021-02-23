@@ -116,7 +116,7 @@ export class WebhooksList extends Component {
 
     return (
       <Page
-        primaryAction={{ content: 'Create Webhook', component: PageLink, to: '/webhooks/create' }}
+        primaryAction={{ content: 'Create Webhook', as: PageLink, to: '/webhooks/create' }}
         title="Webhooks"
         empty={{
           show: !error && webhooks.length === 0,

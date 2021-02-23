@@ -44,7 +44,7 @@ exports[`ComplaintsByCohortPage renders correctly 1`] = `
 <SignalsPage
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Engagement Recency Overview",
       "to": "/signals/engagement",
     }

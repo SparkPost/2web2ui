@@ -5,7 +5,7 @@ exports[`Page: Users List should render ActionPopover 1`] = `
   actions={
     Array [
       Object {
-        "component": [Function],
+        "as": [Function],
         "content": "Edit",
         "to": "/account/users/edit/test-username",
       },

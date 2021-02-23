@@ -2,35 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { OpenInNew } from '@sparkpost/matchbox-icons';
-import { Button, UnstyledLink } from 'src/components/matchbox';
+import { Box, Button, UnstyledLink } from 'src/components/matchbox';
 
-const StyledIcon = styled('div')`
-  margin: ${props => props.iconMargin};
+// The element can be overwritten via the `as` prop
+const StyledLink = styled(UnstyledLink)`
+  display: inline-flex;
+  align-items: center;
 `;
 
-const ExternalLink = ({
+function ExternalLink({
   as: Component = UnstyledLink,
   children,
-  component: _component, // ignore, won't apply external props correctly if set
   showIcon = true,
   icon: Icon = OpenInNew,
-  iconSize = 13,
-  iconMargin = '-0.1em 0 0 0',
   ...props
-}) => {
+}) {
   const isButton = Component.name === 'Button';
 
-  if (isButton && Number(iconSize) === 13 && iconMargin === '-0.1em 0 0 0') {
-    iconSize = 18;
-    iconMargin = '0 0 0 .25em';
+  return (
+    <StyledLink as={Component} {...props} external={true}>
+      {children}
+
+      {showIcon && <ExternalLinkIcon isButton={isButton} icon={Icon} />}
+    </StyledLink>
+  );
+}
+
+function ExternalLinkIcon({ isButton, icon: Icon }) {
+  if (isButton) {
+    return <Button.Icon as={Icon} />;
   }
 
   return (
-    <Component {...props} external={true}>
-      {children} {showIcon && <StyledIcon size={iconSize} as={Icon} iconMargin={iconMargin} />}
-    </Component>
+    <Box as="span" marginTop="-0.1rem" marginLeft="3px">
+      <Icon size="0.9rem" />
+    </Box>
   );
-};
+}
 
 ExternalLink.propTypes = {
   as: PropTypes.oneOf([Button, UnstyledLink]),

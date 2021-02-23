@@ -115,7 +115,7 @@ export const IncidentsPage = props => {
         content: monitors.length === 0 ? 'Add to Monitored List' : 'View Monitored List',
         to:
           monitors.length === 0 ? '/signals/blocklist/monitors/add' : '/signals/blocklist/monitors',
-        component: PageLink,
+        as: PageLink,
       }}
     >
       {renderContent()}

@@ -4,7 +4,7 @@ exports[`CreatePage tests should display the error banner on parse error 1`] = `
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Suppressions",
       "to": "/lists/suppressions",
     }
@@ -43,7 +43,7 @@ exports[`CreatePage tests should display the error banner on persist error 1`] =
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Suppressions",
       "to": "/lists/suppressions",
     }
@@ -82,7 +82,7 @@ exports[`CreatePage tests should render AddTab 1`] = `
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Suppressions",
       "to": "/lists/suppressions",
     }
@@ -117,7 +117,7 @@ exports[`CreatePage tests should render UploadTab 1`] = `
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Suppressions",
       "to": "/lists/suppressions",
     }

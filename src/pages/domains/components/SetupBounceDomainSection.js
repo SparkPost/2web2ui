@@ -88,7 +88,7 @@ export default function SetupBounceDomainSection({
                 </TranslatableText>
               </p>
               <Panel.Action
-                component={ExternalLink}
+                as={ExternalLink}
                 external="true"
                 to={`mailto:?subject=Assistance%20Requested%20Verifying%20a%20Bounce%20Domain%20on%20SparkPost&body=${userName}%20has%20requested%20your%20assistance%20verifying%20a%20bounce%20domain%20with%20SparkPost.%20Follow%20the%20link%20below%20to%20find%20the%20values%20you%E2%80%99ll%20need%20to%20add%20to%20the%20settings%20of%20your%20DNS%20provider.%0D%0A%5BGo%20to%20SparkPost%5D(${window.location})%0D%0A`}
                 icon={Telegram}

@@ -14,7 +14,7 @@ exports[`Page: Test List renders page correctly with defaults 1`] = `
   }
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Start a Test",
       "to": "/inbox-placement/seedlist",
     }
@@ -100,7 +100,7 @@ exports[`Page: Test List renders page with tests 1`] = `
   }
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Start a Test",
       "to": "/inbox-placement/seedlist",
     }

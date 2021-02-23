@@ -37,7 +37,7 @@ export class CreatePage extends Component {
         title="Add Suppressions"
         breadcrumbAction={{
           content: 'Suppressions',
-          component: PageLink,
+          as: PageLink,
           to: '/lists/suppressions',
         }}
       >

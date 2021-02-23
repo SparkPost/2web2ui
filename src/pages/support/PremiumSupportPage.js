@@ -35,7 +35,7 @@ export class PremiumSupportPage extends Component {
     return (
       <Page
         breadcrumbAction={{
-          component: PageLink,
+          as: PageLink,
           to: '/account/billing',
           content: 'Back to billing',
         }}

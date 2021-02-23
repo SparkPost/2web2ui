@@ -153,7 +153,7 @@ export function EngagementRecencyPage(props) {
       breadcrumbAction={{
         content: 'Back to Engagement Recency Overview',
         to: '/signals/engagement',
-        component: PageLink,
+        as: PageLink,
       }}
       title={
         <>

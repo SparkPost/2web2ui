@@ -88,7 +88,7 @@ export function SingleSignOnPanel(props) {
       actions={[
         {
           color: 'orange',
-          component: ExternalLink,
+          as: ExternalLink,
           content: 'Learn More',
           to: LINKS.SSO_GUIDE,
         },

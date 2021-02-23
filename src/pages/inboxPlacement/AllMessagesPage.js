@@ -86,7 +86,7 @@ export const AllMessagesPage = ({
   return (
     <Page
       breadcrumbAction={{
-        component: PageLink,
+        as: PageLink,
         content: 'Test Results',
         to: `/inbox-placement/details/${id}`,
       }}

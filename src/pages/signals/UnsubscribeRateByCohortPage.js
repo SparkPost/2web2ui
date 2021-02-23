@@ -170,7 +170,7 @@ export function UnsubscribeRateByCohortPage(props) {
       breadcrumbAction={{
         content: 'Back to Engagement Recency Overview',
         to: '/signals/engagement',
-        component: PageLink,
+        as: PageLink,
       }}
       title="Unsubscribe Rate by Cohort"
       facet={facet}

@@ -64,17 +64,17 @@ export class WebhooksDetails extends Component {
     const tabs = [
       {
         content: 'Settings',
-        component: PageLink,
+        as: PageLink,
         to: `${editPath}${query}`,
       },
       {
         content: 'Test',
-        component: PageLink,
+        as: PageLink,
         to: `${testPath}${query}`,
       },
       {
         content: 'Batch Status',
-        component: PageLink,
+        as: PageLink,
         to: `${batchPath}${query}`,
       },
     ];
@@ -93,7 +93,7 @@ export class WebhooksDetails extends Component {
       <Page
         title={webhook.name}
         secondaryActions={secondaryActions}
-        breadcrumbAction={{ content: 'View All Webhooks', component: PageLink, to: '/webhooks/' }}
+        breadcrumbAction={{ content: 'View All Webhooks', as: PageLink, to: '/webhooks/' }}
       >
         <Panel.LEGACY>
           <Tabs selected={selectedTab} tabs={tabs} />

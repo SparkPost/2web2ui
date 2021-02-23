@@ -253,7 +253,7 @@ export const IncidentDetailsPage = ({
       breadcrumbAction={{
         content: 'Blocklist Incidents',
         to: '/signals/blocklist/incidents',
-        component: PageLink,
+        as: PageLink,
       }}
     >
       {renderHibanaContent()}

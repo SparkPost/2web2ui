@@ -81,9 +81,7 @@ exports[`Variants View Component: PercentOrSample Component: should render perce
 </LabelledValue>
 `;
 
-exports[
-  `Variants View Component: PercentOrSample Component: should render sample size correctly 1`
-] = `
+exports[`Variants View Component: PercentOrSample Component: should render sample size correctly 1`] = `
 <LabelledValue
   label="Sample Size"
 >
@@ -133,8 +131,8 @@ exports[`Variants View Component: Variant Component: should render correctly 1`]
     actions={
       Array [
         Object {
+          "as": [Function],
           "color": "orange",
-          "component": [Function],
           "content": <React.Fragment>
             View Template 
             <ChevronRight />

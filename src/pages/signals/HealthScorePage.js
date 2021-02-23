@@ -253,7 +253,7 @@ export class HealthScorePage extends Component {
         breadcrumbAction={{
           content: 'Back to Health Score Overview',
           to: '/signals/health-score',
-          component: PageLink,
+          as: PageLink,
         }}
         title="Health Score"
         facet={facet}

@@ -1,32 +1,30 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Button } from 'src/components/matchbox';
+import { TestApp } from 'src/__testHelpers__';
 import ExternalLink from '../ExternalLink';
 
 describe('ExternalLink', () => {
   const subject = props =>
-    shallow(
-      <ExternalLink to="http://example.com" {...props}>
-        See ya!
-      </ExternalLink>,
+    render(
+      <TestApp>
+        <ExternalLink to="http://example.com" {...props}>
+          See ya!
+        </ExternalLink>
+      </TestApp>,
     );
 
   it('renders an external link', () => {
-    const wrapper = subject();
-    expect(wrapper).toHaveDisplayName('UnstyledLink');
-    expect(wrapper).toHaveProp({
-      to: 'http://example.com',
-      external: true,
-    });
-    expect(wrapper).toHaveTextContent('See ya!');
+    subject();
+    expect(screen.getByRole('link')).toHaveTextContent('See ya!');
+    expect(screen.getByRole('link')).toHaveAttribute('href', 'http://example.com');
+    expect(screen.getByRole('link')).toHaveAttribute('title', 'Opens in a new tab');
   });
 
-  it('ignores component composition', () => {
-    expect(subject({ component: 'button' })).not.toHaveProp('component');
-  });
-
-  it('renders a button', () => {
-    const wrapper = subject({ as: Button });
-    expect(wrapper).toHaveDisplayName('Button');
+  it('still renders the link when `as` is a `Button` component', () => {
+    subject({ as: Button });
+    expect(screen.getByRole('link')).toHaveTextContent('See ya!');
+    expect(screen.getByRole('link')).toHaveAttribute('href', 'http://example.com');
+    expect(screen.getByRole('link')).toHaveAttribute('title', 'Opens in a new tab');
   });
 });

@@ -10,7 +10,7 @@ export default function CreatePage() {
       <Page
         breadcrumbAction={{
           content: 'All Domains',
-          component: PageLink,
+          as: PageLink,
           to: BASE_URL,
         }}
         title="Add a Domain"

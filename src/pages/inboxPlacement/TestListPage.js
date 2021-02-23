@@ -153,7 +153,7 @@ export const TestListPage = ({ tests, error, loading, listTests }) => {
       primaryAction={{
         content: 'Start a Test',
         to: '/inbox-placement/seedlist',
-        component: PageLink,
+        as: PageLink,
       }}
     >
       {error ? (

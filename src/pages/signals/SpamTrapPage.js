@@ -187,7 +187,7 @@ export function SpamTrapPage(props) {
       breadcrumbAction={{
         content: 'Back to Spam Trap Overview',
         to: '/signals/spam-traps',
-        component: PageLink,
+        as: PageLink,
       }}
       title="Spam Traps"
       facet={facet}

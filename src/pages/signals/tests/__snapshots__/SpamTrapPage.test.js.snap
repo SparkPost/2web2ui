@@ -44,7 +44,7 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
 <SignalsPage
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Spam Trap Overview",
       "to": "/signals/spam-traps",
     }
@@ -280,7 +280,7 @@ exports[`Signals Spam Trap Page renders error correctly 1`] = `
 <SignalsPage
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Spam Trap Overview",
       "to": "/signals/spam-traps",
     }

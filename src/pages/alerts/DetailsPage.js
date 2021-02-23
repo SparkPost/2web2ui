@@ -130,7 +130,7 @@ export class DetailsPageComponent extends Component {
     return (
       <Page
         title={name || 'Alert'}
-        breadcrumbAction={{ content: 'Back to Alerts', to: '/alerts', component: PageLink }}
+        breadcrumbAction={{ content: 'Back to Alerts', to: '/alerts', as: PageLink }}
         primaryArea={renderPagePrimaryArea()}
       >
         {!_.isEmpty(alert) && (

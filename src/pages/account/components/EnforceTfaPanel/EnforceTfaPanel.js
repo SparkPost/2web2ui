@@ -63,7 +63,7 @@ export class EnforceTFAPanel extends React.Component {
           {
             color: 'orange',
             content: 'Learn more',
-            component: ExternalLink,
+            as: ExternalLink,
             to: LINKS.MANDATORY_TFA,
           },
         ]}

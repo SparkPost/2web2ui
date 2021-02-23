@@ -122,7 +122,7 @@ export function UploadedListPage(props) {
       {' '}
       <Page
         title="Recipient Validation"
-        breadcrumbAction={{ content: 'Back', component: PageLink, to: '/recipient-validation' }}
+        breadcrumbAction={{ content: 'Back', as: PageLink, to: '/recipient-validation' }}
       >
         <Panel.LEGACY>
           <OGOnlyWrapper as={Panel.LEGACY.Section}>

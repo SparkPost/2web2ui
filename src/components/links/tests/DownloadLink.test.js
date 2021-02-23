@@ -24,12 +24,7 @@ describe('DownloadLink', () => {
     expect(wrapper).toHaveProp('referrerPolicy');
   });
 
-  it('ignores component prop', () => {
-    const wrapper = subject({ component: () => null });
-    expect(wrapper).not.toHaveProp('component');
-  });
-
-  it('renders a button', () => {
+  it('renders as a button', () => {
     const wrapper = subject({ as: Button });
     expect(wrapper).toHaveDisplayName('Button');
     expect(wrapper).toHaveTextContent('Download Me!');

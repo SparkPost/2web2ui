@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { openSupportTicketForm } from 'src/actions/support';
-import { Button, UnstyledLink } from 'src/components/matchbox';
+import { Button } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 
 // todo, disconnect from redux and use context
 export const SupportTicketLink = ({
-  as: Component = UnstyledLink,
+  as: Component = ButtonLink,
   children,
-  component: _component, // ignore
   issueId, // see, src/config/supportIssues for a complete list
   onClick,
   message,
@@ -16,18 +16,9 @@ export const SupportTicketLink = ({
   to: _to, // ignore
   ...props
 }) => {
-  const componentSpecificProps = {
-    [Button]: {},
-    [UnstyledLink]: {
-      href: 'javascript:void(0);',
-      role: 'button',
-    },
-  };
-
   return (
     <Component
       {...props}
-      {...componentSpecificProps[Component]}
       onClick={() => {
         openSupportTicketForm({ issueId, message });
         onClick && onClick();
@@ -39,7 +30,7 @@ export const SupportTicketLink = ({
 };
 
 SupportTicketLink.propTypes = {
-  as: PropTypes.oneOf([Button, UnstyledLink]),
+  as: PropTypes.oneOf([Button, ButtonLink]),
   children: PropTypes.node.isRequired,
   issueId: PropTypes.string.isRequired,
   onClick: PropTypes.func,

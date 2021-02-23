@@ -7,7 +7,6 @@ import { Button, UnstyledLink } from 'src/components/matchbox';
 const DownloadLink = ({
   as: Component = UnstyledLink,
   children,
-  component: _component, // ignore
   download = true,
   href,
   ...props

@@ -42,7 +42,7 @@ const SUB_COLUMN = [
 ];
 
 export const Actions = ({ username, deletable, onDelete }) => {
-  const actions = [{ content: 'Edit', to: `/account/users/edit/${username}`, component: PageLink }];
+  const actions = [{ content: 'Edit', to: `/account/users/edit/${username}`, as: PageLink }];
   if (deletable) {
     actions.push({ content: 'Delete', onClick: () => onDelete(username) });
   }

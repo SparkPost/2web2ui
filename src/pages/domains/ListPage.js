@@ -154,7 +154,7 @@ function DomainTabPages() {
       primaryAction={{
         to: `/domains/create?type=${getTabType()}`,
         content: 'Add a Domain',
-        component: PageLink,
+        as: PageLink,
       }}
       empty={{
         trackingOnly:

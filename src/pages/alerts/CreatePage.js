@@ -42,7 +42,7 @@ export class CreatePage extends Component {
       ? { content: 'Back to Alert', to: `/alerts/details/${idToDuplicate}` }
       : { content: 'Back to Alerts', to: '/alerts' };
     return (
-      <Page title="Create Alert" breadcrumbAction={{ ...backBreadcrumb, component: PageLink }}>
+      <Page title="Create Alert" breadcrumbAction={{ ...backBreadcrumb, as: PageLink }}>
         <AlertForm
           submitting={loading}
           onSubmit={this.handleCreate}

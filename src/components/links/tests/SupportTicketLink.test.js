@@ -14,15 +14,8 @@ describe('SupportTicketLink', () => {
   it('renders an a11y link', () => {
     const wrapper = subject();
 
-    expect(wrapper).toHaveDisplayName('UnstyledLink');
-    expect(wrapper).toHaveProp('href', 'javascript:void(0);');
-    expect(wrapper).toHaveProp('role', 'button');
+    expect(wrapper).toHaveDisplayName('ButtonLink');
     expect(wrapper).toHaveTextContent('Help!');
-  });
-
-  it('ignores "component" prop', () => {
-    const wrapper = subject({ component: 'a' });
-    expect(wrapper).not.toHaveProp('component');
   });
 
   it('ignores "to" prop', () => {
@@ -61,9 +54,8 @@ describe('SupportTicketLink', () => {
     expect(mockOnClick).toHaveBeenCalled();
   });
 
-  it('renders a button', () => {
+  it('renders as a button', () => {
     const wrapper = subject({ as: Button });
     expect(wrapper).toHaveDisplayName('Button');
-    expect(wrapper).not.toHaveProp('role');
   });
 });

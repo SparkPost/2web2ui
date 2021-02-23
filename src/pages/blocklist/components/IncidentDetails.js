@@ -79,7 +79,7 @@ export default ({
           </Grid.Column>
         </Grid>
         <Panel.Action
-          component={PageLink}
+          as={PageLink}
           to={`/reports/summary?from=${engagementSummaryFrom}&to=${engagementSummaryTo}&range=custom&filters=${engagementSummaryResource}:${resourceName}&report=engagement`}
         >
           View Engagement

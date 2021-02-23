@@ -15,7 +15,7 @@ describe('PageLink', () => {
   it('renders a link wired to react router', () => {
     const wrapper = subject();
     expect(wrapper).toHaveDisplayName('UnstyledLink');
-    expect(wrapper).toHaveProp('component', Link);
+    expect(wrapper).toHaveProp('as', Link);
     expect(wrapper).toHaveTextContent('Dashboard');
   });
 

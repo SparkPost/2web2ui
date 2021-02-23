@@ -186,7 +186,7 @@ export class EditPage extends Component {
           {
             content: 'Purchase IPs',
             to: '/account/billing',
-            component: PageLink,
+            as: PageLink,
             visible: showPurchaseCTA && !isManuallyBilled,
           },
           {

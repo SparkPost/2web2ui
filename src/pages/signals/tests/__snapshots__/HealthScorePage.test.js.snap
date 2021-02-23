@@ -44,7 +44,7 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
 <SignalsPage
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Health Score Overview",
       "to": "/signals/health-score",
     }
@@ -490,7 +490,7 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
 <SignalsPage
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Health Score Overview",
       "to": "/signals/health-score",
     }
@@ -740,7 +740,7 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
 <SignalsPage
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Health Score Overview",
       "to": "/signals/health-score",
     }

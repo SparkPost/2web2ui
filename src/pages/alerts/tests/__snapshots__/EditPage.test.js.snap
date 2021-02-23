@@ -4,7 +4,7 @@ exports[`Page: Alerts Edit should render happy path 1`] = `
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to Alert",
       "to": "/alerts/details/alert-id-1",
     }

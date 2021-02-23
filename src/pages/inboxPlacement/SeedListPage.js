@@ -130,7 +130,7 @@ export const SeedListPage = props => {
   return (
     <Page
       breadcrumbAction={{
-        component: PageLink,
+        as: PageLink,
         content: 'All Tests',
         to: '/inbox-placement',
       }}

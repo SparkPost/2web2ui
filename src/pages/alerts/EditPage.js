@@ -46,7 +46,7 @@ export class EditPage extends Component {
         breadcrumbAction={{
           content: 'Back to Alert',
           to: `/alerts/details/${id}`,
-          component: PageLink,
+          as: PageLink,
         }}
       >
         <AlertForm submitting={loading} onSubmit={this.handleUpdate} isNewAlert={false} />

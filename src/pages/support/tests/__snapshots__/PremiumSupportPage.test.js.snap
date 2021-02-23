@@ -4,7 +4,7 @@ exports[`PremiumSupportPage default state 1`] = `
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Back to billing",
       "to": "/account/billing",
     }

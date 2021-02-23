@@ -18,7 +18,7 @@ exports[`UploadedListPage renders the list error when the job status is error 1`
   <Page
     breadcrumbAction={
       Object {
-        "component": [Function],
+        "as": [Function],
         "content": "Back",
         "to": "/recipient-validation",
       }
@@ -59,7 +59,7 @@ exports[`UploadedListPage renders with list progress 1`] = `
   <Page
     breadcrumbAction={
       Object {
-        "component": [Function],
+        "as": [Function],
         "content": "Back",
         "to": "/recipient-validation",
       }

@@ -21,7 +21,7 @@ function TrackingDomainsEmptyState() {
           <li>Confirm that the tracking domain was successfully verified.</li>
         </EmptyState.List>
       </EmptyState.Content>
-      <EmptyState.Action component={PageLink} to="/domains/create?type=tracking">
+      <EmptyState.Action as={PageLink} to="/domains/create?type=tracking">
         Add Tracking Domain
       </EmptyState.Action>
       <EmptyState.Action variant="outline" external to={LINKS.TRACKING_DOMAIN_DOCS}>

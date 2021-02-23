@@ -16,7 +16,7 @@ exports[`Page: Single Inbox Placement Test renders page correctly with defaults 
 <Page
   breadcrumbAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "All Tests",
       "to": "/inbox-placement",
     }

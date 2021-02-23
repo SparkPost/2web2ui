@@ -44,7 +44,7 @@ export default function ListPage() {
   return (
     <Page
       title="Alerts"
-      primaryAction={{ content: 'Create an Alert', to: '/alerts/create', component: PageLink }}
+      primaryAction={{ content: 'Create an Alert', to: '/alerts/create', as: PageLink }}
       empty={{
         show: !error && alerts.length === 0,
         image: Templates,

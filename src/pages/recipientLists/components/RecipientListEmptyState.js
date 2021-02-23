@@ -21,7 +21,7 @@ export default function RecipientListEmptyState() {
         <EmptyState.Image src={MailJpg}>
           <source srcSet={MailWebp} type="image/webp"></source>
         </EmptyState.Image>
-        <EmptyState.Action component={PageLink} to="/lists/recipient-lists/create">
+        <EmptyState.Action as={PageLink} to="/lists/recipient-lists/create">
           Create Recipient List
         </EmptyState.Action>
         <EmptyState.Action variant="outline" to={LINKS.RECIP_DOCS} external>

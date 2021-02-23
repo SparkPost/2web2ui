@@ -13,7 +13,7 @@ const PageLink = ({ as: Component = UnstyledLink, children, ...props }) => {
   }
 
   return (
-    <Component {...props} component={Link}>
+    <Component {...props} as={Link}>
       {children}
     </Component>
   );

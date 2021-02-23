@@ -66,31 +66,31 @@ exports[`Status Panel Component version selector should render correctly 1`] = `
     actions={
       Array [
         Object {
-          "component": [Function],
+          "as": [Function],
           "content": "View Version 5",
           "to": "/ab-testing/test_one/5?subaccount=101",
           "visible": true,
         },
         Object {
-          "component": [Function],
+          "as": [Function],
           "content": "View Version 4",
           "to": "/ab-testing/test_one/4?subaccount=101",
           "visible": false,
         },
         Object {
-          "component": [Function],
+          "as": [Function],
           "content": "View Version 3",
           "to": "/ab-testing/test_one/3?subaccount=101",
           "visible": true,
         },
         Object {
-          "component": [Function],
+          "as": [Function],
           "content": "View Version 2",
           "to": "/ab-testing/test_one/2?subaccount=101",
           "visible": true,
         },
         Object {
-          "component": [Function],
+          "as": [Function],
           "content": "View Version 1",
           "to": "/ab-testing/test_one/1?subaccount=101",
           "visible": true,

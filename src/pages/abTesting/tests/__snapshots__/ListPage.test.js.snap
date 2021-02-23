@@ -16,7 +16,7 @@ exports[`Page: A/B Test List should render cancel modal 1`] = `
   loading={false}
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create a New A/B Test",
       "to": "/ab-testing/create",
     }
@@ -104,7 +104,7 @@ exports[`Page: A/B Test List should render delete modal 1`] = `
   loading={false}
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create a New A/B Test",
       "to": "/ab-testing/create",
     }
@@ -192,7 +192,7 @@ exports[`Page: A/B Test List should render error when it fails 1`] = `
   loading={false}
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create a New A/B Test",
       "to": "/ab-testing/create",
     }
@@ -253,7 +253,7 @@ exports[`Page: A/B Test List should render happy path 1`] = `
   loading={false}
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create a New A/B Test",
       "to": "/ab-testing/create",
     }
@@ -341,7 +341,7 @@ exports[`Page: A/B Test List should render loading component when loading data 1
   loading={true}
   primaryAction={
     Object {
-      "component": [Function],
+      "as": [Function],
       "content": "Create a New A/B Test",
       "to": "/ab-testing/create",
     }

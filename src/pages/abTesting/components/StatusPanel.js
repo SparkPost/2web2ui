@@ -20,7 +20,7 @@ const VersionSelector = ({ current, latest, id, subaccountId }) => {
   const actions = _.times(latest, i => ({
     content: `View Version ${i + 1}`,
     to: `/ab-testing/${id}/${i + 1}${setSubaccountQuery(subaccountId)}`,
-    component: PageLink,
+    as: PageLink,
     visible: i + 1 !== current,
   })).reverse();
 

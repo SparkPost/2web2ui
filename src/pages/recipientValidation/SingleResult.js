@@ -63,7 +63,7 @@ export function SingleResult(props) {
     <Page
       title="Recipient Validation"
       subtitle="Results"
-      breadcrumbAction={{ content: 'Back', to: SINGLE_RV_LINK, component: PageLink }}
+      breadcrumbAction={{ content: 'Back', to: SINGLE_RV_LINK, as: PageLink }}
     >
       <Panel.LEGACY>
         <Grid>

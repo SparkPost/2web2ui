@@ -88,7 +88,7 @@ export const Variant = ({ variant = {}, title, showRate }) => {
               </>
             ),
             color: 'orange',
-            component: PageLink,
+            as: PageLink,
             // BUG: No `setSubaccountQuery(subaccountId)` here
             // Impossible to know if the template is assigned to a subaccount or not because duplicate template IDs are allowed
             // eg { id: 'temp', shared_with_all: true } vs. { id: 'temp', subaccount_id: 101 }

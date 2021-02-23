@@ -17,7 +17,7 @@ exports[`IP Pools Edit Page render tests should not show purchase action if show
         "visible": true,
       },
       Object {
-        "component": [Function],
+        "as": [Function],
         "content": "Purchase IPs",
         "to": "/account/billing",
         "visible": false,
@@ -111,7 +111,7 @@ exports[`IP Pools Edit Page render tests should render the edit page correctly 1
         "visible": true,
       },
       Object {
-        "component": [Function],
+        "as": [Function],
         "content": "Purchase IPs",
         "to": "/account/billing",
         "visible": true,
