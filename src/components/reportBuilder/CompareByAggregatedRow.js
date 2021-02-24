@@ -13,7 +13,15 @@ const MetricsGrid = styled.div`
   display: inline-grid;
   width: 100%;
   grid-gap: ${props => props.theme.space['200']};
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr;
+
+  @media (min-width: ${props => props.theme.breakpoints[0]}) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: ${props => props.theme.breakpoints[1]}) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 `;
 
 export default function CompareByAggregatedRow({ comparison, reportOptions, hasDivider }) {
@@ -40,7 +48,7 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
 
   return (
     <Stack>
-      <Columns>
+      <Columns collapseBelow="sm">
         <Column width={1 / 6}>
           <LabelValue dark>
             <LabelValue.Label>{getFilterTypeLabel(comparison.type)}</LabelValue.Label>
