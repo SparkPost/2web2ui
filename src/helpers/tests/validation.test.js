@@ -64,10 +64,16 @@ const cases = {
     multiArg: true,
   },
   abTestDefaultTemplate: {
-    good: [['foobar', { subaccount: true }, { templates: ['foo', 'bar', 'foobar'] }]],
+    good: [
+      [
+        { id: 'foobar' },
+        { subaccount: true },
+        { templates: [{ id: 'foo' }, { id: 'bar' }, { id: 'foobar' }] },
+      ],
+    ],
     bad: [
-      ['foobar', { subaccount: true }, { templates: ['foo', 'bar'] }],
-      ['foobar', { subaccount: false }, { templates: ['foo', 'bar'] }],
+      [{ id: 'foobar' }, { subaccount: true }, { templates: [{ id: 'foo' }, { id: 'bar' }] }],
+      [{ id: 'foobar' }, { subaccount: false }, { templates: [{ id: 'foo' }, { id: 'bar' }] }],
     ],
     multiArg: true,
   },

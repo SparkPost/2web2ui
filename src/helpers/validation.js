@@ -74,12 +74,15 @@ export function slug(value) {
 }
 
 export function abTestDefaultTemplate(value, formValues, props) {
-  if (props.templates.includes(value)) {
+  // If a matching template ID is found in the list, then the user's entry is valid
+  if (props.templates.some(template => template.id === value.id)) {
     return undefined;
   }
+
   if (formValues.subaccount) {
     return 'Template not available to selected subaccount';
   }
+
   return 'Template not available to primary account';
 }
 
