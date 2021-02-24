@@ -1,17 +1,36 @@
 import _ from 'lodash';
-import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
+import {
+  REPORT_BUILDER_FILTER_KEY_MAP,
+  REPORT_BUILDER_FILTER_KEY_INVERTED_MAP,
+} from 'src/constants';
 
 /**
- * Returns the relevant object/key pair within the REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
+ * Returns the filter key for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
  *
- * @param {string} value - value within the key/value pair of the REPORT_BUILDER_FILTER_KEY_MAP object
+ * @param {string} key - either the key or label value for the filters map
  */
-export function getFilterType(value) {
-  return Object.keys(REPORT_BUILDER_FILTER_KEY_MAP).find(
-    key => REPORT_BUILDER_FILTER_KEY_MAP[key] === value,
-  );
+export function getFilterTypeKey(key) {
+  if (REPORT_BUILDER_FILTER_KEY_INVERTED_MAP.hasOwnProperty(key)) {
+    return key;
+  }
+  return REPORT_BUILDER_FILTER_KEY_MAP[key];
 }
 
+/**
+ * Returns the filter label for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
+ *
+ * @param {string} key - either the key or label value for the filters map
+ */
+export function getFilterTypeLabel(key) {
+  if (REPORT_BUILDER_FILTER_KEY_MAP.hasOwnProperty(key)) {
+    if (key === 'Campaign') {
+      const campaignKey = REPORT_BUILDER_FILTER_KEY_MAP[key];
+      return REPORT_BUILDER_FILTER_KEY_INVERTED_MAP[campaignKey];
+    }
+    return key;
+  }
+  return REPORT_BUILDER_FILTER_KEY_INVERTED_MAP[key];
+}
 /**
  * Remaps grouped filter data to make it more iterable
  *
@@ -195,9 +214,7 @@ export function getActiveFilterTagGroups(iterableGroupings) {
           values: filter.values,
 
           // Grabbing the label by the key value
-          label: Object.keys(REPORT_BUILDER_FILTER_KEY_MAP).find(
-            key => REPORT_BUILDER_FILTER_KEY_MAP[key] === filter.type,
-          ),
+          label: REPORT_BUILDER_FILTER_KEY_INVERTED_MAP[filter.type],
 
           compareBy: getCompareByText(filter.compareBy),
 
@@ -283,7 +300,7 @@ export function hydrateFilters(groupings, { subaccounts } = {}) {
                   return {
                     value: name ? `${name} (ID ${id})` : value,
                     id,
-                    type: getFilterType(filter),
+                    type: getFilterTypeKey(filter),
                   };
                 });
               } else {
@@ -292,7 +309,7 @@ export function hydrateFilters(groupings, { subaccounts } = {}) {
                   // the filters may be a an object instead of a string.
                   const value = typeof rawValue === 'object' ? rawValue.value : rawValue;
 
-                  return { value, type: getFilterType(filter) };
+                  return { value, type: getFilterTypeKey(filter) };
                 });
               }
 
@@ -372,4 +389,16 @@ export function getHasDuplicateFilters(filters) {
 
   // If there are more filters than unique filters, then there must be a duplicate present
   return filters.length > uniqueFilters.length;
+}
+
+/**
+ * Replaces the key of comparisons with the key value rather than label value
+ *
+ * @param {array[Object]} comparisons - comparison object
+ *
+ */
+export function replaceComparisonFilterKey(comparisons) {
+  return comparisons.map(comparison => {
+    return { ...comparison, type: getFilterTypeKey(comparison.type) };
+  });
 }

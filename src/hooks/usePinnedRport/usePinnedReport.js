@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
-import { hydrateFilters } from 'src/pages/reportBuilder/helpers';
+import { hydrateFilters, replaceComparisonFilterKey } from 'src/pages/reportBuilder/helpers';
 import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants';
 import _ from 'lodash';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
@@ -42,6 +42,8 @@ export default function usePinnedReport(onboarding, reportsFromProps) {
   const reportOptionsWithDates = reportOptions => {
     const { relativeRange, precision } = reportOptions;
     const { from, to } = getRelativeDates(relativeRange, { precision });
+    reportOptions.comparisons = replaceComparisonFilterKey(reportOptions.comparisons);
+
     return {
       ...reportOptions,
       from: relativeRange === 'custom' ? reportOptions.from : from,

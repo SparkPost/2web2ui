@@ -2,7 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import GroupByOption from '../GroupByTable/GroupByOption';
 import { useReportBuilderContext } from 'src/pages/reportBuilder/context/ReportBuilderContext';
+import useAllowSubjectCampaignFilter from 'src/pages/reportBuilder/hooks/useAllowSubjectCampaignFilter';
 jest.mock('src/pages/reportBuilder/context/ReportBuilderContext');
+jest.mock('src/pages/reportBuilder/hooks/useAllowSubjectCampaignFilter');
 
 describe('GroupByOption', () => {
   let wrapper;
@@ -18,6 +20,7 @@ describe('GroupByOption', () => {
     useReportBuilderContext.mockImplementation(() => ({
       state: { comparisons: [] },
     }));
+    useAllowSubjectCampaignFilter.mockImplementation(() => false);
     wrapper = shallow(<GroupByOption {...props} />);
   });
 
@@ -37,7 +40,7 @@ describe('GroupByOption', () => {
 
   it('does not render options with the same type as current active comparisons', () => {
     useReportBuilderContext.mockImplementationOnce(() => ({
-      state: { comparisons: [{ type: 'Subaccount', value: '123456' }] },
+      state: { comparisons: [{ type: 'subaccounts', value: '123456' }] },
     }));
     wrapper.setProps({ hasSubaccounts: true });
     expect(wrapper.find('Select').prop('options')).not.toContainEqual({

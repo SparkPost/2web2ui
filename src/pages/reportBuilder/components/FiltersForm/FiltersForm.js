@@ -1,24 +1,4 @@
 import React, { useEffect } from 'react';
-import _ from 'lodash';
-
-import {
-  getDomains,
-  getCampaigns,
-  getSendingIps,
-  getTemplates,
-  getIpPools,
-} from 'src/helpers/api/metrics';
-import { getSendingDomains } from 'src/helpers/api/domains';
-import { getSubaccounts } from 'src/helpers/api/subaccounts';
-import {
-  selectRecipientDomains,
-  selectCampaigns,
-  selectIpPools,
-  selectSendingDomains,
-  selectSendingIps,
-  selectSubaccounts,
-  selectTemplates,
-} from 'src/helpers/api/selectors/metrics';
 import { RadioButtonGroup } from 'src/components';
 import {
   Button,
@@ -44,7 +24,9 @@ import {
   TypeSelect,
 } from './components';
 import useFiltersForm from './useFiltersForm';
+import useAllowSubjectCampaignFilter from '../../hooks/useAllowSubjectCampaignFilter';
 import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
+import { FILTER_OPTIONS } from '../../constants';
 
 const FILTER_VALUE_PLACEHOLDER_TEXT = 'e.g. resource_01 or resource_02';
 
@@ -94,50 +76,9 @@ function FiltersForm({ handleSubmit }) {
     setFilters(filters);
   }, [setFilters, filters]);
 
-  const FILTERS = [
-    {
-      label: 'Recipient Domain',
-      value: 'domains',
-      action: getDomains,
-      selector: selectRecipientDomains,
-    },
-    {
-      label: 'Sending IP',
-      value: 'sending_ips',
-      action: getSendingIps,
-      selector: selectSendingIps,
-    },
-    {
-      label: 'IP Pool',
-      value: 'ip_pools',
-      action: getIpPools,
-      selector: selectIpPools,
-    },
-    {
-      label: 'Campaign',
-      value: 'campaigns',
-      action: getCampaigns,
-      selector: selectCampaigns,
-    },
-    {
-      label: 'Template',
-      value: 'templates',
-      action: getTemplates,
-      selector: selectTemplates,
-    },
-    {
-      label: 'Sending Domain',
-      value: 'sending_domains',
-      action: getSendingDomains,
-      selector: selectSendingDomains,
-    },
-    {
-      label: 'Subaccount',
-      value: 'subaccounts',
-      action: getSubaccounts,
-      selector: selectSubaccounts,
-    },
-  ];
+  const FILTERS = useAllowSubjectCampaignFilter()
+    ? FILTER_OPTIONS
+    : FILTER_OPTIONS.filter(({ value }) => value !== 'subject_campaigns');
 
   // Remove `action` from the options
   const filterOptions = FILTERS.map(filter => {

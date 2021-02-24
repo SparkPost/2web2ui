@@ -8,32 +8,15 @@ import {
   Select,
   Stack,
 } from 'src/components/matchbox';
-import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { Add, Close } from '@sparkpost/matchbox-icons';
 import { TranslatableText, Comparison } from 'src/components/text';
-import {
-  getDomains,
-  getCampaigns,
-  getSendingIps,
-  getTemplates,
-  getIpPools,
-} from 'src/helpers/api/metrics';
-import { getSendingDomains } from 'src/helpers/api/domains';
-import { getSubaccounts } from 'src/helpers/api/subaccounts';
-import {
-  selectRecipientDomains,
-  selectCampaigns,
-  selectIpPools,
-  selectSendingDomains,
-  selectSendingIps,
-  selectSubaccounts,
-  selectTemplates,
-} from 'src/helpers/api/selectors/metrics';
 
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
 import Typeahead from './Typeahead';
+import { FILTER_OPTIONS } from '../../constants';
 import styled from 'styled-components';
+import useAllowSubjectCampaignFilter from '../../hooks/useAllowSubjectCampaignFilter';
 
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
@@ -104,7 +87,7 @@ const getInitialState = comparisons => {
 
   return {
     ...initialState,
-    filterType: REPORT_BUILDER_FILTER_KEY_MAP[comparisons[0].type],
+    filterType: comparisons[0].type,
     filters: [...comparisons],
   };
 };
@@ -136,50 +119,9 @@ function CompareByForm({ handleSubmit }) {
     return handleSubmit({ comparisons: formattedFilters });
   }
 
-  const FILTER_TYPES = [
-    {
-      label: 'Recipient Domain',
-      value: 'domains',
-      action: getDomains,
-      selector: selectRecipientDomains,
-    },
-    {
-      label: 'Sending IP',
-      value: 'sending_ips',
-      action: getSendingIps,
-      selector: selectSendingIps,
-    },
-    {
-      label: 'IP Pool',
-      value: 'ip_pools',
-      action: getIpPools,
-      selector: selectIpPools,
-    },
-    {
-      label: 'Campaign',
-      value: 'campaigns',
-      action: getCampaigns,
-      selector: selectCampaigns,
-    },
-    {
-      label: 'Template',
-      value: 'templates',
-      action: getTemplates,
-      selector: selectTemplates,
-    },
-    {
-      label: 'Sending Domain',
-      value: 'sending_domains',
-      action: getSendingDomains,
-      selector: selectSendingDomains,
-    },
-    {
-      label: 'Subaccount',
-      value: 'subaccounts',
-      action: getSubaccounts,
-      selector: selectSubaccounts,
-    },
-  ];
+  const FILTER_TYPES = useAllowSubjectCampaignFilter()
+    ? FILTER_OPTIONS
+    : FILTER_OPTIONS.filter(({ value }) => value !== 'subject_campaigns');
 
   const filterConfig = FILTER_TYPES.find(item => item.value === filterType);
   const filterAction = filterConfig?.action;

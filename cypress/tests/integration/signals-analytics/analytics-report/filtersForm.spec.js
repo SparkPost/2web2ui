@@ -105,9 +105,9 @@ describe('Analytics Report filters form', () => {
 
     cy.withinDrawer(() => {
       // Verifying remove button rendering within the first group
-      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
       cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
-      cy.findByLabelText('Campaign').type('my-campaign will work well ');
+      cy.findByLabelText('Campaign (ID)').type('my-campaign will work well ');
       cy.findByRole('button', { name: 'Add And Filter' }).click();
       getGroupingByIndex(0).within(() => {
         cy.findAllByRole('button', { name: 'Remove Filter' }).should('have.length', 2);
@@ -181,6 +181,52 @@ describe('Analytics Report filters form', () => {
       cy.findByText('tag-number-two').should('not.exist');
       cy.findByText('tag-number-two').should('not.exist');
       cy.findByText('tag-number-three').should('not.exist');
+    });
+  });
+
+  it('does not allow the user to select subject campaign option if d12y is not included in product', () => {
+    cy.visit(`${PAGE_URL}&metrics[0]=count_inbox`);
+    cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
+
+    cy.findByRole('button', { name: 'Add Filters' }).click();
+
+    cy.withinDrawer(() => {
+      cy.findByText('Campaign (Subject Line)').should('not.exist');
+      cy.findByText('Recipient Domain').should('be.visible');
+    });
+  });
+
+  it('allow the user to select subject campaign option if d12y is  included in product', () => {
+    cy.stubRequest({
+      url: '/api/v1/billing/subscription',
+      fixture: 'billing/subscription/200.get.include-deliverability.json',
+      requestAlias: 'getBillingSubscription',
+    });
+    cy.visit(`${PAGE_URL}&metrics[0]=count_inbox`);
+    cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries', '@getBillingSubscription']);
+
+    cy.findByRole('button', { name: 'Add Filters' }).click();
+
+    cy.withinDrawer(() => {
+      cy.findByText('Campaign (Subject Line)').should('be.visible');
+      cy.findByText('Recipient Domain').should('be.visible');
+    });
+  });
+
+  it('does not allow the user to select subject campaign option if d12y is included in product but non-d12y metrics are selected', () => {
+    cy.stubRequest({
+      url: '/api/v1/billing/subscription',
+      fixture: 'billing/subscription/200.get.include-deliverability.json',
+      requestAlias: 'getBillingSubscription',
+    });
+    cy.visit(`${PAGE_URL}&metrics[0]=count_inbox&metrics[1]=count_bounce`);
+    cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries', '@getBillingSubscription']);
+
+    cy.findByRole('button', { name: 'Add Filters' }).click();
+
+    cy.withinDrawer(() => {
+      cy.findByText('Campaign (Subject Line)').should('not.exist');
+      cy.findByText('Recipient Domain').should('be.visible');
     });
   });
 
@@ -588,23 +634,23 @@ function getFilterByIndex(index) {
 function causeDuplicationError() {
   getGroupingByIndex(0).within(() => {
     getFilterByIndex(0).within(() => {
-      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
       cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
-      cy.findByLabelText('Campaign').type('hello{enter}');
+      cy.findByLabelText('Campaign (ID)').type('hello{enter}');
       cy.findByRole('button', { name: 'Add And Filter' }).click();
     });
 
     // Adds a filter that is *not* a duplicate
     getFilterByIndex(1).within(() => {
-      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
       cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
-      cy.findByLabelText('Campaign').type('hello{enter}');
+      cy.findByLabelText('Campaign (ID)').type('hello{enter}');
       cy.findByRole('button', { name: 'Add And Filter' }).click();
     });
 
     // Adds a filter that is a duplicate
     getFilterByIndex(2).within(() => {
-      cy.findByLabelText(TYPE_LABEL).select('Campaign');
+      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
       cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
     });
   });

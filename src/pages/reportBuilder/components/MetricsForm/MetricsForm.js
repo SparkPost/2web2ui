@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import {
   isAccountUiOptionSet,
@@ -9,6 +9,7 @@ import { DeliverabilityBanner } from './components';
 import { categorizedMetricsList, list } from 'src/config/metrics';
 import _ from 'lodash';
 import styled from 'styled-components';
+import { useReportBuilderContext } from 'src/pages/reportBuilder/context/ReportBuilderContext';
 
 const ColumnList = styled.div`
   padding: inherit;
@@ -44,6 +45,22 @@ export default function MetricsForm(props) {
   }, [props.selectedMetrics]);
 
   const [selectedMetrics, setSelectedMetrics] = useState(getStateFromProps());
+  const { state: reportOptions } = useReportBuilderContext();
+  const { filters, comparisons, groupBy } = reportOptions;
+
+  const isUsingSubjectCampaign = useMemo(() => {
+    //filter is formatted: {'AND':{campaigns:{...}, templates:{...}}
+    const hasSubjectCampaignFilter = filters.some(filter =>
+      Object.values(filter).some(filterObject =>
+        Object.keys(filterObject).some(filterKey => filterKey === 'subject_campaigns'),
+      ),
+    );
+    const hasSubjectCampaignComparison =
+      comparisons.length > 0 && comparisons[0].type === 'subject_campaigns';
+    const hasSubjectCampaignGroupBy = groupBy === 'subject-campaign';
+    return hasSubjectCampaignFilter || hasSubjectCampaignComparison || hasSubjectCampaignGroupBy;
+  }, [filters, comparisons, groupBy]);
+
   const hasD12yMetricsEnabled = useSelector(state =>
     isAccountUiOptionSet('allow_deliverability_metrics')(state),
   );
@@ -100,6 +117,9 @@ export default function MetricsForm(props) {
                   {/* Renders metrics inside each category */}
                   <ColumnList count={Math.ceil(metrics.length / 2)}>
                     {metrics.map(metric => {
+                      const isDisabled =
+                        (!hasD12yProduct && metric.product === 'deliverability') ||
+                        (isUsingSubjectCampaign && metric.product !== 'deliverability');
                       return (
                         <div key={metric.key}>
                           <Tooltip
@@ -114,7 +134,7 @@ export default function MetricsForm(props) {
                                 key={`${category}-${metric.key}`}
                                 onChange={() => handleCheckbox(metric.key)}
                                 checked={selectedMetrics[metric.key]}
-                                disabled={metric.product === 'deliverability' && !hasD12yProduct}
+                                disabled={isDisabled}
                                 label={metric.label}
                               />
                             </Box>

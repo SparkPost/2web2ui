@@ -1,8 +1,11 @@
 import {
+  getFilterTypeKey,
+  getFilterTypeLabel,
   getApiFormattedGroupings,
   getGroupingFields,
   getIterableFormattedGroupings,
   getHasDuplicateFilters,
+  replaceComparisonFilterKey,
 } from '../';
 import * as helpers from '../';
 
@@ -50,6 +53,30 @@ const EXAMPLE_GROUPINGS = [
 ];
 
 describe('Report Builder helpers', () => {
+  describe('getFilterTypeKey', () => {
+    it('should return the key if the value passed in is the key', () => {
+      expect(getFilterTypeKey('templates')).toEqual('templates');
+    });
+
+    it('should return the key if the value passed in is the label', () => {
+      expect(getFilterTypeKey('Template')).toEqual('templates');
+    });
+  });
+
+  describe('getFilterTypeLabel', () => {
+    it('should return the label if the value passed in is the key', () => {
+      expect(getFilterTypeLabel('templates')).toEqual('Template');
+    });
+
+    it('should return the label if the value passed in is the label', () => {
+      expect(getFilterTypeLabel('Template')).toEqual('Template');
+    });
+
+    it('should return Campaign (ID) if the value passed in is "Campaign"', () => {
+      expect(getFilterTypeLabel('Campaign')).toEqual('Campaign (ID)');
+    });
+  });
+
   describe('hydrateFilters', () => {
     it('should hydrate filters properly', () => {
       const hydratedFilters = helpers.hydrateFilters([{ AND: { templates: { eq: ['thing'] } } }]);
@@ -510,6 +537,29 @@ describe('Report Builder helpers', () => {
       ];
 
       expect(getHasDuplicateFilters(filters)).toBe(true);
+    });
+  });
+  describe('replaceComparisonFilterKey', () => {
+    it('returns the same comparison filter when there are the filter keys are already key value', () => {
+      const comparison = [
+        { type: 'campaigns', value: 'Black Friday' },
+        { type: 'campaigns', value: 'Christmas Sale' },
+      ];
+
+      expect(replaceComparisonFilterKey(comparison)).toEqual(comparison);
+    });
+
+    it('returns the same comparison filter with the key value replaced from label to key', () => {
+      const comparisonInput = [
+        { type: 'Campaign', value: 'Black Friday' },
+        { type: 'Campaign', value: 'Christmas Sale' },
+      ];
+      const comparisonOutput = [
+        { type: 'campaigns', value: 'Black Friday' },
+        { type: 'campaigns', value: 'Christmas Sale' },
+      ];
+
+      expect(replaceComparisonFilterKey(comparisonInput)).toEqual(comparisonOutput);
     });
   });
 });

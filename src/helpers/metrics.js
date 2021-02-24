@@ -4,7 +4,7 @@ import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
 import { HIBANA_METRICS_COLORS, REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getRelativeDates, formatToTimezone } from 'src/helpers/date';
-import { dehydrateFilters } from 'src/pages/reportBuilder/helpers';
+import { dehydrateFilters, getFilterTypeKey } from 'src/pages/reportBuilder/helpers';
 import { safeDivide, safeRate } from './math';
 
 const {
@@ -389,7 +389,7 @@ export function rate(item, keys = []) {
  * @param {Object} comparison - passed in comparison when the user selects comparisons via "compare by"
  */
 export function getFilterByComparison(comparison) {
-  const filterId = REPORT_BUILDER_FILTER_KEY_MAP[comparison.type];
+  const filterId = getFilterTypeKey(comparison.type);
 
   if (!filterId)
     throw new Error(

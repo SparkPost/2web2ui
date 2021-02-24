@@ -17,6 +17,7 @@ import styles from './ReportTable.module.scss';
 import { useCompareByGroupByTable } from './useGroupByTable';
 import GroupByOption from './GroupByOption';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import { getFilterTypeLabel } from 'src/pages/reportBuilder/helpers';
 
 const tableWrapper = props => {
   return (
@@ -64,7 +65,7 @@ export const CompareByTable = () => {
 
     const comparisonCol = {
       key: comparisonType,
-      label: comparisonType,
+      label: getFilterTypeLabel(comparisonType),
       className: cx(styles.HeaderCell, styles.FirstColumnHeader),
       sortKey: comparisonType,
     };

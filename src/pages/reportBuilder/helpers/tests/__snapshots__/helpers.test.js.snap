@@ -26,7 +26,7 @@ Array [
       "templates": Object {
         "eq": Array [
           Object {
-            "type": "Template",
+            "type": "templates",
             "value": "thing",
           },
         ],
@@ -44,7 +44,7 @@ Array [
         "eq": Array [
           Object {
             "id": 123,
-            "type": "Subaccount",
+            "type": "subaccounts",
             "value": "Cool Subaccount Name (ID 123)",
           },
         ],

@@ -3,14 +3,15 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { getRelativeDates, formatToTimezone } from 'src/helpers/date';
 import { getMetricsFromKeys, getRollupPrecision as getPrecision } from 'src/helpers/metrics';
-import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';
 import {
   getIterableFormattedGroupings,
   getApiFormattedGroupings,
+  getFilterTypeKey,
   hydrateFilters,
+  replaceComparisonFilterKey,
 } from '../helpers';
 
 const defaultFormat = "yyyy-MM-dd'T'HH:mm:ssxxx";
@@ -20,17 +21,19 @@ const ReportOptionsContext = createContext({});
 const initialState = {
   filters: [],
   comparisons: [],
+  groupBy: undefined,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_FILTERS': {
+      const filterType = getFilterTypeKey(action.payload.type);
       return {
         ...state,
         filters: [
           ...state.filters,
           {
-            AND: { [REPORT_BUILDER_FILTER_KEY_MAP[action.payload.type]]: { eq: [action.payload] } },
+            AND: { [filterType]: { eq: [action.payload] } },
           },
         ],
       };
@@ -75,6 +78,12 @@ const reducer = (state, action) => {
 
         update = { ...update, precision };
       }
+
+      if (update.comparisons) {
+        //Changes the filter type from the label to the key
+        update.comparisons = replaceComparisonFilterKey(update.comparisons);
+      }
+
       return {
         ...update,
         isReady: true,
@@ -108,11 +117,18 @@ const reducer = (state, action) => {
         return { ...state, comparisons };
       }
       const lastFilter = comparisons[0];
-      const filters = [
-        { AND: { [REPORT_BUILDER_FILTER_KEY_MAP[lastFilter.type]]: { eq: [lastFilter] } } },
-      ];
+      const filterType = getFilterTypeKey(lastFilter.type);
+      const filters = [{ AND: { [filterType]: { eq: [lastFilter] } } }];
 
       return { ...state, comparisons: [], filters: [...state.filters, ...filters] };
+    }
+
+    case 'SET_GROUP_BY': {
+      const { payload } = action;
+      return {
+        ...state,
+        groupBy: payload,
+      };
     }
 
     default:
@@ -235,6 +251,16 @@ const ReportOptionsContextProvider = props => {
     [dispatch],
   );
 
+  const setGroupBy = useCallback(
+    payload => {
+      return dispatch({
+        type: 'SET_GROUP_BY',
+        payload,
+      });
+    },
+    [dispatch],
+  );
+
   const actions = {
     addFilters,
     clearFilters,
@@ -242,6 +268,7 @@ const ReportOptionsContextProvider = props => {
     removeFilter,
     removeComparisonFilter,
     refreshReportOptions,
+    setGroupBy,
   };
   const selectors = useMemo(() => getSelectors(state), [state]);
 

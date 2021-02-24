@@ -1,6 +1,11 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import MetricsForm from '../MetricsForm';
+import { useReportBuilderContext } from 'src/pages/reportBuilder/context/ReportBuilderContext';
+jest.mock('src/pages/reportBuilder/context/ReportBuilderContext');
+useReportBuilderContext.mockImplementation(() => ({
+  state: { comparisons: [], filters: [] },
+}));
 
 //Even though Hibana will be enabled, there seems to be issues with using styled props.
 //This should only affect formatting but not the actual content

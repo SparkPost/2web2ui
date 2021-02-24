@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Checkbox, Select, Column } from 'src/components/matchbox';
 import { GROUP_BY_CONFIG } from '../../constants';
+import useAllowSubjectCampaignFilter from '../../hooks/useAllowSubjectCampaignFilter';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
 export default function GroupByOption(props) {
@@ -26,7 +27,7 @@ export default function GroupByOption(props) {
     setTopDomainsOnly(nextState);
     onChange(nextState ? 'watched-domain' : 'domain');
   };
-
+  const allowSubjectCampaignFilter = useAllowSubjectCampaignFilter();
   const getSelectOptions = () => {
     const activeComparisonsType = Boolean(comparisons.length) ? comparisons[0].type : undefined;
     const options = Object.keys(GROUP_BY_CONFIG)
@@ -36,8 +37,9 @@ export default function GroupByOption(props) {
           (key === 'subaccount' && !hasSubaccounts) ||
           (key === 'domain' && topDomainsOnly) ||
           (key === 'watched-domain' && !topDomainsOnly) ||
+          (!allowSubjectCampaignFilter && key === 'subject-campaign') ||
           // If there are active comparisons, filter by the comparison type
-          GROUP_BY_CONFIG[key].label === activeComparisonsType
+          GROUP_BY_CONFIG[key].filterKey === activeComparisonsType
         );
       })
       // Remap configuration to data structure needed by the UI component

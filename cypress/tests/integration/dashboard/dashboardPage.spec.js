@@ -146,7 +146,7 @@ describe('the dashboard page', () => {
       cy.findByRole('heading', { name: 'My new report Filters' }).should('be.visible');
       cy.findByRole('button', { name: 'View Report' }).should('be.visible');
       cy.findByRole('button', { name: 'Cancel' }).should('be.visible');
-      cy.findByText('Campaign').should('be.visible');
+      cy.findByText('Campaign (ID)').should('be.visible');
       cy.findByRole('button', { name: 'View Report' }).click();
     });
     cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');

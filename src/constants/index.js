@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
 import { tokens } from '@sparkpost/design-tokens-hibana';
+import { invert } from 'lodash';
 
 export const DEFAULT_REDIRECT_ROUTE = '/landing';
 export const AFTER_JOIN_REDIRECT_ROUTE = '/onboarding/plan';
@@ -267,12 +268,16 @@ export const HIBANA_METRICS_COLORS = [
 export const REPORT_BUILDER_FILTER_KEY_MAP = {
   'Recipient Domain': 'domains',
   Campaign: 'campaigns',
+  'Campaign (ID)': 'campaigns',
+  'Campaign (Subject Line)': 'subject_campaigns',
   Template: 'templates',
   'Sending IP': 'sending_ips',
   'IP Pool': 'ip_pools',
   Subaccount: 'subaccounts',
   'Sending Domain': 'sending_domains',
 };
+
+export const REPORT_BUILDER_FILTER_KEY_INVERTED_MAP = invert(REPORT_BUILDER_FILTER_KEY_MAP);
 
 export const UNLIMITED_PLAN_VOLUME = -1;
 

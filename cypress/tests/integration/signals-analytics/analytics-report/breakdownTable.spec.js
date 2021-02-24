@@ -158,12 +158,12 @@ describe('Analytics Report breakdown table', () => {
 
     cy.findByLabelText('Break Down By')
       .scrollIntoView()
-      .select('Campaign', { force: true });
+      .select('Campaign (ID)', { force: true });
 
     cy.wait('@getCampaign');
 
     cy.get('table').within(() => {
-      cy.findByText('Campaign').should('be.visible');
+      cy.findByText('Campaign (ID)').should('be.visible');
     });
 
     verifyRow({

@@ -11,7 +11,6 @@ import {
   getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
 } from 'src/helpers/metrics';
-import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { ApiErrorBanner } from 'src/components';
 import Loading from 'src/components/loading/PanelLoading';
 import { Heading } from 'src/components/text';
@@ -45,19 +44,18 @@ export function ChartGroups(props) {
   return (
     <>
       {comparisons.map((compareFilter, index) => {
-        const filterType = REPORT_BUILDER_FILTER_KEY_MAP[compareFilter.type];
-
+        const { type, value } = compareFilter;
         // Appends each compared filter as a new filter for individual requests
         const comparedFilters = [
           ...reportOptions.filters,
-          { AND: { [filterType]: { eq: [compareFilter] } } },
+          { AND: { [type]: { eq: [compareFilter] } } },
         ];
         return (
           <Panel.Section key={`chart_group_${index}`}>
             <Stack>
               <Box>
                 <Heading looksLike="h5" as="h3">
-                  {compareFilter.value}
+                  {value}
                 </Heading>
               </Box>
               <Box>

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { getDeliverability } from 'src/helpers/api/metrics';
 import { getMetricsFromKeys, getFilterByComparison, transformData } from 'src/helpers/metrics';
+import { getFilterTypeLabel } from 'src/pages/reportBuilder/helpers';
 import { LegendCircle, Unit } from 'src/components';
 import Divider from 'src/components/divider';
 import { Box, Columns, Column, LabelValue, Stack } from 'src/components/matchbox';
@@ -41,7 +42,7 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
       <Columns>
         <Column width={1 / 6}>
           <LabelValue dark>
-            <LabelValue.Label>{comparison.type}</LabelValue.Label>
+            <LabelValue.Label>{getFilterTypeLabel(comparison.type)}</LabelValue.Label>
 
             <LabelValue.Value>{comparison.value}</LabelValue.Value>
           </LabelValue>

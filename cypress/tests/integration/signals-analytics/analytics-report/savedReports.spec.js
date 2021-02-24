@@ -68,7 +68,7 @@ describe('Analytics Report Saved Reports', () => {
       cy.findByDataId('report-options').within(() => {
         cy.findByLabelText('Precision').should('have.value', 'day');
         cy.findByText('Filters').should('be.visible');
-        cy.findByText('Campaign').should('be.visible');
+        cy.findByText('Campaign (ID)').should('be.visible');
         cy.findByText('is equal to').should('be.visible');
         cy.findByText('test-campaign').should('be.visible');
       });
@@ -84,8 +84,8 @@ describe('Analytics Report Saved Reports', () => {
         fixture: 'metrics/campaigns/200.get.json',
         requestAlias: 'getCampaigns',
       });
-      cy.findByLabelText('Type').select('Campaign');
-      cy.findByLabelText('Campaign').type('test');
+      cy.findByLabelText('Type').select('Campaign (ID)');
+      cy.findByLabelText('Campaign (ID)').type('test');
       cy.wait('@getCampaigns');
       cy.findByText('test-campaign')
         .should('be.visible')

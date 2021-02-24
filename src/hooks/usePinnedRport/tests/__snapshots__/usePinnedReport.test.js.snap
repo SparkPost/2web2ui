@@ -3,7 +3,7 @@
 exports[`usePinnedReport sets pinnedReport link to reportbuilder only contains one report object 1`] = `
 <div>
   My new report
-  {"timezone":"America/New_York","metrics":["count_targeted","count_injected","count_sent","count_accepted","count_unique_confirmed_opened_approx","count_bounce"],"comparisons":[],"relativeRange":"7days","precision":"hour","filters":[{"AND":{"campaigns":{"eq":[{"value":"Black Friday","type":"Campaign"}]}}}],"isReady":true}
+  {"timezone":"America/New_York","metrics":["count_targeted","count_injected","count_sent","count_accepted","count_unique_confirmed_opened_approx","count_bounce"],"comparisons":[],"relativeRange":"7days","precision":"hour","filters":[{"AND":{"campaigns":{"eq":[{"value":"Black Friday","type":"campaigns"}]}}}],"isReady":true}
   /signals/analytics?from=2020-09-18T15%3A00%3A00Z&to=2020-09-25T15%3A08%3A36Z&range=7days&timezone=America%2FNew_York&precision=hour&filters=Campaign%3ABlack%20Friday&metrics=count_targeted&metrics=count_injected&metrics=count_sent&metrics=count_accepted&metrics=count_unique_confirmed_opened_approx&metrics=count_bounce&report=fake-id
 </div>
 `;
@@ -19,7 +19,7 @@ exports[`usePinnedReport sets pinnedReport object to default summary report when
 exports[`usePinnedReport sets pinnedReport object to pinned report when a matching report is found 1`] = `
 <div>
   My new report
-  {"timezone":"America/New_York","metrics":["count_targeted","count_injected","count_sent","count_accepted","count_unique_confirmed_opened_approx","count_bounce"],"comparisons":[],"relativeRange":"7days","precision":"hour","report":"fake-id","filters":[{"AND":{"campaigns":{"eq":[{"value":"Black Friday","type":"Campaign"}]}}}],"isReady":true}
+  {"timezone":"America/New_York","metrics":["count_targeted","count_injected","count_sent","count_accepted","count_unique_confirmed_opened_approx","count_bounce"],"comparisons":[],"relativeRange":"7days","precision":"hour","report":"fake-id","filters":[{"AND":{"campaigns":{"eq":[{"value":"Black Friday","type":"campaigns"}]}}}],"isReady":true}
   /signals/analytics?from=2020-09-18T15%3A00%3A00Z&to=2020-09-25T15%3A08%3A36Z&range=7days&timezone=America%2FNew_York&precision=hour&filters=Campaign%3ABlack%20Friday&metrics=count_targeted&metrics=count_injected&metrics=count_sent&metrics=count_accepted&metrics=count_unique_confirmed_opened_approx&metrics=count_bounce&report=fake-id
 </div>
 `;

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { getDeliverability } from 'src/helpers/api/metrics';
 import { useSelector } from 'react-redux';
 import { hasProductOnBillingSubscription } from 'src/helpers/conditions/account';
@@ -9,7 +9,6 @@ import {
   transformData,
   splitDeliverabilityMetric,
 } from 'src/helpers/metrics';
-import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import _ from 'lodash';
 import { GROUP_BY_CONFIG } from '../../constants';
@@ -24,7 +23,7 @@ const separateCompareOptions = reportOptions => {
   }
 
   return comparisons.map(compareFilter => {
-    const filterType = REPORT_BUILDER_FILTER_KEY_MAP[compareFilter.type];
+    const filterType = compareFilter.type;
     const comparedFilters = [
       ...reportOptions.filters,
       { AND: { [filterType]: { eq: [compareFilter] } } },
@@ -36,12 +35,12 @@ const separateCompareOptions = reportOptions => {
 };
 
 export function useGroupByTable() {
-  const [groupBy, setGroupBy] = useState();
   const {
     selectors: { selectSummaryMetricsProcessed: displayMetrics },
     state: reportOptions,
+    actions: { setGroupBy },
   } = useReportBuilderContext();
-
+  const { groupBy } = reportOptions;
   const hasD12yProduct = useSelector(state =>
     hasProductOnBillingSubscription('deliverability')(state),
   );
@@ -109,7 +108,6 @@ export function useGroupByTable() {
 }
 
 export function useCompareByGroupByTable() {
-  const [groupBy, setGroupBy] = useState();
   const { checkboxes, values } = useMultiCheckbox({
     checkboxes: [
       { name: 'sending', label: 'Sending' },
@@ -119,7 +117,11 @@ export function useCompareByGroupByTable() {
     allowSelectAll: false,
     allowEmpty: false,
   });
-  const { state: reportOptions } = useReportBuilderContext();
+  const {
+    state: reportOptions,
+    actions: { setGroupBy },
+  } = useReportBuilderContext();
+  const { groupBy } = reportOptions;
   const { metrics, comparisons } = reportOptions;
 
   // Prepares params for request

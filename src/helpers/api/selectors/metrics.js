@@ -1,32 +1,38 @@
 export const selectRecipientDomains = ({ domains = [] } = {}) =>
   domains.map(value => ({
-    type: 'Recipient Domain',
+    type: 'domains',
     value,
   }));
 
 export const selectSubaccounts = (subaccounts = []) =>
   subaccounts.map(({ name, id }) => ({
-    type: 'Subaccount',
+    type: 'subaccounts',
     value: `${name} (ID ${id})`,
     id,
   }));
 
 export const selectSendingDomains = (sendingDomains = []) =>
   sendingDomains.map(({ domain }) => ({
-    type: 'Sending Domain',
+    type: 'sending_domains',
     value: domain,
   }));
 
 export const selectCampaigns = ({ campaigns = [] } = {}) =>
   campaigns.map(value => ({
-    type: 'Campaign',
+    type: 'campaigns',
+    value,
+  }));
+
+export const selectSubjectCampaigns = ({ 'subject-campaigns': subjectCampaigns = [] } = {}) =>
+  subjectCampaigns.map(value => ({
+    type: 'subject_campaigns',
     value,
   }));
 
 export const selectSendingIps = (data = {}) => {
   const sendingIps = data['sending-ips'] || [];
   return sendingIps.map(value => ({
-    type: 'Sending IP',
+    type: 'sending_ips',
     value,
   }));
 };
@@ -34,13 +40,13 @@ export const selectSendingIps = (data = {}) => {
 export const selectIpPools = (data = {}) => {
   const ipPools = data['ip-pools'] || [];
   return ipPools.map(value => ({
-    type: 'IP Pool',
+    type: 'ip_pools',
     value,
   }));
 };
 
 export const selectTemplates = ({ templates = [] } = {}) =>
   templates.map(value => ({
-    type: 'Template',
+    type: 'templates',
     value,
   }));

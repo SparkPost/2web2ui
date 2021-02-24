@@ -17,6 +17,14 @@ export function getCampaigns(params) {
   };
 }
 
+export function getSubjectCampaigns(params) {
+  return {
+    method: 'GET',
+    url: `${METRICS_BASE_URL}/subject-campaigns`,
+    params,
+  };
+}
+
 export function getSendingIps(params) {
   return {
     method: 'GET',

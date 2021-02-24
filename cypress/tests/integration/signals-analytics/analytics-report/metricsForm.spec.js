@@ -119,6 +119,92 @@ describe('Metrics form', () => {
           .should('not.include', 'count_inbox_seed');
       });
     });
+
+    it('prevents user from selecting non-d12y metrics when subject campaign is used as a filter', () => {
+      cy.stubRequest({
+        url: '/api/v1/billing/subscription',
+        fixture: 'billing/subscription/200.get.include-deliverability.json',
+        requestAlias: 'getBillingSubscription',
+      });
+      cy.visit(
+        `${PAGE_URL}&metrics[0]=count_inbox&&query_filters=[{"AND":{"subject_campaigns":{"eq":["FreeIphone"]}}}]`,
+      );
+      cy.wait(['@getSubaccounts', '@getBillingSubscription']);
+
+      openMetricsDrawer();
+      cy.withinDrawer(() => {
+        cy.findByLabelText('Inbox Folder Count')
+          .scrollIntoView()
+          .should('not.be.disabled');
+        cy.findByLabelText('Rejected')
+          .scrollIntoView()
+          .should('be.disabled');
+        cy.findByLabelText('Bounces')
+          .scrollIntoView()
+          .should('be.disabled');
+        cy.findByLabelText('Opens')
+          .scrollIntoView()
+          .should('be.disabled');
+      });
+    });
+
+    it('prevents user from selecting non-d12y metrics when subject campaign is used as a comparison', () => {
+      cy.stubRequest({
+        url: '/api/v1/billing/subscription',
+        fixture: 'billing/subscription/200.get.include-deliverability.json',
+        requestAlias: 'getBillingSubscription',
+      });
+      cy.visit(
+        `${PAGE_URL}&metrics[0]=count_inbox&comparisons[0][type]=subject_campaigns&comparisons[0][value]=freeIphone&comparisons[1][type]=subject_campaigns&comparisons[1][value]=freeMacbook`,
+      );
+      cy.wait(['@getSubaccounts', '@getBillingSubscription']);
+
+      openMetricsDrawer();
+      cy.withinDrawer(() => {
+        cy.findByLabelText('Inbox Folder Count')
+          .scrollIntoView()
+          .should('not.be.disabled');
+        cy.findByLabelText('Rejected')
+          .scrollIntoView()
+          .should('be.disabled');
+        cy.findByLabelText('Bounces')
+          .scrollIntoView()
+          .should('be.disabled');
+        cy.findByLabelText('Opens')
+          .scrollIntoView()
+          .should('be.disabled');
+      });
+    });
+
+    it('prevents user from selecting non-d12y metrics when subject campaign is used as group by', () => {
+      cy.stubRequest({
+        url: '/api/v1/billing/subscription',
+        fixture: 'billing/subscription/200.get.include-deliverability.json',
+        requestAlias: 'getBillingSubscription',
+      });
+      cy.visit(`${PAGE_URL}&metrics[0]=count_inbox`);
+      cy.wait(['@getSubaccounts', '@getBillingSubscription']);
+
+      cy.findByLabelText('Break Down By')
+        .scrollIntoView()
+        .select('Campaign (Subject Line)', { force: true });
+
+      openMetricsDrawer();
+      cy.withinDrawer(() => {
+        cy.findByLabelText('Inbox Folder Count')
+          .scrollIntoView()
+          .should('not.be.disabled');
+        cy.findByLabelText('Rejected')
+          .scrollIntoView()
+          .should('be.disabled');
+        cy.findByLabelText('Bounces')
+          .scrollIntoView()
+          .should('be.disabled');
+        cy.findByLabelText('Opens')
+          .scrollIntoView()
+          .should('be.disabled');
+      });
+    });
   });
 });
 

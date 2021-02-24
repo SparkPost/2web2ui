@@ -214,7 +214,7 @@ describe('Analytics Report', () => {
       getFilterGroupings()
         .eq(0)
         .within(() => {
-          cy.findByText('Campaign').should('be.visible');
+          cy.findByText('Campaign (ID)').should('be.visible');
           cy.findByText('contains').should('be.visible');
           cy.findByText('hello').should('be.visible');
           cy.findByText('world').should('be.visible');
@@ -262,16 +262,16 @@ describe('Analytics Report', () => {
         .eq(0)
         .within(() => {
           // Granularly verifying that when filter values are removed, a filter label no longer renders
-          cy.findByText('Campaign').should('be.visible');
+          cy.findByText('Campaign (ID)').should('be.visible');
           cy.findByText('hello').should('be.visible');
           cy.findByText('world').should('be.visible');
           getFirstRemoveButton().click();
-          cy.findByText('Campaign').should('be.visible');
+          cy.findByText('Campaign (ID)').should('be.visible');
           cy.findByText('hello').should('not.exist');
           cy.findByText('world').should('be.visible');
           getFirstRemoveButton().click();
           // The filter label no longer renders when all filter values are removed
-          cy.findByText('Campaign').should('not.exist');
+          cy.findByText('Campaign (ID)').should('not.exist');
           cy.findByText('hello').should('not.exist');
           cy.findByText('world').should('not.exist');
 
