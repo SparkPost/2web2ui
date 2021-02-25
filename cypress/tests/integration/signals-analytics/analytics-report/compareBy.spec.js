@@ -153,6 +153,70 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
+  it("doesn't render a tooltip if not truncating text", () => {
+    cy.wait(['@getDeliverability', '@getTimeSeries']);
+
+    cy.stubRequest({
+      url: '/api/v1/subaccounts',
+      fixture: 'subaccounts/200.get.short.json',
+    });
+    openCompareByModal();
+
+    cy.withinDrawer(() => {
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findAllByLabelText('Subaccount')
+        .eq(0)
+        .type('Fake Subaccount');
+      cy.findByText('Fake Subaccount 1 (ID 101)')
+        .should('be.visible')
+        .click();
+
+      cy.findAllByLabelText('Subaccount')
+        .eq(1)
+        .type('Sub');
+      cy.findByText('Sub 2 (ID 102)')
+        .should('be.visible')
+        .click();
+      cy.findByRole('button', { name: 'Compare' }).click();
+    });
+
+    cy.wait(['@getDeliverability', '@getDeliverability']);
+
+    cy.withinTooltip(() => {
+      cy.findByText('Fake Subaccount 1 (ID 101)').should('not.exist');
+    });
+    cy.findByDataId('compare-by-aggregated-metrics').within(() => {
+      cy.findAllByText('Fake Subaccount 1 (ID 101)')
+        .eq(0)
+        .should('be.visible')
+        .trigger('mouseover');
+    });
+    cy.withinTooltip(() => {
+      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+    });
+
+    cy.findByDataId('compare-by-aggregated-metrics').within(() => {
+      cy.findAllByText('Fake Subaccount 1 (ID 101)')
+        .eq(0)
+        .should('be.visible')
+        .trigger('mouseout');
+    });
+    cy.withinTooltip(() => {
+      cy.findByText('Fake Subaccount 1 (ID 101)').should('not.exist');
+      cy.findByText('Sub 2 (ID 102)').should('not.exist');
+    });
+
+    cy.findByDataId('compare-by-aggregated-metrics').within(() => {
+      cy.findAllByText('Sub 2 (ID 102)')
+        .eq(0)
+        .should('be.visible')
+        .trigger('mouseover');
+    });
+    cy.withinTooltip(() => {
+      cy.findByText('Sub 2 (ID 102)').should('not.be.visible');
+    });
+  });
+
   it('Submits the compare by form and renders multiple charts along with aggregated data below the charts', () => {
     // Add metrics that align with the fixture response *and* contain a dynamically calculated metric ('Accepted Rate' in this case)
     cy.findByRole('button', { name: 'Add Metrics' }).click();
@@ -178,8 +242,21 @@ describe('Analytics Report - Compare By', () => {
     cy.findByDataId('compare-by-aggregated-metrics')
       .scrollIntoView()
       .within(() => {
-        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
-        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+        cy.findAllByText('Fake Subaccount 1 (ID 101)')
+          .eq(0)
+          .should('be.visible')
+          .trigger('mouseover');
+        cy.findAllByText('Fake Subaccount 1 (ID 101)')
+          .eq(1)
+          .should('be.visible'); //Tooltip
+
+        cy.findAllByText('Fake Subaccount 3 (ID 103)')
+          .eq(0)
+          .should('be.visible')
+          .trigger('mouseover');
+        cy.findAllByText('Fake Subaccount 3 (ID 103)')
+          .eq(1)
+          .should('be.visible'); //Tooltip
         cy.findAllByText('Sent').should('have.length', 2);
         cy.findAllByText('325K').should('have.length', 2);
         cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);

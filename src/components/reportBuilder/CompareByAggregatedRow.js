@@ -7,6 +7,7 @@ import { LegendCircle, Unit } from 'src/components';
 import Divider from 'src/components/divider';
 import { Box, Columns, Column, LabelValue, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery, usePrepareReportBuilderQuery } from 'src/hooks';
+import TextTooltip from 'src/components/TextTooltip/TextTooltip';
 
 const MetricsGrid = styled.div`
   display: inline-grid;
@@ -44,7 +45,11 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
           <LabelValue dark>
             <LabelValue.Label>{getFilterTypeLabel(comparison.type)}</LabelValue.Label>
 
-            <LabelValue.Value>{comparison.value}</LabelValue.Value>
+            <LabelValue.Value>
+              <TextTooltip bg="white" color="gray.800">
+                {comparison.value}
+              </TextTooltip>
+            </LabelValue.Value>
           </LabelValue>
         </Column>
 

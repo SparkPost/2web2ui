@@ -41,6 +41,10 @@ const DEFAULT_PROPS = {
 };
 
 function renderSubject(props) {
+  const portalRoot = document.createElement('div');
+  portalRoot.setAttribute('id', 'tooltip-portal');
+  document.body.appendChild(portalRoot);
+
   return render(
     <TestApp isHibanaEnabled={true}>
       <CompareByAggregatedRow {...DEFAULT_PROPS} {...props} />
@@ -71,7 +75,7 @@ describe('CompareByAggregatedRow', () => {
     });
     renderSubject();
 
-    expect(screen.getByText('Fake Subaccount Name (ID 141)')).toBeInTheDocument();
+    expect(screen.getAllByText('Fake Subaccount Name (ID 141)').length).toEqual(2);
 
     const metricsGrid = screen.getByTestId(METRICS_GRID_ID);
 
@@ -111,7 +115,7 @@ describe('CompareByAggregatedRow', () => {
     });
     renderSubject({ reportOptions: { metrics: [] } });
 
-    expect(screen.getByText('Fake Subaccount Name (ID 141)')).toBeInTheDocument();
+    expect(screen.getAllByText('Fake Subaccount Name (ID 141)').length).toEqual(2);
     expect(screen.queryByTestId(METRICS_GRID_ID)).not.toBeInTheDocument();
   });
 

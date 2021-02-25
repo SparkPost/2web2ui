@@ -232,6 +232,10 @@ Cypress.Commands.add('withinDrawer', callback => {
   cy.get('#drawer-portal').within(callback);
 });
 
+Cypress.Commands.add('withinTooltip', callback => {
+  cy.get('#tooltip-portal').within(callback);
+});
+
 Cypress.Commands.add('findByDataId', id => cy.get(`[data-id="${id}"]`));
 
 // todo, replace with findByLabelText when it works as documented
