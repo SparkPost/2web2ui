@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`JoinForm render disables form when loading 1`] = `
-<form>
+<Form
+  id="sign-up-form"
+>
   <Stack>
     <Field
       autoComplete="given-name"
@@ -122,11 +124,13 @@ exports[`JoinForm render disables form when loading 1`] = `
     verifyCallback={[Function]}
     verifyCallbackName="verifyCallback"
   />
-</form>
+</Form>
 `;
 
 exports[`JoinForm render disables form when recaptcha is not loaded 1`] = `
-<form>
+<Form
+  id="sign-up-form"
+>
   <Stack>
     <Field
       autoComplete="given-name"
@@ -247,11 +251,13 @@ exports[`JoinForm render disables form when recaptcha is not loaded 1`] = `
     verifyCallback={[Function]}
     verifyCallbackName="verifyCallback"
   />
-</form>
+</Form>
 `;
 
 exports[`JoinForm render enables form correctly 1`] = `
-<form>
+<Form
+  id="sign-up-form"
+>
   <Stack>
     <Field
       autoComplete="given-name"
@@ -372,5 +378,5 @@ exports[`JoinForm render enables form correctly 1`] = `
     verifyCallback={[Function]}
     verifyCallbackName="verifyCallback"
   />
-</form>
+</Form>
 `;

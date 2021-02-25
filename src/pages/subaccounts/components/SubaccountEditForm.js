@@ -24,7 +24,7 @@ export class SubaccountEditForm extends Component {
     } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="subaccount-edit-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Box maxWidth={tokens.sizing_1200}>

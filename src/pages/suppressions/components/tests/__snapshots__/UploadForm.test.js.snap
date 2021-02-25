@@ -2,7 +2,9 @@
 
 exports[`UploadForm tests should disable fields when submitting 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="suppresions-upload-form"
+  >
     <Panel.LEGACY.Section>
       <Stack>
         <Field
@@ -51,13 +53,15 @@ exports[`UploadForm tests should disable fields when submitting 1`] = `
         Upload
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Fragment>
 `;
 
 exports[`UploadForm tests should render upload form 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="suppresions-upload-form"
+  >
     <Panel.LEGACY.Section>
       <Stack>
         <Field
@@ -106,6 +110,6 @@ exports[`UploadForm tests should render upload form 1`] = `
         Upload
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Fragment>
 `;

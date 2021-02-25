@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddIps renders correctly when user reaches max ip limit 1`] = `
-<form
+<Form
+  id="add-ips-form"
   noValidate={true}
 >
   <Panel.LEGACY
@@ -70,11 +71,12 @@ exports[`AddIps renders correctly when user reaches max ip limit 1`] = `
       </ButtonWrapper>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-</form>
+</Form>
 `;
 
 exports[`AddIps renders correctly with default props 1`] = `
-<form
+<Form
+  id="add-ips-form"
   noValidate={true}
 >
   <Panel.LEGACY
@@ -156,11 +158,12 @@ exports[`AddIps renders correctly with default props 1`] = `
       </ButtonWrapper>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-</form>
+</Form>
 `;
 
 exports[`AddIps renders free ip elements when included in plan 1`] = `
-<form
+<Form
+  id="add-ips-form"
   noValidate={true}
 >
   <Panel.LEGACY
@@ -247,5 +250,5 @@ exports[`AddIps renders free ip elements when included in plan 1`] = `
       </ButtonWrapper>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-</form>
+</Form>
 `;

@@ -1,15 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[
-  `Component: BackupCodesModal should change button text to Generating... when submitting 1`
-] = `
+exports[`Component: BackupCodesModal should change button text to Generating... when submitting 1`] = `
 <Modal.LEGACY
   open={true}
 >
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
-    <form
+    <Form
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
@@ -69,7 +67,7 @@ exports[
           </Button>
         </ButtonWrapper>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   </Panel.LEGACY>
 </Modal.LEGACY>
 `;
@@ -81,7 +79,7 @@ exports[`Component: BackupCodesModal should render correctly 1`] = `
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
-    <form
+    <Form
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
@@ -141,7 +139,7 @@ exports[`Component: BackupCodesModal should render correctly 1`] = `
           </Button>
         </ButtonWrapper>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   </Panel.LEGACY>
 </Modal.LEGACY>
 `;
@@ -153,7 +151,7 @@ exports[`Component: BackupCodesModal should show new codes when they exist 1`] =
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
-    <form
+    <Form
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
@@ -196,7 +194,7 @@ exports[`Component: BackupCodesModal should show new codes when they exist 1`] =
           Close
         </Button>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   </Panel.LEGACY>
 </Modal.LEGACY>
 `;
@@ -208,7 +206,7 @@ exports[`Component: BackupCodesModal should show password error when exists 1`] 
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
-    <form
+    <Form
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
@@ -268,7 +266,7 @@ exports[`Component: BackupCodesModal should show password error when exists 1`] 
           </Button>
         </ButtonWrapper>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   </Panel.LEGACY>
 </Modal.LEGACY>
 `;

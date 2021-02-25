@@ -13,8 +13,9 @@ exports[`UploadedListPage redirects and alerts when loading fails 1`] = `
 `;
 
 exports[`UploadedListPage renders the list error when the job status is error 1`] = `
-<form>
-   
+<Form
+  id="rv-uploadlist-form"
+>
   <Page
     breadcrumbAction={
       Object {
@@ -50,12 +51,13 @@ exports[`UploadedListPage renders the list error when the job status is error 1`
       </OGOnlyWrapper>
     </Panel.LEGACY>
   </Page>
-</form>
+</Form>
 `;
 
 exports[`UploadedListPage renders with list progress 1`] = `
-<form>
-   
+<Form
+  id="rv-uploadlist-form"
+>
   <Page
     breadcrumbAction={
       Object {
@@ -99,5 +101,5 @@ exports[`UploadedListPage renders with list progress 1`] = `
       </OGOnlyWrapper>
     </Panel.LEGACY>
   </Page>
-</form>
+</Form>
 `;

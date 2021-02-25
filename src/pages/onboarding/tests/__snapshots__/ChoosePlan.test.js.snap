@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChoosePlan page tests should disable submit and plan picker when submitting 1`] = `
-<form>
+<Form
+  id="onboarding-chooseplan-form"
+>
   <CenteredLogo />
   <Grid>
     <Grid.Column>
@@ -70,11 +72,13 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
       </Panel.LEGACY>
     </Grid.Column>
   </Grid>
-</form>
+</Form>
 `;
 
 exports[`ChoosePlan page tests should render correctly 1`] = `
-<form>
+<Form
+  id="onboarding-chooseplan-form"
+>
   <CenteredLogo />
   <Grid>
     <Grid.Column>
@@ -143,11 +147,13 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
       </Panel.LEGACY>
     </Grid.Column>
   </Grid>
-</form>
+</Form>
 `;
 
 exports[`ChoosePlan page tests should show free bullets when isFree is selected 1`] = `
-<form>
+<Form
+  id="onboarding-chooseplan-form"
+>
   <CenteredLogo />
   <Grid>
     <Grid.Column>
@@ -216,5 +222,5 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
       </Panel.LEGACY>
     </Grid.Column>
   </Grid>
-</form>
+</Form>
 `;

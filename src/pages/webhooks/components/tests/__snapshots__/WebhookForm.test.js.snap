@@ -86,7 +86,8 @@ Array [
 `;
 
 exports[`Webhooks Form Component should render correctly 1`] = `
-<form
+<Form
+  id="update-webhook-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -131,7 +132,7 @@ exports[`Webhooks Form Component should render correctly 1`] = `
       Update Webhook
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`Webhooks Form Component should show events checkboxes 1`] = `

@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`api key form 1`] = `
-<form
+exports[`api key Form 1`] = `
+<Form
+  id="subaccount-create-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -38,11 +39,12 @@ exports[`api key form 1`] = `
       </PageLink>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`base case 1`] = `
-<form
+<Form
+  id="subaccount-create-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -79,11 +81,12 @@ exports[`base case 1`] = `
       </PageLink>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`has ip pools 1`] = `
-<form
+<Form
+  id="subaccount-create-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -123,11 +126,12 @@ exports[`has ip pools 1`] = `
       </PageLink>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`has ip pools and checked checkbox 1`] = `
-<form
+<Form
+  id="subaccount-create-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -174,11 +178,12 @@ exports[`has ip pools and checked checkbox 1`] = `
       </PageLink>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`submits correctly 1`] = `
-<form
+<Form
+  id="subaccount-create-form"
   onSubmit={
     [MockFunction] {
       "calls": Array [
@@ -228,5 +233,5 @@ exports[`submits correctly 1`] = `
       </PageLink>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;

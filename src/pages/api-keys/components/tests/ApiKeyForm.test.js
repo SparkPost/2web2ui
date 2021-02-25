@@ -45,7 +45,7 @@ it('renders correctly - update and subaccounts', () => {
 
 it('submits correctly', () => {
   const submitSpy = jest.spyOn(wrapper.instance().props, 'handleSubmit');
-  wrapper.find('form').simulate('submit');
+  wrapper.find('Form').simulate('submit');
   expect(submitSpy).toHaveBeenCalled();
   wrapper.setProps({ submitting: true });
   expect(wrapper).toMatchSnapshot();

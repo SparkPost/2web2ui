@@ -67,7 +67,9 @@ exports[`Support Form Component Form should render successfully created ticket m
 exports[`Support Form Component Form should render unauthorized message 1`] = `<NoIssues />`;
 
 exports[`Support Form Component Form should render with selected issue message label 1`] = `
-<form>
+<Form
+  id="support-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -125,5 +127,5 @@ exports[`Support Form Component Form should render with selected issue message l
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;

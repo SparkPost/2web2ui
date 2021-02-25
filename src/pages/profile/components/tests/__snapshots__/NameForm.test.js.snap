@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: NameForm should render correctly 1`] = `
-<form>
+<Form
+  id="profile-update-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -30,11 +32,13 @@ exports[`Component: NameForm should render correctly 1`] = `
       Update Profile
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`Component: NameForm should render correctly when updating 1`] = `
-<form>
+<Form
+  id="profile-update-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -64,5 +68,5 @@ exports[`Component: NameForm should render correctly when updating 1`] = `
       Updating Profile
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;

@@ -3,6 +3,7 @@
 exports[`Alert Form Component should render the alert form component correctly 1`] = `
 <Fragment>
   <Form
+    id="alert-create-form"
     onSubmit={[MockFunction]}
   >
     <Panel.LEGACY>

@@ -126,7 +126,7 @@ describe('InsertSnippetModal', () => {
     //expect(wrapper.find('CopyField').props().value).toEqual(`{{ render_snippet( "${mySnippet.id}" ) }}`);
   });
 
-  it('invokes "onClose", "copy", and "showAlert" on form submit', () => {
+  it('invokes "onClose", "copy", and "showAlert" on Form submit', () => {
     const mockOnClose = jest.fn();
     const mockShowAlert = jest.fn();
 
@@ -140,7 +140,7 @@ describe('InsertSnippetModal', () => {
       },
     });
 
-    wrapper.find('form').simulate('submit');
+    wrapper.find('Form').simulate('submit');
 
     expect(mockOnClose).toHaveBeenCalled();
     expect(mockShowAlert).toHaveBeenCalledWith({

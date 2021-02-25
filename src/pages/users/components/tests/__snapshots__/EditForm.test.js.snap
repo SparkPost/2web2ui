@@ -2,7 +2,9 @@
 
 exports[`Component: EditForm should render 1`] = `
 <Panel.LEGACY>
-  <form>
+  <Form
+    id="users-edit-form"
+  >
     <Panel.LEGACY.Section>
       <Field
         allowSubaccountAssignment={false}
@@ -40,6 +42,6 @@ exports[`Component: EditForm should render 1`] = `
         Update User
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Panel.LEGACY>
 `;

@@ -30,8 +30,8 @@ describe('PremiumSupportPage', () => {
     expect(wrapper.find('Button')).toMatchSnapshot();
   });
 
-  it('submits form correctly', () => {
-    wrapper.find('form').simulate('submit');
+  it('submits Form correctly', () => {
+    wrapper.find('Form').simulate('submit');
     expect(props.handleSubmit).toHaveBeenCalledTimes(1);
     expect(props.createTicket.mock.calls[0]).toMatchSnapshot();
   });

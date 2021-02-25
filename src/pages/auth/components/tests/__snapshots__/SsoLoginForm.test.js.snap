@@ -5,7 +5,9 @@ exports[`Component: SsoLoginForm renders errors 1`] = `
   <Error
     error="asplode. Please contact login.issues@sparkpost.com for assistance."
   />
-  <form>
+  <Form
+    id="sso-login-form"
+  >
     <Stack>
       <Field
         autoFocus={true}
@@ -25,13 +27,15 @@ exports[`Component: SsoLoginForm renders errors 1`] = `
         </Button>
       </Box>
     </Stack>
-  </form>
+  </Form>
 </Fragment>
 `;
 
 exports[`Component: SsoLoginForm should render 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="sso-login-form"
+  >
     <Stack>
       <Field
         autoFocus={true}
@@ -51,13 +55,15 @@ exports[`Component: SsoLoginForm should render 1`] = `
         </Button>
       </Box>
     </Stack>
-  </form>
+  </Form>
 </Fragment>
 `;
 
 exports[`Component: SsoLoginForm should render during login 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="sso-login-form"
+  >
     <Stack>
       <Field
         autoFocus={true}
@@ -78,6 +84,6 @@ exports[`Component: SsoLoginForm should render during login 1`] = `
         </Button>
       </Box>
     </Stack>
-  </form>
+  </Form>
 </Fragment>
 `;

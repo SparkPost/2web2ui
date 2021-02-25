@@ -22,7 +22,8 @@ exports[`Page: User Create Page should render correctly by default 1`] = `
   title="Invite User"
 >
   <Panel.LEGACY>
-    <form
+    <Form
+      id="users-create-form"
       onSubmit={[Function]}
     >
       <Panel.LEGACY.Section>
@@ -64,7 +65,7 @@ exports[`Page: User Create Page should render correctly by default 1`] = `
           Add User
         </Button>
       </Panel.LEGACY.Section>
-    </form>
+    </Form>
   </Panel.LEGACY>
 </Page>
 `;

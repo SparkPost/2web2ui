@@ -148,6 +148,7 @@ exports[`Component: DatePicker should render ok by default 1`] = `
     <ButtonWrapper>
       <Button
         data-id="date-picker-custom-apply"
+        form="datepicker-manualentry-form"
         onClick={[Function]}
         variant="primary"
       >

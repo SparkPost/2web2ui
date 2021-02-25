@@ -58,7 +58,7 @@ describe('CreatePage', () => {
   });
 
   describe('handleCreate', () => {
-    it('calls "create" with form data when submitting', () => {
+    it('calls "create" with Form data when submitting', () => {
       const promise = Promise.resolve();
       const mockCreate = jest.fn(() => promise);
       const formData = {
@@ -71,7 +71,7 @@ describe('CreatePage', () => {
         createTemplate: mockCreate,
         history: { push: jest.fn() },
       });
-      wrapper.find('form').simulate('submit', formData);
+      wrapper.find('Form').simulate('submit', formData);
 
       return promise.then(() => {
         expect(mockCreate).toHaveBeenCalledWith({
@@ -104,7 +104,7 @@ describe('CreatePage', () => {
         history: { push: jest.fn() },
       });
 
-      wrapper.find('form').simulate('submit', formData);
+      wrapper.find('Form').simulate('submit', formData);
 
       return promise.then(() => {
         expect(mockCreate).toHaveBeenCalledWith({
@@ -133,7 +133,7 @@ describe('CreatePage', () => {
         showAlert: mockAlert,
       });
 
-      wrapper.find('form').simulate('submit', { id: 'foo', content: {} });
+      wrapper.find('Form').simulate('submit', { id: 'foo', content: {} });
 
       return createPromise.then(() => {
         expect(mockPush).toHaveBeenCalledWith('/templates/edit/foo/draft/content');

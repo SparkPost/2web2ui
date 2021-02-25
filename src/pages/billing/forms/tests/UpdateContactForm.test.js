@@ -28,9 +28,9 @@ describe('Form Container: Update Contact', () => {
     expect(countriesSpy).toHaveBeenCalled();
   });
 
-  it('should submit redux-form', () => {
+  it('should submit redux-Form', () => {
     const submitSpy = jest.spyOn(wrapper.instance().props, 'handleSubmit');
-    wrapper.find('form').simulate('submit');
+    wrapper.find('Form').simulate('submit');
     expect(submitSpy).toHaveBeenCalled();
   });
 

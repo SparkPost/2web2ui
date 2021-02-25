@@ -55,7 +55,7 @@ export class ResetPasswordPage extends Component {
       <Fragment>
         <CenteredLogo />
         <Panel.LEGACY sectioned title="Create a New Password">
-          <Form onSubmit={handleSubmit(this.handleResetPassword)}>
+          <Form onSubmit={handleSubmit(this.handleResetPassword)} id="reset-password-form">
             <Stack>
               <Field
                 name="newPassword"

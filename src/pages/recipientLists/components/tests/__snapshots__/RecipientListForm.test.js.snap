@@ -2,7 +2,9 @@
 
 exports[`RecipientListForm defaults to create mode 1`] = `
 <div>
-  <form>
+  <Form
+    id="create-recipientlists-form"
+  >
     <Panel.LEGACY>
       <Panel.LEGACY.Section>
         <Stack
@@ -80,7 +82,7 @@ exports[`RecipientListForm defaults to create mode 1`] = `
         </Button>
       </Panel.LEGACY.Section>
     </Panel.LEGACY>
-  </form>
+  </Form>
 </div>
 `;
 
@@ -100,7 +102,9 @@ exports[`RecipientListForm renders CSV errors 1`] = `
       key="1"
     />
   </Banner>
-  <form>
+  <Form
+    id="create-recipientlists-form"
+  >
     <Panel.LEGACY>
       <Panel.LEGACY.Section>
         <Stack
@@ -178,13 +182,15 @@ exports[`RecipientListForm renders CSV errors 1`] = `
         </Button>
       </Panel.LEGACY.Section>
     </Panel.LEGACY>
-  </form>
+  </Form>
 </div>
 `;
 
 exports[`RecipientListForm renders correctly in create mode 1`] = `
 <div>
-  <form>
+  <Form
+    id="create-recipientlists-form"
+  >
     <Panel.LEGACY>
       <Panel.LEGACY.Section>
         <Stack
@@ -262,13 +268,15 @@ exports[`RecipientListForm renders correctly in create mode 1`] = `
         </Button>
       </Panel.LEGACY.Section>
     </Panel.LEGACY>
-  </form>
+  </Form>
 </div>
 `;
 
 exports[`RecipientListForm renders correctly in edit mode 1`] = `
 <div>
-  <form>
+  <Form
+    id="update-recipientlists-form"
+  >
     <Panel.LEGACY>
       <Panel.LEGACY.Section>
         <Stack
@@ -330,13 +338,15 @@ exports[`RecipientListForm renders correctly in edit mode 1`] = `
         </Button>
       </Panel.LEGACY.Section>
     </Panel.LEGACY>
-  </form>
+  </Form>
 </div>
 `;
 
 exports[`RecipientListForm should disable form elements on submit 1`] = `
 <div>
-  <form>
+  <Form
+    id="create-recipientlists-form"
+  >
     <Panel.LEGACY>
       <Panel.LEGACY.Section>
         <Stack
@@ -418,10 +428,8 @@ exports[`RecipientListForm should disable form elements on submit 1`] = `
         </Button>
       </Panel.LEGACY.Section>
     </Panel.LEGACY>
-  </form>
+  </Form>
 </div>
 `;
 
-exports[
-  `RecipientListForm should throw on submit if CSV parsing fails 1`
-] = `[SubmissionError: Submit Validation Failed]`;
+exports[`RecipientListForm should throw on submit if CSV parsing fails 1`] = `[SubmissionError: Submit Validation Failed]`;

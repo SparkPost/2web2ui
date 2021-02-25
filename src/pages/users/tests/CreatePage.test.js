@@ -26,7 +26,7 @@ describe('Page: User Create Page', () => {
 
   const subject = props => shallow(<CreatePage {...baseProps} {...props} />);
 
-  const submit = (wrapper, values) => wrapper.find('form').prop('onSubmit')(values);
+  const submit = (wrapper, values) => wrapper.find('Form').prop('onSubmit')(values);
 
   it('should render correctly by default', () => {
     expect(subject()).toMatchSnapshot();

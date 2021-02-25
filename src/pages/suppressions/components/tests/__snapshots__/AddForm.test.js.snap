@@ -2,7 +2,9 @@
 
 exports[`AddForm tests should disable fields when submitting 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="suppressions-add-form"
+  >
     <Panel.LEGACY.Section>
       <Stack>
         <Field
@@ -57,13 +59,15 @@ exports[`AddForm tests should disable fields when submitting 1`] = `
         Add / Update
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Fragment>
 `;
 
 exports[`AddForm tests should make form submitable when dirty and not submitting 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="suppressions-add-form"
+  >
     <Panel.LEGACY.Section>
       <Stack>
         <Field
@@ -118,13 +122,15 @@ exports[`AddForm tests should make form submitable when dirty and not submitting
         Add / Update
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Fragment>
 `;
 
 exports[`AddForm tests should render add form 1`] = `
 <Fragment>
-  <form>
+  <Form
+    id="suppressions-add-form"
+  >
     <Panel.LEGACY.Section>
       <Stack>
         <Field
@@ -179,6 +185,6 @@ exports[`AddForm tests should render add form 1`] = `
         Add / Update
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Fragment>
 `;

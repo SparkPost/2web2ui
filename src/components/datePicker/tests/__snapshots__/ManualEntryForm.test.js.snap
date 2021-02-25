@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: DatePicker ManualEntryForm should not show precision when rounding is disabled 1`] = `
-<form
+<Form
   className="DateFields"
+  id="datepicker-manualentry-form"
   onKeyDown={[MockFunction]}
 >
   <Grid
@@ -62,12 +63,13 @@ exports[`Component: DatePicker ManualEntryForm should not show precision when ro
       />
     </Grid.Column>
   </Grid>
-</form>
+</Form>
 `;
 
 exports[`Component: DatePicker ManualEntryForm should render correctly by default 1`] = `
-<form
+<Form
   className="DateFields"
+  id="datepicker-manualentry-form"
   onKeyDown={[Function]}
 >
   <Grid
@@ -137,12 +139,13 @@ exports[`Component: DatePicker ManualEntryForm should render correctly by defaul
     </TranslatableText>
     Hour
   </div>
-</form>
+</Form>
 `;
 
 exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = `
-<form
+<Form
   className="DateFields"
+  id="datepicker-manualentry-form"
   onKeyDown={[MockFunction]}
 >
   <Grid
@@ -212,12 +215,13 @@ exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = 
     </TranslatableText>
     Hour
   </div>
-</form>
+</Form>
 `;
 
 exports[`Component: DatePicker ManualEntryForm should update state from new props 1`] = `
-<form
+<Form
   className="DateFields"
+  id="datepicker-manualentry-form"
   onKeyDown={[MockFunction]}
 >
   <Grid
@@ -287,5 +291,5 @@ exports[`Component: DatePicker ManualEntryForm should update state from new prop
     </TranslatableText>
     Hour
   </div>
-</form>
+</Form>
 `;

@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`base case 1`] = `
-<form
+<Form
+  id="subaccount-edit-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -39,11 +40,12 @@ exports[`base case 1`] = `
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`cancel button 1`] = `
-<form
+<Form
+  id="subaccount-edit-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -87,11 +89,12 @@ exports[`cancel button 1`] = `
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`no ip pools 1`] = `
-<form
+<Form
+  id="subaccount-edit-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -124,11 +127,12 @@ exports[`no ip pools 1`] = `
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`should disable all fields when compliance is true 1`] = `
-<form
+<Form
+  id="subaccount-edit-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -166,11 +170,12 @@ exports[`should disable all fields when compliance is true 1`] = `
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`submits correctly 1`] = `
-<form
+<Form
+  id="subaccount-edit-form"
   onSubmit={
     [MockFunction] {
       "calls": Array [
@@ -215,11 +220,12 @@ exports[`submits correctly 1`] = `
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`with an assigned ip pool 1`] = `
-<form
+<Form
+  id="subaccount-edit-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY.Section>
@@ -265,5 +271,5 @@ exports[`with an assigned ip pool 1`] = `
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;

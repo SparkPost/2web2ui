@@ -77,7 +77,7 @@ describe('DuplicateTemplateModal', () => {
 
   it('renders with an error message if the user does not type in a value for the draft name or for draft ID', () => {
     const wrapper = subject({ draft: { name: null } });
-    wrapper.find('form').simulate('submit', {
+    wrapper.find('Form').simulate('submit', {
       preventDefault: jest.fn(),
       templateName: '',
       templateId: '',
@@ -121,7 +121,7 @@ describe('DuplicateTemplateModal', () => {
       contentToDuplicate: mockContent,
     });
 
-    wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+    wrapper.find('Form').simulate('submit', { preventDefault: jest.fn() });
 
     expect(mockCreateTemplate).toHaveBeenCalledWith({
       name: 'My template (COPY)',

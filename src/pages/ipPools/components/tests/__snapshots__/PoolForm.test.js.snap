@@ -2,7 +2,8 @@
 
 exports[`PoolForm should render form 1`] = `
 <Panel.LEGACY>
-  <form
+  <Form
+    id="update-ip-pool-form"
     onSubmit={[MockFunction]}
   >
     <Panel.LEGACY.Section>
@@ -56,6 +57,6 @@ exports[`PoolForm should render form 1`] = `
         Update IP Pool
       </Button>
     </Panel.LEGACY.Section>
-  </form>
+  </Form>
 </Panel.LEGACY>
 `;

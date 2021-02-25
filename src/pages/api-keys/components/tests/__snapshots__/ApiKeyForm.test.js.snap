@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly - new and no subaccounts 1`] = `
-<form>
+<Form
+  id="apikey-create-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -78,11 +80,13 @@ exports[`renders correctly - new and no subaccounts 1`] = `
       Create API Key
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`renders correctly - readonly mode 1`] = `
-<form>
+<Form
+  id="apikey-create-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -151,11 +155,13 @@ exports[`renders correctly - readonly mode 1`] = `
       />
     </Stack>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`renders correctly - update and subaccounts 1`] = `
-<form>
+<Form
+  id="apikey-update-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -226,11 +232,13 @@ exports[`renders correctly - update and subaccounts 1`] = `
       Update API Key
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;
 
 exports[`submits correctly 1`] = `
-<form>
+<Form
+  id="apikey-create-form"
+>
   <Panel.LEGACY.Section>
     <Stack>
       <Field
@@ -308,5 +316,5 @@ exports[`submits correctly 1`] = `
       Loading...
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;

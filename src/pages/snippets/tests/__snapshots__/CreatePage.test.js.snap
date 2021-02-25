@@ -95,6 +95,7 @@ exports[`CreatePage renders form 1`] = `
   title="Create a Snippet"
 >
   <Form
+    id="snippets-create-form"
     onSubmit={[Function]}
   >
     <Grid>
