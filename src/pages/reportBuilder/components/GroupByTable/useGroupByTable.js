@@ -183,20 +183,24 @@ export function useCompareByGroupByTable() {
       return [];
     }
 
-    const groupKey = GROUP_BY_CONFIG[groupBy]?.keyName;
+    if (!groupBy) {
+      return [];
+    }
+
+    const groupKey = GROUP_BY_CONFIG[groupBy].keyName;
     // Array of objects (nested array turned to object)
     const keyedData = rawData.map(dataArray => _.keyBy(dataArray, groupKey));
     // Array of objects (unique group-by key)
     const objectKeys = _.uniqBy(_.flatten(rawData), groupKey);
 
-    return objectKeys.reduce((acc, object) => {
-      const key = object[groupKey];
+    return objectKeys.reduce((acc, obj) => {
+      const key = obj[groupKey];
       const newRows = comparisons.map((compareFilter, index) => {
         const currentDataCompare = keyedData[index][key] || {};
         return {
           ...currentDataCompare,
-          [groupKey]: key, //Re-add key (in case it's empty. We want a row to show even if data is null as comparison value must exist)
-          [compareFilter.type]: compareFilter.value, //Comparison value
+          [groupKey]: key, // Re-add key (in case it's empty. We want a row to show even if data is null as comparison value must exist)
+          [compareFilter.type]: compareFilter.value, // Comparison value
         };
       });
 
