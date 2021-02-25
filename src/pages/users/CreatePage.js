@@ -47,7 +47,7 @@ export class CreatePage extends Component {
     return (
       <Page title="Invite User" breadcrumbAction={breadcrumbAction}>
         <Panel.LEGACY>
-          <Form onSubmit={handleSubmit(this.handleSubmit)}>
+          <Form onSubmit={handleSubmit(this.handleSubmit)} id="users-create-form">
             <Panel.LEGACY.Section>
               <Stack>
                 <Field

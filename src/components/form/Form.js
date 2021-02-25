@@ -2,8 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Form(props) {
-  return <form {...props}>{props.children}</form>;
+function handleSubmit() {}
+
+document.addEventListener('submit', handleSubmit, false);
+
+function Form({ children, ...props }) {
+  return <form {...props}>{children}</form>;
 }
 
 export default Form;

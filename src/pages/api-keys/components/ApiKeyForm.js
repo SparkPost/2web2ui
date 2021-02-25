@@ -63,7 +63,10 @@ export class ApiKeyForm extends Component {
     const submitText = isNew ? 'Create API Key' : 'Update API Key';
 
     return (
-      <Form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form
+        onSubmit={handleSubmit(this.onSubmit)}
+        id={isNew ? 'apikey-create-form' : 'apikey-update-form'}
+      >
         <Panel.LEGACY.Section>
           <Stack>
             <Field

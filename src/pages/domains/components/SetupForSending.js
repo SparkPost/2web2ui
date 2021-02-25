@@ -70,7 +70,7 @@ export default function SetupForSending({ domain, isSectionVisible }) {
         )}
       </Layout.Section>
       <Layout.Section>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} id="domain-verify-sending-form">
           <Panel mb="0">
             {!readyFor.dkim ? (
               <Panel.Section>

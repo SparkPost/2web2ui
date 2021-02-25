@@ -44,7 +44,7 @@ export class EnableAutomaticBillingForm extends React.Component {
     }
 
     return (
-      <Form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)} id="enable-automaticbilling-form">
         <Grid>
           <Grid.Column>
             <Panel.LEGACY title="Add a Credit Card">

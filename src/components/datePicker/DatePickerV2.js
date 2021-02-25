@@ -424,7 +424,12 @@ export function DatePicker(props) {
       </Box>
       <Box padding="400" borderTop="400">
         <ButtonWrapper>
-          <Button variant="primary" onClick={handleSubmit} data-id="date-picker-custom-apply">
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            data-id="date-picker-custom-apply"
+            form="datepicker-manualentryv2-form"
+          >
             Apply
           </Button>
 

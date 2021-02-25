@@ -45,7 +45,7 @@ export class ForgotPasswordPage extends Component {
       <Fragment>
         <CenteredLogo />
         <Panel.LEGACY sectioned title="Reset Your Password">
-          <Form onSubmit={handleSubmit(sendPasswordResetEmail)}>
+          <Form onSubmit={handleSubmit(sendPasswordResetEmail)} id="reset-password-form">
             <Stack>
               <p>Provide your username or email and we'll send an email to reset your password.</p>
               <Field

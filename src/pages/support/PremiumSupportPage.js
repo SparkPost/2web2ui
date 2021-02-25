@@ -42,7 +42,7 @@ export class PremiumSupportPage extends Component {
         }}
       >
         <Panel.LEGACY title="Request Premium Support" sectioned accent>
-          <Form onSubmit={handleSubmit(this.handleTicketCreate)}>
+          <Form onSubmit={handleSubmit(this.handleTicketCreate)} id="premium-support-form">
             <PremiumSupportFields />
             <Button submit color="orange" disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit Request'}

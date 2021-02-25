@@ -121,7 +121,7 @@ export const AlertForm = props => {
 
     const columnProps = isHibanaEnabled ? { sm: 12 } : { sm: 12, md: 11, lg: 9 };
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id={isNewAlert ? 'alert-create-form' : 'alert-update-form'}>
         <Panel.LEGACY>
           <Grid>
             <Grid.Column {...columnProps}>

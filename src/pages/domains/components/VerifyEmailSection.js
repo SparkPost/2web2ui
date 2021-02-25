@@ -96,7 +96,7 @@ function AllowAnyoneAtModal(props) {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} id="modalForm">
+    <Form onSubmit={handleSubmit(onSubmit)} id="domain-verify-by-email">
       <Modal open onClose={onCancel} showCloseButton>
         <Modal.Header>Verify through Email</Modal.Header>
         <Modal.Content>
@@ -128,7 +128,12 @@ function AllowAnyoneAtModal(props) {
         </Modal.Content>
 
         <Modal.Footer>
-          <Button variant="primary" type="submit" form="modalForm" loading={verifyEmailLoading}>
+          <Button
+            variant="primary"
+            type="submit"
+            form="domain-verify-by-email"
+            loading={verifyEmailLoading}
+          >
             Send Email
           </Button>
         </Modal.Footer>

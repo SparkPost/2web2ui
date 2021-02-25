@@ -55,7 +55,7 @@ export function ChangeReportModal({ reports, open, onClose, currentUser }) {
     <Modal open={open} onClose={closeModal} showCloseButton maxWidth="1300">
       <Modal.Header>Change Report</Modal.Header>
       <Modal.Content p="0">
-        <Form onSubmit={handleSubmit(onSubmit)} id="reportsmodalForm">
+        <Form onSubmit={handleSubmit(onSubmit)} id="dashboard-changereport-modal-form">
           <Tabs
             tabs={[
               { content: 'My Reports', onClick: () => handleTabChange(0) },
@@ -84,7 +84,7 @@ function ModalFooter({ onClose, control }) {
         variant="primary"
         loadingLabel="Loading"
         type="submit"
-        form="reportsmodalForm"
+        form="dashboard-changereport-modal-form"
         disabled={!submitDisbaled}
       >
         Change Report

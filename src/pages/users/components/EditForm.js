@@ -47,7 +47,7 @@ export const EditForm = ({
 
   return (
     <Panel.LEGACY>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} id="users-edit-form">
         <Panel.LEGACY.Section>{roleSection}</Panel.LEGACY.Section>
         {isAccountSingleSignOnEnabled && (
           <Panel.LEGACY.Section>

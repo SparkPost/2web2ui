@@ -70,7 +70,7 @@ export class JoinForm extends Component {
     const pending = loading || submitting || !reCaptchaReady;
 
     return (
-      <Form>
+      <Form id="sign-up-form">
         <Stack>
           <Field
             name="first_name"

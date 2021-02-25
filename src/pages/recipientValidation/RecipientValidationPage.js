@@ -152,7 +152,7 @@ export function RecipientValidationPage(props) {
 
   if (addRVtoSubscriptionloading) return <Loading />;
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} id="recipient-validation-form">
       <Page
         title="Recipient Validation"
         primaryArea={

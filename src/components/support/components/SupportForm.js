@@ -77,7 +77,7 @@ export class SupportForm extends Component {
     } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)} id="support-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Field
@@ -163,7 +163,7 @@ export class SupportForm extends Component {
   }
 }
 
-export const formName = 'supportForm';
+export const formName = 'support-form';
 const selector = formValueSelector(formName);
 const mapStateToProps = state => ({
   issues: selectSupportIssues(state),

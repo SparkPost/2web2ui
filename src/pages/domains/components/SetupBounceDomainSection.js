@@ -116,7 +116,7 @@ export default function SetupBounceDomainSection({
               </Panel.Action>
             </Panel.Section>
           )}
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)} id="verify-bounce-form">
             <Panel.Section>
               <Stack>
                 {!readyFor.bounce && (

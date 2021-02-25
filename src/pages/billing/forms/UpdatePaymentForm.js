@@ -33,7 +33,7 @@ export class UpdatePaymentForm extends Component {
     const { onCancel, handleSubmit, submitting } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)} id="billing-update-payment-form">
         <Panel.LEGACY title="Update Payment Information">
           <Panel.LEGACY.Section>
             <PaymentForm formName={FORMNAME} disabled={submitting} />

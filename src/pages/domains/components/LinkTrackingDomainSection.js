@@ -51,7 +51,7 @@ function LinkTrackingDomainSection({ domain, isSectionVisible, trackingDomainOpt
         </Stack>
       </Layout.Section>
       <Layout.Section>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} id="domains-link-trackingdomain-form">
           <Panel mb="0">
             <Panel.Section>
               <Controller

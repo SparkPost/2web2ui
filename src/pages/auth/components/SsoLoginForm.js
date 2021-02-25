@@ -19,7 +19,7 @@ export class SsoLoginForm extends React.Component {
             error={`${loginError}. Please contact login.issues@sparkpost.com for assistance.`}
           />
         )}
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} id="sso-login-form">
           <Stack>
             <Field
               autoFocus

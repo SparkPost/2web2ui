@@ -72,7 +72,10 @@ export class RecipientListForm extends Component {
     return (
       <div>
         {error && this.renderCsvErrors()}
-        <Form onSubmit={handleSubmit(this.preSubmit)}>
+        <Form
+          onSubmit={handleSubmit(this.preSubmit)}
+          id={editMode ? 'update-recipientlists-form' : 'create-recipientlists-form'}
+        >
           <Panel.LEGACY>
             <Panel.LEGACY.Section>
               <Stack space="400">

@@ -33,7 +33,7 @@ export function SingleRecipientTab(props) {
   };
 
   return (
-    <Form onSubmit={props.handleSubmit(onSubmit)}>
+    <Form onSubmit={props.handleSubmit(onSubmit)} id="dataprivacy-single-recipient-form">
       <Panel.LEGACY.Section>
         <Stack>
           <Field

@@ -42,7 +42,7 @@ export default class DisableTfaModal extends Component {
           }
           accent
         >
-          <Form onSubmit={e => e.preventDefault()}>
+          <Form onSubmit={e => e.preventDefault()} id="disable-tfa-form">
             <Panel.LEGACY.Section>
               <Stack>
                 <p>

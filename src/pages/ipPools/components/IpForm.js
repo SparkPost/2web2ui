@@ -66,7 +66,7 @@ export const IpForm = props => {
 
   return (
     <Panel.LEGACY title="Sending IP Details">
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="ippools-ip-form">
         <Panel.LEGACY.Section>
           <div className={styles.FieldGroup}>
             {/* NOTE: This should not be using the HTML <label> element - just a <div> with the same styles. This is a limitation of the existing component */}

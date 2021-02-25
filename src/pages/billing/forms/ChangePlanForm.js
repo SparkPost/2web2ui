@@ -172,7 +172,7 @@ export const ChangePlanForm = ({
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} id="change-plan-form">
       <div className={styles.ChangePlanForm}>
         <div className={styles.CurrentPlanSection}>
           <CurrentPlanSection currentPlan={currentPlan} isPlanSelected={Boolean(selectedBundle)} />

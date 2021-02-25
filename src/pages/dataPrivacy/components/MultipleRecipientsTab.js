@@ -96,7 +96,7 @@ export function MultipleRecipientsTab({
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} id="dataprivacy-multiple-recipient-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Field

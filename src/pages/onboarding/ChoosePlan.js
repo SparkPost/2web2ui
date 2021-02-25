@@ -140,7 +140,7 @@ export function OnboardingPlanPage({
 
   const buttonText = submitting ? 'Updating Subscription...' : 'Get Started';
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} id="onboarding-chooseplan-form">
       <CenteredLogo />
       <Grid>
         <Grid.Column>

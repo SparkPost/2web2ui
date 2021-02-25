@@ -92,7 +92,7 @@ function FiltersForm({ handleSubmit }) {
   const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
 
   return (
-    <Form onSubmit={handleFormSubmit}>
+    <Form onSubmit={handleFormSubmit} id="reportbuilder-filter-form">
       <Box padding="500" paddingBottom="8rem">
         <Stack marginBottom="500">
           {groupings.map((grouping, groupingIndex) => {

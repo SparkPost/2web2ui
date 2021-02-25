@@ -106,7 +106,7 @@ export default class EditPage extends React.Component {
         }}
         secondaryActions={this.secondaryActions.filter(({ visible = () => true }) => visible())}
       >
-        <Form onSubmit={this.submitSnippet}>
+        <Form onSubmit={this.submitSnippet} id="snippets-edit-form">
           <Grid>
             <Grid.Column xs={12} lg={4}>
               <Panel.LEGACY sectioned>

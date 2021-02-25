@@ -29,7 +29,7 @@ export class UploadForm extends Component {
     const { handleSubmit: reduxFormSubmit, submitting, pristine } = this.props;
     return (
       <>
-        <Form onSubmit={reduxFormSubmit(this.handleSubmit)}>
+        <Form onSubmit={reduxFormSubmit(this.handleSubmit)} id="suppresions-upload-form">
           <Panel.LEGACY.Section>
             <Stack>
               <Field

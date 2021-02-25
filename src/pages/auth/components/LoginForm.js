@@ -11,7 +11,7 @@ import { required } from 'src/helpers/validation';
 import { trimWhitespaces } from 'src/helpers/string';
 
 export const LoginForm = ({ loginPending, loginError, handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
+  <Form onSubmit={handleSubmit} id="login-form">
     <Stack>
       {loginError && (
         <BottomPad>

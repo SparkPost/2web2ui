@@ -145,7 +145,7 @@ const SendTestEmailButton = () => {
 
         {!isModalLoading && (
           <Panel.LEGACY title="Send a Test">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} id="templates-send-test-email-form">
               <Panel.LEGACY.Section>
                 <Stack>
                   <p>Verify your email renders as expected in the inbox by sending a quick test.</p>

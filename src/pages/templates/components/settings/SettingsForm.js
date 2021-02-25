@@ -80,7 +80,7 @@ export default function SettingsForm(props) {
       : null;
 
   return (
-    <Form onSubmit={handleSubmit(updateSettings)}>
+    <Form onSubmit={handleSubmit(updateSettings)} id="templates-settings-form">
       <Panel.LEGACY.Section>
         <Stack>
           {isPublishedMode && renderPublishedIntro()}

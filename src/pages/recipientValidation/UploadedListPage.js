@@ -119,8 +119,7 @@ export function UploadedListPage(props) {
   if (addRVtoSubscriptionloading && !addRVtoSubscriptionerror) return <Loading />;
 
   return (
-    <Form onSubmit={props.handleSubmit(onSubmit)}>
-      {' '}
+    <Form onSubmit={props.handleSubmit(onSubmit)} id="rv-uploadlist-form">
       <Page
         title="Recipient Validation"
         breadcrumbAction={{ content: 'Back', as: PageLink, to: '/recipient-validation' }}

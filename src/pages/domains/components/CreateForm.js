@@ -120,7 +120,7 @@ export default function CreateForm() {
         onSubmit={onSubmitDomainAlignmentModal}
         onClose={closeModal}
       />
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} id="domains-create-form">
         <Layout>
           <Layout.Section annotated>
             <Layout.SectionTitle>Domain Type</Layout.SectionTitle>

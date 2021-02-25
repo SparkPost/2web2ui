@@ -24,7 +24,7 @@ export function SearchForm(props) {
 
   const { handleSubmit, handleApply, handleCancel, eventListing } = props;
   return (
-    <Form onSubmit={handleSubmit(handleApply)}>
+    <Form onSubmit={handleSubmit(handleApply)} id="events-advanced-filter-form">
       <Panel.LEGACY title="Advanced Filters">
         <Panel.LEGACY.Section>
           <EventTypeFilters eventTypeDocs={eventListing} />

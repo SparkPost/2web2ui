@@ -35,7 +35,7 @@ export class AbTestCreateForm extends Component {
     const disabled = pristine || submitting;
     const submitText = submitting ? 'Submitting...' : 'Continue';
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="abtest-create-form">
         <Box as={Panel.LEGACY.Section}>
           <Stack>
             <OGOnlyWrapper as={Panel.LEGACY.Section}>

@@ -11,7 +11,7 @@ export class NameForm extends Component {
     const { pristine, submitting, handleSubmit } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="profile-update-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Field

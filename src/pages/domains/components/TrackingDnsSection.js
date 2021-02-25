@@ -48,7 +48,7 @@ export default function TrackingDnsSection({ domain, isSectionVisible, title }) 
         </Stack>
       </Layout.Section>
       <Layout.Section>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} id="domains-verify-tracking-form">
           <Panel>
             {unverified ? (
               <Panel.Section>

@@ -53,7 +53,7 @@ export class PoolForm extends Component {
 
     return (
       <Panel.LEGACY>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} id={isNew ? 'create-ip-pool-form' : 'update-ip-pool-form'}>
           <Panel.LEGACY.Section>
             <Stack>
               <Field

@@ -42,7 +42,7 @@ export class AddForm extends Component {
 
     return (
       <>
-        <Form onSubmit={handleSubmit(this.onSubmit)}>
+        <Form onSubmit={handleSubmit(this.onSubmit)} id="suppressions-add-form">
           <Panel.LEGACY.Section>
             <Stack>
               <Field

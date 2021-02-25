@@ -18,7 +18,9 @@ import { TranslatableText } from 'src/components/text';
 
 const DATE_PLACEHOLDER = '1970-01-20';
 const TIME_PLACEHOLDER = '12:00am';
-
+/*
+  used in Inboxplacement
+ */
 export class ManualEntryFormClassComponent extends Component {
   DEBOUNCE = 500;
 
@@ -142,7 +144,11 @@ export class ManualEntryFormClassComponent extends Component {
     }
 
     return (
-      <Form onKeyDown={this.handleEnter} className={styles.DateFields}>
+      <Form
+        onKeyDown={this.handleEnter}
+        className={styles.DateFields}
+        id="datepicker-manualentry-form"
+      >
         <Grid middle="xs">
           <Grid.Column>
             <TextField

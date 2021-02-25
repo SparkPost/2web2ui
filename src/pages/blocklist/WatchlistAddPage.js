@@ -71,7 +71,7 @@ export const WatchlistAddPage = ({
       }}
     >
       <Panel.LEGACY>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} id="blocklist-addtowatchlist-form">
           <Panel.LEGACY.Section>
             <TextField
               id="watchlist-item-input"

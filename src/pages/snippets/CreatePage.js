@@ -64,7 +64,7 @@ export default class CreatePage extends React.Component {
           onClick: handleSubmit(this.submitSnippet),
         }}
       >
-        <Form onSubmit={this.submitSnippet}>
+        <Form onSubmit={this.submitSnippet} id="snippets-create-form">
           <Grid>
             <Grid.Column xs={12} lg={4}>
               <Panel.LEGACY sectioned>

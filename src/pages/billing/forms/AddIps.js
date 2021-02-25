@@ -97,7 +97,7 @@ export class AddIps extends Component {
     };
 
     return (
-      <Form onSubmit={handleSubmit(this.onSubmit)} noValidate>
+      <Form onSubmit={handleSubmit(this.onSubmit)} noValidate id="add-ips-form">
         <Panel.LEGACY title="Add Dedicated IPs" actions={[action]}>
           <Panel.LEGACY.Section>
             <Stack>

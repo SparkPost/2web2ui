@@ -87,7 +87,7 @@ export const RenderedForm = props => {
   const qrData = `otpauth://totp/${username}?secret=${encodeURIComponent(secret)}&issuer=SparkPost`;
 
   return (
-    <Form onSubmit={e => e.preventDefault()}>
+    <Form onSubmit={e => e.preventDefault()} id="enable-tfa-form">
       <Panel.LEGACY.Section>
         <Stack space="600">
           <Grid>

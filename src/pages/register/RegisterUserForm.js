@@ -14,7 +14,7 @@ export class RegisterUserForm extends Component {
     const { handleSubmit, submitting } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="register-user-form">
         <Stack>
           <Field
             name="username"

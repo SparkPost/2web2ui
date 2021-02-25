@@ -48,7 +48,7 @@ export class ProviderForm extends React.Component {
     const { handleSubmit, submitting } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit(this.submit)}>
+      <Form onSubmit={handleSubmit(this.submit)} id="sso-provider-form">
         <Panel.LEGACY title="Provision Single Sign-On" accent>
           <Panel.LEGACY.Section>
             <Stack>

@@ -16,7 +16,7 @@ export class PasswordForm extends Component {
     const { pristine, submitting, handleSubmit, currentPassword, newPassword } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="update-password-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Field

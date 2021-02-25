@@ -24,7 +24,7 @@ export class SubaccountCreateForm extends Component {
     } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="subaccount-create-form">
         <Panel.LEGACY.Section>
           <Stack>
             <NameField disabled={submitting} />

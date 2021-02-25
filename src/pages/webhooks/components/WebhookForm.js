@@ -76,7 +76,7 @@ export class WebhookForm extends Component {
       : 'Update Webhook';
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id={newWebhook ? 'create-webhook-form' : 'update-webhook-form'}>
         <Panel.LEGACY.Section>
           <Stack>
             <NameField disabled={submitting} />

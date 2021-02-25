@@ -336,6 +336,7 @@ export class DatePickerClassComponent extends Component {
             <Button
               variant="primary"
               onClick={this.handleSubmit}
+              form="datepicker-manualentry-form"
               data-id="date-picker-custom-apply"
             >
               Apply

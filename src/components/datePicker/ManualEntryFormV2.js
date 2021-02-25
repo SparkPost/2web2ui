@@ -154,7 +154,7 @@ export function ManualEntryForm(props) {
   }
 
   return (
-    <Form onKeyDown={handleEnter} className={styles.DateFields}>
+    <Form onKeyDown={handleEnter} className={styles.DateFields} id="datepicker-manualentryv2-form">
       <Grid middle="xs">
         <Grid.Column>
           <TextField

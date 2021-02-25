@@ -40,7 +40,7 @@ export function DomainAlignmentModal(props) {
             Use of strict or relaxed alignment is considered best practice by many mailbox
             providers. Note, there is no inherent advantage to one over the other.
           </Text>
-          <Form onSubmit={handleSubmit(onSubmit)} id="domainAlignmentForm">
+          <Form onSubmit={handleSubmit(onSubmit)} id="domain-alignment-form">
             <Radio.Group label="Verify domain for bounce for strict alignment">
               <Radio
                 ref={register}
@@ -66,7 +66,7 @@ export function DomainAlignmentModal(props) {
         <Button
           variant="primary"
           type="submit"
-          form="domainAlignmentForm"
+          form="domain-alignment-form"
           loading={createPending}
           loadingLabel="Loading"
         >
