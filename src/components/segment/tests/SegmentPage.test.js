@@ -18,7 +18,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Segment', () => {
-  const getSubject = props => mount(<SegmentPage accessControlReady {...props} />);
+  const getSubject = props => mount(<SegmentPage {...props} />);
 
   beforeEach(() => {
     helpers.segmentPage = jest.fn();
