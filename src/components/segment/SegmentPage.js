@@ -8,7 +8,6 @@ export const SegmentPage = () => {
 
   // On URL path changes, inform segment via "PAGE" event
   useEffect(() => {
-    // NOTE: Only register listener after the user is authed
     const unlisten = history.listen(location => {
       if (prevPathname.current !== location.pathname) {
         prevPathname.current = location.pathname;
