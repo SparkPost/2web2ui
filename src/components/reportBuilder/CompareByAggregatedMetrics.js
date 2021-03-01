@@ -14,7 +14,7 @@ export default function CompareByAggregatedMetrics({
   date,
   reportOptions,
   showFiltersButton,
-  handleClickFiltersButton,
+  handleViewFiltersClick,
 }) {
   const { comparisons } = reportOptions;
 
@@ -59,7 +59,7 @@ export default function CompareByAggregatedMetrics({
         <Columns>
           {renderDate()}
           <Column width={4 / 5}>
-            <ViewFilterButton variant="minimal" onClick={handleClickFiltersButton}>
+            <ViewFilterButton variant="minimal" onClick={handleViewFiltersClick}>
               View Filters <FilterAlt size={20} />
             </ViewFilterButton>
           </Column>

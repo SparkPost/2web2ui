@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react';
-import { Button, Box, Grid, Text, Inline, LabelValue } from 'src/components/matchbox';
+import styled from 'styled-components';
 import { FilterAlt } from '@sparkpost/matchbox-icons';
+import { Button, Box, Grid, Text, Inline, LabelValue } from 'src/components/matchbox';
 import { Unit, LegendCircle } from 'src/components';
 import { getDeliverability } from 'src/helpers/api/metrics';
 import { getMetricsFromKeys, getQueryFromOptionsV2, transformData } from 'src/helpers/metrics';
 import { useSparkPostQuery } from 'src/hooks';
-
-import styled from 'styled-components';
 import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
 import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
 
@@ -18,7 +17,7 @@ const ViewFilterButton = styled(Button)`
 export default function AggregatedMetrics({
   date,
   showFiltersButton,
-  handleClickFiltersButton,
+  handleViewFiltersClick,
   reportOptions,
 }) {
   const { metrics } = reportOptions;
@@ -77,7 +76,7 @@ export default function AggregatedMetrics({
         {showFiltersButton && (
           <>
             <Grid.Column sm={3}>
-              <ViewFilterButton onClick={handleClickFiltersButton}>
+              <ViewFilterButton onClick={handleViewFiltersClick}>
                 View Filters <FilterAlt size={20} />
               </ViewFilterButton>
             </Grid.Column>
