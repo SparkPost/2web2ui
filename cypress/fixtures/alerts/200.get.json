@@ -71,6 +71,56 @@
       "filters": null,
       "threshold_evaluator": { "operator": "gt", "source": "raw", "value": 30 },
       "channels": { "emails": ["kefaef@afasfd.com", "afsasf@afssdf.com"] }
+    },
+    {
+      "id": 5,
+      "tenant": "spc",
+      "cid": 267881,
+      "any_subaccount": false,
+      "name": "Soft Bounce Rate - Marketing IP",
+      "metric": "soft_bounce_rate",
+      "muted": false,
+      "last_triggered": "2021-03-01T19:22:55.570Z",
+      "last_evaluated": "2021-03-01T22:22:59.728Z",
+      "subaccounts": [
+        -1
+      ],
+      "filters": [
+        {
+          "filter_type": "sending_domain",
+          "filter_values": [
+            "email.realself.com"
+          ]
+        },
+        {
+          "filter_type": "mailbox_provider",
+          "filter_values": [
+            "apple",
+            "gmail",
+            "microsoft"
+          ]
+        },
+        {
+          "filter_type": "sending_ip",
+          "filter_values": [
+            "147.253.210.157"
+          ]
+        }
+      ],
+      "threshold_evaluator": {
+        "operator": "gt",
+        "source": "raw",
+        "value": 1
+      },
+      "channels": {
+        "emails": [
+          "consumer.email@realself.com"
+        ],
+        "slack": {
+          "target": "https://hooks.slack.com/services/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"
+        }
+      }
     }
   ]
 }
+

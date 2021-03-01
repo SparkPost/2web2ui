@@ -1,0 +1,64 @@
+{
+  "results": [
+  {
+    "triggered_value": "9",
+    "first_fired": "2021-02-11T08:45:00.000Z",
+    "last_fired": "2021-02-11T09:00:00.000Z",
+    "status": "Resolved",
+    "filters": {
+      "subaccount_id": null,
+      "sending_domain": "email.realself.com",
+      "sending_ip": "147.253.210.157",
+      "mailbox_provider": "gmail"
+    }
+  },
+  {
+    "triggered_value": "6",
+    "first_fired": "2020-12-04T08:15:00.000Z",
+    "last_fired": "2020-12-04T08:15:00.000Z",
+    "status": "Resolved",
+    "filters": {
+      "subaccount_id": null,
+      "sending_domain": "email.realself.com",
+      "sending_ip": "147.253.210.157",
+      "mailbox_provider": "gmail"
+    }
+  },
+  {
+    "triggered_value": "3",
+    "first_fired": "2020-11-16T08:00:00.000Z",
+    "last_fired": "2020-11-16T08:00:00.000Z",
+    "status": "Resolved",
+    "filters": {
+      "subaccount_id": null,
+      "sending_domain": "email.realself.com",
+      "sending_ip": "147.253.210.157",
+      "mailbox_provider": "gmail"
+    }
+  },
+  {
+    "triggered_value": "7",
+    "first_fired": "2021-02-17T08:30:00.000Z",
+    "last_fired": "2021-02-17T08:30:00.000Z",
+    "status": "Resolved",
+    "filters": {
+      "subaccount_id": null,
+      "sending_domain": "email.realself.com",
+      "sending_ip": "147.253.210.157",
+      "mailbox_provider": "gmail"
+    }
+  },
+  {
+    "triggered_value": "10",
+    "first_fired": "2021-02-03T09:30:00.000Z",
+    "last_fired": "2021-02-03T09:30:00.000Z",
+    "status": "Resolved",
+    "filters": {
+      "subaccount_id": null,
+      "sending_domain": "email.realself.com",
+      "sending_ip": "147.253.210.157",
+      "mailbox_provider": "gmail"
+    }
+  }
+]
+}
