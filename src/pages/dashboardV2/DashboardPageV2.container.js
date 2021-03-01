@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ROLES } from 'src/constants';
+import { ROLES, ONBOARDING_STEP } from 'src/constants';
 import hasGrants from 'src/helpers/conditions/hasGrants';
 import { hasRole, isAdmin } from 'src/helpers/conditions/user';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
@@ -41,36 +41,38 @@ function mapStateToProps(state) {
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
   const isOnPrem = hasAccountOptionEnabled('allow_events_ingest')(state);
-
-  let onboarding = 'done';
+  /** @enum {string} */
+  let onboarding = ONBOARDING_STEP.PINNED_REPORT;
   if (!isOnPrem) {
     if (lastUsageDate === null && (isAnAdmin || isDev)) {
-      let addSendingDomainNeeded;
-      let verifySendingNeeded;
-      let createApiKeyNeeded;
+      const addSendingDomainNeeded = sendingDomains.length === 0;
+      const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
+      const createApiKeyNeeded = apiKeysForSending.length === 0;
 
       if (canManageSendingDomains) {
-        addSendingDomainNeeded = sendingDomains.length === 0;
-        if (addSendingDomainNeeded) onboarding = 'addSending';
+        if (addSendingDomainNeeded) onboarding = ONBOARDING_STEP.ADD_SENDING_DOMAIN;
 
-        verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
-        if (verifySendingNeeded) onboarding = 'verifySending';
+        if (verifySendingNeeded) onboarding = ONBOARDING_STEP.VERIFY_SENDING_DOMAIN;
       }
 
       // TODO: Has d12y + free sending, "no";
       // TODO: Has d12y + free sending, "yes";
-      if (!addSendingDomainNeeded && !verifySendingNeeded && canManageApiKeys) {
-        createApiKeyNeeded = !verifySendingNeeded && apiKeysForSending.length === 0;
-        if (createApiKeyNeeded) onboarding = 'createApiKey';
+      if (
+        !addSendingDomainNeeded &&
+        !verifySendingNeeded &&
+        canManageApiKeys &&
+        createApiKeyNeeded
+      ) {
+        onboarding = ONBOARDING_STEP.CREATE_API_KEY;
       }
 
       if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
-        onboarding = 'startSending';
+        onboarding = ONBOARDING_STEP.START_SENDING;
     } else if (lastUsageDate === null && (isTemplatesUser || isReportingUser)) {
-      onboarding = 'analyticsReportPromo';
+      onboarding = ONBOARDING_STEP.ANALYTICS_REPORT_PROMO;
     }
 
-    if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {
+    if (onboarding === 'verifySending' && sendingDomains.length === 1) {
       verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
     }
   }

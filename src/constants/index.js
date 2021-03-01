@@ -282,3 +282,16 @@ export const REPORT_BUILDER_FILTER_KEY_INVERTED_MAP = invert(REPORT_BUILDER_FILT
 export const UNLIMITED_PLAN_VOLUME = -1;
 
 export { ROLES, SUBACCOUNT_ROLES, ROLE_LABELS } from './users';
+/**
+ * Enum for onboarding steps.
+ * @readonly
+ * @enum {string}
+ */
+export const ONBOARDING_STEP = {
+  PINNED_REPORT: 'done',
+  ADD_SENDING_DOMAIN: 'addSending',
+  VERIFY_SENDING_DOMAIN: 'verifySending',
+  CREATE_API_KEY: 'createApiKey',
+  START_SENDING: 'startSending',
+  ANALYTICS_REPORT_PROMO: 'analyticsReportPromo',
+};
