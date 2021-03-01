@@ -5,25 +5,7 @@ import { LINKS } from 'src/constants';
 import { Banner, Button, ScreenReaderOnly, Select, Stack } from 'src/components/matchbox';
 import { ExternalLink } from 'src/components/links';
 import { useMultiEntry } from 'src/hooks';
-
-const COMPARE_BY_OPTIONS = [
-  {
-    label: 'is equal to',
-    value: 'eq',
-  },
-  {
-    label: 'is not equal to',
-    value: 'notEq',
-  },
-  {
-    label: 'contains',
-    value: 'like',
-  },
-  {
-    label: 'does not contain',
-    value: 'notLike',
-  },
-];
+import { COMPARE_BY_OPTIONS } from '../../constants';
 
 const StyledRemoveButton = styled(Button)`
   position: absolute;

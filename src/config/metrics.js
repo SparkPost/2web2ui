@@ -649,10 +649,13 @@ export const REJECTIONS_BY_DOMAIN_METRIC_KEYS = ['count_clicked', 'count_raw_cli
 
 export const BOUNCE_BY_DOMAIN_METRIC_KEYS = ['count_bounce'];
 
-export const map = list.reduce((accumulator = {}, metric) => ({
-  ...accumulator,
-  [metric.key]: metric,
-}));
+export const map = list.reduce(
+  (accumulator, metric) => ({
+    ...accumulator,
+    [metric.key]: metric,
+  }),
+  {},
+);
 
 const selectableMetrics = list.filter(
   metric => (metric.inSummary || metric.inReportBuilder) && metric.category && !metric.deprecated,

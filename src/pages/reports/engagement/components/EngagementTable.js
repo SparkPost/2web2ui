@@ -5,7 +5,7 @@ import { InfoOutline } from '@sparkpost/matchbox-icons';
 import { Box, Panel, Tooltip } from 'src/components/matchbox';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Empty, PanelLoading, TableCollection } from 'src/components';
-import { map as metrics } from 'src/config/metrics';
+import { map as METRICS_MAP } from 'src/config/metrics';
 import { formatNumber, formatPercent } from 'src/helpers/units';
 import { safeRate } from 'src/helpers/math';
 
@@ -24,7 +24,7 @@ const COLUMNS = [
   {
     key: 'count_raw_clicked_approx',
     label: (
-      <HeaderTooltip tooltipContent={metrics.count_raw_clicked_approx.description}>
+      <HeaderTooltip tooltipContent={METRICS_MAP.count_raw_clicked_approx.description}>
         Unique Clicks
       </HeaderTooltip>
     ),
@@ -33,7 +33,9 @@ const COLUMNS = [
   },
   {
     key: 'count_clicked',
-    label: <HeaderTooltip tooltipContent={metrics.count_clicked.description}>Clicks</HeaderTooltip>,
+    label: (
+      <HeaderTooltip tooltipContent={METRICS_MAP.count_clicked.description}>Clicks</HeaderTooltip>
+    ),
     sortKey: 'count_clicked',
     width: '20%',
   },

@@ -15,6 +15,7 @@ const UTC_OPTION = {
   label: 'UTC',
 };
 
+//Tried to move into global constants but broke a lot of unit tests
 export const options = moment.tz
   .names()
   // Filter out non-standard timezones, inverse timezones (ETC/UTC-7 is equivalent to UTC+7)
@@ -32,6 +33,14 @@ export const options = moment.tz
   }));
 
 options.unshift(UTC_OPTION);
+
+export const TIMEZONE_MAP = options.reduce(
+  (accumulator, timezone) => ({
+    ...accumulator,
+    [timezone.value]: true,
+  }),
+  {},
+);
 
 export const TimezoneTypeahead = props => {
   const {

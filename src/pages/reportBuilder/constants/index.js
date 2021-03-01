@@ -174,4 +174,23 @@ export const FILTER_OPTIONS = [
   },
 ];
 
+export const COMPARE_BY_OPTIONS = [
+  {
+    label: 'is equal to',
+    value: 'eq',
+  },
+  {
+    label: 'is not equal to',
+    value: 'notEq',
+  },
+  {
+    label: 'contains',
+    value: 'like',
+  },
+  {
+    label: 'does not contain',
+    value: 'notLike',
+  },
+];
+
 export const TAB_LOADING_HEIGHT = '300px';

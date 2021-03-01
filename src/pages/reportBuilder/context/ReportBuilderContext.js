@@ -1,18 +1,25 @@
 import React, { useCallback, useContext, useMemo, useReducer, createContext } from 'react';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { getRelativeDates, formatToTimezone } from 'src/helpers/date';
-import { getMetricsFromKeys, getRollupPrecision as getPrecision } from 'src/helpers/metrics';
-import { getLocalTimezone } from 'src/helpers/date';
+import { connect, useDispatch } from 'react-redux';
+import { getLocalTimezone, getRelativeDates, formatToTimezone } from 'src/helpers/date';
+import {
+  getMetricsFromKeys,
+  getRollupPrecision as getPrecision,
+  getValidDateRange,
+} from 'src/helpers/metrics';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';
+import { map as METRICS_MAP } from 'src/config/metrics';
+import { TIMEZONE_MAP } from 'src/components/typeahead/TimezoneTypeahead';
 import {
   getIterableFormattedGroupings,
   getApiFormattedGroupings,
   getFilterTypeKey,
   hydrateFilters,
   replaceComparisonFilterKey,
+  getValidFilters,
 } from '../helpers';
+import { showAlert } from 'src/actions/globalAlert';
 
 const defaultFormat = "yyyy-MM-dd'T'HH:mm:ssxxx";
 
@@ -40,26 +47,67 @@ const reducer = (state, action) => {
     }
     case 'UPDATE_REPORT_OPTIONS': {
       const { payload, meta } = action;
-      const { subaccounts } = meta;
+      const { subaccounts, dispatchAlert } = meta;
       let update = { ...state, ...payload };
 
       if (!update.timezone) {
         update.timezone = getLocalTimezone();
       }
 
+      if (!TIMEZONE_MAP[update.timezone]) {
+        dispatchAlert({
+          type: 'error',
+          message: `Invalid Timezone`,
+        });
+        update.timezone = getLocalTimezone();
+      }
+
       if (!update.metrics) {
         update.metrics = config.reportBuilder.defaultMetrics;
+      } else {
+        const filteredMetrics = update.metrics.filter(metric => METRICS_MAP[metric]);
+        if (filteredMetrics.length < update.metrics.length) {
+          dispatchAlert({
+            type: 'error',
+            message: `Invalid Metric`,
+          });
+        }
+        update.metrics = filteredMetrics;
       }
 
       if (payload.filters) {
-        update.filters = hydrateFilters(payload.filters, { subaccounts });
+        const rawFilters = hydrateFilters(payload.filters, { subaccounts });
+        const validatedFilters = getValidFilters(rawFilters);
+
+        if (validatedFilters.length !== rawFilters.length) {
+          dispatchAlert({
+            type: 'error',
+            message: `Invalid Filter`,
+          });
+        }
+        update.filters = validatedFilters;
       }
+      const updatePrecision = update.precision || 'hour'; // Default to hour since it's the recommended rollup precision for 7 days
 
       if (!update.relativeRange) {
         update.relativeRange = '7days';
+      } else {
+        try {
+          getValidDateRange({
+            from: moment(update.from),
+            to: moment(update.to),
+            preventFuture: true,
+            precision: updatePrecision,
+            roundToPrecision: true,
+          });
+        } catch (e) {
+          dispatchAlert({
+            type: 'error',
+            message: `Invalid Date`,
+          });
+          update.relativeRange = '7days';
+        }
       }
-
-      const updatePrecision = update.precision || 'hour'; // Default to hour since it's the recommended rollup precision for 7 days
 
       if (update.relativeRange !== 'custom') {
         const { from, to } = getRelativeDates(update.relativeRange, {
@@ -79,9 +127,17 @@ const reducer = (state, action) => {
         update = { ...update, precision };
       }
 
-      if (update.comparisons) {
-        //Changes the filter type from the label to the key
-        update.comparisons = replaceComparisonFilterKey(update.comparisons);
+      if (update.comparisons.length > 0) {
+        //Changes the filter type from the label to the key and validates the comparison
+        const validComparisons = replaceComparisonFilterKey(update.comparisons);
+        const hasEnoughToCompare = validComparisons.length > 1;
+        if (validComparisons.length !== update.comparisons.length || !hasEnoughToCompare) {
+          dispatchAlert({
+            type: 'error',
+            message: `Invalid Comparison`,
+          });
+        }
+        update.comparisons = hasEnoughToCompare ? validComparisons : [];
       }
 
       return {
@@ -191,16 +247,17 @@ const getSelectors = reportOptions => {
 const ReportOptionsContextProvider = props => {
   const { subaccounts } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const dispatchGlobal = useDispatch();
+  const dispatchAlert = useCallback(props => dispatchGlobal(showAlert(props)), [dispatchGlobal]);
   const refreshReportOptions = useCallback(
     payload => {
       return dispatch({
         type: 'UPDATE_REPORT_OPTIONS',
         payload,
-        meta: { subaccounts },
+        meta: { subaccounts, dispatchAlert },
       });
     },
-    [dispatch, subaccounts],
+    [dispatch, subaccounts, dispatchAlert],
   );
 
   const addFilters = useCallback(

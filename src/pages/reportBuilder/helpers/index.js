@@ -3,9 +3,11 @@ import {
   REPORT_BUILDER_FILTER_KEY_MAP,
   REPORT_BUILDER_FILTER_KEY_INVERTED_MAP,
 } from 'src/constants';
+import { COMPARE_BY_OPTIONS } from '../constants';
 
 /**
  * Returns the filter key for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
+ * This is needed for backwards compatibility
  *
  * @param {string} key - either the key or label value for the filters map
  */
@@ -392,13 +394,84 @@ export function getHasDuplicateFilters(filters) {
 }
 
 /**
+ * Hashmap of valid filter types
+ */
+const VALID_FILTERS_KEY_MAP = Object.values(REPORT_BUILDER_FILTER_KEY_MAP || {}).reduce(
+  (map, key) => {
+    //The `|| {}` is needed to fix some breaking unit tests.
+    return map.set(key, true);
+  },
+  new Map(),
+);
+/**
+ * Hashmap of valid comparator values
+ */
+const VALID_COMPARE_BY_LOWERCASE_MAP = COMPARE_BY_OPTIONS.reduce(
+  (accumulator, { value }) => accumulator.set(value.toLowerCase(), true),
+  new Map(),
+);
+/**
+ * Returns a new array of only valid filters. It only removes at the top level. If any part of
+ * the filter is invalid, it will remove the entire top level filter.
+ *
+ * @param {array} filters - iterable array of filter objects derived from `hydrateFilters`
+ *
+ * @returns {array} - Array of only valid filters.
+ */
+export function getValidFilters(filters) {
+  //remaps top level comparators to true/false
+  //EX: [{AND:{...}},{OR:{...}}] => [true ,false] where true = valid filter and false = invalid filter
+  const validFiltersArray = filters.map(grouping => {
+    //Checks that every comparator is formatted correctly
+    if (typeof grouping !== 'object' || Object.keys(grouping).length < 1) {
+      return false;
+    }
+    const groupingType = Object.keys(grouping)[0];
+    //Checks that the top level comparison conjugate is AND/OR
+    if (groupingType.toUpperCase() !== 'AND' && groupingType.toUpperCase() !== 'OR') {
+      return false;
+    }
+
+    //Checks that every filter is formatted correctly
+    if (
+      typeof grouping[groupingType] !== 'object' ||
+      Object.keys(grouping[groupingType]).length < 1
+    ) {
+      return false;
+    }
+
+    //Checks that every filter is valid
+    const filterType = grouping[groupingType];
+    return Object.keys(filterType).every(filter => {
+      if (!VALID_FILTERS_KEY_MAP.has(filter) || typeof filterType[filter] !== 'object') {
+        return false;
+      }
+      const comparators = filterType[filter];
+      //Checks that every comparator is allowed
+      return Object.keys(comparators).every(comparator => {
+        return (
+          VALID_COMPARE_BY_LOWERCASE_MAP.has(comparator.toLowerCase()) &&
+          Array.isArray(comparators[comparator])
+        );
+      });
+    });
+  });
+  //Re-maps the truthy filters to the actual filters and removes all the falsy ones.
+  return validFiltersArray
+    .map((isValidFilter, index) => (isValidFilter ? filters[index] : false))
+    .filter(Boolean);
+}
+
+/**
  * Replaces the key of comparisons with the key value rather than label value
  *
  * @param {array[Object]} comparisons - comparison object
  *
  */
 export function replaceComparisonFilterKey(comparisons) {
-  return comparisons.map(comparison => {
-    return { ...comparison, type: getFilterTypeKey(comparison.type) };
-  });
+  return comparisons
+    .map(comparison => {
+      return { ...comparison, type: getFilterTypeKey(comparison.type) };
+    })
+    .filter(({ type }) => Boolean(type));
 }
