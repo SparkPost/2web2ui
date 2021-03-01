@@ -208,7 +208,11 @@ export function Charts(props) {
     <Box>
       <Stack>
         {charts.map((chart, index) => (
-          <Box key={`chart-${index}`} onMouseOver={() => setActiveChart(`${id}_chart_${index}`)}>
+          <Box
+            key={`chart-${index}`}
+            onMouseOver={() => setActiveChart(`${id}_chart_${index}`)}
+            data-id="chart-box"
+          >
             <LineChart
               height={height}
               syncId="summaryChart"

@@ -6,6 +6,8 @@ import { useSparkPostQuery } from 'src/hooks';
 import { ChartGroups, Charts } from '../Charts';
 jest.mock('src/hooks/api/useSparkPostQuery');
 
+const CHART_SELECTOR = '.recharts-responsive-container';
+
 const TIME_SERIES_FIXTURE = [
   {
     count_sent: 10077,
@@ -32,6 +34,17 @@ const TIME_SERIES_FIXTURE = [
 
 const DEFAULT_METRICS = ['count_sent', 'count_accepted', 'count_bounce'];
 
+const DEFAULT_COMPARISONS = [
+  {
+    type: 'domains',
+    value: 'gmail.com',
+  },
+  {
+    type: 'domains',
+    value: 'yahoo.ca',
+  },
+];
+
 function mockQuery({ status, data = [], refetch = jest.fn }) {
   return useSparkPostQuery.mockReturnValue({
     status,
@@ -53,11 +66,17 @@ describe('Analytics Report chart components', () => {
             id="my-mock-chart"
             activeChart=""
             setActiveChart={jest.fn}
-            small={false}
             {...props}
           />
         </TestApp>,
       );
+
+    it('renders the loading state when a request is idle', () => {
+      mockQuery({ status: 'idle' });
+      subject();
+
+      expect(screen.getByTestId('loading')).toBeInTheDocument();
+    });
 
     it('renders the loading state when a request is pending', () => {
       mockQuery({ status: 'loading' });
@@ -83,20 +102,63 @@ describe('Analytics Report chart components', () => {
         data: TIME_SERIES_FIXTURE,
       });
       subject();
-      screen.debug();
-      expect(document.querySelector('.recharts-responsive-container')).toBeInTheDocument();
+
+      expect(document.querySelector(CHART_SELECTOR)).toBeInTheDocument();
 
       // TODO: Once <ScreenReaderOnly /> tables are added to this component, add supporting tests to check for chart data
+    });
+
+    it('invokes the passed in `setActiveChart` function when hovering over the chart container', () => {
+      const mockSetActiveChart = jest.fn();
+      const chartId = 'my-id';
+      mockQuery({
+        status: 'success',
+        data: TIME_SERIES_FIXTURE,
+      });
+      subject({ setActiveChart: mockSetActiveChart, id: chartId });
+      const chartBox = screen.getByTestId('chart-box');
+
+      userEvent.hover(chartBox);
+      expect(mockSetActiveChart).toHaveBeenCalledWith(`${chartId}_chart_0`);
     });
   });
 
   describe('ChartGroups', () => {
-    // eslint-disable-next-line
     const subject = props =>
       render(
         <TestApp>
-          <ChartGroups small={false} reportOptions={{}} {...props} />
+          <ChartGroups
+            reportOptions={{
+              comparisons: DEFAULT_COMPARISONS,
+              metrics: DEFAULT_METRICS,
+              filters: [],
+            }}
+            {...props}
+          />
         </TestApp>,
       );
+
+    it('renders a single chart if there are no active comparisons', () => {
+      mockQuery({
+        status: 'success',
+        data: TIME_SERIES_FIXTURE,
+      });
+      subject({
+        reportOptions: {
+          metrics: DEFAULT_METRICS,
+          comparisons: [],
+        },
+      });
+
+      expect(document.querySelector(CHART_SELECTOR)).toBeInTheDocument();
+    });
+
+    it('renders a chart for each active comparison', () => {
+      subject();
+
+      expect(screen.getByRole('heading', { name: 'gmail.com' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'yahoo.ca' })).toBeInTheDocument();
+      expect(document.querySelectorAll(CHART_SELECTOR)).toHaveLength(2);
+    });
   });
 });
