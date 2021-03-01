@@ -71,7 +71,7 @@ function mapStateToProps(state) {
       onboarding = ONBOARDING_STEP.ANALYTICS_REPORT_PROMO;
     }
 
-    if (onboarding === 'verifySending' && sendingDomains.length === 1) {
+    if (onboarding === ONBOARDING_STEP.VERIFY_SENDING_DOMAIN && sendingDomains.length === 1) {
       verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
     }
   }
