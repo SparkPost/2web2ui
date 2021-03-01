@@ -75,7 +75,6 @@
     "history": "^4.6.1",
     "isbot": "^3.0.23",
     "js-cookie": "^2.1.4",
-    "jsdoc": "^3.6.6",
     "localforage": "^1.5.3",
     "lodash": "^4.17.19",
     "moment": "^2.20.1",

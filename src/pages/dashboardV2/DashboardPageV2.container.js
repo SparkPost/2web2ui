@@ -41,7 +41,6 @@ function mapStateToProps(state) {
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
   const isOnPrem = hasAccountOptionEnabled('allow_events_ingest')(state);
-  /** @enum {string} */
   let onboarding = ONBOARDING_STEP.PINNED_REPORT;
   if (!isOnPrem) {
     if (lastUsageDate === null && (isAnAdmin || isDev)) {
