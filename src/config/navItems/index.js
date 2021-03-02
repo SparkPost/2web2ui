@@ -185,11 +185,6 @@ const sendingDomains = {
   divider: true,
 };
 
-const trackingDomains = {
-  label: 'Tracking Domains',
-  to: '/account/tracking-domains',
-};
-
 const subaccounts = {
   label: 'Subaccounts',
   to: '/account/subaccounts',
@@ -217,7 +212,6 @@ const OGConfiguration = {
     SMTPSettings,
     signalsIntegration,
     sendingDomains,
-    trackingDomains,
     subaccounts,
   ],
 };

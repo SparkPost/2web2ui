@@ -23,7 +23,6 @@ export { default as suppressions } from './suppressions';
 export { default as subaccounts } from './subaccounts';
 export { default as templates } from './templates';
 export { default as users } from './users';
-export { default as trackingDomains } from './trackingDomains';
 export { default as webhooks } from './webhooks';
 export { default as ipPools } from './ipPools';
 export { default as SSOPage } from './sso/SSOPage';
