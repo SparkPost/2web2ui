@@ -33,7 +33,7 @@ import { usePinnedReport } from 'src/hooks';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
-import { LINKS } from 'src/constants';
+import { LINKS, ONBOARDING_STEP } from 'src/constants';
 import { useModal } from 'src/hooks';
 import ChangeReportModal from './components/ChangeReportModal';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
@@ -71,7 +71,7 @@ export default function DashboardPageV2() {
   const history = useHistory();
 
   useEffect(() => {
-    if (onboarding !== 'done') {
+    if (onboarding !== ONBOARDING_STEP.PINNED_REPORT) {
       segmentTrack(SEGMENT_EVENTS.DASHBOARD_ONBOARDING, {
         onboarding,
       });
@@ -153,7 +153,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {onboarding === 'done' && (
+              {onboarding === ONBOARDING_STEP.PINNED_REPORT && (
                 <Dashboard.Panel>
                   <Panel.Header>
                     <Panel.Headline>{pinnedReport.name}</Panel.Headline>
@@ -187,7 +187,7 @@ export default function DashboardPageV2() {
                   )}
                 </Dashboard.Panel>
               )}
-              {onboarding === 'analyticsReportPromo' && (
+              {onboarding === ONBOARDING_STEP.ANALYTICS_REPORT_PROMO && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
@@ -218,7 +218,7 @@ export default function DashboardPageV2() {
                 </Dashboard.Panel>
               )}
 
-              {onboarding === 'addSending' && (
+              {onboarding === ONBOARDING_STEP.ADD_SENDING_DOMAIN && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
@@ -253,7 +253,7 @@ export default function DashboardPageV2() {
                 </Dashboard.Panel>
               )}
 
-              {onboarding === 'verifySending' && (
+              {onboarding === ONBOARDING_STEP.VERIFY_SENDING_DOMAIN && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
@@ -291,7 +291,7 @@ export default function DashboardPageV2() {
                 </Dashboard.Panel>
               )}
 
-              {onboarding === 'createApiKey' && (
+              {onboarding === ONBOARDING_STEP.CREATE_API_KEY && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
@@ -332,7 +332,7 @@ export default function DashboardPageV2() {
                 </Dashboard.Panel>
               )}
 
-              {onboarding === 'startSending' && (
+              {onboarding === ONBOARDING_STEP.START_SENDING && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
