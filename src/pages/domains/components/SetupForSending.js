@@ -106,7 +106,7 @@ export default function SetupForSending({ domain, isSectionVisible }) {
                     record for the Hostname and DKIM value of this domain.
                   </TranslatableText>
                 </p>
-                <Panel.Action onClick={onSubmit}>
+                <Panel.Action type="submit">
                   <TranslatableText>Re-Verify Domain </TranslatableText>
                   <Autorenew size={18} />
                 </Panel.Action>
