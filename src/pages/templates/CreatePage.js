@@ -54,7 +54,7 @@ export default class CreatePage extends Component {
 
     return (
       <Page breadcrumbAction={backAction} title="Create Template">
-        <Form onSubmit={handleSubmit(this.handleCreate)}>
+        <Form onSubmit={handleSubmit(this.handleCreate)} id="templates-create-form">
           <Panel.LEGACY>
             <Panel.LEGACY.Section>
               <CreateForm formName={formName} />
