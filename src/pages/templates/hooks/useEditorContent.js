@@ -5,13 +5,13 @@ const useEditorContent = ({ draft = {}, published = {}, isPublishedMode }) => {
   const [state, setState] = useState({});
   const [hasSaved, setHasSaved] = useState(true);
 
-  const setContent = (nextState) => {
+  const setContent = nextState => {
     if (isPublishedMode) {
       return; // do not allow updating published content
     }
 
     // Hide the saved indicator if content has changed
-    if (!isPublishedMode && (state !== nextState)) {
+    if (state !== nextState) {
       setHasSaved(false);
     }
 
@@ -35,7 +35,7 @@ const useEditorContent = ({ draft = {}, published = {}, isPublishedMode }) => {
     content: state,
     setContent,
     setHasSaved,
-    hasSaved
+    hasSaved,
   };
 };
 
