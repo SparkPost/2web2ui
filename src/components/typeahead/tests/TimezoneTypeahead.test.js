@@ -14,9 +14,10 @@ describe('Timezone Typeahead Item', () => {
   beforeEach(() => {
     moment.tz.setDefault('America/New_York');
   });
+
   // This includes a long list of options, but it's actually helpful to see a difference
   // when/if we update moment/moment-timezone which options might change
-  it.skip('should render the timezone list properly', () => {
+  it('should render the timezone list properly', () => {
     const wrapper = subject();
     expect(wrapper.find('Typeahead').prop('results')).toMatchSnapshot();
   });

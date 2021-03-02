@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Typeahead } from './Typeahead';
-import moment from 'moment-timezone';
-import styles from './Typeahead.module.scss';
 import { AccessTime } from '@sparkpost/matchbox-icons';
+import { convertDateToTime, listTimeZones, findTimeZone, getUTCOffset } from 'timezone-support';
+import { formatZonedTime } from 'timezone-support/dist/parse-format';
+import { Typeahead } from './Typeahead';
+import styles from './Typeahead.module.scss';
 
 const Item = ({ label }) => (
   <div className={styles.Item}>
@@ -15,20 +16,39 @@ const UTC_OPTION = {
   label: 'UTC',
 };
 
-//Tried to move into global constants but broke a lot of unit tests
-export const options = moment.tz
-  .names()
+const timeZones = listTimeZones();
+const now = new Date();
+
+// Tried to move into global constants but broke a lot of unit tests
+export const options = timeZones
   // Filter out non-standard timezones, inverse timezones (ETC/UTC-7 is equivalent to UTC+7)
-  .filter(tz => tz.indexOf('/') >= 0 && tz.indexOf('Etc/') === -1)
-  .map(tz => ({
-    name: tz,
-    offset: moment.tz(tz).utcOffset(),
-  }))
+  .filter(
+    tz =>
+      tz.indexOf('/') >= 0 &&
+      tz.indexOf('Etc/') === -1 &&
+      getUTCOffset(now, findTimeZone(tz)).offset !== 0,
+  )
+  .map(tz => {
+    const offsetObj = getUTCOffset(now, findTimeZone(tz));
+
+    return {
+      name: tz,
+      offset: offsetObj.offset,
+    };
+  })
+  // Sort by amount of UTC offset
   .sort((a, b) => a.offset - b.offset)
-  .map(tz => ({
-    value: tz.name,
-    label: `(UTC${tz.offset ? moment.tz(tz.name).format('Z') : ''}) ${tz.name.replace(/_/g, ' ')}`,
-  }));
+  // Reformat the timezone label
+  .map(tz => {
+    const timeZone = findTimeZone(tz.name);
+    const timeObj = convertDateToTime(now, timeZone);
+    const formattedOffset = formatZonedTime(timeObj, 'Z');
+
+    return {
+      value: tz.name,
+      label: `(UTC${tz.offset !== 0 ? formattedOffset : ''}) ${tz.name.replace(/_/g, ' ')}`,
+    };
+  });
 
 options.unshift(UTC_OPTION);
 
