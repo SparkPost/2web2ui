@@ -45,13 +45,14 @@ function mapStateToProps(state) {
   if (!isOnPrem) {
     if (lastUsageDate === null && (isAnAdmin || isDev)) {
       const addSendingDomainNeeded = sendingDomains.length === 0;
-      const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
+      const verifySendingNeeded = verifiedDomains.length === 0;
       const createApiKeyNeeded = apiKeysForSending.length === 0;
 
       if (canManageSendingDomains) {
         if (addSendingDomainNeeded) onboarding = ONBOARDING_STEP.ADD_SENDING_DOMAIN;
 
-        if (verifySendingNeeded) onboarding = ONBOARDING_STEP.VERIFY_SENDING_DOMAIN;
+        if (!addSendingDomainNeeded && verifySendingNeeded)
+          onboarding = ONBOARDING_STEP.VERIFY_SENDING_DOMAIN;
       }
 
       // TODO: Has d12y + free sending, "no";
