@@ -167,12 +167,10 @@ export function SpamTrapPage(props) {
         <Grid.Column sm={12} md={5} mdOffset={0}>
           {!loading && !chartPanel && (
             <Box as={Panel.LEGACY}>
-              {!chartPanel && (
-                <SpamTrapActions
-                  percent={selectedSpamTrapHits.relative_trap_hits}
-                  date={selectedDate}
-                />
-              )}
+              <SpamTrapActions
+                percent={selectedSpamTrapHits.relative_trap_hits}
+                date={selectedDate}
+              />
             </Box>
           )}
         </Grid.Column>

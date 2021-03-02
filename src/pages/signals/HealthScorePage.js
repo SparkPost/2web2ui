@@ -209,7 +209,7 @@ export class HealthScorePage extends Component {
                       hideLine
                       tooltipContent={HEALTH_SCORE_COMPONENT_INFO}
                     />
-                    {!loading && selectedWeightsAreEmpty && (
+                    {selectedWeightsAreEmpty && (
                       <Empty message="Insufficient data to populate this chart" />
                     )}
                     {!panelContent && !selectedWeightsAreEmpty && (
