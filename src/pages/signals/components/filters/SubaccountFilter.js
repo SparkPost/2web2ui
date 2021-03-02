@@ -48,11 +48,11 @@ export class SubaccountFilterClassComponent extends React.Component {
   };
 
   handleSearchToggle = () => {
-    this.setState({ isSearchOpen: !this.state.isSearchOpen });
+    this.setState(prevState => ({ isSearchOpen: !prevState.isSearchOpen }));
   };
 
   handleVisibilityToggle = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
   containsTarget = (ref, e) => Boolean(ref && ref.contains(e.target));
