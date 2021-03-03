@@ -17,6 +17,8 @@ const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
 /**
  * @deprecated
+ * @name getQueryFromOptions
+ * @description - Generates query parameters from the passed in Signals Analytics report state. This function was used in old Signals Analytics features though is not in use following the rollout of the Hibana them
  */
 export function getQueryFromOptions({
   from,
@@ -54,15 +56,28 @@ export function getQueryFromOptions({
 // TODO: Replace original once OG theme is removed
 /**
  * @name getQueryFromOptionsV2
- * @description Converts various report options into API ready content
- * @param {Date} from
- * @param {Date} from
- * @param {string} timezone
- * @param {string} precision
- * @param {Array[Object]} metrics - array of metrics objects (not just the keys)
- * @param {Array[Object]} filters
- * @param {Array} match
- * @param {Number} count
+ * @description Convert's report state options to valid API parameter values for
+ *
+ * @param {Date} from The beginning of the user's desired date range for a report.
+ * @param {Date} to The end of the user's desired date range for a report.
+ * @param {string} timezone The user's selected timezone as an [IANA timezone string](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+ * @param {string} precision The precision of returned timeseries data selected by the user, e.g. '7days', 'custom',
+ * @param {Array[metric]} metrics array of metrics objects with relevant properties (not just string keys)
+ *   @param {string} metric.category metric category used to render metrics within several groups
+ *   @param {string} metric.key unique identifier for the metric, e.g., `count_targeted`. [Maps to the API](https://developers.sparkpost.com/api/metrics/#header-terminology)
+ *   @param {string} metric.description unique description for each metric
+ *   @param {string} metric.label human-readable metric label used for rendering in the UI
+ *   @param {string} metric.name ⚠️ Duplicate: appears to match the value for metric.key
+ *   @param {string} metric.type whether the metric is a 'total' or 'percentage' - 'percentage' metrics are typically calculated in the UI
+ *   @param {string} metric.computeKeys metric keys used to calculate the metric value when the metric is 'type' 'percentage'
+ *   @param {string} metric.compute function used to derive the calculated metric value from the relevant 'computeKeys'
+ *   @param {string} metric.unit metric unit of measurement. 'number' | 'bytes' | 'percent'
+ *   @param {boolean} metric.inSummary ⚠️ Deprecated: Used to determine metrics rendered within a particular modal that is slated for removal from the app
+ * @param {Array[filter]} filters array of filter objects with relevant properties
+ * @param {Array} match string by which to filter returned results from [metrics list endpoints](https://developers.sparkpost.com/api/metrics/#metrics-lists)
+ * @param {Number} limit maximum number of results to return from [metrics list endpoints](https://developers.sparkpost.com/api/metrics/#metrics-lists)
+ *
+ * @returns {Object} options returns structured object of [query string parameters](https://developers.sparkpost.com/api/metrics/#metrics-get-time-series-metrics) as required by metrics endpoints
  */
 export function getQueryFromOptionsV2({
   from,
@@ -139,9 +154,16 @@ export function getPrecision({ from, to = moment() }) {
 }
 
 /**
- * Calculates the precision value for metrics Rollup. If the precision given
+ * @name getRollupPrecision
+ * @description Calculates the precision value for metrics Rollup. If the precision given
  * is still within range, do not change precision. If the possible precision options
  * do not include the current precision, get the recommended precision.
+ *
+ * @param {Date} from The beginning of the user's desired date range for a report.
+ * @param {Date} to The end of the user's desired date range for a report.
+ * @param {string} precision The precision of returned timeseries data selected by the user, e.g. '7days', 'custom',
+ *
+ * @returns {string} the precision of timeseries data to be returned - see the [API docs for examples](https://developers.sparkpost.com/api/metrics/#metrics-get-time-series-metrics)
  */
 export function getRollupPrecision({ from, to = moment(), precision }) {
   if (!precision) {
@@ -154,18 +176,26 @@ export function getRollupPrecision({ from, to = moment(), precision }) {
   }
   return getRecommendedRollupPrecision(from, to);
 }
+
 export function getRecommendedRollupPrecision(from, to = moment()) {
   const diff = moment(to).diff(moment(from), 'minutes');
   return rollupPrecisionMap.find(({ recommended }) => diff <= recommended).value;
 }
 
 /**
- * Creates an array of possible precision options for a time span
+ * @name getPrecisionOptions
+ * @description Creates an array of possible precision options for a time span
+ *
+ * @param {Date} from The beginning of the user's desired date range for a report.
+ * @param {Date} to The end of the user's desired date range for a report.
+ *
+ * @returns {string} the precision of timeseries data to be returned - see the [API docs for examples](https://developers.sparkpost.com/api/metrics/#metrics-get-time-series-metrics)
  */
 export function getPrecisionOptions(from, to = moment()) {
   const diff = to.diff(from, 'minutes');
   return _getPrecisionOptions(diff);
 }
+
 const _getPrecisionOptions = _.memoize(diff => {
   const result = rollupPrecisionMap
     .filter(({ min, max }) => diff >= min && diff <= max)
@@ -204,17 +234,28 @@ export function getPrecisionType(precision) {
 
 // We are forced to use UTC for any precision greater or equal to 'day'
 const FORCED_UTC_ROLLUP_PRECISIONS = ['day', 'week', 'month'];
+
+/**
+ * @name isForcedUTCRollupPrecision
+ * @description determines whether the passed in precision means a UTC date must be used as the timezone for metrics API requests
+ *
+ * @param {string} precision - the user's selected date precision
+ *
+ * @returns {boolean}
+ */
 export function isForcedUTCRollupPrecision(precision) {
   return FORCED_UTC_ROLLUP_PRECISIONS.includes(precision);
 }
 
 /**
- * Round 'from' and 'to' to nearest precision
+ * @name roundBoundaries
+ * @description Round 'from' and 'to' to nearest precision
  *
- * @param fromInput
- * @param toInput
- * @param precision,
- * @return {{to: *|moment.Moment, from: *|moment.Moment}}
+ * @param {Date} from The beginning of the user's desired date range for a report.
+ * @param {Date} to The end of the user's desired date range for a report.
+ * @param {string} precision The precision of returned timeseries data
+ *
+ * @returns {{to: *|moment.Moment, from: *|moment.Moment}}
  */
 export function roundBoundaries({
   from: fromInput,
@@ -267,13 +308,17 @@ function ceilMoment(time, roundInt = 1, precision = 'minutes') {
 }
 
 /**
- * Returns verified from and to dates; throws an error if date range is invalid - catch this to reset to last state
+ * @name getValidDateRange
+ * @description returns verified from and to dates; throws an error if date range is invalid - catch this to reset to last state
  *
- * @param from
- * @param to
- * @param now
- * @param roundToPrecision
- * @return {*}
+ * @param {Date} from The beginning of the user's desired date range for a report.
+ * @param {Date} to The end of the user's desired date range for a report.
+ * @param {Date} now the current date
+ * @param {boolean} roundToPrecision whether to round the returned from and to dates according to the passed in precision
+ * @param {boolean} preventFuture whether or not to prevent future dates from returning
+ * @param {string} precision The precision of returned timeseries data selected by the user, e.g. '7days', 'custom',
+ *
+ * @returns {from, to} returns a valid from and to date range
  */
 export function getValidDateRange({
   from,
@@ -293,6 +338,7 @@ export function getValidDateRange({
     if (!roundToPrecision) {
       return { from, to };
     }
+
     // Use the user's rounded 'to' input if it's less than or equal to 'now' rounded up to the nearest precision,
     // otherwise use the valid range and precision of floor(from) to ceil(now).
     // This is necessary because the precision could change between the user's invalid range, and a valid range.
@@ -335,6 +381,14 @@ export function _getMetricsFromKeys(keys = []) {
   });
 }
 
+/**
+ * @name getMetricFromKey
+ * @description Retrieves an array of metrics objects from the passed in array of metric string keys
+ *
+ * @param keys array of metric string
+ *
+ * @returns {Array[metric]} returns an array of metrics objects derived from metrics configuration, formatted for use in the UI
+ */
 export const getMetricsFromKeys = _.memoize(_getMetricsFromKeys, (keys = []) => `${keys.join('')}`);
 
 export function getKeysFromMetrics(metrics = []) {
@@ -353,12 +407,15 @@ export function computeKeysForItem(metrics = []) {
 }
 
 /**
- * Transforms API result into chart-ready data in 2 steps:
- * 1. compute any necessary computed metrics
- * 2. arrange metrics into groups sorted by unit/measure
+ * @name transformData
+ * @description Transforms API result into chart-ready data in 2 steps:
+ * 1. computes any necessary computed metrics
+ * 2. arranges metrics into groups sorted by unit/measure
  *
- * @param {Array} metrics - list of currently selected metrics objects from config
- * @param {Array} data - results from the metrics API
+ * @param {Array} metrics list of currently selected metrics objects from config
+ * @param {Array} data results from the metrics API
+ *
+ * @return {Array} returns data in a format consumable by charts UI
  */
 export function transformData(data = [], metrics = []) {
   return data.map(computeKeysForItem(metrics));
@@ -384,9 +441,12 @@ export function rate(item, keys = []) {
 }
 
 /**
- * Prepares request options/params based on the current state of the page and the passed in comparison object.
+ * @name getFilterByComparison
+ * @description prepares request options/params based on the current state of the page and the passed in comparison object.
  *
- * @param {Object} comparison - passed in comparison when the user selects comparisons via "compare by"
+ * @param {Object} comparison - passed in comparison object when the user selects comparisons via "compare by"
+ *
+ * @returns {Object} returns an [advanced filter object](https://developers.sparkpost.com/api/metrics/#header-advanced-filters]) derived from the user's selected comparison
  */
 export function getFilterByComparison(comparison) {
   const filterId = getFilterTypeKey(comparison.type);
@@ -409,9 +469,12 @@ export function getFilterByComparison(comparison) {
 
 /**
  * @name splitDeliverabilityMetric
- * @description Will split metric to either source from exclusively seed or panel for deliverability metrics
- * @param {Object} metric - Object to split
- * @param {Array[String]} dataSource - Array of values included for data source
+ * @description Splits metric to either source from exclusively seed or panel data for deliverability metrics
+ *
+ * @param {Object} metric metrics object to split
+ * @param {Array[String]} dataSource array of values included for data source
+ *
+ * @returns {Object} returns metrics object with the relevant `_seed` or `_panel` key - see list of [metrics keys in the API docs](https://developers.sparkpost.com/api/metrics/#metrics-get-time-series-metrics)
  */
 export function splitDeliverabilityMetric(metric, dataSource) {
   if (metric.product !== 'deliverability') {
@@ -426,6 +489,7 @@ export function splitDeliverabilityMetric(metric, dataSource) {
   if (!hasPanel && !hasSeed) {
     return metric;
   }
+
   if (hasBoth) {
     return metric;
   }

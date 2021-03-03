@@ -6,22 +6,25 @@ import {
 import { COMPARE_BY_OPTIONS } from '../constants';
 
 /**
- * Returns the filter key for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
+ * @name getFilterTypeKey
+ * @description Returns the filter key for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
  * This is needed for backwards compatibility
- *
  * @param {string} key - either the key or label value for the filters map
+ * @returns {string} returns human-readable filter type from the passed in string key, e.g. 'domains' returns 'Recipient Domain'
  */
 export function getFilterTypeKey(key) {
   if (REPORT_BUILDER_FILTER_KEY_INVERTED_MAP.hasOwnProperty(key)) {
     return key;
   }
+
   return REPORT_BUILDER_FILTER_KEY_MAP[key];
 }
 
 /**
- * Returns the filter label for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
- *
- * @param {string} key - either the key or label value for the filters map
+ * @name getFilterTypeLabel
+ * @description Returns the filter label for REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
+ * @param {string} key either the key or label value for the filters map
+ * @returns {string} the relevant, human-readable filter label
  */
 export function getFilterTypeLabel(key) {
   if (REPORT_BUILDER_FILTER_KEY_MAP.hasOwnProperty(key)) {
@@ -29,14 +32,17 @@ export function getFilterTypeLabel(key) {
       const campaignKey = REPORT_BUILDER_FILTER_KEY_MAP[key];
       return REPORT_BUILDER_FILTER_KEY_INVERTED_MAP[campaignKey];
     }
+
     return key;
   }
+
   return REPORT_BUILDER_FILTER_KEY_INVERTED_MAP[key];
 }
 /**
- * Remaps grouped filter data to make it more iterable
- *
- * @param {array} groupings - An array of grouped metrics filters
+ * @name getIterableFormattedGroupings
+ * @description remaps advanced filter groupings data to make it iterable for use by the UI
+ * @param {Array[Object]} groupings - An array of grouped [advanced filters](https://developers.sparkpost.com/api/metrics/#header-advanced-filters)
+ * @returns {Array[Object]} returns an array of UI-consumable filters
  * */
 export function getIterableFormattedGroupings(groupings) {
   return groupings.map(grouping => {
@@ -72,7 +78,9 @@ export function getIterableFormattedGroupings(groupings) {
 }
 
 /**
- * Returns initial state for an individual filter, i.e., after it is added to a list of filters
+ * @name getInitialFilterState
+ * @description returns initial state for an individual filter, i.e., after it is added to a list of filters
+ * @returns {Object} UI-consumable, initial, filter state
  */
 export function getInitialFilterState() {
   return {
@@ -83,7 +91,9 @@ export function getInitialFilterState() {
 }
 
 /**
- * Returns initial state for a group, i.e., after it is added to a list of groupings
+ * @name getInitialGroupState
+ * @description returns initial state for a group, i.e., after it is added to a list of groupings
+ * @returns {Object} UI-consumable, initial filter group state
  */
 export function getInitialGroupState() {
   return {
@@ -93,11 +103,12 @@ export function getInitialGroupState() {
 }
 
 /**
- * Returns UI state to render multi-layer filter forms based on the user's entry
+ * @name getGroupingFields
+ * @description returns UI state to render multi-layer filter forms based on the user's entry
  * Unit tests for this function were intentionally not written as they are tied closely to UI state
  * and are well tested by integration tests.
- *
- * @param {array} iterableGroupings - array of iterable filter groupings, usually derived from `getIterableFormattedGroupings`
+ * @param {Array} iterableGroupings array of iterable filter groupings, usually derived from `getIterableFormattedGroupings`
+ * @returns {Array[Object]} UI-consumable array of objects that describe the state of a series of filter group form fields. Used within the Analytics Report filters form UI.
  */
 export function getGroupingFields(iterableGroupings) {
   const groupings = iterableGroupings;
@@ -179,12 +190,12 @@ export function getGroupingFields(iterableGroupings) {
 }
 
 /**
- * Returns UI state to render active filter tags based on the user's entry
+ * @name getActiveFilterTagGroups
+ * @description returns UI state to render active filter tags based on the user's entry
  * Unit tests for this function were intentionally not written as they are tied closely to UI state
  * and are well tested by integration tests.
- *
- * @param {array} remappedGroupings
- *
+ * @param {Array} iterableGroupings array of iterable filter groupings, usually derived from `getIterableFormattedGroupings`
+ * @returns {Array[Object]} UI-consumable array of objects that describes the state of active filter tags rendered to the page
  */
 export function getActiveFilterTagGroups(iterableGroupings) {
   const groupings = iterableGroupings;
@@ -230,9 +241,10 @@ export function getActiveFilterTagGroups(iterableGroupings) {
 }
 
 /**
- * Reverts UI-formatted data mapping and re-structures said data to match API structure
- *
- * @param {array} groupingFields - array of UI filter group fields, typically derived from `getGroupingFields`
+ * @name getApiFormattedGroupings
+ * @description reverts UI-formatted data mapping and re-structures said data to match API structure
+ * @param {Array[Object]} groupingFields - array of UI filter group fields, typically derived from `getGroupingFields`
+ * @returns {Array[Object]} array of API-consumable [advanced filters](https://developers.sparkpost.com/api/metrics/#header-advanced-filters)
  */
 export function getApiFormattedGroupings(groupingFields) {
   return groupingFields
@@ -270,11 +282,12 @@ export function getApiFormattedGroupings(groupingFields) {
 }
 
 /**
- * Converts API data structure in to a more human-readable version of filters for later rendering
- *
- * @param {array} groupings - grouped filters retrieved from the API
+ * @name hydrateFilters
+ * @description Converts API data structure in to a more human-readable version of filters for later rendering
+ * @param {Array} groupings grouped [advanced filters](https://developers.sparkpost.com/api/metrics/#header-advanced-filters) retrieved from the API
  * @param {Object} options
- * @param {array} options.subaccounts - array of subaccounts, usually retrieved from the global data store
+ *   @param {Array} options.subaccounts array of subaccounts, usually retrieved from the global data store
+ * @returns UI-consumable filters for rendering the currently active filters within a component
  */
 export function hydrateFilters(groupings, { subaccounts } = {}) {
   return groupings.map(grouping => {
@@ -332,9 +345,10 @@ export function hydrateFilters(groupings, { subaccounts } = {}) {
 }
 
 /**
- * Flattens manipulated data structure for use with the API
- *
- * @param {array} groupings - array of filter groups
+ * @name dehydrateFilters
+ * @description flattens manipulated data structure for use with the API
+ * @param {Array} groupings UI-consumable filters as returned by `hydrateFilters`
+ * @returns {Array[Object]} array of API-consumable [advanced filters](https://developers.sparkpost.com/api/metrics/#header-advanced-filters)
  */
 export function dehydrateFilters(groupings) {
   return groupings.map(grouping => {
@@ -373,11 +387,11 @@ export function dehydrateFilters(groupings) {
 }
 
 /**
- * Within a filter grouping, this function returns `true` when duplicate filters are present.
+ * @name getHasDuplicateFilters
+ * @description within a filter grouping, this function returns `true` when duplicate filters are present.
  * Only the "type" and "compareBy" keys are relevant when making this comparison.
- *
- * @param {array} filters - iterable array of filter objects derived from `getIterableFormattedGroupings`
- *
+ * @param {Array[Object]} filters - iterable array of filter objects derived from `getIterableFormattedGroupings`
+ * @returns {boolean} whether or not the group of filters has a duplicate
  */
 export function getHasDuplicateFilters(filters) {
   // Simplifies filters according to relevant keys
@@ -411,28 +425,27 @@ const VALID_COMPARE_BY_LOWERCASE_MAP = COMPARE_BY_OPTIONS.reduce(
   new Map(),
 );
 /**
- * Returns a new array of only valid filters. It only removes at the top level. If any part of
+ * @name getValidFilters
+ * @description returns a new array of only valid filters. It only removes at the top level. If any part of
  * the filter is invalid, it will remove the entire top level filter.
- *
- * @param {array} filters - iterable array of filter objects derived from `hydrateFilters`
- *
- * @returns {array} - Array of only valid filters.
+ * @param {Array[Object]} filters - iterable array of filter objects derived from `hydrateFilters`
+ * @returns {Array[Object]} array of API-consumable [advanced filters](https://developers.sparkpost.com/api/metrics/#header-advanced-filters)
  */
 export function getValidFilters(filters) {
-  //remaps top level comparators to true/false
-  //EX: [{AND:{...}},{OR:{...}}] => [true ,false] where true = valid filter and false = invalid filter
+  // Remaps top level comparators to true/false
+  // EX: [{AND:{...}},{OR:{...}}] => [true ,false] where true = valid filter and false = invalid filter
   const validFiltersArray = filters.map(grouping => {
-    //Checks that every comparator is formatted correctly
+    // Checks that every comparator is formatted correctly
     if (typeof grouping !== 'object' || Object.keys(grouping).length < 1) {
       return false;
     }
     const groupingType = Object.keys(grouping)[0];
-    //Checks that the top level comparison conjugate is AND/OR
+    // Checks that the top level comparison conjugate is AND/OR
     if (groupingType.toUpperCase() !== 'AND' && groupingType.toUpperCase() !== 'OR') {
       return false;
     }
 
-    //Checks that every filter is formatted correctly
+    // Checks that every filter is formatted correctly
     if (
       typeof grouping[groupingType] !== 'object' ||
       Object.keys(grouping[groupingType]).length < 1
@@ -440,14 +453,14 @@ export function getValidFilters(filters) {
       return false;
     }
 
-    //Checks that every filter is valid
+    // Checks that every filter is valid
     const filterType = grouping[groupingType];
     return Object.keys(filterType).every(filter => {
       if (!VALID_FILTERS_KEY_MAP.has(filter) || typeof filterType[filter] !== 'object') {
         return false;
       }
       const comparators = filterType[filter];
-      //Checks that every comparator is allowed
+      // Checks that every comparator is allowed
       return Object.keys(comparators).every(comparator => {
         return (
           VALID_COMPARE_BY_LOWERCASE_MAP.has(comparator.toLowerCase()) &&
@@ -456,17 +469,18 @@ export function getValidFilters(filters) {
       });
     });
   });
-  //Re-maps the truthy filters to the actual filters and removes all the falsy ones.
+
+  // Re-maps the truthy filters to the actual filters and removes all the falsy ones.
   return validFiltersArray
     .map((isValidFilter, index) => (isValidFilter ? filters[index] : false))
     .filter(Boolean);
 }
 
 /**
- * Replaces the key of comparisons with the key value rather than label value
- *
- * @param {array[Object]} comparisons - comparison object
- *
+ * @name replaceComparisonFilterKey
+ * @description replaces the key of comparisons with the key value rather than label value
+ * @param {Array[Object]} comparisons array of comparison objects derived from the UI "Add Comparison" form
+ * @returns {Array[Object]} returns re-formatted array of comparisons
  */
 export function replaceComparisonFilterKey(comparisons) {
   return comparisons
