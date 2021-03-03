@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import moment from 'moment';
-import { TimezoneTypeahead, options } from '../TimezoneTypeahead';
+import { TimezoneTypeahead, timeZoneOptions } from '../TimezoneTypeahead';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 describe('Timezone Typeahead Item', () => {
@@ -34,7 +34,7 @@ describe('Timezone Typeahead Item', () => {
     const wrapper = subject({ initialValue: 'Pacific/Chatham' });
 
     expect(wrapper.find('Typeahead').prop('selectedItem')).toEqual(
-      options.find(timeZone => timeZone.value === 'Pacific/Chatham'),
+      timeZoneOptions.find(timeZone => timeZone.value === 'Pacific/Chatham'),
     );
   });
 

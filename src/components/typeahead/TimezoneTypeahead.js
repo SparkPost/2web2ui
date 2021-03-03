@@ -19,8 +19,7 @@ const UTC_OPTION = {
 const timeZones = listTimeZones();
 const now = new Date();
 
-// Tried to move into global constants but broke a lot of unit tests
-export const options = timeZones
+export const timeZoneOptions = timeZones
   // Filter out non-standard timezones, inverse timezones (ETC/UTC-7 is equivalent to UTC+7)
   .filter(
     tz =>
@@ -50,7 +49,7 @@ export const options = timeZones
     };
   });
 
-options.unshift(UTC_OPTION);
+timeZoneOptions.unshift(UTC_OPTION);
 
 export const TimezoneTypeahead = props => {
   const {
@@ -60,9 +59,12 @@ export const TimezoneTypeahead = props => {
     disabledAndUTCOnly,
     ...rest
   } = props;
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(timeZoneOptions[0]);
 
-  const findOptionInList = useCallback(value => options.find(option => option.value === value), []);
+  const findOptionInList = useCallback(
+    value => timeZoneOptions.find(option => option.value === value),
+    [],
+  );
 
   // initialValue may change if it's coming from redux on parent
   useEffect(() => {
@@ -93,10 +95,10 @@ export const TimezoneTypeahead = props => {
     errorInLabel: false,
     error: false,
     name: 'timezone-typeahead',
-    results: options,
+    results: timeZoneOptions,
     selectedItem: selected,
     onChange: onChange,
-    maxNumberOfResults: options.length,
+    maxNumberOfResults: timeZoneOptions.length,
     icon: AccessTime,
     ...rest,
   };
