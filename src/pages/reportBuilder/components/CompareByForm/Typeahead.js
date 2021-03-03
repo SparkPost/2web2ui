@@ -48,13 +48,13 @@ function TypeSelect({
   maxWidth,
   onChange,
   placeholder,
-  renderItem,
   results,
   selectedItem,
   onInputChange,
   loading,
   suffix,
   labelHidden,
+  customOptionHelpText,
 }) {
   const [matches, setMatches] = useState([]);
   // Controlled input so that we can change the value after selecting dropdown.
@@ -98,6 +98,7 @@ function TypeSelect({
     getItemProps,
     getMenuProps,
     highlightedIndex,
+    inputValue,
     isOpen,
     selectedItem,
   }) => {
@@ -121,6 +122,49 @@ function TypeSelect({
 
     const SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
 
+    // note, this is identifical behavior as AsyncComboBoxTypeahead
+    const customItem = {
+      id: inputValue.trim(),
+      type: label,
+      value: inputValue.trim(),
+    };
+
+    const looksLikeCustomItem = item => {
+      // hack, try our best to match input to items
+      if (item.id) {
+        return (
+          String(item.id) === customItem.id ||
+          item.value === customItem.value ||
+          item.value === `${customItem.value} (ID ${item.id})`
+        );
+      }
+
+      return item.value === customItem.value;
+    };
+
+    const items = [
+      {
+        content: `"${customItem.value}"`,
+        helpText: customOptionHelpText,
+        isVisible: customItem.value.length > 0 && !matches.some(looksLikeCustomItem),
+        item: customItem,
+      },
+      ...matches.map(item => ({
+        content: itemToString(item),
+        isVisible: true,
+        item,
+      })),
+    ]
+      .filter(({ isVisible }) => isVisible)
+      .map((item, index) =>
+        getItemProps({
+          ...item,
+          highlighted: highlightedIndex === index,
+          index,
+          key: `${id}_item_${index}`,
+        }),
+      );
+
     return (
       <div>
         <TypeaheadWrapper>
@@ -128,34 +172,20 @@ function TypeSelect({
             {/* hack, can't apply getMenuProps to ActionList because ref prop is not supported */}
             <div {...getMenuProps()}>
               <PopoverActionList open={isMenuOpen} maxHeight={maxHeight}>
-                {loading ? (
+                {Boolean(items.length) ? (
+                  items.map(item => (
+                    <ActionList.Action {...item}>
+                      <TypeaheadItem label={item.content} />
+                    </ActionList.Action>
+                  ))
+                ) : (
+                  <Box p="200">No Results</Box>
+                )}
+
+                {loading && (
                   <Box ml="200">
                     <Loading />
                   </Box>
-                ) : (
-                  <>
-                    {matches.length ? (
-                      matches.map((item, index) => (
-                        <ActionList.Action
-                          {...getItemProps({
-                            highlighted: highlightedIndex === index,
-                            index,
-                            item,
-                            key: `${id}_item_${index}`,
-                          })}
-                        >
-                          {renderItem ? (
-                            renderItem(item)
-                          ) : (
-                            <TypeaheadItem label={itemToString(item)} />
-                          )}
-                        </ActionList.Action>
-                      ))
-                    ) : (
-                      <Box p="200">No Results</Box>
-                    )}
-                    {}
-                  </>
                 )}
               </PopoverActionList>
             </div>
@@ -185,6 +215,7 @@ function TypeSelect({
 }
 
 TypeSelect.propTypes = {
+  customOptionHelpText: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   itemToString: PropTypes.func,
@@ -194,7 +225,6 @@ TypeSelect.propTypes = {
   maxWidth: PropTypes.number,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-  renderItem: PropTypes.func,
   results: PropTypes.array,
 };
 

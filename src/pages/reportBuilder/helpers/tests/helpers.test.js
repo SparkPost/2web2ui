@@ -90,6 +90,22 @@ describe('Report Builder helpers', () => {
       });
       expect(hydratedFilters).toMatchSnapshot();
     });
+
+    it('should hydrate with custom subaccount filter correctly', () => {
+      const hydratedFilters = helpers.hydrateFilters([{ AND: { subaccounts: { eq: ['abc'] } } }], {
+        subaccounts: [],
+      });
+
+      expect(hydratedFilters).toEqual([
+        {
+          AND: {
+            subaccounts: {
+              eq: [{ id: 'abc', type: 'subaccounts', value: 'abc' }],
+            },
+          },
+        },
+      ]);
+    });
   });
 
   describe('dehydrateFilters', () => {
@@ -666,6 +682,7 @@ describe('Report Builder helpers', () => {
       expect(getValidFilters(input)).toEqual([]);
     });
   });
+
   describe('replaceComparisonFilterKey', () => {
     it('returns the same comparison filter when there are the filter keys are already key value', () => {
       const comparison = [

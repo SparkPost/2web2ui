@@ -23,6 +23,7 @@ export const ComboBoxTypeahead = ({
   id,
   onInputChange,
   loading,
+  customItemHelpText,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState('');
@@ -91,19 +92,52 @@ export const ComboBoxTypeahead = ({
     const isSelectedItemExclusive = isExclusiveItem(selectedItems[0]);
 
     const isMenuOpen = isOpen && Boolean(debouncedValue);
-    const items = results
-      .filter(
-        item =>
+
+    // todo, this component shouldn't need to know the structure of the items
+    const customItem = {
+      id: inputValue.trim(), // needed for subaccounts
+      type: label,
+      value: inputValue.trim(),
+    };
+
+    const looksLikeCustomItem = item => {
+      // hack, try our best to match input to items
+      if (item.id) {
+        return (
+          String(item.id) === customItem.id ||
+          item.value === customItem.value ||
+          item.value === `${customItem.value} (ID ${item.id})`
+        );
+      }
+
+      return item.value === customItem.value;
+    };
+
+    const items = [
+      {
+        content: `"${customItem.value}"`,
+        helpText: customItemHelpText,
+        isVisible:
+          customItem.value.length > 0 &&
+          !selectedItems.some(looksLikeCustomItem) &&
+          !results.some(looksLikeCustomItem),
+        item: customItem,
+      },
+      ...results.map(item => ({
+        content: itemToString(item),
+        item,
+        isVisible:
           !isSelectedItemExclusive &&
           !isSelectedItem(item) &&
           !(hasSelectedItems && isExclusiveItem(item)),
-      )
+      })),
+    ]
+      .filter(({ isVisible }) => isVisible)
       .map((item, index) =>
         getItemProps({
-          content: itemToString(item),
+          ...item,
           highlighted: highlightedIndex === index,
           index,
-          item,
         }),
       );
 
@@ -154,6 +188,7 @@ export const ComboBoxTypeahead = ({
 };
 
 ComboBoxTypeahead.propTypes = {
+  customItemHelpText: PropTypes.string,
   defaultSelected: PropTypes.array,
   disabled: PropTypes.bool,
   isExclusiveItem: PropTypes.func,

@@ -1,3 +1,4 @@
+import { toRegex } from 'cypress/helpers';
 import { PAGE_URL } from './constants';
 import {
   commonBeforeSteps,
@@ -267,24 +268,16 @@ describe('Analytics Report filters form', () => {
       cy.findByRole('option', { name: 'bounce.uat.sparkspam.com' }).should('be.visible');
     });
 
-    it('returns no results when the user has entered fewer than 3 characters', () => {
+    it('returns no results when the user has already added a matching filter', () => {
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
-      cy.findByLabelText('Subaccount').type('Fa');
-      cy.findByText('No Results').should('be.visible');
-    });
+      cy.findByLabelText('Subaccount').type('103');
 
-    it('returns no results when not the server returns no results for that filter type', () => {
-      cy.stubRequest({
-        url: '/api/v1/subaccounts',
-        fixture: '200.get.no-results.json',
-        requestAlias: 'getSubaccounts',
-      });
+      cy.findByRole('option', { name: 'Fake Subaccount 3 (ID 103)' })
+        .should('be.visible')
+        .click();
 
-      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
-      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
-      cy.findByLabelText('Subaccount').type('Fake Subaccount');
-      cy.wait('@getSubaccounts');
+      cy.findByLabelText('Subaccount').type('103'); // repeat search
 
       cy.findByText('No Results').should('be.visible');
     });
@@ -307,6 +300,50 @@ describe('Analytics Report filters form', () => {
       cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
       cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
       cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+    });
+
+    it('does not request filter options from server until user enters three or more characters', () => {
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
+      cy.findByLabelText('Subaccount').type('Fa');
+
+      cy.findAllByRole('option', { name: /Fa/ }).should('have.length', 1);
+
+      cy.findByLabelText('Subaccount').type('k'); // add the third character
+
+      cy.wait('@getSubaccounts');
+
+      cy.findAllByRole('option', { name: /Fak/ }).should('have.length', 5);
+    });
+
+    it('allows any value to be added as a custom filter', () => {
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
+      cy.findByLabelText('Subaccount').type('Fa');
+
+      cy.findAllByRole('option', { name: /Fa/ }).should('have.length', 1);
+
+      cy.findByRole('option', { name: /"Fa"/ })
+        .should('be.visible')
+        .click();
+
+      cy.findByText('Fa').should('be.visible');
+    });
+
+    it('does not allow duplicate custom filters to be selected', () => {
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
+      cy.findByLabelText('Subaccount').type('Fa');
+
+      cy.findByRole('option', { name: /"Fa"/ })
+        .should('be.visible')
+        .click();
+
+      cy.findByText('Fa').should('be.visible');
+
+      cy.findByLabelText('Subaccount').type('Fa');
+
+      cy.findByText('No Results').should('be.visible');
     });
   });
 
@@ -433,7 +470,24 @@ describe('Analytics Report filters form', () => {
   describe('duplicate filter error banner', () => {
     it('renders when the user selects multiple filters of the exact same "Type" and "Compare By" value within any grouping within the form', () => {
       navigateToForm();
-      causeDuplicationError();
+      causeDuplicationError('Fake Subaccount 3 (ID 103)');
+
+      cy.withinDrawer(() => {
+        cy.findByRole('alert')
+          .should('be.visible')
+          .should('contain', 'Duplicate filters are not allowed within a group.')
+          .should('have.focus');
+
+        cy.verifyLink({
+          content: 'API Docs',
+          href: 'https://developers.sparkpost.com/api/metrics/#header-groupings-structure',
+        });
+      });
+    });
+
+    it('renders when the user selects multiple filters of the exact same "Type" and "Compare By" custom value within any grouping within the form', () => {
+      navigateToForm();
+      causeDuplicationError('hi'); // custom value
 
       cy.withinDrawer(() => {
         cy.findByRole('alert')
@@ -450,7 +504,7 @@ describe('Analytics Report filters form', () => {
 
     it('renders an error within each group that contains a violation', () => {
       navigateToForm();
-      causeDuplicationError();
+      causeDuplicationError('Fake Subaccount 3 (ID 103)');
       cy.findByRole('button', { name: 'Add And Grouping' }).click();
 
       getGroupingByIndex(1).within(() => {
@@ -479,7 +533,8 @@ describe('Analytics Report filters form', () => {
 
     it('does not render after the user clears invalid, duplicated filters', () => {
       navigateToForm();
-      causeDuplicationError();
+      causeDuplicationError('Fake Subaccount 3 (ID 103)');
+
       cy.withinDrawer(() => {
         cy.findByRole('alert').should('exist');
       });
@@ -490,6 +545,7 @@ describe('Analytics Report filters form', () => {
           cy.findByLabelText(TYPE_LABEL).select('Recipient Domain');
         });
       });
+
       cy.withinDrawer(() => {
         cy.findByRole('alert').should('not.exist');
       });
@@ -499,17 +555,18 @@ describe('Analytics Report filters form', () => {
         cy.findByRole('button', { name: 'Clear Filters' }).click();
       });
 
-      causeDuplicationError();
+      causeDuplicationError('Fake Subaccount 3 (ID 103)');
+
       cy.withinDrawer(() => {
         cy.findByRole('alert').should('exist');
       });
 
-      // Fix the error by changing the "Compare By" on one of the offending filters
       getGroupingByIndex(0).within(() => {
         getFilterByIndex(2).within(() => {
-          cy.findByLabelText(COMPARE_BY_LABEL).select('is equal to');
+          cy.findByRole('button', { name: 'Remove Filter' }).click();
         });
       });
+
       cy.withinDrawer(() => {
         cy.findByRole('alert').should('not.exist');
       });
@@ -517,7 +574,7 @@ describe('Analytics Report filters form', () => {
 
     it('does not render after the user clears the form entirely', () => {
       navigateToForm();
-      causeDuplicationError();
+      causeDuplicationError('Fake Subaccount 3 (ID 103)');
       cy.withinDrawer(() => {
         cy.findByRole('alert')
           .scrollIntoView()
@@ -553,6 +610,33 @@ describe('Analytics Report filters form', () => {
       cy.wrap(xhr.url).should(
         'include',
         'query_filters={"groupings":[{"AND":{"templates":{"notLike":["template"]}}},{"AND":{"sending_domains":{"like":["thisisasendingdomain"]}}}]}',
+      );
+    });
+  });
+
+  it('submits the form and adds appropriate query params with custom values for API requests', () => {
+    navigateToForm();
+    stubDeliverability('nextGetDeliverability');
+    stubTimeSeries('nextGetTimeSeries');
+
+    cy.withinDrawer(() => {
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText('Subaccount').type('123');
+      cy.findByRole('option', { name: /"123"/ }).click();
+      cy.findByRole('button', { name: 'Apply Filters' }).click();
+    });
+
+    cy.wait('@nextGetTimeSeries').then(xhr => {
+      cy.wrap(xhr.url).should(
+        'include',
+        'query_filters={"groupings":[{"AND":{"subaccounts":{"eq":["123"]}}}]}',
+      );
+    });
+
+    cy.wait('@nextGetDeliverability').then(xhr => {
+      cy.wrap(xhr.url).should(
+        'include',
+        'query_filters={"groupings":[{"AND":{"subaccounts":{"eq":["123"]}}}]}',
       );
     });
   });
@@ -631,27 +715,52 @@ function getFilterByIndex(index) {
 /**
  * Causes a duplication error by adding multiple filters of the same "Type" and "Compare By" value within a grouping
  */
-function causeDuplicationError() {
+function causeDuplicationError(text) {
   getGroupingByIndex(0).within(() => {
     getFilterByIndex(0).within(() => {
-      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
-      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
-      cy.findByLabelText('Campaign (ID)').type('hello{enter}');
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText('Subaccount').type(text);
+
+      if (text.length >= 3) {
+        cy.wait('@getSubaccounts');
+      }
+
+      cy.findByRole('option', { name: toRegex(text) })
+        .should('be.visible')
+        .click();
+
       cy.findByRole('button', { name: 'Add And Filter' }).click();
     });
 
     // Adds a filter that is *not* a duplicate
     getFilterByIndex(1).within(() => {
-      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
-      cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
-      cy.findByLabelText('Campaign (ID)').type('hello{enter}');
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('is not equal to');
+      cy.findByLabelText('Subaccount').type(text);
+
+      if (text.length >= 3) {
+        cy.wait('@getSubaccounts');
+      }
+
+      cy.findByRole('option', { name: toRegex(text) })
+        .should('be.visible')
+        .click();
+
       cy.findByRole('button', { name: 'Add And Filter' }).click();
     });
 
     // Adds a filter that is a duplicate
     getFilterByIndex(2).within(() => {
-      cy.findByLabelText(TYPE_LABEL).select('Campaign (ID)');
-      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText('Subaccount').type(text);
+
+      if (text.length >= 3) {
+        cy.wait('@getSubaccounts');
+      }
+
+      cy.findByRole('option', { name: toRegex(text) })
+        .should('be.visible')
+        .click();
     });
   });
 

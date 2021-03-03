@@ -4,14 +4,6 @@ import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
 import { useSparkPostQuery } from 'src/hooks';
 
-function getItemToStr({ filterType, item }) {
-  if (filterType === 'Subaccount') {
-    return item.id;
-  }
-
-  return item.value;
-}
-
 function Typeahead(props) {
   const {
     id,
@@ -21,7 +13,6 @@ function Typeahead(props) {
     lookaheadOptions = {},
     selector,
     value,
-    itemToString,
     groupingIndex,
     filterIndex,
     filterType,
@@ -39,6 +30,7 @@ function Typeahead(props) {
       }),
     { enabled: Boolean(inputValue && inputValue.length >= 3), refetchOnWindowFocus: false },
   );
+
   const results = selector(data);
 
   const onFilterChange = useCallback(
@@ -57,10 +49,10 @@ function Typeahead(props) {
       id={id}
       onChange={onFilterChange}
       onInputChange={setInputValue}
-      itemToString={item => (item ? getItemToStr({ filterType, item }) : '')}
       value={value}
       results={filteredResults}
       loading={status === 'loading'}
+      customItemHelpText="Add Filter"
       {...rest}
     />
   );

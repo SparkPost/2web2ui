@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Box, Button, Drawer, Expandable, Inline, Panel, Stack } from 'src/components/matchbox';
+import {
+  Box,
+  Button,
+  Drawer,
+  Expandable,
+  Inline,
+  Panel,
+  ScreenReaderOnly,
+  Stack,
+} from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
@@ -132,7 +141,9 @@ export function ReportOptions(props) {
       </Panel.Section>
 
       <Drawer {...getDrawerProps()} portalId="drawer-portal">
-        <Drawer.Header showCloseButton />
+        <Drawer.Header showCloseButton>
+          <ScreenReaderOnly>Report Options</ScreenReaderOnly>
+        </Drawer.Header>
         <Drawer.Content p="0">
           <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabs}>
             <Tabs.Item>

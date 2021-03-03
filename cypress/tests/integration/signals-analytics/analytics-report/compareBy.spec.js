@@ -101,6 +101,52 @@ describe('Analytics Report - Compare By', () => {
       .should('have.value', 'Fake Subaccount 3 (ID 103)');
   });
 
+  it('properly submits form with custom comparisons and adds to report options', () => {
+    openCompareByModal();
+
+    cy.withinDrawer(() => {
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findAllByLabelText('Subaccount')
+        .eq(0)
+        .type('Fa{enter}');
+
+      cy.findAllByLabelText('Subaccount')
+        .eq(1)
+        .type('St{enter}');
+
+      cy.findAllByLabelText('Subaccount')
+        .eq(0)
+        .should('have.value', 'Fa');
+
+      cy.findAllByLabelText('Subaccount')
+        .eq(1)
+        .should('have.value', 'St');
+
+      cy.findByRole('button', { name: 'Compare' }).click();
+    });
+
+    cy.wait(['@getDeliverability', '@getTimeSeries']);
+
+    cy.findByDataId('active-comparison-filters').within(() => {
+      cy.findByText('Subaccount').should('be.visible');
+      cy.findByText('Fa').should('be.visible');
+      cy.findByText('St').should('be.visible');
+    });
+
+    openCompareByModal();
+
+    cy.withinDrawer(() => {
+      cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
+      cy.findAllByLabelText('Subaccount')
+        .eq(0)
+        .should('have.value', 'Fa');
+
+      cy.findAllByLabelText('Subaccount')
+        .eq(1)
+        .should('have.value', 'St');
+    });
+  });
+
   it('clicking remove on tags properly remove comparison filters', () => {
     openCompareByModal();
     fillOutForm();
