@@ -146,15 +146,13 @@ export const FeatureChangeProvider = ({
                           'saved reports',
                         )}.`}
                   </>
-                  {qtyExceedsLimit && (
-                    <>
-                      <span> Please </span>
-                      <strong>
-                        delete {pluralString(noOfReportsToDelete, 'saved report', 'saved reports')}
-                      </strong>
-                      <span> to continue.</span>
-                    </>
-                  )}
+                  <>
+                    <span> Please </span>
+                    <strong>
+                      delete {pluralString(noOfReportsToDelete, 'saved report', 'saved reports')}
+                    </strong>
+                    <span> to continue.</span>
+                  </>
                 </div>
               );
 
@@ -162,12 +160,10 @@ export const FeatureChangeProvider = ({
                 label: 'Saved Reports',
                 description,
                 condition: !qtyExceedsLimit,
-                action: qtyExceedsLimit ? (
+                action: (
                   <Button variant="destructive" external to="/reports/summary">
                     Update Status
                   </Button>
-                ) : (
-                  undefined
                 ),
               };
             }

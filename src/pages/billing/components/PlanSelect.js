@@ -7,21 +7,10 @@ import FeatureComparisonModal from './FeatureComparisonModal';
 import cx from 'classnames';
 import _ from 'lodash';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
+import { useModal } from 'src/hooks';
 import OGStyles from './PlanSelect.module.scss';
 import HibanaStyles from './PlanSelectHibana.module.scss';
-import { useState } from 'react';
 import PromoCodeNew from 'src/components/billing/PromoCodeNew';
-
-export const useModal = () => {
-  const [isShowing, setIsShowing] = useState(false);
-  function toggle() {
-    setIsShowing(!isShowing);
-  }
-  return {
-    isShowing,
-    toggle,
-  };
-};
 
 export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
@@ -29,7 +18,7 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
   const { messaging: plan, tier } = bundle;
   const { price } = plan;
 
-  const { isShowing, toggle } = useModal(false);
+  const { closeModal, openModal, isModalOpen } = useModal();
   const { selectedPromo } = promoCodeObj;
   return (
     <Panel.LEGACY
@@ -41,12 +30,12 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
               Compare Features <ViewModule />
             </span>
           ),
-          onClick: toggle,
+          onClick: openModal,
           color: 'orange',
         },
       ]}
     >
-      <FeatureComparisonModal open={isShowing} handleClose={toggle} />
+      <FeatureComparisonModal open={isModalOpen} handleClose={closeModal} />
       <Panel.LEGACY.Section>
         <div className={styles.SelectedPlan}>
           <div className={styles.tierLabel}>{PLAN_TIERS[tier]}</div>
@@ -87,7 +76,7 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
       ),
     [bundles],
   );
-  const { isShowing, toggle } = useModal(false);
+  const { closeModal, openModal, isModalOpen } = useModal();
   const planList = _.map(
     PLAN_TIERS,
     (label, key) =>
@@ -137,12 +126,12 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
               Compare Features <ViewModule />
             </span>
           ),
-          onClick: toggle,
+          onClick: openModal,
           color: 'orange',
         },
       ]}
     >
-      <FeatureComparisonModal open={isShowing} handleClose={toggle} />
+      <FeatureComparisonModal open={isModalOpen} handleClose={closeModal} />
       {planList}
     </Panel.LEGACY>
   );

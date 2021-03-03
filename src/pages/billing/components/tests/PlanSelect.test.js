@@ -1,11 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { shallow } from 'enzyme';
-import userEvent from '@testing-library/user-event';
 import TestApp from 'src/__testHelpers__/TestApp';
 import styles from '../PlanSelect.module.scss';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import PlanSelect, { SelectedPlan, useModal } from '../PlanSelect';
+import PlanSelect, { SelectedPlan } from '../PlanSelect';
 
 jest.mock('src/hooks/useHibanaOverride');
 useHibanaOverride.mockReturnValue(styles);
@@ -106,24 +105,5 @@ describe('Selected Plan:', () => {
       },
     });
     expect(queryByText('Promo Code')).toBeInTheDocument();
-  });
-});
-
-describe('useModal:', () => {
-  const TestModal = props => {
-    const { isShowing, toggle } = useModal(props.isShowing);
-    return (
-      <div open={isShowing} onClick={toggle}>
-        Test
-      </div>
-    );
-  };
-  const subject = isShowing => render(<TestModal isShowing={isShowing} />);
-
-  it('toggles open when clicked', () => {
-    const { queryByText } = subject(false);
-    expect(queryByText('Test')).not.toHaveAttribute('open');
-    userEvent.click(queryByText('Test'));
-    expect(queryByText('Test')).toHaveAttribute('open');
   });
 });
