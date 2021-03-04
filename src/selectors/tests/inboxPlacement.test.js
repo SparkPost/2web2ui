@@ -125,13 +125,8 @@ describe('Selectors: Inbox Placement', () => {
   });
 
   describe('selectTrends', () => {
-    moment.tz.setDefault('America/New_York');
     const date = moment(new Date('2019-11-11T12:00:00Z'));
     Date.now = jest.fn(() => date);
-
-    afterAll(() => {
-      moment.tz.setDefault();
-    });
 
     it('returns empty array if there is no trends data', () => {
       const state = {
