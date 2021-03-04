@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AccessTime } from '@sparkpost/matchbox-icons';
-import { convertDateToTime, listTimeZones, findTimeZone, getUTCOffset } from 'timezone-support';
+import { listTimeZones, findTimeZone, getUTCOffset, setTimeZone } from 'timezone-support';
 import { formatZonedTime } from 'timezone-support/dist/parse-format';
 import { Typeahead } from './Typeahead';
 import styles from './Typeahead.module.scss';
@@ -27,25 +27,26 @@ export const timeZoneOptions = timeZones
       tz.indexOf('Etc/') === -1 &&
       getUTCOffset(now, findTimeZone(tz)).offset !== 0,
   )
+  // Remap the timezone data according to its official name, offset, and UI-friendly/formatted offset value
   .map(tz => {
-    const offsetObj = getUTCOffset(now, findTimeZone(tz));
+    const timezoneObj = findTimeZone(tz);
+    const zonedTime = setTimeZone(now, timezoneObj, { useUTC: true });
+    const { offset } = getUTCOffset(now, timezoneObj);
+    const formattedOffset = formatZonedTime(zonedTime, 'Z');
 
     return {
       name: tz,
-      offset: offsetObj.offset,
+      offset,
+      formattedOffset,
     };
   })
-  // Sort by amount of UTC offset
+  // Sort by the amount of UTC offset
   .sort((a, b) => a.offset - b.offset)
-  // Reformat the timezone label
+  // Remap list to UI-friendly/formatted list consumable by the Typeahead
   .map(tz => {
-    const timeZone = findTimeZone(tz.name);
-    const timeObj = convertDateToTime(now, timeZone);
-    const formattedOffset = formatZonedTime(timeObj, 'Z');
-
     return {
       value: tz.name,
-      label: `(UTC${tz.offset !== 0 ? formattedOffset : ''}) ${tz.name.replace(/_/g, ' ')}`,
+      label: `(UTC${tz.offset !== 0 ? tz.formattedOffset : ''}) ${tz.name.replace(/_/g, ' ')}`,
     };
   });
 
