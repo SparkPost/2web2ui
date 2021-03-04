@@ -30,14 +30,6 @@ beforeEach(() => {
   expect.hasAssertions();
 });
 
-// Mock moment to set a default timezone
-jest.mock('moment', () => {
-  jest.unmock('moment'); // must unmock, so moment-timezone can require
-  const momentTimezone = jest.requireActual('moment-timezone');
-  momentTimezone.tz.setDefault('America/New_York');
-  return momentTimezone;
-});
-
 jest.mock('src/components/hibana/HibanaStyleHandler', () => undefined); // TODO: Remove when OG theme is removed
 
 Object.defineProperty(global.navigator, 'userAgent', { value: 'node.js', configurable: true });
