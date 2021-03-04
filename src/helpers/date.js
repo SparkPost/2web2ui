@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { findTimeZone } from 'timezone-support';
 import config from 'src/config';
 import { roundBoundaries } from './metrics';
 import { FORMATS } from 'src/constants';
@@ -182,15 +183,34 @@ export function getFormattedDateRangeForAggregateData(from, to, timezone = getLo
 }
 // format as ISO 8601 timestamp to match SP API
 export const formatApiTimestamp = time => moment.utc(time).format();
+
 export const formatApiDate = date => moment.utc(date).format(FORMATS.MOMENT.SHORT_DATE);
+
 export const formatInputDate = date => moment(date).format(FORMATS.MOMENT.SHORT_DATE);
+
 export const formatInputTime = time => moment(time).format(FORMATS.MOMENT.TIME);
+
 export const parseDate = str => moment(str, FORMATS.MOMENT.INPUT_DATES, true);
+
 export const parseTime = str => moment(str, FORMATS.MOMENT.INPUT_TIMES, true);
+
 export const parseDatetime = (...args) =>
   moment(args.join(' '), FORMATS.MOMENT.INPUT_DATETIMES, true);
-export const parseDateTimeTz = (timezone, ...args) =>
-  moment.tz(args.join(' '), FORMATS.MOMENT.INPUT_DATETIMES, true, timezone);
+
+/**
+ * @name parseDateTimeTz
+ * @description parses passed in timezone, date, and time strings to return a Moment date
+ * @param {string} timezone
+ * @param {Date} date
+ * @param {Date} time
+ * @returns Moment date
+ */
+export const parseDateTimeTz = ({ timezone, date, time }) => {
+  const timezoneObj = findTimeZone(timezone);
+
+  return moment(`${date} ${time}`, FORMATS.MOMENT.INPUT_DATETIMES, true, timezoneObj);
+};
+
 export const fillByDate = ({ dataSet, fill = {}, from, to } = {}) => {
   const orderedData = dataSet.sort((a, b) => new Date(a.date) - new Date(b.date));
   let filledDataSet = [];

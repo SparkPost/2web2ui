@@ -90,8 +90,9 @@ export function ManualEntryForm(props) {
     // allow for prop-level override of "now" (DI, etc.)
     const { now, roundToPrecision, preventFuture, defaultPrecision, timezone } = props;
 
-    const from = parseDateTimeTz(timezone, state.fromDate, state.fromTime);
-    const to = parseDateTimeTz(timezone, state.toDate, state.toTime);
+    const from = parseDateTimeTz({ timezone, date: state.fromDate, time: state.fromTime });
+    const to = parseDateTimeTz({ timezone, date: state.toDate, time: state.toTime });
+
     try {
       const precision = getPrecision({ from, to, precision: defaultPrecision });
       const { to: roundedTo, from: roundedFrom } = getValidDateRange({
@@ -123,8 +124,9 @@ export function ManualEntryForm(props) {
   let precisionLabel = null;
   let precisionLabelValue;
   let shouldDisableTime;
-  const from = parseDateTimeTz(timezone, state.fromDate, state.fromTime);
-  const to = parseDateTimeTz(timezone, state.toDate, state.toTime);
+
+  const from = parseDateTimeTz({ timezone, date: state.fromDate, time: state.fromTime });
+  const to = parseDateTimeTz({ timezone, date: state.toDate, time: state.toTime });
 
   if (roundToPrecision) {
     try {

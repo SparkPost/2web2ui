@@ -62,7 +62,7 @@ describe('Analytics Report Saved Reports', () => {
     });
   });
 
-  it('Changing from a preset/initial report to a preset report keeps existing time range and filters', () => {
+  it('preserves the existing time range and filters when changing from a preset/initial report to a preset report', () => {
     cy.visit(PAGE_URL);
     const assertions = () => {
       cy.findByDataId('report-options').within(() => {
