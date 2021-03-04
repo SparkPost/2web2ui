@@ -1,11 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import moment from 'moment';
 import * as metricsHelpers from 'src/helpers/metrics';
 import { ManualEntryForm } from '../ManualEntryFormV2';
 import styles from '../ManualEntryFormNew.module.scss';
-import TestApp from 'src/__testHelpers__/TestApp';
-
-import moment from 'moment';
+import { TestApp } from 'src/__testHelpers__';
 
 describe('Component: DatePicker ManualEntryForm(new)', () => {
   const defaultProps = {
@@ -15,6 +14,7 @@ describe('Component: DatePicker ManualEntryForm(new)', () => {
     to: moment('2018-01-15T11:00:00'),
     from: moment('2018-01-10T11:00:00'),
     roundToPrecision: true,
+    timezone: 'America/New_York',
     styles,
   };
 
