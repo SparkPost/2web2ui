@@ -39,7 +39,7 @@ export const TIMEZONE_MAP = options.reduce(
     ...accumulator,
     [timezone.value]: true,
   }),
-  {},
+  UTC_OPTION,
 );
 
 export const TimezoneTypeahead = props => {
