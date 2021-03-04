@@ -19,9 +19,7 @@ const UTC_OPTION = {
 export const options = moment.tz
   .names()
   // Filter out non-standard timezones, inverse timezones (ETC/UTC-7 is equivalent to UTC+7)
-  .filter(
-    tz => tz.indexOf('/') >= 0 && tz.indexOf('Etc/') === -1 && moment.tz(tz).utcOffset() !== 0,
-  )
+  .filter(tz => tz.indexOf('/') >= 0 && tz.indexOf('Etc/') === -1)
   .map(tz => ({
     name: tz,
     offset: moment.tz(tz).utcOffset(),
@@ -33,14 +31,6 @@ export const options = moment.tz
   }));
 
 options.unshift(UTC_OPTION);
-
-export const TIMEZONE_MAP = options.reduce(
-  (accumulator, timezone) => ({
-    ...accumulator,
-    [timezone.value]: true,
-  }),
-  {},
-);
 
 export const TimezoneTypeahead = props => {
   const {

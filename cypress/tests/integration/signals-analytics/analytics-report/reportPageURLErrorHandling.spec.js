@@ -3,10 +3,12 @@ import { commonBeforeSteps } from './helpers';
 const BASE_URL = '/signals/analytics';
 
 describe('Analytics Report Manual URL Entry', () => {
-  it('renders an alert for invalid timezone', () => {
+  it('Allow UTC+0 timezones', () => {
+    //regression test
     commonBeforeSteps();
-    cy.visit(`${BASE_URL}?timezone=InvalidTimezone`);
-    cy.findByText('Invalid Timezone').should('be.visible');
+    cy.visit(`${BASE_URL}?timezone=Europe/London`);
+    cy.findByText('Invalid Timezone').should('not.exist');
+    cy.findByLabelText('Time Zone').should('have.value', '(UTC) Europe/London');
   });
   it('renders an alert for invalid metric', () => {
     commonBeforeSteps();

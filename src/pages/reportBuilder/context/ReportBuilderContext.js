@@ -10,7 +10,6 @@ import {
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';
 import { map as METRICS_MAP } from 'src/config/metrics';
-import { TIMEZONE_MAP } from 'src/components/typeahead/TimezoneTypeahead';
 import {
   getIterableFormattedGroupings,
   getApiFormattedGroupings,
@@ -51,14 +50,6 @@ const reducer = (state, action) => {
       let update = { ...state, ...payload };
 
       if (!update.timezone) {
-        update.timezone = getLocalTimezone();
-      }
-
-      if (!TIMEZONE_MAP[update.timezone]) {
-        dispatchAlert({
-          type: 'error',
-          message: `Invalid Timezone`,
-        });
         update.timezone = getLocalTimezone();
       }
 
