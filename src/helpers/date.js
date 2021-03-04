@@ -1,9 +1,17 @@
 import moment from 'moment';
-import { findTimeZone } from 'timezone-support';
+import { listTimeZones, findTimeZone, getUTCOffset, setTimeZone } from 'timezone-support';
+import { formatZonedTime } from 'timezone-support/dist/parse-format';
 import config from 'src/config';
 import { roundBoundaries } from './metrics';
 import { FORMATS } from 'src/constants';
 import { format, utcToZonedTime } from 'date-fns-tz';
+
+const NOW = new Date();
+const TIMEZONES = listTimeZones();
+export const UTC_TYPEAHEAD_OPTION = {
+  value: 'UTC',
+  label: 'UTC',
+};
 
 export const relativeDateOptions = [
   { value: 'hour', label: 'Last Hour' },
@@ -243,3 +251,68 @@ export function getDateTicks({ to, from }) {
 
 // see, https://momentjs.com/docs/#/parsing/unix-timestamp-milliseconds/
 export const toMilliseconds = seconds => seconds * 1000;
+
+/**
+ * @description reformat the timezone data according to its official name, offset, and UI-friendly/formatted offset value
+ */
+function getTimezoneWithOffset({ date = NOW, timezoneStr }) {
+  const timezoneObj = findTimeZone(timezoneStr);
+  const zonedTime = setTimeZone(date, timezoneObj, { useUTC: true });
+  const { offset } = getUTCOffset(date, timezoneObj);
+  const formattedOffset = formatZonedTime(zonedTime, 'Z');
+
+  return {
+    name: timezoneStr,
+    offset,
+    formattedOffset,
+  };
+}
+
+/**
+ * @param {Object} timezone timezone object as derived from `getTimezoneWithOffset` helper
+ * @description reformat list to UI-friendly/formatted list consumable by the Typeahead
+ */
+function getTimezoneOption(timezone) {
+  return {
+    value: timezone.name,
+    label: `(UTC${timezone.offset !== 0 ? timezone.formattedOffset : ''}) ${timezone.name.replace(
+      /_/g,
+      ' ',
+    )}`,
+  };
+}
+
+/**
+ * @description sort by the amount of UTC offset
+ */
+function sortByOffset(a, b) {
+  return a.offset - b.offset;
+}
+
+/**
+ * @description determines whether a timezone is standard or non-standard, e.g., inverse timezones (ETC/UTC-7 is equivalent to UTC+7)
+ * @param {string} timezone IANA timezone string
+ * @returns {boolean}
+ */
+function isStandardTimezone(timezone) {
+  return timezone.indexOf('/') >= 0 && timezone.indexOf('Etc/') === -1;
+}
+
+/**
+ * @description get a list of Typeahead options configuration derived from a static list of timezones
+ * @param {Array} timezones array of [IANA timezones](https://www.iana.org/time-zones) - defaults to list retrieved from `timezone-support`
+ */
+export function getTimeZoneOptions(timezones = TIMEZONES) {
+  const timezoneOptions = timezones
+    .filter(isStandardTimezone)
+    .map(getTimezoneWithOffset)
+    .sort(sortByOffset)
+    .map(getTimezoneOption);
+
+  // Adds UTC option as the first value in the list
+  // Array.prototype.unshift() does not return the array itself so cannot be chained like .map or .filter
+  // when an array return as a result.
+  timezoneOptions.unshift(UTC_TYPEAHEAD_OPTION);
+
+  return timezoneOptions;
+}
