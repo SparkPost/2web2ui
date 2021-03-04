@@ -302,7 +302,7 @@ function isStandardTimezone(timezone) {
  * @description get a list of Typeahead options configuration derived from a static list of timezones
  * @param {Array} timezones array of [IANA timezones](https://www.iana.org/time-zones) - defaults to list retrieved from `timezone-support`
  */
-export function getTimeZoneOptions(timezones = TIMEZONES) {
+export function getTimezoneOptions(timezones = TIMEZONES) {
   const timezoneOptions = timezones
     .filter(isStandardTimezone)
     .map(getTimezoneWithOffset)

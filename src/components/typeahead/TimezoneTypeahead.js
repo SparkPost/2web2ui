@@ -1,25 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AccessTime } from '@sparkpost/matchbox-icons';
-import { getTimeZoneOptions, UTC_TYPEAHEAD_OPTION } from 'src/helpers/date';
+import { getTimezoneOptions, UTC_TYPEAHEAD_OPTION } from 'src/helpers/date';
 import { Typeahead } from './Typeahead';
 import styles from './Typeahead.module.scss';
-
-const timeZoneOptions = getTimeZoneOptions();
 
 export const TimezoneTypeahead = props => {
   const {
     initialValue,
+    options = getTimezoneOptions(),
     onChange: parentOnChange,
     isForcedUTC,
     disabledAndUTCOnly,
     ...rest
   } = props;
-  const [selected, setSelected] = useState(timeZoneOptions[0]);
+  const [selected, setSelected] = useState(options[0]);
 
-  const findOptionInList = useCallback(
-    value => timeZoneOptions.find(option => option.value === value),
-    [],
-  );
+  const findOptionInList = useCallback(value => options.find(option => option.value === value), [
+    options,
+  ]);
 
   // initialValue may change if it's coming from redux on parent
   useEffect(() => {
@@ -50,10 +48,10 @@ export const TimezoneTypeahead = props => {
     errorInLabel: false,
     error: false,
     name: 'timezone-typeahead',
-    results: timeZoneOptions,
+    results: options,
     selectedItem: selected,
     onChange: onChange,
-    maxNumberOfResults: timeZoneOptions.length,
+    maxNumberOfResults: options.length,
     icon: AccessTime,
     ...rest,
   };

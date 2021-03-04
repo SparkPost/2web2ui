@@ -1,41 +1,40 @@
-import { mount } from 'enzyme';
 import React from 'react';
-import moment from 'moment';
-import { TimezoneTypeahead, timeZoneOptions } from '../TimezoneTypeahead';
+import { mount } from 'enzyme';
+import { TimezoneTypeahead } from '../TimezoneTypeahead';
 import TestApp from 'src/__testHelpers__/TestApp';
 
-describe('Timezone Typeahead Item', () => {
+const MOCK_TIMEZONE_OPTIONS = [
+  {
+    label: 'My Time Zone',
+    value: 'my/timezone',
+  },
+  {
+    label: 'Another Time Zone',
+    value: 'another/timezone',
+  },
+];
+
+describe('TimezoneTypeahead', () => {
   const subject = props =>
     mount(
       <TestApp>
-        <TimezoneTypeahead {...props} />
+        <TimezoneTypeahead options={MOCK_TIMEZONE_OPTIONS} {...props} />
       </TestApp>,
     );
-  beforeEach(() => {
-    moment.tz.setDefault('America/New_York');
+
+  it('should should select the first timezone as the default', () => {
+    const wrapper = subject();
+    expect(wrapper.find('Typeahead').prop('selectedItem')).toEqual(MOCK_TIMEZONE_OPTIONS[0]);
   });
 
-  // This includes a long list of options, but it's actually helpful to see a difference
-  // when/if we update moment/moment-timezone which options might change
-  it('should render the timezone list properly', () => {
-    const wrapper = subject();
-    expect(wrapper.find('Typeahead').prop('results')).toMatchSnapshot();
-  });
+  it('defaults the selected item according to the `initialValue` prop', () => {
+    const wrapper = subject({ initialValue: 'another/timezone' });
+    const selectedValue = wrapper.find('Typeahead').prop('selectedItem');
 
-  it('should should select the first timezone (UTC) as the default', () => {
-    const wrapper = subject();
-    expect(wrapper.find('Typeahead').prop('selectedItem')).toEqual({
-      value: 'UTC',
-      label: 'UTC',
+    expect(selectedValue).toEqual({
+      label: 'Another Time Zone',
+      value: 'another/timezone',
     });
-  });
-
-  it('if initialValue is set, it should select that as the default', () => {
-    const wrapper = subject({ initialValue: 'Pacific/Chatham' });
-
-    expect(wrapper.find('Typeahead').prop('selectedItem')).toEqual(
-      timeZoneOptions.find(timeZone => timeZone.value === 'Pacific/Chatham'),
-    );
   });
 
   it('if isForcedUTC is set, it should set timezone to UTC in onChange ', () => {
