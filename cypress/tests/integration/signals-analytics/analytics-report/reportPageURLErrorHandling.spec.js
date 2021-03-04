@@ -8,6 +8,12 @@ describe('Analytics Report Manual URL Entry', () => {
     cy.visit(`${BASE_URL}?timezone=InvalidTimezone`);
     cy.findByText('Invalid Timezone').should('be.visible');
   });
+  it('UTC is valid timezone', () => {
+    //regression test
+    commonBeforeSteps();
+    cy.visit(`${BASE_URL}?timezone=UTC`);
+    cy.findByText('Invalid Timezone').should('not.exist');
+  });
   it('renders an alert for invalid metric', () => {
     commonBeforeSteps();
     cy.visit(`${BASE_URL}?metrics%5B0%5D=count_sent&metrics%5B1%5D=not_a_real_metric`);
