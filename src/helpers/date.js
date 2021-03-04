@@ -9,7 +9,7 @@ import { format, utcToZonedTime } from 'date-fns-tz';
 const NOW = new Date();
 const TIMEZONES = listTimeZones();
 export const UTC_TYPEAHEAD_OPTION = {
-  value: 'UTC',
+  value: 'Etc/UTC',
   label: 'UTC',
 };
 
@@ -305,7 +305,7 @@ function isStandardTimezone(timezone) {
 export function getTimezoneOptions(timezones = TIMEZONES) {
   const timezoneOptions = timezones
     .filter(isStandardTimezone)
-    .map(getTimezoneWithOffset)
+    .map(timezoneStr => getTimezoneWithOffset({ timezoneStr }))
     .sort(sortByOffset)
     .map(getTimezoneOption);
 
