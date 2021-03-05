@@ -9,7 +9,7 @@ export function stubDeliverability(requestAlias = 'getDeliverability') {
 
 export function stubUTCDeliverability(requestAlias = 'getUTCDeliverability') {
   cy.stubRequest({
-    url: '/api/v1/metrics/deliverability**',
+    url: '/api/v1/metrics/deliverability**timezone=Etc/UTC**',
     fixture: 'metrics/deliverability/200.get.json',
     requestAlias,
   });
@@ -25,7 +25,7 @@ export function stubTimeSeries(requestAlias = 'getTimeSeries') {
 
 export function stubUTCTimeSeries(requestAlias = 'getUTCTimeSeries') {
   cy.stubRequest({
-    url: '/api/v1/metrics/deliverability/time-series**',
+    url: '/api/v1/metrics/deliverability/time-series**timezone=Etc/UTC**',
     fixture: 'metrics/deliverability/time-series/200.get.json',
     requestAlias,
   });
