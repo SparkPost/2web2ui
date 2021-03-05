@@ -17,9 +17,6 @@ const PRECISION_OPTIONS = metricsRollupPrecisionMap.map(({ value }) => ({
   value,
   label: _.startCase(_.words(value).join(' ')),
 }));
-const TIMEZONE_OPTIONS = getTimezoneOptions().filter(
-  option => !METRICS_TIMEZONE_BLOCK_LIST.includes(option.value),
-);
 
 export const DateTimeSection = ({
   reportOptions,
@@ -27,6 +24,9 @@ export const DateTimeSection = ({
   handleTimezoneSelect,
   refreshReportOptions,
 }) => {
+  const timezoneOptions = getTimezoneOptions().filter(
+    option => !METRICS_TIMEZONE_BLOCK_LIST.includes(option.value),
+  );
   const [shownPrecision, setShownPrecision] = useState('');
   const updateShownPrecision = useCallback(
     shownPrecision => {
@@ -67,7 +67,7 @@ export const DateTimeSection = ({
             content="Day, week, and month precision only support UTC."
           >
             <TimezoneTypeahead
-              options={TIMEZONE_OPTIONS}
+              options={timezoneOptions}
               initialValue={reportOptions.timezone}
               onChange={handleTimezoneSelect}
               isForcedUTC={isForcedUTC}
