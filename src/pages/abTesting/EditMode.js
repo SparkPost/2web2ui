@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, getFormValues } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
-
+import { Form } from 'src/components/form';
 import { showAlert } from 'src/actions/globalAlert';
 import {
   updateDraft,
@@ -77,12 +77,12 @@ export class EditMode extends Component {
   };
 
   getPrimaryAction = () => {
-    const { handleSubmit, test, rescheduling, rescheduleLoading } = this.props;
+    const { test, rescheduling, rescheduleLoading } = this.props;
 
     if (rescheduling) {
       return {
         content: 'Finalize and Reschedule Test',
-        onClick: handleSubmit(this.handleReschedule),
+        type: 'submit',
         disabled: rescheduleLoading,
       };
     }
@@ -90,14 +90,28 @@ export class EditMode extends Component {
     if (test.status === 'draft') {
       return {
         content: 'Finalize and Schedule Test',
-        onClick: handleSubmit(this.handleSchedule),
+        type: 'submit',
       };
     }
 
     return {
       content: 'Update Test',
-      onClick: handleSubmit(this.handleUpdateScheduled),
+      type: 'submit',
     };
+  };
+
+  getSubmitAction = () => {
+    const { test, rescheduling } = this.props;
+
+    if (rescheduling) {
+      return this.handleReschedule;
+    }
+
+    if (test.status === 'draft') {
+      return this.handleSchedule;
+    }
+
+    return this.handleUpdateScheduled;
   };
 
   getSecondaryActions = () => {
@@ -125,54 +139,56 @@ export class EditMode extends Component {
     } = this.props;
 
     return (
-      <Page
-        title={test.name}
-        breadcrumbAction={breadcrumbAction}
-        primaryAction={this.getPrimaryAction()}
-        secondaryActions={this.getSecondaryActions()}
-      >
-        <Stack>
-          <Section title="Basic Information">
-            <Section.Left>
-              <StatusContent test={test} rescheduling={rescheduling} />
-            </Section.Left>
-            <Section.Right>
-              <Box as={Panel.LEGACY} marginTop="400">
-                <StatusPanel
-                  test={test}
+      <Form id="abtest-edit-form" onSubmit={this.props.handleSubmit(this.getSubmitAction())}>
+        <Page
+          title={test.name}
+          breadcrumbAction={breadcrumbAction}
+          primaryAction={this.getPrimaryAction()}
+          secondaryActions={this.getSecondaryActions()}
+        >
+          <Stack>
+            <Section title="Basic Information">
+              <Section.Left>
+                <StatusContent test={test} rescheduling={rescheduling} />
+              </Section.Left>
+              <Section.Right>
+                <Box as={Panel.LEGACY} marginTop="400">
+                  <StatusPanel
+                    test={test}
+                    subaccountId={subaccountId}
+                    subaccountName={subaccountName}
+                  />
+                  <StatusFields disabled={submitting} />
+                </Box>
+              </Section.Right>
+            </Section>
+
+            <Section title="Settings">
+              <Section.Left>
+                <SettingsContent test={test} />
+              </Section.Left>
+              <Section.Right>
+                <Box as={Panel.LEGACY} marginTop="400">
+                  <SettingsFields formValues={formValues} disabled={submitting} />
+                </Box>
+              </Section.Right>
+            </Section>
+
+            <Section title="Variants">
+              <Section.Left>
+                <VariantsContent />
+              </Section.Left>
+              <Section.Right>
+                <VariantsFields
+                  formValues={formValues}
+                  disabled={submitting}
                   subaccountId={subaccountId}
-                  subaccountName={subaccountName}
                 />
-                <StatusFields disabled={submitting} />
-              </Box>
-            </Section.Right>
-          </Section>
-
-          <Section title="Settings">
-            <Section.Left>
-              <SettingsContent test={test} />
-            </Section.Left>
-            <Section.Right>
-              <Box as={Panel.LEGACY} marginTop="400">
-                <SettingsFields formValues={formValues} disabled={submitting} />
-              </Box>
-            </Section.Right>
-          </Section>
-
-          <Section title="Variants">
-            <Section.Left>
-              <VariantsContent />
-            </Section.Left>
-            <Section.Right>
-              <VariantsFields
-                formValues={formValues}
-                disabled={submitting}
-                subaccountId={subaccountId}
-              />
-            </Section.Right>
-          </Section>
-        </Stack>
-      </Page>
+              </Section.Right>
+            </Section>
+          </Stack>
+        </Page>
+      </Form>
     );
   }
 }
