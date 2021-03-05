@@ -18,9 +18,11 @@ import {
   parseDate,
   parseTime,
   parseDatetime,
+  parseDateTimeTz,
   toMilliseconds,
   formatDateTimeWithoutYear,
   getFormattedDateRangeForAggregateData,
+  getTimezoneOptions,
 } from '../date';
 import { roundBoundaries } from '../metrics';
 import cases from 'jest-in-case';
@@ -345,6 +347,18 @@ describe('Date helpers', () => {
     });
   });
 
+  describe('parseDateTimeTz', () => {
+    it('returns a valid Moment date time according to the passed in date and timezone', () => {
+      const result = parseDateTimeTz({
+        timezone: 'America/Belize',
+        date: '2018-01-01',
+        time: '1:00am',
+      });
+
+      expect(result).toBeValidMomentDate();
+    });
+  });
+
   describe('getDuration', () => {
     it('returns the duration between two dates in hours', () => {
       expect(getDuration({ from: '2017-12-18T00:00:00', to: '2017-12-19T00:00:00' })).toEqual(24);
@@ -381,6 +395,18 @@ describe('Date helpers', () => {
   describe('toMilliseconds', () => {
     it('returns milliseconds', () => {
       expect(toMilliseconds(1318781876.721)).toEqual(1318781876721);
+    });
+  });
+
+  describe('getTimezoneOptions', () => {
+    it('returns a list of typeahead options according to timezones returned by `timezone-support`', () => {
+      const options = getTimezoneOptions();
+
+      expect(options).toMatchSnapshot();
+      expect(options[0]).toEqual({
+        label: 'UTC',
+        value: 'Etc/UTC',
+      });
     });
   });
 });
