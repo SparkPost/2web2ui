@@ -176,6 +176,14 @@ export const EVENTS_SEARCH_FILTERS = {
     placeholder: 'list of version numbers; requires AB Test ID filter(e.g. 4)',
     label: 'AB Test Versions',
   },
+  mailbox_providers: {
+    placeholder: 'list of mailbox providers (e.g. Gmail, Verizon Media Group)',
+    label: 'Mailbox Providers',
+  },
+  mailbox_provider_regions: {
+    placeholder: 'list of regions of the mailbox providers (e.g. North America - USA, Europe - UK)',
+    label: 'Mailbox Provider Regions',
+  },
 };
 
 export const ALL_EVENTS_FILTERS = {
