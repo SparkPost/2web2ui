@@ -5,6 +5,7 @@ import {
   hasProductOnBillingSubscription,
 } from 'src/helpers/conditions/account';
 import { Box, Button, Checkbox, Drawer, Expandable, Stack, Tooltip } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { DeliverabilityBanner } from './components';
 import { categorizedMetricsList, list } from 'src/config/metrics';
 import _ from 'lodash';
@@ -79,7 +80,8 @@ export default function MetricsForm(props) {
     setSelectedMetrics(newSelectedMetric);
   };
 
-  const handleApply = () => {
+  const handleApply = event => {
+    event.preventDefault();
     props.handleSubmit({ metrics: getSelectedMetrics() });
   };
 
@@ -97,7 +99,7 @@ export default function MetricsForm(props) {
   //Needs this for current tests as hibana is not enabled for tests but is required for the Drawer component
   const { DrawerFooter = Drawer.Footer } = props;
   return (
-    <>
+    <Form id="reportbuilder-metrics-form" onSubmit={handleApply}>
       <Box padding="500" paddingBottom="100px">
         <Stack>
           {Boolean(hasD12yMetricsEnabled && !hasD12yProduct) && <DeliverabilityBanner />}
@@ -154,7 +156,7 @@ export default function MetricsForm(props) {
           <Box pr="100" flex="1">
             <Button
               width="100%"
-              onClick={handleApply}
+              type="submit"
               variant="primary"
               disabled={
                 getSelectedMetrics().length < 1 || isSelectedMetricsSameAsCurrentlyAppliedMetrics
@@ -174,6 +176,6 @@ export default function MetricsForm(props) {
           </Box>
         </Box>
       </DrawerFooter>
-    </>
+    </Form>
   );
 }
