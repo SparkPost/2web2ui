@@ -4,6 +4,7 @@ import { reduxForm, formValueSelector } from 'redux-form';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { Box, Button, Panel, Stack } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { getIpPools } from 'src/selectors/ipPools';
 import { selectFirstIpPoolId } from 'src/selectors/ipPools';
 import { NameField, StatusSelect } from './formFields';
@@ -23,7 +24,7 @@ export class SubaccountEditForm extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="subaccount-edit-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Box maxWidth={tokens.sizing_1200}>
@@ -56,7 +57,7 @@ export class SubaccountEditForm extends Component {
             )}
           </ButtonWrapper>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
     );
   }
 }

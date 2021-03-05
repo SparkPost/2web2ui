@@ -43,7 +43,7 @@ describe('Component: EditForm', () => {
 
   it('should call submit handler', () => {
     const onSubmit = jest.fn();
-    subject({ onSubmit }).find('form').first().simulate('submit');
+    subject({ onSubmit }).find('Form').first().simulate('submit');
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 });

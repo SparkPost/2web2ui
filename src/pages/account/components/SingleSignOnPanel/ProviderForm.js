@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, Form, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
 import {
   provisionAccountSingleSignOn,
@@ -8,6 +8,7 @@ import {
 } from 'src/actions/accountSingleSignOn';
 import { showAlert } from 'src/actions/globalAlert';
 import { ButtonWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { Heading } from 'src/components/text';
 import CopyField from 'src/components/copyField/CopyField';
 import FileFieldWrapper from 'src/components/reduxFormWrappers/FileFieldWrapper';
@@ -47,7 +48,7 @@ export class ProviderForm extends React.Component {
     const { handleSubmit, submitting } = this.props;
 
     return (
-      <Form onSubmit={handleSubmit(this.submit)}>
+      <Form onSubmit={handleSubmit(this.submit)} id="sso-provider-form">
         <Panel.LEGACY title="Provision Single Sign-On" accent>
           <Panel.LEGACY.Section>
             <Stack>

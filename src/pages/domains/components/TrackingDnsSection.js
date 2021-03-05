@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Layout, Stack, Text, Panel, Checkbox } from 'src/components/matchbox';
 import { Autorenew } from '@sparkpost/matchbox-icons';
+import { Form } from 'src/components/form';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import useDomains from '../hooks/useDomains';
@@ -47,7 +48,7 @@ export default function TrackingDnsSection({ domain, isSectionVisible, title }) 
         </Stack>
       </Layout.Section>
       <Layout.Section>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} id="domains-verify-tracking-form">
           <Panel>
             {unverified ? (
               <Panel.Section>
@@ -114,7 +115,7 @@ export default function TrackingDnsSection({ domain, isSectionVisible, title }) 
               </Panel.Section>
             )}
           </Panel>
-        </form>
+        </Form>
       </Layout.Section>
     </Layout>
   );

@@ -114,7 +114,7 @@ describe('SettingsForm', () => {
     },
   );
 
-  describe('when form is submitted', () => {
+  describe('when Form is submitted', () => {
     const submitForm = async (props = {}, values = {}) => {
       const wrapper = subject({
         parsedTestData: {
@@ -128,7 +128,7 @@ describe('SettingsForm', () => {
         ...props,
       });
 
-      await wrapper.find('form').simulate('submit', {
+      await wrapper.find('Form').simulate('submit', {
         description: '',
         options: { click_tracking: true, open_tracking: true, transactional: true },
         ...values,

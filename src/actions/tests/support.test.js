@@ -38,7 +38,7 @@ describe('Action Creator: Support', () => {
 
     it('should open support panel and set support ticket message', () => {
       support.openSupportTicketForm({ message: 'test' })(dispatchMock, getStateMock);
-      expect(formActions.change).toHaveBeenCalledWith('supportForm', 'message', 'test');
+      expect(formActions.change).toHaveBeenCalledWith('support-form', 'message', 'test');
       expect(formActions.change).toHaveBeenCalledTimes(1);
     });
 
@@ -47,7 +47,11 @@ describe('Action Creator: Support', () => {
       getStateMock.mockImplementation(() => stateMock);
       selectSupportIssues.mockImplementation(() => [{ id: 'technical_errors' }]);
       support.openSupportTicketForm({ issueId: 'technical_errors' })(dispatchMock, getStateMock);
-      expect(formActions.change).toHaveBeenCalledWith('supportForm', 'issueId', 'technical_errors');
+      expect(formActions.change).toHaveBeenCalledWith(
+        'support-form',
+        'issueId',
+        'technical_errors',
+      );
       expect(formActions.change).toHaveBeenCalledTimes(1);
       expect(selectSupportIssues).toHaveBeenCalledWith(stateMock);
     });

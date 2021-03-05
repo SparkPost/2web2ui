@@ -11,7 +11,8 @@ exports[`A/B Test Create Form Component should render subaccount section if suba
 `;
 
 exports[`A/B Test Create Form Component should render when no available templates 1`] = `
-<form
+<Form
+  id="abtest-create-form"
   onSubmit={[MockFunction]}
 >
   <Box
@@ -107,5 +108,5 @@ exports[`A/B Test Create Form Component should render when no available template
       Continue
     </Button>
   </Panel.LEGACY.Section>
-</form>
+</Form>
 `;

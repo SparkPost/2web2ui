@@ -5,6 +5,7 @@ import { createTicket } from 'src/actions/support';
 import { showAlert } from 'src/actions/globalAlert';
 import { PageLink } from 'src/components/links';
 import { Button, Page, Panel } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import PremiumSupportFields from './components/PremiumSupportFields';
 import { generateMessage } from './helpers/formHelpers';
 
@@ -41,12 +42,12 @@ export class PremiumSupportPage extends Component {
         }}
       >
         <Panel.LEGACY title="Request Premium Support" sectioned accent>
-          <form onSubmit={handleSubmit(this.handleTicketCreate)}>
+          <Form onSubmit={handleSubmit(this.handleTicketCreate)} id="premium-support-form">
             <PremiumSupportFields />
             <Button submit color="orange" disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit Request'}
             </Button>
-          </form>
+          </Form>
         </Panel.LEGACY>
       </Page>
     );

@@ -2,6 +2,7 @@
 
 exports[`ProviderForm disables fields and buttons when submitting 1`] = `
 <Form
+  id="sso-provider-form"
   onSubmit={[Function]}
 >
   <Panel.LEGACY
@@ -83,6 +84,7 @@ exports[`ProviderForm disables fields and buttons when submitting 1`] = `
 
 exports[`ProviderForm renders form 1`] = `
 <Form
+  id="sso-provider-form"
   onSubmit={[Function]}
 >
   <Panel.LEGACY

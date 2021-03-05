@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Form Container: Update Contact should render 1`] = `
-<form>
+<Form
+  id="billing-update-payment-form"
+>
   <Panel.LEGACY
     title="Update Payment Information"
   >
@@ -33,5 +35,5 @@ exports[`Form Container: Update Contact should render 1`] = `
       </ButtonWrapper>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-</form>
+</Form>
 `;

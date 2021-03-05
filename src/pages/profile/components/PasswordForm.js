@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { required, minLength } from 'src/helpers/validation';
 import { TextFieldWrapper } from 'src/components';
 
@@ -15,7 +16,7 @@ export class PasswordForm extends Component {
     const { pristine, submitting, handleSubmit, currentPassword, newPassword } = this.props;
 
     return (
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="update-password-form">
         <Panel.LEGACY.Section>
           <Stack>
             <Field
@@ -55,7 +56,7 @@ export class PasswordForm extends Component {
             {submitting ? 'Updating Password' : 'Update Password'}
           </Button>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
     );
   }
 }

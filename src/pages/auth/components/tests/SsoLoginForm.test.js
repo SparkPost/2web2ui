@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 
 import { SsoLoginForm } from '../SsoLoginForm';
 
-
 describe('Component: SsoLoginForm', () => {
   function subject(props) {
     return shallow(<SsoLoginForm {...props} />);
@@ -19,7 +18,10 @@ describe('Component: SsoLoginForm', () => {
 
   it('calls onSubmit', () => {
     const handleSubmit = jest.fn();
-    subject({ handleSubmit }).find('form').first().simulate('submit');
+    subject({ handleSubmit })
+      .find('Form')
+      .first()
+      .simulate('submit');
     expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 

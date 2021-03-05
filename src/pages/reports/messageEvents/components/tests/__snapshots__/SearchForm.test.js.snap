@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchForm should render correctly 1`] = `
-<form
+<Form
+  id="events-advanced-filter-form"
   onSubmit={[MockFunction]}
 >
   <Panel.LEGACY
@@ -37,5 +38,5 @@ exports[`SearchForm should render correctly 1`] = `
       </Inline>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-</form>
+</Form>
 `;

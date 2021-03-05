@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useForm, useWatch } from 'react-hook-form';
 import { Button, Modal, Tabs } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { showAlert } from 'src/actions/globalAlert';
 import {
@@ -54,7 +55,7 @@ export function ChangeReportModal({ reports, open, onClose, currentUser }) {
     <Modal open={open} onClose={closeModal} showCloseButton maxWidth="1300">
       <Modal.Header>Change Report</Modal.Header>
       <Modal.Content p="0">
-        <form onSubmit={handleSubmit(onSubmit)} id="reportsmodalForm">
+        <Form onSubmit={handleSubmit(onSubmit)} id="dashboard-changereport-modal-form">
           <Tabs
             tabs={[
               { content: 'My Reports', onClick: () => handleTabChange(0) },
@@ -65,7 +66,7 @@ export function ChangeReportModal({ reports, open, onClose, currentUser }) {
           />
 
           {TABS[tabIndex]}
-        </form>
+        </Form>
       </Modal.Content>
       <ModalFooter onClose={closeModal} control={control} />
     </Modal>
@@ -83,7 +84,7 @@ function ModalFooter({ onClose, control }) {
         variant="primary"
         loadingLabel="Loading"
         type="submit"
-        form="reportsmodalForm"
+        form="dashboard-changereport-modal-form"
         disabled={!submitDisbaled}
       >
         Change Report

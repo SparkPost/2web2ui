@@ -15,7 +15,8 @@ exports[`PremiumSupportPage default state 1`] = `
     sectioned={true}
     title="Request Premium Support"
   >
-    <form
+    <Form
+      id="premium-support-form"
       onSubmit={[Function]}
     >
       <PremiumSupportFields />
@@ -26,7 +27,7 @@ exports[`PremiumSupportPage default state 1`] = `
       >
         Submit Request
       </Button>
-    </form>
+    </Form>
   </Panel.LEGACY>
 </Page>
 `;
@@ -51,7 +52,7 @@ exports[`PremiumSupportPage renders submitting state correctly 1`] = `
 </Button>
 `;
 
-exports[`PremiumSupportPage submits form correctly 1`] = `
+exports[`PremiumSupportPage submits Form correctly 1`] = `
 Array [
   Object {
     "issueType": "Vetting",

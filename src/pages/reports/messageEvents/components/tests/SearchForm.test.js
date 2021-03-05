@@ -24,7 +24,7 @@ describe('SearchForm', () => {
 
   it('should call handleApply when submitting', () => {
     const formValues = {};
-    wrapper.find('form').simulate('submit', formValues);
+    wrapper.find('Form').simulate('submit', formValues);
     expect(props.handleApply).toHaveBeenCalledWith(formValues);
   });
 

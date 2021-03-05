@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector, change } from 'redux-form';
+import { Field, formValueSelector, change } from 'redux-form';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
 import { RadioGroup, SubaccountTypeaheadWrapper, TextFieldWrapper } from 'src/components';
 import { Stack } from 'src/components/matchbox';
 import { required } from 'src/helpers/validation';

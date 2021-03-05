@@ -9,6 +9,7 @@ import {
   Stack,
 } from 'src/components/matchbox';
 import { Add, Close } from '@sparkpost/matchbox-icons';
+import { Form } from 'src/components/form';
 import { TranslatableText, Comparison } from 'src/components/text';
 
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
@@ -132,7 +133,7 @@ function CompareByForm({ handleSubmit }) {
   const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <Form onSubmit={handleFormSubmit} id="reportbuilder-compareby-form">
       <Box padding="500" paddingBottom="8rem">
         <Stack>
           <Select
@@ -232,7 +233,7 @@ function CompareByForm({ handleSubmit }) {
           </Box>
         </Box>
       </Drawer.Footer>
-    </form>
+    </Form>
   );
 }
 

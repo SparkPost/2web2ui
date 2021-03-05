@@ -1,6 +1,7 @@
 import React from 'react';
-import { Field, Form } from 'redux-form';
+import { Field } from 'redux-form';
 import { Grid, Button, Page, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import ContentEditor from 'src/components/contentEditor';
 import { ExternalLink, PageLink } from 'src/components/links';
 import Loading from 'src/components/loading';
@@ -63,7 +64,7 @@ export default class CreatePage extends React.Component {
           onClick: handleSubmit(this.submitSnippet),
         }}
       >
-        <Form onSubmit={this.submitSnippet}>
+        <Form onSubmit={this.submitSnippet} id="snippets-create-form">
           <Grid>
             <Grid.Column xs={12} lg={4}>
               <Panel.LEGACY sectioned>

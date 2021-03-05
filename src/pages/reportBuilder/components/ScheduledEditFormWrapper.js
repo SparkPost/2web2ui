@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScheduledReportDetailsForm, ScheduledReportTimingForm } from './ScheduledReportForm';
 import { useForm } from 'react-hook-form';
-
+import { Form } from 'src/components/form';
 /*
 This wrapper is used because of the difficulties in getting async default values to work
  */
@@ -26,7 +26,7 @@ export default function ScheduledReportEditFormWrapper({
 
   return (
     <>
-      <form onSubmit={detailsFormControls.handleSubmit(onSubmit)} id="scheduledReportDetailsForm">
+      <Form onSubmit={detailsFormControls.handleSubmit(onSubmit)} id="scheduledReportDetailsForm">
         <ScheduledReportDetailsForm
           formControls={detailsFormControls}
           disabled={disabled || isSubmitting}
@@ -34,15 +34,15 @@ export default function ScheduledReportEditFormWrapper({
           report={report}
           users={users}
         />
-      </form>
-      <form onSubmit={timingFormControls.handleSubmit(onSubmit)} id="scheduledReportTimingForm">
+      </Form>
+      <Form onSubmit={timingFormControls.handleSubmit(onSubmit)} id="scheduledReportTimingForm">
         <ScheduledReportTimingForm
           formControls={timingFormControls}
           disabled={disabled || isSubmitting}
           isUpdatingScheduledReport={true}
           report={report}
         />
-      </form>
+      </Form>
     </>
   );
 }

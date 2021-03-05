@@ -23,7 +23,7 @@ test('base case', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-test('api key form', () => {
+test('api key Form', () => {
   wrapper.setProps({ createApiKey: true });
   expect(wrapper).toMatchSnapshot();
 });
@@ -39,7 +39,7 @@ test('has ip pools and checked checkbox', () => {
 });
 
 test('submits correctly', () => {
-  wrapper.find('form').simulate('submit');
+  wrapper.find('Form').simulate('submit');
   expect(handleSubmit).toHaveBeenCalled();
   wrapper.setProps({ submitting: true });
   expect(wrapper).toMatchSnapshot();

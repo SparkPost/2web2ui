@@ -8,6 +8,7 @@ import { updateContactInitialValues } from 'src/selectors/accountBillingForms';
 
 import { Button, Panel } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import BillingContactForm from './fields/BillingContactForm';
 
 const FORMNAME = 'updateContact';
@@ -28,7 +29,7 @@ export class UpdateContactForm extends Component {
     const { onCancel, handleSubmit, submitting } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)} id="billing-update-contact">
         <Panel.LEGACY title="Update Billing Contact">
           <Panel.LEGACY.Section>
             <BillingContactForm
@@ -48,7 +49,7 @@ export class UpdateContactForm extends Component {
             </ButtonWrapper>
           </Panel.LEGACY.Section>
         </Panel.LEGACY>
-      </form>
+      </Form>
     );
   }
 }

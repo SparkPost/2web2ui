@@ -6,6 +6,7 @@ import { TextFieldWrapper } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Grid, Box, Button, Panel, Stack } from 'src/components/matchbox';
 import { OGOnlyWrapper } from 'src/components/hibana';
+import { Form } from 'src/components/form';
 import { ExternalLink } from 'src/components/links';
 import {
   TemplateTypeaheadWrapper,
@@ -34,7 +35,7 @@ export class AbTestCreateForm extends Component {
     const disabled = pristine || submitting;
     const submitText = submitting ? 'Submitting...' : 'Continue';
     return (
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} id="abtest-create-form">
         <Box as={Panel.LEGACY.Section}>
           <Stack>
             <OGOnlyWrapper as={Panel.LEGACY.Section}>
@@ -119,7 +120,7 @@ export class AbTestCreateForm extends Component {
             {submitText}
           </Button>
         </Panel.LEGACY.Section>
-      </form>
+      </Form>
     );
   }
 }

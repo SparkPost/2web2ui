@@ -39,7 +39,7 @@ test('cancel button', () => {
 });
 
 test('submits correctly', () => {
-  wrapper.find('form').simulate('submit');
+  wrapper.find('Form').simulate('submit');
   expect(handleSubmit).toHaveBeenCalled();
   wrapper.setProps({ submitting: true });
   expect(wrapper).toMatchSnapshot();

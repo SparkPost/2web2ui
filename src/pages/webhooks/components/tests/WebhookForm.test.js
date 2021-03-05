@@ -66,7 +66,7 @@ describe('Webhooks Form Component', () => {
   });
 
   it('should handle submit', () => {
-    wrapper.find('form').simulate('submit');
+    wrapper.find('Form').simulate('submit');
     expect(props.handleSubmit).toHaveBeenCalled();
   });
 

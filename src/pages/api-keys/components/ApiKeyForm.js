@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
-
+import { Form } from 'src/components/form';
 import {
   RadioGroup,
   TextFieldWrapper,
@@ -63,7 +63,10 @@ export class ApiKeyForm extends Component {
     const submitText = isNew ? 'Create API Key' : 'Update API Key';
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form
+        onSubmit={handleSubmit(this.onSubmit)}
+        id={isNew ? 'apikey-create-form' : 'apikey-update-form'}
+      >
         <Panel.LEGACY.Section>
           <Stack>
             <Field
@@ -120,7 +123,7 @@ export class ApiKeyForm extends Component {
             </Button>
           </Panel.LEGACY.Section>
         )}
-      </form>
+      </Form>
     );
   }
 }

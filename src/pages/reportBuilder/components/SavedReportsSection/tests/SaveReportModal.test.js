@@ -55,7 +55,7 @@ describe('SaveNewReportModal', () => {
 
   it('calls createReport when clicking submit button and closes and shows alert on success', async () => {
     const wrapper = subject();
-    await wrapper.find('form').simulate('submit');
+    await wrapper.find('Form').simulate('submit');
     expect(mockCreateReport).toHaveBeenCalled();
     expect(mockShowAlert).toHaveBeenCalled();
     expect(mockOnCancel).toHaveBeenCalled();
@@ -97,7 +97,7 @@ describe('UpdateReportModal', () => {
 
   it('calls createReport when clicking submit button and closes and shows alert on success', async () => {
     const wrapper = subject();
-    await wrapper.find('form').simulate('submit');
+    await wrapper.find('Form').simulate('submit');
     expect(defaults.updateReport).toHaveBeenCalled();
     expect(defaults.showAlert).toHaveBeenCalled();
     expect(defaults.onCancel).toHaveBeenCalled();

@@ -54,6 +54,7 @@ exports[`EditPage renders disabled form when submitting 1`] = `
   title="Edit Snippet"
 >
   <Form
+    id="snippets-edit-form"
     onSubmit={[Function]}
   >
     <Grid>
@@ -139,6 +140,7 @@ exports[`EditPage renders disabled form when user does not have authorization to
   title="Edit Snippet"
 >
   <Form
+    id="snippets-edit-form"
     onSubmit={[Function]}
   >
     <Grid>
@@ -245,6 +247,7 @@ exports[`EditPage renders edit form 1`] = `
   title="Edit Snippet"
 >
   <Form
+    id="snippets-edit-form"
     onSubmit={[Function]}
   >
     <Grid>

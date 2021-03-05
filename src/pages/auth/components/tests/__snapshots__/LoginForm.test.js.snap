@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<form>
+<Form
+  id="login-form"
+>
   <Stack>
     <Field
       component={[Function]}
@@ -42,11 +44,13 @@ exports[`renders correctly 1`] = `
       </Button>
     </Box>
   </Stack>
-</form>
+</Form>
 `;
 
 exports[`renders correctly when logging in 1`] = `
-<form>
+<Form
+  id="login-form"
+>
   <Stack>
     <Field
       component={[Function]}
@@ -87,11 +91,13 @@ exports[`renders correctly when logging in 1`] = `
       </Button>
     </Box>
   </Stack>
-</form>
+</Form>
 `;
 
 exports[`renders errors 1`] = `
-<form>
+<Form
+  id="login-form"
+>
   <Stack>
     <BottomPad>
       <Error
@@ -137,5 +143,5 @@ exports[`renders errors 1`] = `
       </Button>
     </Box>
   </Stack>
-</form>
+</Form>
 `;

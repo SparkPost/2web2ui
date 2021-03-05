@@ -13,6 +13,7 @@ import {
 import billingCreate from 'src/actions/billingCreate';
 import billingUpdate from 'src/actions/billingUpdate';
 import { showAlert } from 'src/actions/globalAlert';
+import { Form } from 'src/components/form';
 import ApiErrorBanner from 'src/components/apiErrorBanner';
 import Loading from 'src/components/loading';
 import { prepareCardInfo } from 'src/helpers/billing';
@@ -171,7 +172,7 @@ export const ChangePlanForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} id="change-plan-form">
       <div className={styles.ChangePlanForm}>
         <div className={styles.CurrentPlanSection}>
           <CurrentPlanSection currentPlan={currentPlan} isPlanSelected={Boolean(selectedBundle)} />
@@ -210,7 +211,7 @@ export const ChangePlanForm = ({
           )}
         </div>
       </div>
-    </form>
+    </Form>
   );
 };
 

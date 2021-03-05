@@ -3,6 +3,7 @@ import { Layout, Stack, Text } from 'src/components/matchbox';
 import { Button, Checkbox, Panel } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
+import { Form } from 'src/components/form';
 import { Bold, SubduedText } from 'src/components/text';
 import { resolveReadyFor } from 'src/helpers/domains';
 import getConfig from 'src/helpers/getConfig';
@@ -99,7 +100,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
       </Layout.Section>
       <Layout.Section>
         <Panel mb="0">
-          <form onSubmit={handleSubmit(onSubmit)} id="sendingbounceForm">
+          <Form onSubmit={handleSubmit(onSubmit)} id="domain-verify-sendingbounce-form">
             {!readyFor.dkim || !readyFor.bounce ? (
               <Panel.Section>
                 <p>
@@ -227,7 +228,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                 </Button>
               </Panel.Section>
             )}
-          </form>
+          </Form>
         </Panel>
       </Layout.Section>
     </Layout>

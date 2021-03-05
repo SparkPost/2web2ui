@@ -29,7 +29,7 @@ it('renders correctly verifying tfa', () => {
 });
 
 it('calls correct method on submit', () => {
-  wrapper.find('form').first().simulate('submit', { code: 'my-code' });
+  wrapper.find('Form').first().simulate('submit', { code: 'my-code' });
   expect(instance.props.handleSubmit).toHaveBeenCalled();
 });
 

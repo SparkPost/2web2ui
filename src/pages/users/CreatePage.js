@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import { TextFieldWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { PageLink } from 'src/components/links';
 import { Button, Page, Panel, Stack } from 'src/components/matchbox';
 import { required, email } from 'src/helpers/validation';
@@ -46,7 +47,7 @@ export class CreatePage extends Component {
     return (
       <Page title="Invite User" breadcrumbAction={breadcrumbAction}>
         <Panel.LEGACY>
-          <form onSubmit={handleSubmit(this.handleSubmit)}>
+          <Form onSubmit={handleSubmit(this.handleSubmit)} id="users-create-form">
             <Panel.LEGACY.Section>
               <Stack>
                 <Field
@@ -71,7 +72,7 @@ export class CreatePage extends Component {
                 {submitting ? 'Loading' : 'Add User'}
               </Button>
             </Panel.LEGACY.Section>
-          </form>
+          </Form>
         </Panel.LEGACY>
       </Page>
     );

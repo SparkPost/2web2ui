@@ -8,6 +8,7 @@ import { updatePaymentInitialValues } from 'src/selectors/accountBillingForms';
 import { prepareCardInfo } from 'src/helpers/billing';
 import { Button, Panel } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import PaymentForm from 'src/components/billing/PaymentForm';
 import BillingAddressForm from 'src/components/billing/BillingAddressForm';
 
@@ -32,7 +33,7 @@ export class UpdatePaymentForm extends Component {
     const { onCancel, handleSubmit, submitting } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)} id="billing-update-payment-form">
         <Panel.LEGACY title="Update Payment Information">
           <Panel.LEGACY.Section>
             <PaymentForm formName={FORMNAME} disabled={submitting} />
@@ -57,7 +58,7 @@ export class UpdatePaymentForm extends Component {
             </ButtonWrapper>
           </Panel.LEGACY.Section>
         </Panel.LEGACY>
-      </form>
+      </Form>
     );
   }
 }

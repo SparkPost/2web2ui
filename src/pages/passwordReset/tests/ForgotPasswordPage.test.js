@@ -36,7 +36,7 @@ describe('Forgot Password Page', () => {
   });
 
   it('should handle submit', () => {
-    wrapper.find('form').simulate('submit', { user: 'username' });
+    wrapper.find('Form').simulate('submit', { user: 'username' });
     expect(props.handleSubmit).toHaveBeenCalledWith(props.sendPasswordResetEmail);
     expect(props.sendPasswordResetEmail).toHaveBeenCalledWith({ user: 'username' });
   });

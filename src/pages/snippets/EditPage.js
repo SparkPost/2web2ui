@@ -1,6 +1,7 @@
 import React from 'react';
-import { Field, Form } from 'redux-form';
+import { Field } from 'redux-form';
 import { Grid, Button, Page, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import ContentEditor from 'src/components/contentEditor';
 import CopyField from 'src/components/copyField';
 import { RedirectAndAlert } from 'src/components/globalAlert';
@@ -105,7 +106,7 @@ export default class EditPage extends React.Component {
         }}
         secondaryActions={this.secondaryActions.filter(({ visible = () => true }) => visible())}
       >
-        <Form onSubmit={this.submitSnippet}>
+        <Form onSubmit={this.submitSnippet} id="snippets-edit-form">
           <Grid>
             <Grid.Column xs={12} lg={4}>
               <Panel.LEGACY sectioned>

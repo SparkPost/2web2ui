@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { showAlert } from 'src/actions/globalAlert';
 import { uploadSuppressions } from 'src/actions/suppressions';
 import { DownloadLink } from 'src/components/links';
@@ -28,7 +29,7 @@ export class UploadForm extends Component {
     const { handleSubmit: reduxFormSubmit, submitting, pristine } = this.props;
     return (
       <>
-        <form onSubmit={reduxFormSubmit(this.handleSubmit)}>
+        <Form onSubmit={reduxFormSubmit(this.handleSubmit)} id="suppresions-upload-form">
           <Panel.LEGACY.Section>
             <Stack>
               <Field
@@ -68,7 +69,7 @@ export class UploadForm extends Component {
               Upload
             </Button>
           </Panel.LEGACY.Section>
-        </form>
+        </Form>
       </>
     );
   }

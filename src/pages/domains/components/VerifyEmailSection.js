@@ -11,6 +11,7 @@ import {
   TextField,
   Text,
 } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { Bold } from 'src/components/text';
 import useModal from 'src/hooks/useModal';
 import { useForm, Controller } from 'react-hook-form';
@@ -95,7 +96,7 @@ function AllowAnyoneAtModal(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="modalForm">
+    <Form onSubmit={handleSubmit(onSubmit)} id="domain-verify-by-email">
       <Modal open onClose={onCancel} showCloseButton>
         <Modal.Header>Verify through Email</Modal.Header>
         <Modal.Content>
@@ -127,12 +128,17 @@ function AllowAnyoneAtModal(props) {
         </Modal.Content>
 
         <Modal.Footer>
-          <Button variant="primary" type="submit" form="modalForm" loading={verifyEmailLoading}>
+          <Button
+            variant="primary"
+            type="submit"
+            form="domain-verify-by-email"
+            loading={verifyEmailLoading}
+          >
             Send Email
           </Button>
         </Modal.Footer>
       </Modal>
-    </form>
+    </Form>
   );
 }
 

@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`render 1`] = `
-<form
+<Form
+  id="register-user-form"
   onSubmit={[MockFunction]}
 >
   <Stack>
@@ -50,11 +51,12 @@ exports[`render 1`] = `
       </Button>
     </Box>
   </Stack>
-</form>
+</Form>
 `;
 
 exports[`submitting 1`] = `
-<form
+<Form
+  id="register-user-form"
   onSubmit={[MockFunction]}
 >
   <Stack>
@@ -103,5 +105,5 @@ exports[`submitting 1`] = `
       </Button>
     </Box>
   </Stack>
-</form>
+</Form>
 `;

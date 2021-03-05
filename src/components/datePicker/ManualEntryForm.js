@@ -3,6 +3,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { ArrowForward } from '@sparkpost/matchbox-icons';
 import { Grid, TextField } from 'src/components/matchbox';
+import { Form } from 'src/components/form';
 import { formatInputDate, formatInputTime, parseDatetime } from 'src/helpers/date';
 import {
   getValidDateRange,
@@ -17,7 +18,9 @@ import { TranslatableText } from 'src/components/text';
 
 const DATE_PLACEHOLDER = '1970-01-20';
 const TIME_PLACEHOLDER = '12:00am';
-
+/*
+  used in Inboxplacement
+ */
 export class ManualEntryFormClassComponent extends Component {
   DEBOUNCE = 500;
 
@@ -141,7 +144,11 @@ export class ManualEntryFormClassComponent extends Component {
     }
 
     return (
-      <form onKeyDown={this.handleEnter} className={styles.DateFields}>
+      <Form
+        onKeyDown={this.handleEnter}
+        className={styles.DateFields}
+        id="datepicker-manualentry-form"
+      >
         <Grid middle="xs">
           <Grid.Column>
             <TextField
@@ -196,7 +203,7 @@ export class ManualEntryFormClassComponent extends Component {
           </Grid.Column>
         </Grid>
         {precisionLabel}
-      </form>
+      </Form>
     );
   }
 }

@@ -6,6 +6,7 @@ import { showAlert } from 'src/actions/globalAlert';
 import { required, minLength, endsWithWhitespace } from 'src/helpers/validation';
 import { reduxForm, Field } from 'redux-form';
 import { CenteredLogo, TextFieldWrapper } from 'src/components';
+import { Form } from 'src/components/form';
 import { PageLink } from 'src/components/links';
 import { Box, Button, Panel, Stack } from 'src/components/matchbox';
 import _ from 'lodash';
@@ -54,7 +55,7 @@ export class ResetPasswordPage extends Component {
       <Fragment>
         <CenteredLogo />
         <Panel.LEGACY sectioned title="Create a New Password">
-          <form onSubmit={handleSubmit(this.handleResetPassword)}>
+          <Form onSubmit={handleSubmit(this.handleResetPassword)} id="reset-password-form">
             <Stack>
               <Field
                 name="newPassword"
@@ -77,7 +78,7 @@ export class ResetPasswordPage extends Component {
                 </Button>
               </Box>
             </Stack>
-          </form>
+          </Form>
         </Panel.LEGACY>
         <Panel.LEGACY.Footer
           left={
