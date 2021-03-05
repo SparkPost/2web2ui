@@ -4,10 +4,12 @@ import { getTimezoneOptions, UTC_TYPEAHEAD_OPTION } from 'src/helpers/date';
 import { Typeahead } from './Typeahead';
 import styles from './Typeahead.module.scss';
 
+const TIMEZONE_OPTIONS = getTimezoneOptions();
+
 export const TimezoneTypeahead = props => {
   const {
     initialValue,
-    options = getTimezoneOptions(),
+    options = TIMEZONE_OPTIONS,
     onChange: parentOnChange,
     isForcedUTC,
     disabledAndUTCOnly,

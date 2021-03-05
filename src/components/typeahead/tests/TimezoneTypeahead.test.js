@@ -43,7 +43,7 @@ describe('TimezoneTypeahead', () => {
 
     expect(onChange).toBeCalledWith({
       label: 'UTC',
-      value: 'UTC',
+      value: 'Etc/UTC',
     });
   });
 
@@ -62,7 +62,7 @@ describe('TimezoneTypeahead', () => {
 
     expect(typeahead.prop('selectedItem')).toEqual({
       label: 'UTC',
-      value: 'UTC',
+      value: 'Etc/UTC',
     });
 
     expect(typeahead.prop('disabled')).toBe(true);
