@@ -77,26 +77,26 @@ exports[`CreatePage .submitSnippet succeeds with shared subaccounts assignment 1
 `;
 
 exports[`CreatePage renders form 1`] = `
-<Page
-  breadcrumbAction={
-    Object {
-      "Component": [Function],
-      "content": "View All Snippets",
-      "to": "/snippets",
-    }
-  }
-  primaryAction={
-    Object {
-      "Component": [Function],
-      "content": "Create Snippet",
-      "onClick": [Function],
-    }
-  }
-  title="Create a Snippet"
+<Form
+  id="snippets-create-form"
+  onSubmit={[Function]}
 >
-  <Form
-    id="snippets-create-form"
-    onSubmit={[Function]}
+  <Page
+    breadcrumbAction={
+      Object {
+        "Component": [Function],
+        "content": "View All Snippets",
+        "to": "/snippets",
+      }
+    }
+    primaryAction={
+      Object {
+        "Component": [Function],
+        "content": "Create Snippet",
+        "type": "submit",
+      }
+    }
+    title="Create a Snippet"
   >
     <Grid>
       <Grid.Column
@@ -151,6 +151,6 @@ exports[`CreatePage renders form 1`] = `
         />
       </Grid.Column>
     </Grid>
-  </Form>
-</Page>
+  </Page>
+</Form>
 `;

@@ -4,17 +4,18 @@ import EditPage from '../EditPage';
 import SubaccountSection from 'src/components/subaccountSection';
 
 describe('EditPage', () => {
-  const subject = (props = {}) => shallow(
-    <EditPage
-      canModify={true}
-      getSnippet={() => {}}
-      handleSubmit={(fn) => fn}
-      hasSubaccounts={true}
-      canViewSubaccount={true}
-      id="test-snippet"
-      {...props}
-    />
-  );
+  const subject = (props = {}) =>
+    shallow(
+      <EditPage
+        canModify={true}
+        getSnippet={() => {}}
+        handleSubmit={fn => fn}
+        hasSubaccounts={true}
+        canViewSubaccount={true}
+        id="test-snippet"
+        {...props}
+      />,
+    );
 
   it('renders edit form', () => {
     expect(subject()).toMatchSnapshot();
@@ -73,18 +74,19 @@ describe('EditPage', () => {
     const showAlert = jest.fn();
     const updateSnippet = jest.fn(() => Promise.resolve());
     const wrapper = subject({ showAlert, updateSnippet, isAmpLive: true });
+    const form = wrapper.find('Form').first();
 
-    await wrapper.prop('primaryAction').onClick({
+    await form.simulate('submit', {
       content: {
         html: '<p>Testing</p>',
-        amp_html: '<span>Testing</span>'
+        amp_html: '<span>Testing</span>',
       },
       id: 'test-snippet',
       name: 'Test Snippet',
       shared_with_subaccounts: false,
       subaccount: {
-        id: 345
-      }
+        id: 345,
+      },
     });
 
     expect(updateSnippet).toHaveBeenCalledWith({
@@ -94,7 +96,7 @@ describe('EditPage', () => {
       name: 'Test Snippet',
       sharedWithSubaccounts: false,
       subaccountId: 345,
-      text: undefined
+      text: undefined,
     });
     expect(showAlert).toHaveBeenCalled();
   });
