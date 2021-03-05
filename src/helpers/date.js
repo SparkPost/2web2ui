@@ -3,15 +3,11 @@ import { listTimeZones, findTimeZone, getUTCOffset, setTimeZone } from 'timezone
 import { formatZonedTime } from 'timezone-support/dist/parse-format';
 import config from 'src/config';
 import { roundBoundaries } from './metrics';
-import { FORMATS } from 'src/constants';
+import { FORMATS, UTC_TYPEAHEAD_OPTION } from 'src/constants';
 import { format, utcToZonedTime } from 'date-fns-tz';
 
 const NOW = new Date();
 const TIMEZONES = listTimeZones();
-export const UTC_TYPEAHEAD_OPTION = {
-  value: 'Etc/UTC',
-  label: 'UTC',
-};
 
 export const relativeDateOptions = [
   { value: 'hour', label: 'Last Hour' },

@@ -328,3 +328,24 @@ export const ONBOARDING_STEP = {
   START_SENDING: 'startSending',
   ANALYTICS_REPORT_PROMO: 'analyticsReportPromo',
 };
+
+// <option> data structure for the UTC timezone
+export const UTC_TYPEAHEAD_OPTION = {
+  value: 'Etc/UTC',
+  label: 'UTC',
+};
+
+// These timezones returned by `timezone-support` do not work with metrics endpoints
+export const METRICS_TIMEZONE_BLOCK_LIST = [
+  'Asia/Barnaul',
+  'Asia/Tomsk',
+  'Asia/Famagusta',
+  'Asia/Qostanay',
+  'Asia/Atyrau',
+  'Europe/Astrakhan',
+  'Europe/Saratov',
+  'Europe/Ulyanovsk',
+  'Europe/Kirov',
+  'America/Punta_Arenas',
+  'America/Fort_Nelson',
+];

@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react';
+import _ from 'lodash';
+import { subMonths } from 'date-fns';
 import PrecisionSelector from './PrecisionSelector';
 import { isForcedUTCRollupPrecision } from 'src/helpers/metrics';
 import { Grid, Select, Tooltip } from 'src/components/matchbox';
 import DatePicker from 'src/components/datePicker/DatePickerV2';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
+import { getTimezoneOptions } from 'src/helpers/date';
+import { METRICS_TIMEZONE_BLOCK_LIST } from 'src/constants';
 import config from 'src/config';
 import styles from '../ReportOptions.module.scss';
-import _ from 'lodash';
-import { subMonths } from 'date-fns';
 
 const { metricsRollupPrecisionMap } = config;
 const RELATIVE_DATE_OPTIONS = ['hour', 'day', '7days', '30days', '90days', 'custom'];
@@ -15,6 +17,9 @@ const PRECISION_OPTIONS = metricsRollupPrecisionMap.map(({ value }) => ({
   value,
   label: _.startCase(_.words(value).join(' ')),
 }));
+const TIMEZONE_OPTIONS = getTimezoneOptions().filter(
+  option => !METRICS_TIMEZONE_BLOCK_LIST.includes(option.value),
+);
 
 export const DateTimeSection = ({
   reportOptions,
@@ -62,6 +67,7 @@ export const DateTimeSection = ({
             content="Day, week, and month precision only support UTC."
           >
             <TimezoneTypeahead
+              options={TIMEZONE_OPTIONS}
               initialValue={reportOptions.timezone}
               onChange={handleTimezoneSelect}
               isForcedUTC={isForcedUTC}
