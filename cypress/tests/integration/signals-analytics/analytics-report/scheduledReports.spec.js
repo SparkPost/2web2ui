@@ -263,7 +263,7 @@ describe('Analytics Report Scheduled Reports', () => {
         },
         schedule_type: 'daily',
         subject: 'Free Macbook',
-        timezone: 'UTC',
+        timezone: 'Etc/UTC',
       });
     cy.url().should('include', '/signals/analytics');
     cy.findByText('Successfully scheduled My First Report for report: My Bounce Report').should(
@@ -363,7 +363,7 @@ describe('Analytics Report Scheduled Reports', () => {
         },
         schedule_type: 'monthly',
         subject: 'This is a subject line',
-        timezone: 'UTC',
+        timezone: 'Etc/UTC',
       });
     cy.url().should('include', '/signals/analytics');
     cy.findByText('Successfully updated My Scheduled Report for report: My Bounce Report').should(

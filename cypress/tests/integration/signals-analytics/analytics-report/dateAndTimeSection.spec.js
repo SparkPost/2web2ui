@@ -1,4 +1,4 @@
-import { commonBeforeSteps } from './helpers';
+import { commonBeforeSteps, stubTimeSeries } from './helpers';
 
 const PAGE_URL = '/signals/analytics';
 
@@ -40,7 +40,7 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
 
   it('changing date picker values changes the precision correctly', () => {
     cy.visit(PAGE_URL);
-    cy.wait(['@getSubaccounts']);
+    cy.wait('@getSubaccounts');
     cy.findByLabelText('Precision').should('have.value', 'hour');
     cy.findByLabelText('Date Range').click();
 
@@ -63,13 +63,10 @@ describe('Date Time Section on Summary Report & Report Builder', () => {
     cy.findByLabelText('From Date').should('have.value', '2020-01-29');
     cy.findByLabelText('From Time').should('have.value', '2:00pm');
     //Re-stub so I can get the url params from the second call
-    cy.stubRequest({
-      url: '/api/v1/metrics/deliverability/time-series**',
-      fixture: 'metrics/deliverability/time-series/200.get.json',
-      requestAlias: 'getTimeSeries2',
-    });
+    stubTimeSeries('getTimeSeriesAgain');
+
     cy.findByText('Apply').click({ force: true });
-    cy.wait('@getTimeSeries2').should(xhr => {
+    cy.wait('@getTimeSeriesAgain').should(xhr => {
       expect(xhr.url).to.contain('precision=hour');
       expect(xhr.url).to.contain(`from=2020-01-29T14:00`);
     });
