@@ -1,5 +1,6 @@
 import * as reports from '../reports';
 import * as dateHelpers from 'src/helpers/date';
+import { list as METRICS_LIST } from 'src/config/metrics';
 import cases from 'jest-in-case';
 
 jest.mock('src/helpers/date');
@@ -60,6 +61,17 @@ describe('report helpers', () => {
         `?${filters}&range=week&from=2019-02-09T02%3A00%3A00Z&to=2019-02-16T02%3A59%3A59Zzzzzz&${metrics}`,
       );
       expect(dateHelpers.getRelativeDates).toHaveBeenCalledWith('day');
+    });
+
+    it('parses long list of metrics to Array correctly', () => {
+      const metricsBeer = new Array(21).fill(0).reduce((accumulator, _value, index) => {
+        return `${accumulator}&metrics[${index}]=${METRICS_LIST[index].key}`;
+      }, '');
+      //Because it's over 21
+      //Formatted like metrics[0]=foo&metrics[1]=bar
+
+      const { metrics } = reports.parseSearchNew(`?range=week${metricsBeer}`);
+      expect(Array.isArray(metrics)).toEqual(true);
     });
 
     cases(

@@ -4,7 +4,7 @@ import queryString from 'query-string'; //TODO: Deprecate
 import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
-
+import { list as METRICS_LIST } from 'src/config/metrics';
 export function dedupeFilters(filters) {
   return _.uniqBy(filters, stringifyTypeaheadfilter);
 }
@@ -97,8 +97,7 @@ export function parseSearchNew(search) {
     report,
     industryBenchmarkMetric,
     industryBenchmarkFilters,
-  } = qs.parse(search, { ignoreQueryPrefix: true });
-
+  } = qs.parse(search, { ignoreQueryPrefix: true, arrayLimit: METRICS_LIST.length });
   let ret = {};
 
   if (report) {
