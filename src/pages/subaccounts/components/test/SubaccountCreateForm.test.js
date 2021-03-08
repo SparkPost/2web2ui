@@ -10,7 +10,7 @@ const props = {
   showGrants: false,
   createApiKey: false,
   ipPools: [],
-  handleSubmit
+  handleSubmit,
 };
 
 let wrapper;
@@ -29,7 +29,7 @@ test('api key Form', () => {
 });
 
 test('has ip pools', () => {
-  wrapper.setProps({ ipPools: ['salt water']});
+  wrapper.setProps({ ipPools: ['salt water'] });
   expect(wrapper).toMatchSnapshot();
 });
 

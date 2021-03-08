@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSparkPostQuery } from 'src/hooks';
 import { getIndustryBenchmark } from 'src/helpers/api/metrics';
+import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
 
 import { getQueryFromOptionsV2, getMetricsFromKeys } from 'src/helpers/metrics';
 import isSameDay from 'date-fns/isSameDay';
@@ -20,8 +21,12 @@ function useIndustryBenchmark(reportOptions) {
     return getQueryFromOptionsV2({ ...reportOptions, metrics: formattedMetrics });
   }, [reportOptions, formattedMetrics]);
 
-  const queryEnabled =
-    Boolean(metrics?.includes('inbox_folder_rate')) && Boolean(industryBenchmarkMetric);
+  const queryEnabled = useMemo(() => {
+    return (
+      Boolean(metrics?.some(metric => INDUSTRY_BENCHMARK_METRICS_MAP[metric])) &&
+      Boolean(industryBenchmarkMetric)
+    );
+  }, [metrics, industryBenchmarkMetric]);
 
   const { data, status } = useSparkPostQuery(
     () => {

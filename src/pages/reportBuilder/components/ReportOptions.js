@@ -31,6 +31,8 @@ const initFilters = {
   query_filters: {},
   comparisons: {},
   report: {},
+  industryBenchmarkMetric: {},
+  industryBenchmarkFilters: {},
 };
 
 export function ReportOptions(props) {
@@ -56,6 +58,13 @@ export function ReportOptions(props) {
       if (update.range !== 'custom') {
         update.to = null;
         update.from = null;
+      }
+
+      if (update.industryBenchmarkMetric && update.industryBenchmarkFilters) {
+        update.industryBenchmarkFilters = JSON.stringify(update.industryBenchmarkFilters);
+      } else {
+        update.industryBenchmarkMetric = null;
+        update.industryBenchmarkFilters = null;
       }
 
       updateFilters({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });

@@ -95,6 +95,8 @@ export function parseSearchNew(search) {
     query_filters,
     comparisons,
     report,
+    industryBenchmarkMetric,
+    industryBenchmarkFilters,
   } = qs.parse(search, { ignoreQueryPrefix: true });
 
   let ret = {};
@@ -161,6 +163,17 @@ export function parseSearchNew(search) {
 
   if (timezone) {
     ret.timezone = timezone;
+  }
+
+  if (industryBenchmarkMetric) {
+    ret.industryBenchmarkMetric = industryBenchmarkMetric;
+    if (industryBenchmarkFilters) {
+      try {
+        ret.industryBenchmarkFilters = JSON.parse(decodeURI(industryBenchmarkFilters));
+      } catch {
+        ret.industryBenchmarkFilters = { industryCategory: 'all', mailboxProvider: 'all' };
+      }
+    }
   }
 
   // filters are used in pages to dispatch updates to Redux store

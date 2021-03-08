@@ -7,11 +7,11 @@ jest.mock('../helpers/formHelpers');
 const props = {
   loading: false,
   keys: ['an array of keys'],
-  handleSubmit: jest.fn((a) => a),
+  handleSubmit: jest.fn(a => a),
   createTicket: jest.fn(),
   submitting: false,
   history: { push: jest.fn() },
-  showAlert: jest.fn()
+  showAlert: jest.fn(),
 };
 
 let wrapper;

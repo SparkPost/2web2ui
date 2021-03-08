@@ -677,3 +677,11 @@ export const categorizedMetricsList = categories.map(category => {
     metrics: categorizedMetrics[category].sort((a, b) => a.label.localeCompare(b.label)),
   }; //Sorts each metric alphabetically by label
 });
+
+export const INDUSTRY_BENCHMARK_METRICS_MAP = {
+  inbox_folder_rate: {
+    label: 'Inbox Folder Rate Industry Benchmark',
+    helpText:
+      'When on, inbox folder rate benchmark data for industry and mailbox provider selected below will display on graph.',
+  },
+};

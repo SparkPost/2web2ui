@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Text } from 'src/components/matchbox';
 import { LegendCircle } from 'src/components';
 import { tokens } from '@sparkpost/design-tokens-hibana';
+import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
 
 function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter }) {
   if (!showTooltip) {
@@ -38,7 +39,7 @@ function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter 
               </Box>
             </Box>
 
-            {entry.dataKey === 'inbox_folder_rate' && industryRate && (
+            {INDUSTRY_BENCHMARK_METRICS_MAP[entry.dataKey] && industryRate && (
               <Box mb="100">
                 {Boolean(industryRate.value[0]) && (
                   <Box justifyContent="space-between" alignItems="center" display="flex">

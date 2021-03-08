@@ -9,6 +9,7 @@ import { Box, Columns, Column, Text, LabelValue, Stack } from 'src/components/ma
 import { useSparkPostQuery, usePrepareReportBuilderQuery } from 'src/hooks';
 import TextTooltip from 'src/components/TextTooltip/TextTooltip';
 import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
+import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
 
 const MetricsGrid = styled.div`
   display: inline-grid;
@@ -94,12 +95,13 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
                         <Box display="flex" alignItems="center">
                           {stroke ? <LegendCircle marginRight="200" color={stroke} /> : null}
                           <Unit value={value} unit={unit} />
-                          {key === 'inbox_folder_rate' && Boolean(industryBenchmarkAvgRate) && (
-                            <Text fontWeight="light" ml="300">
-                              (<Unit value={industryBenchmarkAvgRate[0]} unit={unit} /> -{' '}
-                              <Unit value={industryBenchmarkAvgRate[1]} unit={unit} />)
-                            </Text>
-                          )}
+                          {INDUSTRY_BENCHMARK_METRICS_MAP[key] &&
+                            Boolean(industryBenchmarkAvgRate) && (
+                              <Text fontWeight="light" ml="300">
+                                (<Unit value={industryBenchmarkAvgRate[0]} unit={unit} /> -{' '}
+                                <Unit value={industryBenchmarkAvgRate[1]} unit={unit} />)
+                              </Text>
+                            )}
                         </Box>
                       </LabelValue.Value>
                     </LabelValue>

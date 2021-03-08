@@ -9,7 +9,7 @@ import {
 } from 'src/helpers/metrics';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';
-import { map as METRICS_MAP } from 'src/config/metrics';
+import { INDUSTRY_BENCHMARK_METRICS_MAP, map as METRICS_MAP } from 'src/config/metrics';
 import {
   getIterableFormattedGroupings,
   getApiFormattedGroupings,
@@ -28,8 +28,8 @@ const initialState = {
   filters: [],
   comparisons: [],
   groupBy: undefined,
-  industryCategory: 'all',
-  mailboxProvider: 'all',
+  industryBenchmarkMetric: null,
+  industryBenchmarkFilters: { industryCategory: 'all', mailboxProvider: 'all' },
 };
 
 const reducer = (state, action) => {
@@ -66,6 +66,15 @@ const reducer = (state, action) => {
           });
         }
         update.metrics = filteredMetrics;
+
+        //Removes the industry benchmark query params when the metric is removed
+        if (
+          update.industryBenchmarkMetric &&
+          update.metrics.every(metric => !INDUSTRY_BENCHMARK_METRICS_MAP[metric])
+        ) {
+          update.industryBenchmarkMetric = null;
+          update.industryBenchmarkFilters = { industryCategory: 'all', mailboxProvider: 'all' };
+        }
       }
 
       if (payload.filters) {
@@ -180,6 +189,11 @@ const reducer = (state, action) => {
       };
     }
 
+    case 'SET_INDUSTRY_BENCHMARK': {
+      const { payload } = action;
+      return { ...state, ...payload };
+    }
+
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -215,6 +229,13 @@ const getSelectors = reportOptions => {
 
   const selectSummaryMetricsProcessed = getMetricsFromKeys(reportOptions.metrics || [], true);
 
+  const selectIndustryBenchmark = reportOptions.industryBenchmarkMetric
+    ? {
+        industryBenchmarkMetric: reportOptions.industryBenchmarkMetric,
+        industryBenchmarkFilters: reportOptions.industryBenchmarkFilters,
+      }
+    : {};
+
   /**
    * Converts reportOptions for url sharing
    */
@@ -228,6 +249,7 @@ const getSelectors = reportOptions => {
     ...selectTypeaheadFilters,
     ...selectSummaryMetrics,
     ...selectCompareFilters,
+    ...selectIndustryBenchmark,
   };
 
   return {
@@ -311,8 +333,19 @@ const ReportOptionsContextProvider = props => {
     [dispatch],
   );
 
+  const setIndustryBenchmark = useCallback(
+    payload => {
+      return dispatch({
+        type: 'SET_INDUSTRY_BENCHMARK',
+        payload,
+      });
+    },
+    [dispatch],
+  );
+
   const actions = {
     addFilters,
+    setIndustryBenchmark,
     clearFilters,
     setFilters,
     removeFilter,

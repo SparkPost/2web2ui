@@ -6,14 +6,14 @@ describe('Forgot Password Page', () => {
   let wrapper;
 
   const props = {
-    handleSubmit: jest.fn((a) => a),
+    handleSubmit: jest.fn(a => a),
     invalid: true,
     submitting: false,
-    sendPasswordResetEmail: jest.fn((a) => a),
+    sendPasswordResetEmail: jest.fn(a => a),
     history: { push: jest.fn() },
     showAlert: jest.fn(),
     emailSuccess: false,
-    emailError: null
+    emailError: null,
   };
 
   beforeEach(() => {
@@ -46,16 +46,17 @@ describe('Forgot Password Page', () => {
     expect(props.history.push).toHaveBeenCalledWith('/auth');
     expect(props.showAlert).toHaveBeenCalledWith({
       type: 'success',
-      message: 'If you have an account with us, please check your email for your password reset instructions.'
+      message:
+        'If you have an account with us, please check your email for your password reset instructions.',
     });
   });
 
   it('should handle error', () => {
-    wrapper.setProps({ emailError: { message: 'an error happened' }});
+    wrapper.setProps({ emailError: { message: 'an error happened' } });
     expect(props.showAlert).toHaveBeenCalledWith({
       type: 'error',
       message: 'Unable to send your password reset email.',
-      details: 'an error happened'
+      details: 'an error happened',
     });
   });
 });

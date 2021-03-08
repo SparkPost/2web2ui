@@ -2,9 +2,10 @@ import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from 'src/components/charts/LineChart';
+import { StackedLineChart } from '@sparkpost/matchbox-icons';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
-import { Box, Stack, Panel } from 'src/components/matchbox';
-import { useSparkPostQuery } from 'src/hooks';
+import { Box, Button, Stack, Panel } from 'src/components/matchbox';
+import { useModal, useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api/metrics';
 import { differenceInHours } from 'date-fns';
 import {
@@ -18,34 +19,73 @@ import { Heading } from 'src/components/text';
 import CustomTooltip from './Tooltip';
 import useIndustryBenchmark from 'src/hooks/reportBuilder/useIndustryBenchmark';
 import { INDUSTRY_BENCHMARK_INDUSTRIES } from 'src/constants';
-
+import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
+import { IndustryModal } from 'src/pages/reportBuilder/components/IndustryBenchmarkModal';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
   return _.uniq(metrics.map(({ unit = DEFAULT_UNIT }) => unit));
 }
 export function ChartGroups(props) {
-  const { reportOptions, small } = props;
-  const { comparisons } = reportOptions;
+  const { reportOptions, small, showIndustryBenchmarkButton } = props;
+  const { comparisons, metrics } = reportOptions;
+  const industryBenchmarkMetrics = metrics.filter(metric => INDUSTRY_BENCHMARK_METRICS_MAP[metric]);
+  const allowIndustryBenchmark =
+    Boolean(showIndustryBenchmarkButton) && industryBenchmarkMetrics.length !== 0;
   const hasComparisons = Boolean(comparisons.length);
   const [activeChart, setActiveChart] = useState(null);
+  const { closeModal, openModal, isModalOpen } = useModal();
 
   if (!hasComparisons) {
     return (
-      <Panel.Section>
-        <Charts
-          activeChart={activeChart}
-          setActiveChart={setActiveChart}
-          id="chart"
-          reportOptions={reportOptions}
-          small={small}
-        />
-      </Panel.Section>
+      <>
+        {allowIndustryBenchmark && (
+          <>
+            <Panel.Header>
+              <Panel.Action as={Button} onClick={openModal}>
+                Industry Benchmark
+                <Button.Icon as={StackedLineChart} marginLeft="200" />
+              </Panel.Action>
+            </Panel.Header>
+
+            <IndustryModal
+              isModalOpen={isModalOpen}
+              closeModal={closeModal}
+              metrics={industryBenchmarkMetrics}
+            />
+          </>
+        )}
+        <Panel.Section>
+          <Charts
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+            id="chart"
+            reportOptions={reportOptions}
+            small={small}
+          />
+        </Panel.Section>
+      </>
     );
   }
 
   return (
     <>
+      {allowIndustryBenchmark && (
+        <>
+          <Panel.Header>
+            <Panel.Action as={Button} onClick={openModal}>
+              Industry Benchmark
+              <Button.Icon as={StackedLineChart} marginLeft="200" />
+            </Panel.Action>
+          </Panel.Header>
+
+          <IndustryModal
+            isModalOpen={isModalOpen}
+            closeModal={closeModal}
+            metrics={industryBenchmarkMetrics}
+          />
+        </>
+      )}
       {comparisons.map((compareFilter, index) => {
         const { type, value } = compareFilter;
         // Appends each compared filter as a new filter for individual requests

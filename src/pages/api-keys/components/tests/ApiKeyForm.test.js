@@ -9,18 +9,18 @@ const props = {
     grant1: { key: 'value' },
     grant2: { key: 'value' },
     grant3: { key: 'value' },
-    grant4: { key: 'value' }
+    grant4: { key: 'value' },
   },
   subaccountGrants: {
     grant1: { key: 'value' },
-    grant2: { key: 'value' }
+    grant2: { key: 'value' },
   },
   hasSubaccounts: false,
   subaccount: false,
   isNew: true,
   handleSubmit: jest.fn(),
   onSubmit: jest.fn(),
-  isReadOnly: false
+  isReadOnly: false,
 };
 
 let wrapper;
@@ -61,11 +61,11 @@ describe('onSubmit tests', () => {
         grant1: true,
         grant2: false,
         grant3: true,
-        grant4: false
+        grant4: false,
       },
       subaccount: 'my subby',
       grantsRadio: 'select',
-      label: 'My key'
+      label: 'My key',
     };
 
     instance = wrapper.instance();
@@ -76,7 +76,7 @@ describe('onSubmit tests', () => {
     expect(instance.props.onSubmit).toHaveBeenCalledWith({
       label: 'My key',
       grants: ['grant1', 'grant3'],
-      subaccount: 'my subby'
+      subaccount: 'my subby',
     });
   });
 
@@ -86,7 +86,7 @@ describe('onSubmit tests', () => {
     expect(instance.props.onSubmit).toHaveBeenCalledWith({
       label: 'My key',
       grants: ['grant1', 'grant2', 'grant3', 'grant4'],
-      subaccount: 'my subby'
+      subaccount: 'my subby',
     });
   });
 
@@ -97,7 +97,7 @@ describe('onSubmit tests', () => {
       label: 'My key',
       grants: ['grant1', 'grant3'],
       subaccount: 'my subby',
-      validIps: ['ip1', 'ip2', 'ip3']
+      validIps: ['ip1', 'ip2', 'ip3'],
     });
   });
 
@@ -107,8 +107,7 @@ describe('onSubmit tests', () => {
     expect(instance.props.onSubmit).toHaveBeenCalledWith({
       label: 'My key',
       grants: [],
-      subaccount: 'my subby'
+      subaccount: 'my subby',
     });
   });
-
 });

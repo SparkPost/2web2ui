@@ -4,7 +4,7 @@ import React from 'react';
 import { LoginForm } from '../LoginForm';
 
 const baseProps = {
-  loginPending: false
+  loginPending: false,
 };
 
 function subject(props) {
@@ -21,7 +21,10 @@ it('renders correctly when logging in', () => {
 
 it('calls correct method on submit', () => {
   const handleSubmit = jest.fn();
-  subject({ handleSubmit }).find('Form').first().simulate('submit');
+  subject({ handleSubmit })
+    .find('Form')
+    .first()
+    .simulate('submit');
   expect(handleSubmit).toHaveBeenCalledTimes(1);
 });
 

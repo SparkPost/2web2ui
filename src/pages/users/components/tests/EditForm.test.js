@@ -7,7 +7,7 @@ describe('Component: EditForm', () => {
   const baseProps = {
     isAccountSingleSignOnEnabled: true,
     currentUser: { name: 'current-user' },
-    user: { access: 'admin', email: 'test-user@test.com', name: 'test-user' }
+    user: { access: 'admin', email: 'test-user@test.com', name: 'test-user' },
   };
 
   function subject(props) {
@@ -35,15 +35,20 @@ describe('Component: EditForm', () => {
   });
 
   it('should show subaccount info instead of the role selector for subaccount_reporting users', () => {
-    const wrapper = subject({ user: { ...baseProps.user, access: 'subaccount_reporting' }, subaccount: { id: 23, name: 'aSubaccount' }});
+    const wrapper = subject({
+      user: { ...baseProps.user, access: 'subaccount_reporting' },
+      subaccount: { id: 23, name: 'aSubaccount' },
+    });
     expect(wrapper.find('LabelledValue[name="subaccountInfo"]')).toExist();
     expect(wrapper.find('Field[name="access"]')).not.toExist();
-
   });
 
   it('should call submit handler', () => {
     const onSubmit = jest.fn();
-    subject({ onSubmit }).find('Form').first().simulate('submit');
+    subject({ onSubmit })
+      .find('Form')
+      .first()
+      .simulate('submit');
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 });

@@ -312,6 +312,13 @@ export const INDUSTRY_BENCHMARK_INDUSTRIES = [
   { label: 'Telco', value: 'telco' },
   { label: 'Travel', value: 'travel' },
 ];
+export const INDUSTRY_BENCHMARK_MAILBOX_PROVIDERS = [
+  { label: 'All Mailbox Providers', value: 'all' },
+  { label: 'Hotmail / Outlook', value: 'hotmail' },
+  { label: 'Verizon Media Group', value: 'yahoo_aol' },
+  { label: 'Gmail', value: 'gmail' },
+];
+
 export const ONBOARDING_STEP = {
   PINNED_REPORT: 'done',
   ADD_SENDING_DOMAIN: 'addSending',
