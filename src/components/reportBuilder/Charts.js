@@ -1,19 +1,20 @@
 import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
+import { differenceInHours } from 'date-fns';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from 'src/components/charts/LineChart';
 import { StackedLineChart } from '@sparkpost/matchbox-icons';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
 import { Box, Button, Stack, Panel } from 'src/components/matchbox';
 import { useModal, useSparkPostQuery } from 'src/hooks';
+import { formatDateTime } from 'src/helpers/date';
 import { getTimeSeries } from 'src/helpers/api/metrics';
-import { differenceInHours } from 'date-fns';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
 } from 'src/helpers/metrics';
-import { ApiErrorBanner } from 'src/components';
+import { ApiErrorBanner, Unit } from 'src/components';
 import Loading from 'src/components/loading/PanelLoading';
 import { Heading } from 'src/components/text';
 import CustomTooltip from './Tooltip';
@@ -207,31 +208,75 @@ export function Charts(props) {
   return (
     <Box>
       <Stack>
-        {charts.map((chart, index) => (
-          <Box key={`chart-${index}`} onMouseOver={() => setActiveChart(`${id}_chart_${index}`)}>
-            <LineChart
-              height={height}
-              syncId="summaryChart"
-              data={chartData}
-              precision={precision}
-              showTooltip={activeChart === `${id}_chart_${index}`}
-              lines={chart.metrics.map(({ name, label, stroke }) => ({
-                key: name,
-                dataKey: name,
-                name: label,
-                stroke,
-              }))}
-              {...formatters}
-              yTickFormatter={chart.yAxisFormatter}
-              yLabel={chart.label}
-              tooltipValueFormatter={chart.yAxisFormatter}
-              showXAxis={index === charts.length - 1}
-              tooltip={CustomTooltip}
-              unit={chart.unit}
-            />
-          </Box>
-        ))}
+        {charts.map((chart, index) => {
+          return (
+            <Box key={`chart-${index}`} onMouseOver={() => setActiveChart(`${id}_chart_${index}`)}>
+              <LineChart
+                height={height}
+                syncId="summaryChart"
+                data={chartData}
+                precision={precision}
+                showTooltip={activeChart === `${id}_chart_${index}`}
+                lines={chart.metrics.map(({ name, label, stroke }) => ({
+                  key: name,
+                  dataKey: name,
+                  name: label,
+                  stroke,
+                }))}
+                {...formatters}
+                yTickFormatter={chart.yAxisFormatter}
+                yLabel={chart.label}
+                tooltipValueFormatter={chart.yAxisFormatter}
+                showXAxis={index === charts.length - 1}
+                tooltip={CustomTooltip}
+                unit={chart.unit}
+              />
+
+              <ScreenReaderOnlyTable metrics={chart.metrics} unit={chart.unit} data={chartData} />
+            </Box>
+          );
+        })}
       </Stack>
     </Box>
+  );
+}
+
+function ScreenReaderOnlyTable({ caption = 'Analytics Data Over Time', unit, metrics, data }) {
+  return (
+    <table>
+      <caption>{`${caption} by ${unit}`}</caption>
+
+      <thead>
+        <tr>
+          <th scope="col">Timestamp</th>
+
+          {metrics.map((metric, index) => {
+            return (
+              <th key={`${metric.key}-${index}`} scope="col">
+                {metric.label}
+              </th>
+            );
+          })}
+        </tr>
+      </thead>
+
+      <tbody>
+        {data.map((row, rowIndex) => {
+          return (
+            <tr key={`${row.ts}-${rowIndex}`}>
+              <td>{formatDateTime(row.ts)}</td>
+
+              {metrics.map((metric, metricIndex) => {
+                return (
+                  <td key={`${metric.key}-${rowIndex}-${metricIndex}`}>
+                    <Unit value={row[metric.key]} unit={metric.unit} />
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
