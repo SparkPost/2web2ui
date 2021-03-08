@@ -315,7 +315,7 @@ export const INDUSTRY_BENCHMARK_INDUSTRIES = [
 export const INDUSTRY_BENCHMARK_MAILBOX_PROVIDERS = [
   { label: 'All Mailbox Providers', value: 'all' },
   { label: 'Hotmail / Outlook', value: 'hotmail' },
-  { label: 'Verizon Media Group', value: 'yahoo_aol' },
+  { label: 'Verizon Media Group', value: 'verizon_media_group' },
   { label: 'Gmail', value: 'gmail' },
 ];
 
