@@ -28,6 +28,8 @@ const initialState = {
   filters: [],
   comparisons: [],
   groupBy: undefined,
+  industryCategory: 'all',
+  mailboxProvider: 'all',
 };
 
 const reducer = (state, action) => {

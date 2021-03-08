@@ -285,10 +285,7 @@ export function ReportBuilder({
                 {hasActiveComparisons ? (
                   <CompareByAggregatedMetrics date={dateValue} reportOptions={reportOptions} />
                 ) : (
-                  <AggregatedMetrics
-                    date={dateValue}
-                    processedMetrics={selectors.selectSummaryMetricsProcessed}
-                  />
+                  <AggregatedMetrics date={dateValue} reportOptions={reportOptions} />
                 )}
               </Tabs.Item>
 

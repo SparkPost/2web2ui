@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { getDeliverability } from 'src/helpers/api/metrics';
 import { getMetricsFromKeys, getFilterByComparison, transformData } from 'src/helpers/metrics';
 import { getFilterTypeLabel } from 'src/pages/reportBuilder/helpers';
 import { LegendCircle, Unit } from 'src/components';
 import Divider from 'src/components/divider';
-import { Box, Columns, Column, LabelValue, Stack } from 'src/components/matchbox';
+import { Box, Columns, Column, Text, LabelValue, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery, usePrepareReportBuilderQuery } from 'src/hooks';
 import TextTooltip from 'src/components/TextTooltip/TextTooltip';
+import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
 
 const MetricsGrid = styled.div`
   display: inline-grid;
@@ -31,6 +32,23 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
   const { status, data } = useSparkPostQuery(() => getDeliverability(requestParams), {
     refetchOnWindowFocus: false,
   });
+
+  const { data: industryBenchmarkData } = useIndustryBenchmark(reportOptions);
+
+  const industryBenchmarkAvgRate = useMemo(() => {
+    if (!industryBenchmarkData || !Boolean(industryBenchmarkData.length)) {
+      return undefined;
+    }
+
+    return industryBenchmarkData
+      .reduce(
+        (sumArray, current) => {
+          return [sumArray[0] + current.q25, sumArray[1] + current.q75];
+        },
+        [0, 0],
+      )
+      .map(total => (total * 100) / industryBenchmarkData.length);
+  }, [industryBenchmarkData]);
 
   if (status === 'loading' || status === 'error') return null;
 
@@ -76,6 +94,12 @@ export default function CompareByAggregatedRow({ comparison, reportOptions, hasD
                         <Box display="flex" alignItems="center">
                           {stroke ? <LegendCircle marginRight="200" color={stroke} /> : null}
                           <Unit value={value} unit={unit} />
+                          {key === 'inbox_folder_rate' && Boolean(industryBenchmarkAvgRate) && (
+                            <Text fontWeight="light" ml="300">
+                              (<Unit value={industryBenchmarkAvgRate[0]} unit={unit} /> -{' '}
+                              <Unit value={industryBenchmarkAvgRate[1]} unit={unit} />)
+                            </Text>
+                          )}
                         </Box>
                       </LabelValue.Value>
                     </LabelValue>

@@ -1,5 +1,6 @@
 const METRICS_BASE_URL = `/v1/metrics`;
 const DELIVERABILITY_BASE_URL = `${METRICS_BASE_URL}/deliverability`;
+const BENCHMARK_BASE_URL = `${METRICS_BASE_URL}/benchmarks`;
 
 export function getDomains(params) {
   return {
@@ -118,6 +119,14 @@ export function getEngagement(params) {
   return {
     method: 'GET',
     url: `${DELIVERABILITY_BASE_URL}/link-name`,
+    params,
+  };
+}
+
+export function getIndustryBenchmark(params) {
+  return {
+    method: 'GET',
+    url: `${BENCHMARK_BASE_URL}/inbox-rate`,
     params,
   };
 }

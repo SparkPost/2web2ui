@@ -125,7 +125,7 @@ describe('the delay reason comparison (AKA compare by) tables', () => {
     commonBeforeSteps();
     applyDelayMetrics();
     applySubaccountComparisons();
-    cy.wait(['@getDeliverability', '@getTimeSeries']);
+    cy.wait(['@getDeliverability', '@getDeliverability', '@getTimeSeries', '@getTimeSeries']);
 
     cy.findByRole('tab', { name: 'Delay Reason Fake Subaccount 1 (ID 101)' }).should('be.visible');
     cy.findByRole('tab', { name: 'Delay Reason Fake Subaccount 2 (ID 102)' }).should('be.visible');
@@ -243,5 +243,6 @@ function commonBeforeSteps(path = PAGE_URL) {
   stubReports();
   stubTimeSeries();
   cy.visit(path);
+  cy.wait(['@getDeliverability', '@getTimeSeries']);
   cy.findByRole('button', { name: 'Add Metrics' }).click();
 }

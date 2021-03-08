@@ -6,6 +6,7 @@ import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
 import { Box, Stack, Panel } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api/metrics';
+import { differenceInHours } from 'date-fns';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
@@ -15,6 +16,8 @@ import { ApiErrorBanner } from 'src/components';
 import Loading from 'src/components/loading/PanelLoading';
 import { Heading } from 'src/components/text';
 import CustomTooltip from './Tooltip';
+import useIndustryBenchmark from 'src/hooks/reportBuilder/useIndustryBenchmark';
+import { INDUSTRY_BENCHMARK_INDUSTRIES } from 'src/constants';
 
 const DEFAULT_UNIT = 'number';
 
@@ -88,6 +91,8 @@ export function Charts(props) {
   }, [reportOptions, formattedMetrics]);
   const { precision, to } = formattedOptions;
 
+  const { data: industryBenchmarkData, industryCategory } = useIndustryBenchmark(reportOptions);
+
   // API request
   const { data: rawChartData, status: chartStatus, refetch: refetchChart } = useSparkPostQuery(
     () => {
@@ -99,14 +104,36 @@ export function Charts(props) {
   );
 
   const chartData = useMemo(() => {
-    return transformData(rawChartData, formattedMetrics);
-  }, [rawChartData, formattedMetrics]);
+    const transformedData = transformData(rawChartData, formattedMetrics);
+
+    if (!industryBenchmarkData) {
+      return transformedData;
+    }
+
+    const industryLabel = INDUSTRY_BENCHMARK_INDUSTRIES.find(
+      ({ value }) => value === industryCategory,
+    )?.label;
+    return transformedData.map(data => {
+      const industryRate = industryBenchmarkData.find(({ ts: industryTs }) => {
+        const diffInHours = differenceInHours(new Date(data.ts), new Date(industryTs));
+        return diffInHours < 24 && diffInHours >= 0;
+      });
+
+      return {
+        ...data,
+        industry_rate: industryRate
+          ? [industryRate.q25 * 100, industryRate.q75 * 100, industryLabel]
+          : [undefined, undefined, undefined], //Rather than just undefined, we need to pass in this so it doesn't render 0 value
+      };
+    });
+  }, [rawChartData, formattedMetrics, industryBenchmarkData, industryCategory]);
 
   const formatters = getLineChartFormatters(precision, to, { includeTimezone: true });
   //Separates the metrics into their appropriate charts
   const charts = getUniqueUnits(formattedMetrics).map(unit => ({
     metrics: formattedMetrics.filter(metric => metric.unit === unit),
     ...METRICS_UNIT_CONFIG[unit],
+    unit,
   }));
   let height = 150;
 
@@ -160,6 +187,7 @@ export function Charts(props) {
               tooltipValueFormatter={chart.yAxisFormatter}
               showXAxis={index === charts.length - 1}
               tooltip={CustomTooltip}
+              unit={chart.unit}
             />
           </Box>
         ))}

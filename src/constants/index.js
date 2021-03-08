@@ -291,6 +291,27 @@ export const UNLIMITED_PLAN_VOLUME = -1;
 
 export { ROLES, SUBACCOUNT_ROLES, ROLE_LABELS } from './users';
 
+export const INDUSTRY_BENCHMARK_INDUSTRIES = [
+  { label: 'All Industries', value: 'all' },
+  { label: 'Automotive', value: 'automotive' },
+  { label: 'B2B', value: 'b2b' },
+  { label: 'CPG', value: 'cpg' },
+  { label: 'Entertainment', value: 'entertainment' },
+  { label: 'Finance', value: 'finance' },
+  { label: 'Food/service; beverages', value: 'food_beverage_service' },
+  { label: 'Govt, Education, Charities', value: 'govt_education_charity' },
+  { label: 'Media/Publishing', value: 'media_publishing' },
+  { label: 'Medical', value: 'medical' },
+  { label: 'Misc', value: 'misc' },
+  { label: 'Personal Services', value: 'personal_services' },
+  { label: 'Retail-Apparel', value: 'retail_apparel' },
+  { label: 'Retail-Online', value: 'retail_online' },
+  { label: 'Retail-Other', value: 'retail_other' },
+  { label: 'Retail-Supermarket and Drug', value: 'retail_supermarket_drug' },
+  { label: 'Social/Review', value: 'social_review' },
+  { label: 'Telco', value: 'telco' },
+  { label: 'Travel', value: 'travel' },
+];
 export const ONBOARDING_STEP = {
   PINNED_REPORT: 'done',
   ADD_SENDING_DOMAIN: 'addSending',

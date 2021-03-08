@@ -152,9 +152,10 @@ describe('the links table', () => {
 describe('the links comparison (AKA compare by) tables', () => {
   it('renders additional tabs when comparisons are enabled', () => {
     commonBeforeSteps();
+    cy.wait(['@getDeliverability', '@getTimeSeries']);
     applyEngagementMetrics();
     applySubaccountComparisons();
-    cy.wait(['@getDeliverability', '@getTimeSeries']);
+    cy.wait(['@getDeliverability', '@getDeliverability', '@getTimeSeries', '@getTimeSeries']);
 
     cy.findByRole('tab', { name: 'Links' }).should('not.exist');
     cy.findByRole('tab', { name: 'Links Fake Subaccount 1 (ID 101)' }).should('be.visible');

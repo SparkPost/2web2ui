@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Code, ChatBubble, LightbulbOutline, ShowChart, Sync } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
@@ -36,9 +35,6 @@ import Sidebar from './components/Sidebar';
 import { LINKS, ONBOARDING_STEP } from 'src/constants';
 import { useModal } from 'src/hooks';
 import ChangeReportModal from './components/ChangeReportModal';
-import { getMetricsFromKeys } from 'src/helpers/metrics';
-import { _getAggregateDataReportBuilder } from 'src/actions/summaryChart';
-import { usePrevious } from 'src/hooks';
 import { AsyncActionModal } from 'src/components';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
@@ -88,29 +84,9 @@ export default function DashboardPageV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const dispatch = useDispatch();
-
   const { closeModal, openModal, isModalOpen, meta: { name } = {} } = useModal();
 
   const { pinnedReport } = usePinnedReport(onboarding, reports);
-
-  const prevReportQueryString = usePrevious(pinnedReport.query_string);
-
-  useEffect(() => {
-    if (!pinnedReport.loading && pinnedReport.query_string !== prevReportQueryString)
-      dispatch(
-        _getAggregateDataReportBuilder({
-          ...pinnedReport.options,
-          filters: pinnedReport.options.filters,
-        }),
-      );
-  }, [
-    dispatch,
-    pinnedReport.loading,
-    pinnedReport.options,
-    pinnedReport.query_string,
-    prevReportQueryString,
-  ]);
 
   const dateValue = getFormattedDateRangeForAggregateData(
     pinnedReport?.options?.from,
@@ -180,7 +156,7 @@ export default function DashboardPageV2() {
                   ) : (
                     <AggregatedMetrics
                       date={dateValue}
-                      processedMetrics={getMetricsFromKeys(pinnedReport.options.metrics, true)}
+                      reportOptions={pinnedReport.options}
                       handleClickFiltersButton={() => openModal({ name: 'Filters' })}
                       showFiltersButton={pinnedReport?.options?.filters.length > 0}
                     />

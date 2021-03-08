@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Area,
   Bar,
   ComposedChart,
   Line,
@@ -39,6 +40,7 @@ export default function SpLineChart(props) {
         activeDot: false,
         dot: false,
         type: 'linear',
+        connectNulls: true,
         ...line,
       };
       return <Line {...lineProps} />;
@@ -97,17 +99,20 @@ export default function SpLineChart(props) {
     xAxisKey = 'ts',
     yLabel,
     tooltip: CustomTooltip,
+    unit,
   } = props;
+
+  const xAxisHeight = 30;
 
   return (
     <div className={styles.ChartWrapper}>
-      <ResponsiveContainer width="99%" height={height}>
+      <ResponsiveContainer width="99%" height={showXAxis ? height + xAxisHeight : height}>
         <ComposedChart syncId={syncId} barCategoryGap="3%" data={data}>
           <Bar key="noKey" dataKey="noKey" background={{ fill: tokens.color_gray_200 }} />
           <XAxis
             axisLine={false}
             dataKey={xAxisKey}
-            height={30}
+            height={xAxisHeight}
             hide={!showXAxis}
             interval="preserveStartEnd"
             tickFormatter={xTickFormatter}
@@ -126,7 +131,7 @@ export default function SpLineChart(props) {
           />
           <Tooltip
             cursor={<Cursor data={data} />}
-            content={CustomTooltip ? <CustomTooltip showTooltip={showTooltip} /> : null}
+            content={CustomTooltip ? <CustomTooltip data={data} showTooltip={showTooltip} /> : null}
             wrapperStyle={{ zIndex: tokens.zIndex_overlay }}
             isAnimationActive={false}
             itemSorter={orderDesc}
@@ -134,6 +139,14 @@ export default function SpLineChart(props) {
             formatter={tooltipValueFormatter}
           />
           {renderLines()}
+          {unit === 'percent' && (
+            <Area
+              dataKey="industry_rate"
+              stroke={tokens.color_blue_800}
+              fill={tokens.color_blue_800}
+              opacity={0.15}
+            />
+          )}
         </ComposedChart>
       </ResponsiveContainer>
       <span className="sp-linechart-yLabel">{yLabel}</span>

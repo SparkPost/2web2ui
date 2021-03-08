@@ -120,7 +120,7 @@ describe('the bounce reason comparison (AKA compare by) tables', () => {
     commonBeforeSteps();
     applyBounceMetrics();
     applySubaccountComparisons();
-    cy.wait(['@getDeliverability', '@getTimeSeries']);
+    cy.wait(['@getDeliverability', '@getDeliverability', '@getTimeSeries', '@getTimeSeries']);
 
     cy.findByRole('tab', { name: 'Bounce Reason' }).should('not.exist');
     cy.findByRole('tab', { name: 'Bounce Reason Fake Subaccount 1 (ID 101)' }).should('be.visible');
@@ -146,7 +146,6 @@ describe('the bounce reason comparison (AKA compare by) tables', () => {
     commonBeforeSteps();
     applyBounceMetrics();
     applySubaccountComparisons();
-    cy.wait(['@getDeliverability', '@getTimeSeries']);
 
     // Apply an additional subaccount filter
     cy.findByRole('button', { name: 'Add Filters' }).click();
@@ -237,5 +236,6 @@ function commonBeforeSteps(path = PAGE_URL) {
   stubReports();
   stubTimeSeries();
   cy.visit(path);
+  cy.wait(['@getDeliverability', '@getTimeSeries']);
   cy.findByRole('button', { name: 'Add Metrics' }).click();
 }
