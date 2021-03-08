@@ -5,7 +5,7 @@ import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from 'src/components/charts/LineChart';
 import { StackedLineChart } from '@sparkpost/matchbox-icons';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
-import { Box, Button, Stack, Panel } from 'src/components/matchbox';
+import { Box, Button, Panel, Stack, ScreenReaderOnly } from 'src/components/matchbox';
 import { useModal, useSparkPostQuery } from 'src/hooks';
 import { formatDateTime } from 'src/helpers/date';
 import { getTimeSeries } from 'src/helpers/api/metrics';
@@ -254,40 +254,42 @@ function ScreenReaderOnlyTable({
   data,
 }) {
   return (
-    <table>
-      <caption>{`${caption} by ${captionUnit}`}</caption>
+    <ScreenReaderOnly>
+      <table>
+        <caption>{`${caption} by ${captionUnit}`}</caption>
 
-      <thead>
-        <tr>
-          <th scope="col">Timestamp</th>
+        <thead>
+          <tr>
+            <th scope="col">Timestamp</th>
 
-          {metrics.map((metric, index) => {
+            {metrics.map((metric, index) => {
+              return (
+                <th key={`${metric.key}-${index}`} scope="col">
+                  {metric.label}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+
+        <tbody>
+          {data.map((row, rowIndex) => {
             return (
-              <th key={`${metric.key}-${index}`} scope="col">
-                {metric.label}
-              </th>
+              <tr key={`${row.ts}-${rowIndex}`}>
+                <td>{formatDateTime(row.ts)}</td>
+
+                {metrics.map((metric, metricIndex) => {
+                  return (
+                    <td key={`${metric.key}-${rowIndex}-${metricIndex}`}>
+                      <Unit value={row[metric.key]} unit={metric.unit} />
+                    </td>
+                  );
+                })}
+              </tr>
             );
           })}
-        </tr>
-      </thead>
-
-      <tbody>
-        {data.map((row, rowIndex) => {
-          return (
-            <tr key={`${row.ts}-${rowIndex}`}>
-              <td>{formatDateTime(row.ts)}</td>
-
-              {metrics.map((metric, metricIndex) => {
-                return (
-                  <td key={`${metric.key}-${rowIndex}-${metricIndex}`}>
-                    <Unit value={row[metric.key]} unit={metric.unit} />
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </ScreenReaderOnly>
   );
 }
