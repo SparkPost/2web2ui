@@ -4,6 +4,7 @@ import { invert } from 'lodash';
 
 export const DEFAULT_REDIRECT_ROUTE = '/landing';
 export const AFTER_JOIN_REDIRECT_ROUTE = '/onboarding/plan';
+export const RV_AFTER_JOIN_REDIRECT_ROUTE = '/onboarding/recipient-validation';
 export const SIGN_UP_ROUTE = '/join';
 export const AUTH_ROUTE = '/auth';
 export const TFA_ROUTE = '/auth/tfa';

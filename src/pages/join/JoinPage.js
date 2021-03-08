@@ -20,6 +20,7 @@ import { loadScript } from 'src/helpers/loadScript';
 import * as analytics from 'src/helpers/analytics';
 import {
   AFTER_JOIN_REDIRECT_ROUTE,
+  RV_AFTER_JOIN_REDIRECT_ROUTE,
   LINKS,
   AWS_COOKIE_NAME,
   ANALYTICS_CREATE_ACCOUNT,
@@ -85,8 +86,9 @@ export class JoinPage extends Component {
         });
 
         if (product === 'rv') {
-          return this.props.history.push('/onboarding/recipient-validation');
+          return this.props.history.push(RV_AFTER_JOIN_REDIRECT_ROUTE);
         }
+
         return this.props.history.push(AFTER_JOIN_REDIRECT_ROUTE, { plan });
       });
   };
