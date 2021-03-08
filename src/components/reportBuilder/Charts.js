@@ -104,13 +104,14 @@ export function ChartGroups(props) {
               </Box>
               <Box>
                 <Charts
+                  id={`chart_group_${index}`}
+                  tableCaption={`${value} Analytics Data Over Time`}
                   activeChart={activeChart}
                   setActiveChart={setActiveChart}
-                  id={`chart_group_${index}`}
                   reportOptions={{ ...reportOptions, filters: comparedFilters }}
                   small={small}
                 />
-              </Box>{' '}
+              </Box>
             </Stack>
           </Panel.Section>
         );
@@ -120,7 +121,7 @@ export function ChartGroups(props) {
 }
 
 export function Charts(props) {
-  const { reportOptions, activeChart, setActiveChart, id, small } = props;
+  const { reportOptions, activeChart, setActiveChart, id, small, tableCaption } = props;
   const { comparisons, metrics } = reportOptions;
 
   // Prepares params for request
@@ -232,7 +233,12 @@ export function Charts(props) {
                 unit={chart.unit}
               />
 
-              <ScreenReaderOnlyTable metrics={chart.metrics} unit={chart.unit} data={chartData} />
+              <ScreenReaderOnlyTable
+                caption={tableCaption}
+                captionUnit={chart.label}
+                metrics={chart.metrics}
+                data={chartData}
+              />
             </Box>
           );
         })}
@@ -241,10 +247,15 @@ export function Charts(props) {
   );
 }
 
-function ScreenReaderOnlyTable({ caption = 'Analytics Data Over Time', unit, metrics, data }) {
+function ScreenReaderOnlyTable({
+  caption = 'Analytics Data Over Time',
+  captionUnit,
+  metrics,
+  data,
+}) {
   return (
     <table>
-      <caption>{`${caption} by ${unit}`}</caption>
+      <caption>{`${caption} by ${captionUnit}`}</caption>
 
       <thead>
         <tr>
