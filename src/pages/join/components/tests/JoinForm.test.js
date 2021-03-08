@@ -6,20 +6,19 @@ let props;
 let instance;
 let wrapper;
 
-
 describe('JoinForm', () => {
   let mockRecaptcha;
 
   beforeEach(() => {
     mockRecaptcha = {
       execute: jest.fn(),
-      reset: jest.fn()
+      reset: jest.fn(),
     };
 
     props = {
       loading: false,
       onSubmit: jest.fn(),
-      handleSubmit: jest.fn()
+      handleSubmit: jest.fn(),
     };
 
     wrapper = shallow(<JoinForm {...props} />);
@@ -50,7 +49,8 @@ describe('JoinForm', () => {
 
     describe('submit', () => {
       it('invokes recaptcha challenge on click', () => {
-        wrapper.find('Button').simulate('click');
+        const form = wrapper.find('Form').first();
+        form.simulate('submit', { preventDefault: jest.fn() });
         expect(mockRecaptcha.execute).toHaveBeenCalledTimes(1);
       });
     });
@@ -58,7 +58,7 @@ describe('JoinForm', () => {
     describe('executeRecaptcha', () => {
       it('invokes recaptcha on click of submit button', () => {
         wrapper.setState({ reCaptchaInstance: mockRecaptcha });
-        instance.executeRecaptcha();
+        instance.executeRecaptcha({ preventDefault: jest.fn() });
         expect(mockRecaptcha.execute).toHaveBeenCalledTimes(1);
       });
     });
@@ -90,7 +90,12 @@ describe('JoinForm', () => {
       });
 
       it('sets recaptcha response to state & invokes handleSubmit', () => {
-        const formValues = { first_name: 'foo', last_name: 'bar', email: 'foo@bar.com', password: '***' };
+        const formValues = {
+          first_name: 'foo',
+          last_name: 'bar',
+          email: 'foo@bar.com',
+          password: '***',
+        };
         wrapper.setProps({ formValues });
         instance.recaptchaVerifyCallback('foobar');
         expect(wrapper.state().recaptcha_response).toEqual('foobar');
@@ -104,9 +109,18 @@ describe('JoinForm', () => {
       });
 
       it('submits with correct data', () => {
-        const formValues = { first_name: 'foo', last_name: 'bar', email: 'foo@bar.com', password: '***' };
+        const formValues = {
+          first_name: 'foo',
+          last_name: 'bar',
+          email: 'foo@bar.com',
+          password: '***',
+        };
         instance.onSubmit(formValues);
-        expect(props.onSubmit).toHaveBeenCalledWith({ ...formValues, recaptcha_response: 'some-response', recaptcha_type: 'invisible' });
+        expect(props.onSubmit).toHaveBeenCalledWith({
+          ...formValues,
+          recaptcha_response: 'some-response',
+          recaptcha_type: 'invisible',
+        });
       });
     });
   });
