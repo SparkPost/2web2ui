@@ -50,11 +50,9 @@ export class SubaccountEditForm extends Component {
             <Button variant="primary" submit disabled={pristine || submitting || compliance}>
               {submitting ? 'Updating...' : 'Update Subaccount'}
             </Button>
-            {!pristine && (
-              <Button variant="secondary" disabled={pristine || submitting} onClick={reset}>
-                Cancel
-              </Button>
-            )}
+            <Button variant="secondary" disabled={pristine || submitting} onClick={reset}>
+              Cancel
+            </Button>
           </ButtonWrapper>
         </Panel.LEGACY.Section>
       </Form>

@@ -4,7 +4,6 @@ import { PageLink } from 'src/components/links';
 import { Page } from 'src/components/matchbox';
 
 import {
-  Loading,
   Subaccount,
   TableCollection,
   ApiErrorBanner,
@@ -113,10 +112,6 @@ export class ListPage extends Component {
 
   render() {
     const { error, loading, newKey, keys } = this.props;
-
-    if (loading) {
-      return <Loading />;
-    }
 
     return (
       <Page

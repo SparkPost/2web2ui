@@ -38,6 +38,12 @@ exports[`base case 1`] = `
       >
         Update Subaccount
       </Button>
+      <Button
+        disabled={true}
+        variant="secondary"
+      >
+        Cancel
+      </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
 </Form>
@@ -125,6 +131,12 @@ exports[`no ip pools 1`] = `
       >
         Update Subaccount
       </Button>
+      <Button
+        disabled={true}
+        variant="secondary"
+      >
+        Cancel
+      </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
 </Form>
@@ -167,6 +179,12 @@ exports[`should disable all fields when compliance is true 1`] = `
         variant="primary"
       >
         Update Subaccount
+      </Button>
+      <Button
+        disabled={true}
+        variant="secondary"
+      >
+        Cancel
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
@@ -218,6 +236,12 @@ exports[`submits correctly 1`] = `
       >
         Updating...
       </Button>
+      <Button
+        disabled={true}
+        variant="secondary"
+      >
+        Cancel
+      </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>
 </Form>
@@ -268,6 +292,12 @@ exports[`with an assigned ip pool 1`] = `
         variant="primary"
       >
         Update Subaccount
+      </Button>
+      <Button
+        disabled={true}
+        variant="secondary"
+      >
+        Cancel
       </Button>
     </ButtonWrapper>
   </Panel.LEGACY.Section>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Page } from 'src/components/matchbox';
-import { Loading, ApiErrorBanner, TableCollection } from 'src/components';
+import { ApiErrorBanner, TableCollection } from 'src/components';
 import { Users } from 'src/components/images';
 import { PageLink } from 'src/components/links';
 import RecipientListEmptyState from './components/RecipientListEmptyState';
@@ -68,10 +68,6 @@ export class ListPage extends Component {
 
   render() {
     const { error, loading, recipientLists, isHibanaEnabled } = this.props;
-
-    if (loading) {
-      return <Loading />;
-    }
 
     return (
       <Page

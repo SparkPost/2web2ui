@@ -383,4 +383,103 @@ exports[`Api Keys List Page should show api key banner on successful create 1`] 
 </Page>
 `;
 
-exports[`Api Keys List Page should show loading component during load 1`] = `<Loading />`;
+exports[`Api Keys List Page should show loading component during load 1`] = `
+<Page
+  empty={
+    Object {
+      "content": <p>
+        Create an API key you can use to access our REST or SMTP API services.
+      </p>,
+      "image": [Function],
+      "secondaryAction": Object {
+        "content": "View our API Docs",
+        "external": true,
+        "to": "https://developers.sparkpost.com/api",
+      },
+      "show": false,
+    }
+  }
+  hibanaEmptyStateComponent={[Function]}
+  loading={true}
+  primaryAction={
+    Object {
+      "Component": [Function],
+      "content": "Create API Key",
+      "to": "/account/api-keys/create",
+    }
+  }
+  title="API Keys"
+>
+  <TableCollection
+    columns={
+      Array [
+        Object {
+          "label": "Name",
+          "sortKey": "label",
+          "width": "40%",
+        },
+        Object {
+          "label": "Key",
+        },
+      ]
+    }
+    defaultSortColumn="label"
+    defaultSortDirection="desc"
+    filterBox={
+      Object {
+        "exampleModifiers": Array [
+          "key",
+          "name",
+          "id",
+        ],
+        "itemToStringKeys": Array [
+          "label",
+          "short_key",
+          "id",
+        ],
+        "keyMap": Object {
+          "key": "short_key",
+          "name": "label",
+          "owner": "username",
+        },
+        "show": true,
+      }
+    }
+    getRowData={[Function]}
+    pagination={true}
+    rows={
+      Array [
+        Object {
+          "canCurrentUserEdit": true,
+          "grants": Array [
+            "metrics/view",
+          ],
+          "id": "123id",
+          "label": "Test Key 1",
+          "short_key": "ab01",
+          "subaccount_id": 101,
+        },
+        Object {
+          "canCurrentUserEdit": true,
+          "grants": Array [
+            "smtp/inject",
+          ],
+          "id": "456id",
+          "label": "Test Key 2",
+          "short_key": "fe98",
+        },
+        Object {
+          "canCurrentUserEdit": false,
+          "grants": Array [
+            "metrics/view",
+          ],
+          "id": "789id",
+          "label": "Other User Key",
+          "short_key": "c00l",
+          "username": "other_user",
+        },
+      ]
+    }
+  />
+</Page>
+`;

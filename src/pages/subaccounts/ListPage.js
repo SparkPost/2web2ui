@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Loading, TableCollection, ApiErrorBanner } from 'src/components';
+import { TableCollection, ApiErrorBanner } from 'src/components';
 import { Users } from 'src/components/images';
 import { PageLink } from 'src/components/links';
 import { Page } from 'src/components/matchbox';
@@ -69,10 +69,6 @@ export class ListPage extends Component {
 
   render() {
     const { error, loading, subaccounts } = this.props;
-
-    if (loading) {
-      return <Loading />;
-    }
 
     return (
       <Page

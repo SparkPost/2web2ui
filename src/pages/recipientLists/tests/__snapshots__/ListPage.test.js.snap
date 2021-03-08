@@ -128,4 +128,96 @@ exports[`renders errors when present 1`] = `
 </Page>
 `;
 
-exports[`renders loading 1`] = `<Loading />`;
+exports[`renders loading 1`] = `
+<Page
+  empty={
+    Object {
+      "content": <p>
+        Manage your recipient lists
+      </p>,
+      "image": [Function],
+      "secondaryAction": Object {
+        "content": "Learn More",
+        "external": true,
+        "to": "https://developers.sparkpost.com/api/recipient-lists.html",
+      },
+      "show": false,
+    }
+  }
+  hibanaEmptyStateComponent={[Function]}
+  loading={true}
+  primaryAction={
+    Object {
+      "Component": [Function],
+      "content": "Create Recipient List",
+      "to": "/lists/recipient-lists/create",
+    }
+  }
+  title="Recipient Lists"
+>
+  <TableCollection
+    columns={
+      Array [
+        Object {
+          "label": "Name",
+          "sortKey": "name",
+        },
+        Object {
+          "label": "ID",
+          "sortKey": "id",
+        },
+        Object {
+          "label": "Recipients",
+          "sortKey": "total_accepted_recipients",
+          "width": "20%",
+        },
+      ]
+    }
+    defaultSortColumn="name"
+    defaultSortDirection="asc"
+    filterBox={
+      Object {
+        "exampleModifiers": Array [
+          "name",
+          "id",
+          "count",
+        ],
+        "itemToStringKeys": Array [
+          "name",
+          "id",
+        ],
+        "keyMap": Object {
+          "count": "total_accepted_recipients",
+        },
+        "show": true,
+      }
+    }
+    getRowData={[Function]}
+    pagination={true}
+    rows={
+      Array [
+        Object {
+          "attributes": Object {
+            "internal_id": 112,
+            "list_group_id": 12321,
+          },
+          "description": "An email list of graduate students at UMD",
+          "id": "unique_id_4_graduate_students_list",
+          "name": "graduate_students",
+          "total_accepted_recipients": 3,
+        },
+        Object {
+          "attributes": Object {
+            "internal_id": 111,
+            "list_group_id": 11321,
+          },
+          "description": "An email list of undergraduate students at UMBC",
+          "id": "unique_id_4_undergraduates",
+          "name": "undergraduate_students",
+          "total_accepted_recipients": 8,
+        },
+      ]
+    }
+  />
+</Page>
+`;
