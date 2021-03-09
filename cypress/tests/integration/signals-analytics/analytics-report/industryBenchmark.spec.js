@@ -41,7 +41,7 @@ describe('Industry Benchmark', () => {
     });
   });
 
-  it('shows pre-filled industry benchmark modal if data is present in the URL', () => {
+  it('shows pre-filled industry benchmark button if data is present in the URL', () => {
     cy.visit(
       `${PAGE_URL}&metrics[0]=inbox_folder_rate&industryBenchmarkMetric=inbox_folder_rate&industryBenchmarkFilters=%7B"industryCategory"%3A"b2b"%2C"mailboxProvider"%3A"gmail"%7D
 `,
@@ -50,6 +50,40 @@ describe('Industry Benchmark', () => {
       cy.wrap(xhr.url).should('contain', `industry_category=b2b`);
       cy.wrap(xhr.url).should('contain', `mailbox_provider=gmail`);
     });
+
+    // The screen reader only table renders industry benchmark data when present
+    cy.findByRole('table', { name: 'Analytics Data Over Time by Percent' }).within(() => {
+      cy.findAllByRole('row')
+        .eq(1)
+        .within(() => {
+          cy.findAllByRole('cell')
+            .eq(1)
+            .should(
+              'have.text',
+              '25th percentile is 41%, 75th percentile is 90% for the B2B industry',
+            );
+        });
+
+      cy.findAllByRole('row')
+        .eq(2)
+        .within(() => {
+          cy.findAllByRole('cell')
+            .eq(1)
+            .should(
+              'have.text',
+              '25th percentile is 42%, 75th percentile is 93% for the B2B industry',
+            );
+        });
+
+      cy.findAllByRole('row')
+        .eq(3)
+        .within(() => {
+          cy.findAllByRole('cell')
+            .eq(1)
+            .should('contain', 'No Data');
+        });
+    });
+
     cy.findByRole('button', { name: 'Industry Benchmark' }).should('be.visible');
     cy.findByRole('button', { name: 'Industry Benchmark' }).click();
     cy.withinModal(() => {
