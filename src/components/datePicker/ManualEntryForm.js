@@ -154,7 +154,7 @@ export class ManualEntryFormClassComponent extends Component {
             <TextField
               id="fromDate"
               name="fromDate"
-              label="From Date"
+              label="fromDate"
               labelHidden
               placeholder={DATE_PLACEHOLDER}
               onChange={this.handleFieldChange}
@@ -166,7 +166,7 @@ export class ManualEntryFormClassComponent extends Component {
             <TextField
               id="fromTime"
               name="fromTime"
-              label="From Time"
+              label="fromTime"
               labelHidden
               placeholder={TIME_PLACEHOLDER}
               onChange={this.handleFieldChange}
@@ -184,7 +184,7 @@ export class ManualEntryFormClassComponent extends Component {
             <TextField
               id="toDate"
               name="toDate"
-              label="To Date"
+              label="toDate"
               labelHidden
               placeholder={DATE_PLACEHOLDER}
               onChange={this.handleFieldChange}
@@ -196,7 +196,7 @@ export class ManualEntryFormClassComponent extends Component {
             <TextField
               id="toTime"
               name="toTime"
-              label="To Time"
+              label="toTime"
               labelHidden
               placeholder={TIME_PLACEHOLDER}
               onChange={this.handleFieldChange}

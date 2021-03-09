@@ -12,8 +12,9 @@ exports[`Component: DatePicker ManualEntryForm should not show precision when ro
     <Grid.Column>
       <TextField
         id="fromDate"
-        label="From Date"
+        label="fromDate"
         labelHidden={true}
+        name="fromDate"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="1970-01-20"
@@ -23,8 +24,9 @@ exports[`Component: DatePicker ManualEntryForm should not show precision when ro
     <Grid.Column>
       <TextField
         id="fromTime"
-        label="From Time"
+        label="fromTime"
         labelHidden={true}
+        name="fromTime"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="12:00am"
@@ -43,8 +45,9 @@ exports[`Component: DatePicker ManualEntryForm should not show precision when ro
     <Grid.Column>
       <TextField
         id="toDate"
-        label="To Date"
+        label="toDate"
         labelHidden={true}
+        name="toDate"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="1970-01-20"
@@ -54,8 +57,9 @@ exports[`Component: DatePicker ManualEntryForm should not show precision when ro
     <Grid.Column>
       <TextField
         id="toTime"
-        label="To Time"
+        label="toTime"
         labelHidden={true}
+        name="toTime"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="12:00am"
@@ -78,8 +82,9 @@ exports[`Component: DatePicker ManualEntryForm should render correctly by defaul
     <Grid.Column>
       <TextField
         id="fromDate"
-        label="From Date"
+        label="fromDate"
         labelHidden={true}
+        name="fromDate"
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="1970-01-20"
@@ -90,8 +95,9 @@ exports[`Component: DatePicker ManualEntryForm should render correctly by defaul
       <TextField
         disabled={true}
         id="fromTime"
-        label="From Time"
+        label="fromTime"
         labelHidden={true}
+        name="fromTime"
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="12:00am"
@@ -110,8 +116,9 @@ exports[`Component: DatePicker ManualEntryForm should render correctly by defaul
     <Grid.Column>
       <TextField
         id="toDate"
-        label="To Date"
+        label="toDate"
         labelHidden={true}
+        name="toDate"
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="1970-01-20"
@@ -122,8 +129,9 @@ exports[`Component: DatePicker ManualEntryForm should render correctly by defaul
       <TextField
         disabled={true}
         id="toTime"
-        label="To Time"
+        label="toTime"
         labelHidden={true}
+        name="toTime"
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="12:00am"
@@ -154,8 +162,9 @@ exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = 
     <Grid.Column>
       <TextField
         id="fromDate"
-        label="From Date"
+        label="fromDate"
         labelHidden={true}
+        name="fromDate"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="1970-01-20"
@@ -166,8 +175,9 @@ exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = 
       <TextField
         disabled={true}
         id="fromTime"
-        label="From Time"
+        label="fromTime"
         labelHidden={true}
+        name="fromTime"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="12:00am"
@@ -186,8 +196,9 @@ exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = 
     <Grid.Column>
       <TextField
         id="toDate"
-        label="To Date"
+        label="toDate"
         labelHidden={true}
+        name="toDate"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="1970-01-20"
@@ -198,8 +209,9 @@ exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = 
       <TextField
         disabled={true}
         id="toTime"
-        label="To Time"
+        label="toTime"
         labelHidden={true}
+        name="toTime"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="12:00am"
@@ -230,8 +242,9 @@ exports[`Component: DatePicker ManualEntryForm should update state from new prop
     <Grid.Column>
       <TextField
         id="fromDate"
-        label="From Date"
+        label="fromDate"
         labelHidden={true}
+        name="fromDate"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="1970-01-20"
@@ -242,8 +255,9 @@ exports[`Component: DatePicker ManualEntryForm should update state from new prop
       <TextField
         disabled={true}
         id="fromTime"
-        label="From Time"
+        label="fromTime"
         labelHidden={true}
+        name="fromTime"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="12:00am"
@@ -262,8 +276,9 @@ exports[`Component: DatePicker ManualEntryForm should update state from new prop
     <Grid.Column>
       <TextField
         id="toDate"
-        label="To Date"
+        label="toDate"
         labelHidden={true}
+        name="toDate"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="1970-01-20"
@@ -274,8 +289,9 @@ exports[`Component: DatePicker ManualEntryForm should update state from new prop
       <TextField
         disabled={true}
         id="toTime"
-        label="To Time"
+        label="toTime"
         labelHidden={true}
+        name="toTime"
         onBlur={[MockFunction]}
         onChange={[MockFunction]}
         placeholder="12:00am"
