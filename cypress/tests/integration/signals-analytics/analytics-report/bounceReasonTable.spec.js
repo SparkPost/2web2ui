@@ -27,7 +27,7 @@ describe('the bounce reason table', () => {
 
     cy.findByDataId('summary-chart').within(() => {
       cy.findByRole('tab', { name: 'Bounce Reason' }).click();
-      cy.findByText('No bounce reasons to report').should('be.visible');
+      cy.findByRole('tabpanel').within(() => cy.findByRole('table').should('be.visible'));
       cy.findByRole('tab', { name: 'Report' }).click();
       cy.get('.recharts-wrapper').should('be.visible');
     });
@@ -60,7 +60,7 @@ describe('the bounce reason table', () => {
       cy.get('tbody tr').within(() => {
         cy.get('td')
           .eq(0)
-          .should('have.text', '17 (0%)');
+          .should('have.text', '17 (17%)');
 
         cy.get('td')
           .eq(1)
@@ -82,7 +82,18 @@ describe('the bounce reason table', () => {
   });
 
   it('renders an empty state when no results are returned', () => {
+    cy.stubRequest({
+      url: '/api/v1/metrics/deliverability/bounce-classification**/*',
+      fixture: '200.get.no-results.json',
+      requestAlias: 'getBounceClassification',
+    });
+    cy.stubRequest({
+      url: '/api/v1/metrics/deliverability/bounce-reason/domain**/*',
+      fixture: '200.get.no-results.json',
+      requestAlias: 'getBounceReason',
+    });
     cy.findByRole('tab', { name: 'Bounce Reason' }).click();
+    cy.wait(['@getBounceClassification', '@getBounceReason']);
 
     cy.findByLabelText('Filter').should('not.exist');
     cy.findByText('No bounce reasons to report').should('be.visible');
@@ -102,7 +113,7 @@ describe('the bounce reason comparison (AKA compare by) tables', () => {
           .within(() => {
             cy.get('td')
               .eq(0)
-              .should('have.text', '17 (0%)');
+              .should('have.text', '17 (17%)');
             cy.get('td')
               .eq(1)
               .should('have.text', 'Mail Block');
