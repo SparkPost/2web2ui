@@ -15,7 +15,7 @@ const ActionsModal = ({
   onCancel,
   title,
 }) => (
-  <Modal.LEGACY open={isOpen} onClose={onCancel}>
+  <Modal.LEGACY open={isOpen} onClose={onCancel} title={title}>
     <Panel.LEGACY title={title}>
       {isLoading ? (
         <Panel.LEGACY.Section className={styles.Loading}>

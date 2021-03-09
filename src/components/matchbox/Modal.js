@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useHibana } from 'src/context/HibanaContext';
 import { omitSystemProps } from 'src/helpers/hibana';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 import { Modal as MBModal } from '@sparkpost/matchbox';
 import { Modal as HibanaModal } from '@sparkpost/matchbox-hibana';
+import { usePrevious } from 'src/hooks';
 import Portal from './Portal';
 
 const ERROR_MESSAGE =
@@ -18,6 +20,18 @@ function OGModal({ children, ...rest }) {
 
 const LEGACY = props => {
   const [{ isHibanaEnabled }] = useHibana();
+  const wasOpen = usePrevious(props.open);
+  let modalTitle = useRef(props.title);
+
+  useEffect(() => {
+    if (!wasOpen && props.open) {
+      segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: modalTitle.current });
+    }
+
+    if (wasOpen && !props.open) {
+      segmentTrack(SEGMENT_EVENTS.MODAL_CLOSED, { title: modalTitle.current });
+    }
+  }, [modalTitle, props.open, wasOpen]);
 
   if (!isHibanaEnabled) {
     return <OGModal {...omitSystemProps(props)} />;
@@ -29,6 +43,23 @@ const LEGACY = props => {
 function Modal(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
+  const wasOpen = usePrevious(props.open);
+  let modalTitle;
+  React.Children.map(props.children, function(child) {
+    if (child?.type && child.type.displayName === 'Modal.Header') {
+      modalTitle = child.props.children;
+    }
+  });
+
+  useEffect(() => {
+    if (!wasOpen && props.open) {
+      segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: modalTitle });
+    }
+
+    if (wasOpen && !props.open) {
+      segmentTrack(SEGMENT_EVENTS.MODAL_CLOSED, { title: modalTitle });
+    }
+  }, [modalTitle, props.open, wasOpen]);
 
   if (!isHibanaEnabled) throw new Error(ERROR_MESSAGE);
 

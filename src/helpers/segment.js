@@ -22,6 +22,8 @@ export const SEGMENT_EVENTS = {
   DASHBOARD_ONBOARDING: 'Dashboard Onboarding Loaded',
   REPORT_BUILDER_COMPARISON_ADDED: 'Report Builder Comparison Added',
   SCHEDULED_REPORT_CREATED: 'Created Scheduled Report',
+  MODAL_OPENED: 'Modal Opened',
+  MODAL_CLOSED: 'Modal Closed',
 };
 
 const UX_EVENTS = [SEGMENT_EVENTS.HIBANA_TOGGLED_ON, SEGMENT_EVENTS.HIBANA_TOGGLED_OFF];

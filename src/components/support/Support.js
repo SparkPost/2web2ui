@@ -76,7 +76,12 @@ export class Support extends Component {
     }
 
     return (
-      <Modal.LEGACY open={showSupportPanel} onClose={closeSupportPanel} showCloseButton={true}>
+      <Modal.LEGACY
+        open={showSupportPanel}
+        onClose={closeSupportPanel}
+        showCloseButton={true}
+        title={`Support Modal ${currentSupportView}`}
+      >
         <Panel.LEGACY className={styles.Support}>
           {visibleTabs.length > 1 && (
             <Tabs
