@@ -7,7 +7,7 @@ export default function EmptyCell() {
       {/* hidden from screen reader users */}
       <span aria-hidden="true">---</span>
       {/* hidden from everyone else */}
-      <ScreenReaderOnly>No Data</ScreenReaderOnly>
+      <ScreenReaderOnly> No Data</ScreenReaderOnly>
     </>
   );
 }
