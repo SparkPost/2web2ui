@@ -17,20 +17,6 @@ describe('Page: SeedList tests', () => {
     return shallow(<SeedListPage {...defaults} {...props} />);
   };
 
-  it('renders OG version', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
-    const wrapper = subject();
-    expect(wrapper.find('InstructionsContent')).toExist();
-    expect(wrapper.find('Page')).toHaveProp('title', 'Create an Inbox Placement Test');
-  });
-
-  it('renders Hibana version', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-    const wrapper = subject();
-    expect(wrapper.find('InstructionsContent')).toExist();
-    expect(wrapper.find('Page')).toHaveProp('title', 'Inbox Placement Data');
-  });
-
   it('renders instructions', () => {
     useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
     const wrapper = shallow(<InstructionsContent {...defaults} />);
