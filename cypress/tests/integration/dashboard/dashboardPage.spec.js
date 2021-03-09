@@ -1,5 +1,4 @@
 import { USERNAME } from 'cypress/constants';
-import it from 'date-fns/locale/it/index';
 import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/dashboard';
