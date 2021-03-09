@@ -30,7 +30,6 @@ describe('The navigation', () => {
         cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
         cy.verifyLink({ content: 'Content', href: '/templates' });
         cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
-        cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
         cy.verifyLink({ content: 'Configuration', href: '/domains' });
       });
 
@@ -86,6 +85,7 @@ describe('The navigation', () => {
         cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
         cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
         cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        cy.verifyLink({ content: 'Seedlist', href: '/inbox-placement/seedlist' });
       });
     });
 
@@ -220,7 +220,6 @@ describe('The navigation', () => {
         cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
         cy.verifyLink({ content: 'Content', href: '/templates' });
         cy.findByRole('link', { name: 'Recipients' }).should('not.exist');
-        cy.findByRole('link', { name: 'Inbox Placement' }).should('not.exist');
         cy.findByRole('link', { name: 'Configuration' }).should('not.exist');
       });
 
@@ -363,20 +362,6 @@ describe('The navigation', () => {
       });
     });
 
-    it('does not render the subnav when "Inbox Placement" is active', () => {
-      stubGrantsRequest({ role: 'admin' });
-      cy.visit(PAGE_URL);
-      cy.wait('@stubbedGrantsRequest');
-
-      cy.get(desktopNavSelector).within(() => {
-        cy.findByRole('link', { name: 'Inbox Placement' }).click();
-      });
-
-      cy.url().should('include', '/inbox-placement');
-
-      cy.get(secondaryNavSelector).should('not.exist');
-    });
-
     it('renders the subnav and routes to the sending domains when "Configuration" is active', () => {
       stubGrantsRequest({ role: 'admin' });
       cy.visit(PAGE_URL);
@@ -394,6 +379,7 @@ describe('The navigation', () => {
         cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
         cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
         cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        cy.verifyLink({ content: 'Seedlist', href: '/inbox-placement/seedlist' });
       });
     });
 
@@ -491,13 +477,12 @@ describe('The navigation', () => {
         cy.verifyLink({ content: 'Suppressions', href: '/lists/suppressions' });
         cy.findByRole('button', { name: 'Recipients' }).click();
 
-        cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-
         cy.findByRole('button', { name: 'Configuration' }).click();
         cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
         cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
         cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
         cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        cy.verifyLink({ content: 'Seedlist', href: '/inbox-placement/seedlist' });
         cy.verifyLink({ content: 'Domains', href: '/domains' });
         cy.findByRole('button', { name: 'Configuration' }).click();
 

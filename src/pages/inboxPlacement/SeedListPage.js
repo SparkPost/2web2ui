@@ -127,18 +127,7 @@ export const SeedListPage = props => {
     );
   }
 
-  return (
-    <Page
-      breadcrumbAction={{
-        as: PageLink,
-        content: 'All Tests',
-        to: '/inbox-placement',
-      }}
-      title={isHibanaEnabled ? 'Inbox Placement Data' : 'Create an Inbox Placement Test'}
-    >
-      {isHibanaEnabled ? renderHibana() : renderOG()}
-    </Page>
-  );
+  return <Page title="Seedlist">{isHibanaEnabled ? renderHibana() : renderOG()}</Page>;
 };
 
 const mapStateToProps = state => ({

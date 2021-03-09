@@ -11,7 +11,7 @@ import {
 } from '@sparkpost/matchbox-icons';
 import { hasGrants } from 'src/helpers/conditions';
 import { any } from 'src/helpers/conditions';
-import inboxPlacementNavItems from './inboxPlacement';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
 const dashboard = {
   label: 'Dashboard',
@@ -203,6 +203,12 @@ const configurationBase = {
   icon: Settings,
 };
 
+const seedlistPage = {
+  label: 'Seedlist',
+  to: '/inbox-placement/seedlist',
+  condition: hasAccountOptionEnabled('inbox_placement'),
+};
+
 const OGConfiguration = {
   ...configurationBase,
   children: [
@@ -218,7 +224,7 @@ const OGConfiguration = {
 
 const hibanaConfiguration = {
   ...configurationBase,
-  children: [domains, webhooks, IPPools, APIKeys, SMTPSettings, signalsIntegration],
+  children: [domains, webhooks, IPPools, APIKeys, SMTPSettings, signalsIntegration, seedlistPage],
 };
 
 export const navItems = [
@@ -228,7 +234,6 @@ export const navItems = [
   content,
   recipients,
   alerts,
-  inboxPlacementNavItems,
   blocklist,
   OGConfiguration,
 ];
@@ -238,6 +243,5 @@ export const hibanaNavItems = [
   events,
   content,
   recipients,
-  inboxPlacementNavItems,
   hibanaConfiguration,
 ];
