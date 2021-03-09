@@ -122,18 +122,6 @@ describe('Billing Page', () => {
     cy.verifyLink({ content: 'Manage Your IPs', href: '/account/ip-pools' });
   });
 
-  it('does not render the dedicated IPs section if the user is unable to purchase IPs', () => {
-    getBillingSubscription();
-    cy.stubRequest({
-      url: ACCOUNT_API_BASE_URL,
-      fixture: 'account/200.get.cannot-purchase-ips.json',
-    });
-
-    cy.visit(PAGE_URL);
-
-    cy.findByText('Dedicated IPs').should('not.exist');
-  });
-
   it('renders the manually billed transition banner when the user\'s subscription type is not "active", "inactive", or "none"', () => {
     getBillingSubscription({
       fixture: 'billing/subscription/200.get.manually-billed.json',
