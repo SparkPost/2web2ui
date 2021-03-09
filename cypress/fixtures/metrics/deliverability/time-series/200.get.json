@@ -4,7 +4,7 @@
       "count_accepted": 10,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 12,
-      "count_rendered": 12,
+      "count_sent": 14,
       "count_targeted": 10,
       "ts": "2020-01-23T00:00:00-05:00"
     },
@@ -12,7 +12,7 @@
       "count_accepted": 0,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 0,
-      "count_rendered": 0,
+      "count_sent": 5,
       "count_targeted": 0,
       "ts": "2020-01-24T00:00:00-05:00"
     },
@@ -20,7 +20,7 @@
       "count_accepted": 0,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 0,
-      "count_rendered": 0,
+      "count_sent": 3,
       "count_targeted": 0,
       "ts": "2020-01-25T00:00:00-05:00"
     },
@@ -28,7 +28,7 @@
       "count_accepted": 0,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 0,
-      "count_rendered": 0,
+      "count_sent": 8,
       "count_targeted": 0,
       "ts": "2020-01-26T00:00:00-05:00"
     },
@@ -36,7 +36,7 @@
       "count_accepted": 0,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 0,
-      "count_rendered": 0,
+      "count_sent": 3,
       "count_targeted": 0,
       "ts": "2020-01-27T00:00:00-05:00"
     },
@@ -44,7 +44,7 @@
       "count_accepted": 0,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 0,
-      "count_rendered": 0,
+      "count_sent": 2,
       "count_targeted": 0,
       "ts": "2020-01-28T00:00:00-05:00"
     },
@@ -52,7 +52,7 @@
       "count_accepted": 3,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 2,
-      "count_rendered": 5,
+      "count_sent": 5,
       "count_targeted": 3,
       "ts": "2020-01-29T00:00:00-05:00"
     },
@@ -60,7 +60,7 @@
       "count_accepted": 3,
       "count_bounce": 0,
       "count_unique_confirmed_opened_approx": 2,
-      "count_rendered": 6,
+      "count_sent": 6,
       "count_targeted": 3,
       "ts": "2020-01-30T00:00:00-05:00"
     }

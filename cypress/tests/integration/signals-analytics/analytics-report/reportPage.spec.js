@@ -14,29 +14,136 @@ describe('Analytics Report', () => {
   it('renders the initial state of the page', () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
-    // cy.title().should('include', 'Analytics Report'); // TODO: Once OG theme is removed, adjust title and re-introduce test
+    cy.title().should('include', 'Analytics Report');
     cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
-    // Filtering form elements
-    cy.findByText('Date Range').should('be.visible');
-    cy.findByLabelText('Time Zone').should('be.visible');
-    cy.findByLabelText('Precision').should('be.visible');
+    withinReportOptions(() => {
+      // Filtering form elements
+      cy.findByText('Date Range').should('be.visible');
+      cy.findByLabelText('Time Zone').should('be.visible');
+      cy.findByLabelText('Precision').should('be.visible');
 
-    // Default selected metrics
-    cy.withinMainContent(() => {
-      cy.findAllByText('Sent').should('have.length', 2);
-      cy.findAllByText('Unique Confirmed Opens').should('have.length', 1);
-      cy.findAllByText('Unique Confirmed Opens per hour').should('have.length', 1);
-      cy.findAllByText('Accepted').should('have.length', 2);
-      cy.findAllByText('Bounces').should('have.length', 2);
+      // Metrics tags
+      cy.findByText('Sent').should('be.visible');
+      cy.findByText('Unique Confirmed Opens per hour').should('be.visible');
+      cy.findByText('Accepted').should('be.visible');
+      cy.findByText('Bounces').should('be.visible');
     });
 
     cy.get('.recharts-wrapper').should('be.visible');
 
+    // Screen reader only table rendering chart data
+    cy.findByRole('table', { name: 'Analytics Data Over Time by Count' }).within(() => {
+      function verifyRow({ rowIndex, timestamp, sent, uniqueConfirmedOpens, accepted, bounces }) {
+        return cy
+          .findAllByRole('row')
+          .eq(rowIndex)
+          .within(() => {
+            cy.findAllByRole('cell')
+              .eq(0)
+              .should('have.text', timestamp);
+            cy.findAllByRole('cell')
+              .eq(1)
+              .should('have.text', sent);
+            cy.findAllByRole('cell')
+              .eq(2)
+              .should('have.text', uniqueConfirmedOpens);
+            cy.findAllByRole('cell')
+              .eq(3)
+              .should('have.text', accepted);
+            cy.findAllByRole('cell')
+              .eq(4)
+              .should('have.text', bounces);
+          });
+      }
+
+      cy.findAllByRole('row')
+        .eq(0)
+        .within(() => {
+          cy.findByRole('columnheader', { name: 'Timestamp' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Sent' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Unique Confirmed Opens' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Accepted' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Bounces' }).should('exist');
+        });
+
+      verifyRow({
+        rowIndex: 1,
+        timestamp: 'Jan 23 2020, 12:00am',
+        sent: '14',
+        uniqueConfirmedOpens: '12',
+        accepted: '10',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 2,
+        timestamp: 'Jan 24 2020, 12:00am',
+        sent: '5',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 3,
+        timestamp: 'Jan 25 2020, 12:00am',
+        sent: '3',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 4,
+        timestamp: 'Jan 26 2020, 12:00am',
+        sent: '8',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 5,
+        timestamp: 'Jan 27 2020, 12:00am',
+        sent: '3',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 6,
+        timestamp: 'Jan 28 2020, 12:00am',
+        sent: '2',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 7,
+        timestamp: 'Jan 29 2020, 12:00am',
+        sent: '5',
+        uniqueConfirmedOpens: '2',
+        accepted: '3',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 8,
+        timestamp: 'Jan 30 2020, 12:00am',
+        sent: '6',
+        uniqueConfirmedOpens: '2',
+        accepted: '3',
+        bounces: '0',
+      });
+    });
+
     cy.findByLabelText('Break Down By').should('be.visible');
   });
 
-  it('should render error state for charts', () => {
+  it('should render the error state for charts', () => {
     commonBeforeSteps();
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/time-series**/**',
@@ -52,6 +159,8 @@ describe('Analytics Report', () => {
     cy.wait(['@newGetTimeSeries']);
 
     cy.findByText('Unable to load report').should('be.visible');
+    // The screen reader only table does not render when the request fails
+    cy.findByRole('table', { name: 'Analytics Data Over Time by Count' }).should('not.exist');
     cy.stubRequest({
       url: '/api/v1/metrics/deliverability/time-series**/**',
       fixture: 'metrics/deliverability/time-series/200.get.json',
@@ -61,25 +170,10 @@ describe('Analytics Report', () => {
       .should('be.visible')
       .click();
     cy.wait(['@getTimeSeries']);
-    cy.findByText('Unable to load report').should('not.exist');
-  });
 
-  it('renders the initial page based on query params', () => {
-    commonBeforeSteps();
-    cy.visit(`${PAGE_URL}&filters=Recipient Domain%3Atest.com`);
-    cy.withinMainContent(() => {
-      cy.findAllByText('Sent').should('have.length', 2);
-      cy.findAllByText('Unique Confirmed Opens').should('have.length', 1);
-      cy.findAllByText('Unique Confirmed Opens per hour').should('have.length', 1);
-      cy.findAllByText('Accepted').should('have.length', 2);
-      cy.findAllByText('Bounces').should('have.length', 2);
-    });
-    cy.findByDataId('report-options').within(() => {
-      cy.findByText('Filters').should('be.visible');
-      cy.findByText('Recipient Domain').should('be.visible');
-      cy.findByText('is equal to').should('be.visible');
-      cy.findByText('test.com').should('be.visible');
-    });
+    cy.findByText('Unable to load report').should('not.exist');
+    cy.get('.recharts-wrapper').should('be.visible');
+    cy.findByRole('table', { name: 'Analytics Data Over Time by Count' }).should('exist');
   });
 
   it('should properly control the expandables', () => {
@@ -111,7 +205,7 @@ describe('Analytics Report', () => {
     });
   });
 
-  it('filters by metric', () => {
+  it('applies active metrics via the metrics form', () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
     // 1. Open the drawer, uncheck default metrics, check all metrics
@@ -199,9 +293,21 @@ describe('Analytics Report', () => {
       cy.url().should('not.include', `=${metric.queryParam}`);
     }
 
-    cy.findByDataId('report-options').within(() => {
+    withinReportOptions(() => {
       verifyMetricTagDismiss('Sent');
       verifyMetricTagDismiss('Unique Confirmed Opens');
+    });
+  });
+
+  it('renders active filters according to the query parameters', () => {
+    commonBeforeSteps();
+    cy.visit(`${PAGE_URL}&filters=Recipient Domain%3Atest.com`);
+
+    withinReportOptions(() => {
+      cy.findByText('Filters').should('be.visible');
+      cy.findByText('Recipient Domain').should('be.visible');
+      cy.findByText('is equal to').should('be.visible');
+      cy.findByText('test.com').should('be.visible');
     });
   });
 
@@ -323,4 +429,8 @@ describe('Analytics Report', () => {
 
 function getFirstRemoveButton() {
   return cy.findAllByRole('button', { name: 'Remove' }).eq(0);
+}
+
+function withinReportOptions(callback) {
+  return cy.findByDataId('report-options').within(callback);
 }
