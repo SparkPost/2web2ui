@@ -34,7 +34,15 @@ describe('Analytics Report', () => {
 
     // Screen reader only table rendering chart data
     cy.findByRole('table', { name: 'Analytics Data Over Time by Count' }).within(() => {
-      function verifyRow({ rowIndex, timestamp, sent, uniqueConfirmedOpens, accepted, bounces }) {
+      function verifyRow({
+        rowIndex,
+        timestamp,
+        industryBenchmark,
+        sent,
+        uniqueConfirmedOpens,
+        accepted,
+        bounces,
+      }) {
         return cy
           .findAllByRole('row')
           .eq(rowIndex)
@@ -44,15 +52,18 @@ describe('Analytics Report', () => {
               .should('have.text', timestamp);
             cy.findAllByRole('cell')
               .eq(1)
-              .should('have.text', sent);
+              .should('contain', industryBenchmark);
             cy.findAllByRole('cell')
               .eq(2)
-              .should('have.text', uniqueConfirmedOpens);
+              .should('have.text', sent);
             cy.findAllByRole('cell')
               .eq(3)
-              .should('have.text', accepted);
+              .should('have.text', uniqueConfirmedOpens);
             cy.findAllByRole('cell')
               .eq(4)
+              .should('have.text', accepted);
+            cy.findAllByRole('cell')
+              .eq(5)
               .should('have.text', bounces);
           });
       }
@@ -70,6 +81,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 1,
         timestamp: 'Jan 23 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '14',
         uniqueConfirmedOpens: '12',
         accepted: '10',
@@ -79,6 +91,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 2,
         timestamp: 'Jan 24 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '5',
         uniqueConfirmedOpens: '0',
         accepted: '0',
@@ -88,6 +101,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 3,
         timestamp: 'Jan 25 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '3',
         uniqueConfirmedOpens: '0',
         accepted: '0',
@@ -97,6 +111,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 4,
         timestamp: 'Jan 26 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '8',
         uniqueConfirmedOpens: '0',
         accepted: '0',
@@ -106,6 +121,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 5,
         timestamp: 'Jan 27 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '3',
         uniqueConfirmedOpens: '0',
         accepted: '0',
@@ -115,6 +131,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 6,
         timestamp: 'Jan 28 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '2',
         uniqueConfirmedOpens: '0',
         accepted: '0',
@@ -124,6 +141,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 7,
         timestamp: 'Jan 29 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '5',
         uniqueConfirmedOpens: '2',
         accepted: '3',
@@ -133,6 +151,7 @@ describe('Analytics Report', () => {
       verifyRow({
         rowIndex: 8,
         timestamp: 'Jan 30 2020, 12:00am',
+        industryBenchmark: 'No Data',
         sent: '6',
         uniqueConfirmedOpens: '2',
         accepted: '3',
