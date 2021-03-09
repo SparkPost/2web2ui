@@ -4,6 +4,7 @@
       "count_sent": 325000,
       "count_unique_confirmed_opened_approx": 250000,
       "count_accepted": 200000,
+      "count_bounce": 100,
       "count_unique_clicked_approx": 150000
     }
   ],

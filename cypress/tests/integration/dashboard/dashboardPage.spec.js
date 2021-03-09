@@ -1,4 +1,5 @@
 import { USERNAME } from 'cypress/constants';
+import it from 'date-fns/locale/it/index';
 import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/dashboard';
@@ -91,9 +92,7 @@ describe('the dashboard page', () => {
     cy.findByText('Pinned Report updated').should('be.visible');
   });
 
-  // TODO: I believe this test is catching a bug - the `AggregatedMetrics` component does not make a request for the summary chart data
-  // If it's already available in the Redux store, it will be present, however.
-  it('renders the Analytics Report step with pinned report when last usage date is not null and a pinned report is present in account ui options', () => {
+  it('renders the Analytics Report step with pinned report when last usage date is not null and a pinned report is present in account UI options', () => {
     stubGrantsRequest({ role: 'admin' });
     stubAlertsReq();
     stubAccountsReq();
@@ -107,17 +106,18 @@ describe('the dashboard page', () => {
 
     cy.stubRequest({
       method: 'GET',
-      url: '/api/v1/metrics/deliverability**/**',
-      fixture: 'metrics/deliverability/200.get.pinned-report.json',
-      requestAlias: 'dataGetDeliverability',
+      url: '/api/v1/metrics/deliverability/time-series**/**',
+      fixture: 'metrics/deliverability/time-series/200.get.json',
+      requestAlias: 'getTimeSeries',
     });
 
     cy.stubRequest({
       method: 'GET',
-      url: '/api/v1/metrics/deliverability/time-series**/**',
-      fixture: 'metrics/deliverability/time-series/200.get.json',
-      requestAlias: 'dataGetTimeSeries',
+      url: '/api/v1/metrics/deliverability**/*',
+      fixture: 'metrics/deliverability/200.get.json',
+      requestAlias: 'getDeliverability',
     });
+
     cy.stubRequest({
       url: '/api/v1/subaccounts',
       fixture: 'subaccounts/200.get.json',
@@ -131,17 +131,136 @@ describe('the dashboard page', () => {
       '@usageReq',
       '@getReports',
       '@userWithPinnedReport',
-      // '@dataGetDeliverability',
-      '@dataGetTimeSeries',
+      '@getDeliverability',
+      '@getTimeSeries',
       '@getSubaccounts',
     ]);
 
     cy.findByText('My new report').should('be.visible');
-    cy.findByText('Bounces').should('be.visible');
-    cy.findByText('325K').should('be.visible');
-    cy.findByRole('button', { name: 'View Filters' }).should('be.visible');
 
-    cy.findByRole('button', { name: 'View Filters' }).click();
+    // Screen reader only table rendering chart data
+    cy.findByRole('table', { name: 'Analytics Data Over Time by Count' }).within(() => {
+      function verifyRow({ rowIndex, timestamp, sent, uniqueConfirmedOpens, accepted, bounces }) {
+        return cy
+          .findAllByRole('row')
+          .eq(rowIndex)
+          .within(() => {
+            cy.findAllByRole('cell')
+              .eq(0)
+              .should('have.text', timestamp);
+            cy.findAllByRole('cell')
+              .eq(1)
+              .should('have.text', sent);
+            cy.findAllByRole('cell')
+              .eq(2)
+              .should('have.text', uniqueConfirmedOpens);
+            cy.findAllByRole('cell')
+              .eq(3)
+              .should('have.text', accepted);
+            cy.findAllByRole('cell')
+              .eq(4)
+              .should('have.text', bounces);
+          });
+      }
+
+      cy.findAllByRole('row')
+        .eq(0)
+        .within(() => {
+          cy.findByRole('columnheader', { name: 'Timestamp' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Sent' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Unique Confirmed Opens' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Accepted' }).should('exist');
+          cy.findByRole('columnheader', { name: 'Bounces' }).should('exist');
+        });
+
+      verifyRow({
+        rowIndex: 1,
+        timestamp: 'Jan 23 2020, 12:00am',
+        sent: '14',
+        uniqueConfirmedOpens: '12',
+        accepted: '10',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 2,
+        timestamp: 'Jan 24 2020, 12:00am',
+        sent: '5',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 3,
+        timestamp: 'Jan 25 2020, 12:00am',
+        sent: '3',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 4,
+        timestamp: 'Jan 26 2020, 12:00am',
+        sent: '8',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 5,
+        timestamp: 'Jan 27 2020, 12:00am',
+        sent: '3',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 6,
+        timestamp: 'Jan 28 2020, 12:00am',
+        sent: '2',
+        uniqueConfirmedOpens: '0',
+        accepted: '0',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 7,
+        timestamp: 'Jan 29 2020, 12:00am',
+        sent: '5',
+        uniqueConfirmedOpens: '2',
+        accepted: '3',
+        bounces: '0',
+      });
+
+      verifyRow({
+        rowIndex: 8,
+        timestamp: 'Jan 30 2020, 12:00am',
+        sent: '6',
+        uniqueConfirmedOpens: '2',
+        accepted: '3',
+        bounces: '0',
+      });
+    });
+
+    cy.findByDataId('aggregated-metrics').within(() => {
+      cy.findByText('Sent').should('be.visible');
+      cy.findByText('325K').should('be.visible');
+      cy.findByText('Unique Confirmed Opens').should('be.visible');
+      cy.findByText('250K').should('be.visible');
+      cy.findByText('Accepted').should('be.visible');
+      cy.findByText('200K').should('be.visible');
+      cy.findByText('Bounces').should('be.visible');
+      cy.findByText('100').should('be.visible');
+    });
+
+    cy.findByRole('button', { name: 'View Filters' })
+      .should('be.visible')
+      .click();
+
     cy.withinModal(() => {
       cy.findByRole('heading', { name: 'My new report Filters' }).should('be.visible');
       cy.findByRole('button', { name: 'View Report' }).should('be.visible');
@@ -149,6 +268,9 @@ describe('the dashboard page', () => {
       cy.findByText('Campaign (ID)').should('be.visible');
       cy.findByRole('button', { name: 'View Report' }).click();
     });
+
+    cy.url().should('include', '/signals/analytics');
+    cy.title().should('include', 'Analytics Report');
     cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
   });
 

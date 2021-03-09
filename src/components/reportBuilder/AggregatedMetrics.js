@@ -88,7 +88,7 @@ export default function AggregatedMetrics({
         )}
 
         <Grid.Column sm={9}>
-          <Inline space="600">
+          <Inline space="600" data-id="aggregated-metrics">
             {hasData &&
               renderedData.map(({ key, label, value, unit }) => {
                 const stroke = aggregatedMetrics.find(({ key: newKey }) => {

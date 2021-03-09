@@ -45,7 +45,7 @@
       "is_editable": false,
       "modified": "2020-10-08T19:39:53.830Z",
       "name": "My new report",
-      "query_string": "from=2020-09-18T15%3A00%3A00Z&to=2020-09-25T15%3A08%3A36Z&range=7days&timezone=America%2FNew_York&precision=hour&filters=Campaign%3ABlack%20Friday&metrics=count_bounce&report=0e860570-c1a8-47cf-9c39-1ffee38dd982",
+      "query_string": "from=2020-09-18T15%3A00%3A00Z&to=2020-09-25T15%3A08%3A36Z&range=7days&timezone=America%2FNew_York&precision=hour&filters=Campaign%3ABlack%20Friday&metrics%5B0%5D=count_sent&metrics%5B1%5D=count_unique_confirmed_opened_approx&metrics%5B2%5D=count_accepted&metrics%5B3%5D=count_bounce&report=0e860570-c1a8-47cf-9c39-1ffee38dd982",
       "subaccount_id": 0
     },
     {
