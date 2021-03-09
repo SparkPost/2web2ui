@@ -280,9 +280,47 @@ describe('Analytics Report - Compare By', () => {
     });
     cy.wait(['@getDeliverability', '@getTimeSeries']);
 
+    // 4 recharts charts render
     cy.get('.recharts-wrapper').should('have.length', 4);
+
+    // A heading renders for each chart section
     cy.findByRole('heading', { name: 'Fake Subaccount 1 (ID 101)' }).should('be.visible');
     cy.findByRole('heading', { name: 'Fake Subaccount 3 (ID 103)' }).should('be.visible');
+
+    // A screen reader only table renders for each of the charts rendered
+    cy.findByRole('table', {
+      name: 'Fake Subaccount 1 (ID 101) Analytics Data Over Time by Count',
+    }).within(() => {
+      cy.findByRole('columnheader', { name: 'Timestamp' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Sent' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Accepted' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Unique Confirmed Opens' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Unique Clicks' }).should('exist');
+    });
+
+    cy.findByRole('table', {
+      name: 'Fake Subaccount 1 (ID 101) Analytics Data Over Time by Percent',
+    }).within(() => {
+      cy.findByRole('columnheader', { name: 'Timestamp' });
+      cy.findByRole('columnheader', { name: 'Accepted Rate' });
+    });
+
+    cy.findByRole('table', {
+      name: 'Fake Subaccount 3 (ID 103) Analytics Data Over Time by Count',
+    }).within(() => {
+      cy.findByRole('columnheader', { name: 'Timestamp' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Sent' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Accepted' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Unique Confirmed Opens' }).should('exist');
+      cy.findByRole('columnheader', { name: 'Unique Clicks' }).should('exist');
+    });
+
+    cy.findByRole('table', {
+      name: 'Fake Subaccount 3 (ID 103) Analytics Data Over Time by Percent',
+    }).within(() => {
+      cy.findByRole('columnheader', { name: 'Timestamp' });
+      cy.findByRole('columnheader', { name: 'Accepted Rate' });
+    });
 
     // TODO: When we have access to `cy.intercept()` we can separately stub each request and produce different results
     cy.findByDataId('compare-by-aggregated-metrics')
