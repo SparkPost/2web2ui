@@ -153,6 +153,7 @@ export class ManualEntryFormClassComponent extends Component {
           <Grid.Column>
             <TextField
               id="fromDate"
+              name="fromDate"
               label="From Date"
               labelHidden
               placeholder={DATE_PLACEHOLDER}
@@ -164,6 +165,7 @@ export class ManualEntryFormClassComponent extends Component {
           <Grid.Column>
             <TextField
               id="fromTime"
+              name="fromTime"
               label="From Time"
               labelHidden
               placeholder={TIME_PLACEHOLDER}
@@ -181,6 +183,7 @@ export class ManualEntryFormClassComponent extends Component {
           <Grid.Column>
             <TextField
               id="toDate"
+              name="toDate"
               label="To Date"
               labelHidden
               placeholder={DATE_PLACEHOLDER}
@@ -192,6 +195,7 @@ export class ManualEntryFormClassComponent extends Component {
           <Grid.Column>
             <TextField
               id="toTime"
+              name="toTime"
               label="To Time"
               labelHidden
               placeholder={TIME_PLACEHOLDER}
