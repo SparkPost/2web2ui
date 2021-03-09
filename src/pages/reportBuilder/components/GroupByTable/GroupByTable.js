@@ -194,7 +194,7 @@ export const GroupByTable = () => {
           </Columns>
         </Panel.Section>
       </Panel>
-      <div data-id="summary-table">{renderTable()}</div>
+      <div data-id="breakdown-by-table">{renderTable()}</div>
     </>
   );
 };

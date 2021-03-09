@@ -52,22 +52,24 @@ describe('the rejection reason table', () => {
 
     cy.findByLabelText('Filter').should('be.visible');
 
-    cy.get('tbody tr').within(() => {
-      cy.get('td')
-        .eq(0)
-        .should('have.text', '5');
+    cy.findByRole('tabpanel').within(() => {
+      cy.get('tbody tr').within(() => {
+        cy.get('td')
+          .eq(0)
+          .should('have.text', '5');
 
-      cy.get('td')
-        .eq(1)
-        .should('have.text', 'Policy Rejection');
+        cy.get('td')
+          .eq(1)
+          .should('have.text', 'Policy Rejection');
 
-      cy.get('td')
-        .eq(2)
-        .should('have.text', '550 - Connection frequency limited');
+        cy.get('td')
+          .eq(2)
+          .should('have.text', '550 - Connection frequency limited');
 
-      cy.get('td')
-        .eq(3)
-        .should('have.text', 'gmail.com');
+        cy.get('td')
+          .eq(3)
+          .should('have.text', 'gmail.com');
+      });
     });
   });
 
@@ -138,7 +140,9 @@ describe('the rejection reason comparison (AKA compare by) tables', () => {
       cy.wrap(xhr.url).should('include', '101');
     });
 
-    verifyRejectionReasonsTable();
+    cy.findByRole('tabpanel').within(() => {
+      verifyRejectionReasonsTable();
+    });
   });
 
   it('merges existing query filters with comparisons when making requests for delay reasons and aggregated metrics', () => {
@@ -202,7 +206,9 @@ describe('the rejection reason comparison (AKA compare by) tables', () => {
     cy.findByRole('button', { name: 'Try Again' }).click();
     cy.wait('@getRejectionReasons');
 
-    verifyRejectionReasonsTable();
+    cy.findByRole('tabpanel').within(() => {
+      verifyRejectionReasonsTable();
+    });
   });
 });
 

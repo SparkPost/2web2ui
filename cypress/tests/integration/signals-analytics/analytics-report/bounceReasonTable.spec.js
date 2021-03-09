@@ -55,26 +55,29 @@ describe('the bounce reason table', () => {
       cy.wrap(bounceClassReq.url).should('contain', `${QUERY_FILTER}`);
       cy.wrap(bounceReasonReq.url).should('contain', `${QUERY_FILTER}`);
     });
-    cy.get('tbody tr').within(() => {
-      cy.get('td')
-        .eq(0)
-        .should('have.text', '17 (0%)');
 
-      cy.get('td')
-        .eq(1)
-        .should('have.text', 'Mail Block');
+    cy.findByRole('tabpanel').within(() => {
+      cy.get('tbody tr').within(() => {
+        cy.get('td')
+          .eq(0)
+          .should('have.text', '17 (0%)');
 
-      cy.get('td')
-        .eq(2)
-        .should('have.text', 'Block');
+        cy.get('td')
+          .eq(1)
+          .should('have.text', 'Mail Block');
 
-      cy.get('td')
-        .eq(3)
-        .should('have.text', 'This is the bounce reason. For real.');
+        cy.get('td')
+          .eq(2)
+          .should('have.text', 'Block');
 
-      cy.get('td')
-        .eq(4)
-        .should('have.text', 'gmail.com');
+        cy.get('td')
+          .eq(3)
+          .should('have.text', 'This is the bounce reason. For real.');
+
+        cy.get('td')
+          .eq(4)
+          .should('have.text', 'gmail.com');
+      });
     });
   });
 
@@ -139,7 +142,9 @@ describe('the bounce reason comparison (AKA compare by) tables', () => {
       cy.wrap(bounceReasonsReq.url).should('include', '101');
     });
 
-    verifyBounceReasonsTable();
+    cy.findByRole('tabpanel').within(() => {
+      verifyBounceReasonsTable();
+    });
   });
 
   it('merges existing query filters with comparisons when making requests for bounce reasons and aggregated metrics', () => {
@@ -217,7 +222,9 @@ describe('the bounce reason comparison (AKA compare by) tables', () => {
     cy.findByRole('button', { name: 'Try Again' }).click();
     cy.wait(['@getBounceReasons', '@getDeliverability']);
 
-    verifyBounceReasonsTable();
+    cy.findByRole('tabpanel').within(() => {
+      verifyBounceReasonsTable();
+    });
   });
 });
 

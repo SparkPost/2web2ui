@@ -358,11 +358,11 @@ export function ReportBuilder({
           </div>
         )}
       </Panel>
+
       {showTable && (
-        <div data-id="summary-table">
-          {hasActiveComparisons ? <CompareByGroupByTable /> : <GroupByTable />}
-        </div>
+        <div>{hasActiveComparisons ? <CompareByGroupByTable /> : <GroupByTable />}</div>
       )}
+
       <SaveReportModal
         create
         open={showSaveNewReportModal}

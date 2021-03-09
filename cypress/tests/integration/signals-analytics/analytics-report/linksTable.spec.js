@@ -53,85 +53,88 @@ describe('the links table', () => {
       cy.wrap(deliverabilityReq.url).should('contain', `${QUERY_FILTER}`);
     });
     cy.findByLabelText('Filter').should('be.visible');
-    cy.get('tbody tr')
-      .eq(0)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .should('have.text', 'Mock Link 1');
 
-        cy.get('td')
-          .eq(1)
-          .should('have.text', '10');
+    cy.findByRole('tabpanel').within(() => {
+      cy.get('tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td')
+            .eq(0)
+            .should('have.text', 'Mock Link 1');
 
-        cy.get('td')
-          .eq(2)
-          .should('have.text', '10');
+          cy.get('td')
+            .eq(1)
+            .should('have.text', '10');
 
-        cy.get('td')
-          .eq(3)
-          .should('have.text', '0%');
-      });
+          cy.get('td')
+            .eq(2)
+            .should('have.text', '10');
 
-    cy.get('tbody tr')
-      .eq(1)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .should('have.text', 'Mock Link 2');
+          cy.get('td')
+            .eq(3)
+            .should('have.text', '0%');
+        });
 
-        cy.get('td')
-          .eq(1)
-          .should('have.text', '20');
+      cy.get('tbody tr')
+        .eq(1)
+        .within(() => {
+          cy.get('td')
+            .eq(0)
+            .should('have.text', 'Mock Link 2');
 
-        cy.get('td')
-          .eq(2)
-          .should('have.text', '20');
+          cy.get('td')
+            .eq(1)
+            .should('have.text', '20');
 
-        cy.get('td')
-          .eq(3)
-          .should('have.text', '0%');
-      });
+          cy.get('td')
+            .eq(2)
+            .should('have.text', '20');
 
-    cy.get('tbody tr')
-      .eq(2)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .should('have.text', 'Mock Link 3');
+          cy.get('td')
+            .eq(3)
+            .should('have.text', '0%');
+        });
 
-        cy.get('td')
-          .eq(1)
-          .should('have.text', '30');
+      cy.get('tbody tr')
+        .eq(2)
+        .within(() => {
+          cy.get('td')
+            .eq(0)
+            .should('have.text', 'Mock Link 3');
 
-        cy.get('td')
-          .eq(2)
-          .should('have.text', '30');
+          cy.get('td')
+            .eq(1)
+            .should('have.text', '30');
 
-        cy.get('td')
-          .eq(3)
-          .should('have.text', '0%');
-      });
+          cy.get('td')
+            .eq(2)
+            .should('have.text', '30');
 
-    cy.get('tbody tr')
-      .eq(3)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .should('have.text', 'Mock Link 4');
+          cy.get('td')
+            .eq(3)
+            .should('have.text', '0%');
+        });
 
-        cy.get('td')
-          .eq(1)
-          .should('have.text', '40');
+      cy.get('tbody tr')
+        .eq(3)
+        .within(() => {
+          cy.get('td')
+            .eq(0)
+            .should('have.text', 'Mock Link 4');
 
-        cy.get('td')
-          .eq(2)
-          .should('have.text', '40');
+          cy.get('td')
+            .eq(1)
+            .should('have.text', '40');
 
-        cy.get('td')
-          .eq(3)
-          .should('have.text', '0%');
-      });
+          cy.get('td')
+            .eq(2)
+            .should('have.text', '40');
+
+          cy.get('td')
+            .eq(3)
+            .should('have.text', '0%');
+        });
+    });
   });
 
   it('renders an empty state when no results are returned', () => {
@@ -174,26 +177,28 @@ describe('the links comparison (AKA compare by) tables', () => {
       cy.wrap(engagementReq.url).should('include', '101');
     });
 
-    cy.get('table')
-      .should('be.visible')
-      .within(() => {
-        cy.get('tbody tr')
-          .eq(0)
-          .within(() => {
-            cy.get('td')
-              .eq(0)
-              .should('have.text', 'Mock Link 1');
-            cy.get('td')
-              .eq(1)
-              .should('have.text', '10');
-            cy.get('td')
-              .eq(2)
-              .should('have.text', '10');
-            cy.get('td')
-              .eq(3)
-              .should('have.text', '0%');
-          });
-      });
+    cy.findByRole('tabpanel').within(() => {
+      cy.get('table')
+        .should('be.visible')
+        .within(() => {
+          cy.get('tbody tr')
+            .eq(0)
+            .within(() => {
+              cy.get('td')
+                .eq(0)
+                .should('have.text', 'Mock Link 1');
+              cy.get('td')
+                .eq(1)
+                .should('have.text', '10');
+              cy.get('td')
+                .eq(2)
+                .should('have.text', '10');
+              cy.get('td')
+                .eq(3)
+                .should('have.text', '0%');
+            });
+        });
+    });
   });
 
   it('merges existing query filters with comparisons when making requests for bounce reasons and aggregated metrics', () => {
@@ -270,26 +275,28 @@ describe('the links comparison (AKA compare by) tables', () => {
     cy.findByRole('button', { name: 'Try Again' }).click();
     cy.wait(['@getEngagement', '@getDeliverability']);
 
-    cy.get('table')
-      .should('be.visible')
-      .within(() => {
-        cy.get('tbody tr')
-          .eq(0)
-          .within(() => {
-            cy.get('td')
-              .eq(0)
-              .should('have.text', 'Mock Link 1');
-            cy.get('td')
-              .eq(1)
-              .should('have.text', '10');
-            cy.get('td')
-              .eq(2)
-              .should('have.text', '10');
-            cy.get('td')
-              .eq(3)
-              .should('have.text', '0%');
-          });
-      });
+    cy.findByRole('tabpanel').within(() => {
+      cy.get('table')
+        .should('be.visible')
+        .within(() => {
+          cy.get('tbody tr')
+            .eq(0)
+            .within(() => {
+              cy.get('td')
+                .eq(0)
+                .should('have.text', 'Mock Link 1');
+              cy.get('td')
+                .eq(1)
+                .should('have.text', '10');
+              cy.get('td')
+                .eq(2)
+                .should('have.text', '10');
+              cy.get('td')
+                .eq(3)
+                .should('have.text', '0%');
+            });
+        });
+    });
   });
 });
 

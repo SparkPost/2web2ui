@@ -60,22 +60,25 @@ describe('the delay reason table', () => {
     cy.wait(['@getDelayReasons', '@getDeliverability']);
 
     cy.findByLabelText('Filter').should('be.visible');
-    cy.get('tbody tr').within(() => {
-      cy.get('td')
-        .eq(0)
-        .should('have.text', '10');
 
-      cy.get('td')
-        .eq(1)
-        .should('have.text', '5 (< 0.01%)');
+    cy.findByRole('tabpanel').within(() => {
+      cy.get('tbody tr').within(() => {
+        cy.get('td')
+          .eq(0)
+          .should('have.text', '10');
 
-      cy.get('td')
-        .eq(2)
-        .should('have.text', 'A delay reason reason.');
+        cy.get('td')
+          .eq(1)
+          .should('have.text', '5 (< 0.01%)');
 
-      cy.get('td')
-        .eq(3)
-        .should('have.text', 'gmail.com');
+        cy.get('td')
+          .eq(2)
+          .should('have.text', 'A delay reason reason.');
+
+        cy.get('td')
+          .eq(3)
+          .should('have.text', 'gmail.com');
+      });
     });
   });
 
@@ -145,7 +148,9 @@ describe('the delay reason comparison (AKA compare by) tables', () => {
       cy.wrap(delayReasonsReq.url).should('include', '101');
     });
 
-    verifyDelayReasonsTable();
+    cy.findByRole('tabpanel').within(() => {
+      verifyDelayReasonsTable();
+    });
   });
 
   it('merges existing query filters with comparisons when making requests for delay reasons and aggregated metrics', () => {
@@ -224,7 +229,9 @@ describe('the delay reason comparison (AKA compare by) tables', () => {
     cy.findByRole('button', { name: 'Try Again' }).click();
     cy.wait(['@getDelayReasons', '@getDeliverability']);
 
-    verifyDelayReasonsTable();
+    cy.findByRole('tabpanel').within(() => {
+      verifyDelayReasonsTable();
+    });
   });
 });
 

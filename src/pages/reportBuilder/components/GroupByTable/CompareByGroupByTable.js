@@ -203,7 +203,8 @@ export const CompareByTable = () => {
           </Columns>
         </Panel.Section>
       </Panel>
-      <div data-id="summary-table">
+
+      <div data-id="breakdown-by-table-with-comparisons">
         <TableContent />
       </div>
     </>

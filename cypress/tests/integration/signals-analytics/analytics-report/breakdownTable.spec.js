@@ -58,35 +58,35 @@ describe('Analytics Report breakdown table', () => {
       .should('be.visible')
       .should('be.checked');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('Recipient Domain').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'hotmail.com',
-      secondCell: '9K',
-      thirdCell: '10K',
-      fourthCell: '11K',
-      fifthCell: '12K',
-    });
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'hotmail.com',
+        secondCell: '9K',
+        thirdCell: '10K',
+        fourthCell: '11K',
+        fifthCell: '12K',
+      });
 
-    verifyRow({
-      rowIndex: 1,
-      firstCell: 'yahoo.com',
-      secondCell: '5',
-      thirdCell: '6',
-      fourthCell: '7',
-      fifthCell: '8',
-    });
+      verifyRow({
+        rowIndex: 1,
+        firstCell: 'yahoo.com',
+        secondCell: '5',
+        thirdCell: '6',
+        fourthCell: '7',
+        fifthCell: '8',
+      });
 
-    verifyRow({
-      rowIndex: 2,
-      firstCell: 'gmail.com',
-      secondCell: '1',
-      thirdCell: '2',
-      fourthCell: '3',
-      fifthCell: '4',
+      verifyRow({
+        rowIndex: 2,
+        firstCell: 'gmail.com',
+        secondCell: '1',
+        thirdCell: '2',
+        fourthCell: '3',
+        fifthCell: '4',
+      });
     });
 
     // Verifying that the "Top Domains Only" checkbox re-requests domains
@@ -122,26 +122,26 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getSendingDomain');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('Sending Domain').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'sparkpostbox.com',
-      secondCell: '5.5K',
-      thirdCell: '6.5K',
-      fourthCell: '7.5K',
-      fifthCell: '8.5K',
-    });
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'sparkpostbox.com',
+        secondCell: '5.5K',
+        thirdCell: '6.5K',
+        fourthCell: '7.5K',
+        fifthCell: '8.5K',
+      });
 
-    verifyRow({
-      rowIndex: 1,
-      firstCell: 'ymail.com',
-      secondCell: '1',
-      thirdCell: '2',
-      fourthCell: '3',
-      fifthCell: '4',
+      verifyRow({
+        rowIndex: 1,
+        firstCell: 'ymail.com',
+        secondCell: '1',
+        thirdCell: '2',
+        fourthCell: '3',
+        fifthCell: '4',
+      });
     });
   });
 
@@ -162,17 +162,17 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getCampaign');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('Campaign (ID)').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'Free Beer',
-      secondCell: '8',
-      thirdCell: '0',
-      fourthCell: '8',
-      fifthCell: '0',
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'Free Beer',
+        secondCell: '8',
+        thirdCell: '0',
+        fourthCell: '8',
+        fifthCell: '0',
+      });
     });
   });
 
@@ -193,26 +193,26 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getTemplate');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('Template').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'my-template-1',
-      secondCell: '1',
-      thirdCell: '2',
-      fourthCell: '3',
-      fifthCell: '4',
-    });
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'my-template-1',
+        secondCell: '1',
+        thirdCell: '2',
+        fourthCell: '3',
+        fifthCell: '4',
+      });
 
-    verifyRow({
-      rowIndex: 1,
-      firstCell: 'my-template-2',
-      secondCell: '1',
-      thirdCell: '2',
-      fourthCell: '3',
-      fifthCell: '4',
+      verifyRow({
+        rowIndex: 1,
+        firstCell: 'my-template-2',
+        secondCell: '1',
+        thirdCell: '2',
+        fourthCell: '3',
+        fifthCell: '4',
+      });
     });
   });
 
@@ -231,44 +231,44 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getSubaccount');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('Subaccount').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'Primary Account (ID 0)',
-      secondCell: '1.3K',
-      thirdCell: '1.4K',
-      fourthCell: '1.5K',
-      fifthCell: '1.6K',
-    });
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'Primary Account (ID 0)',
+        secondCell: '1.3K',
+        thirdCell: '1.4K',
+        fourthCell: '1.5K',
+        fifthCell: '1.6K',
+      });
 
-    verifyRow({
-      rowIndex: 1,
-      firstCell: 'Subaccount 3',
-      secondCell: '900',
-      thirdCell: '1K',
-      fourthCell: '1.1K',
-      fifthCell: '1.2K',
-    });
+      verifyRow({
+        rowIndex: 1,
+        firstCell: 'Subaccount 3',
+        secondCell: '900',
+        thirdCell: '1K',
+        fourthCell: '1.1K',
+        fifthCell: '1.2K',
+      });
 
-    verifyRow({
-      rowIndex: 2,
-      firstCell: 'Fake Subaccount 2 (ID 102)',
-      secondCell: '500',
-      thirdCell: '600',
-      fourthCell: '700',
-      fifthCell: '800',
-    });
+      verifyRow({
+        rowIndex: 2,
+        firstCell: 'Fake Subaccount 2 (ID 102)',
+        secondCell: '500',
+        thirdCell: '600',
+        fourthCell: '700',
+        fifthCell: '800',
+      });
 
-    verifyRow({
-      rowIndex: 3,
-      firstCell: 'Fake Subaccount 1 (ID 101)',
-      secondCell: '100',
-      thirdCell: '200',
-      fourthCell: '300',
-      fifthCell: '400',
+      verifyRow({
+        rowIndex: 3,
+        firstCell: 'Fake Subaccount 1 (ID 101)',
+        secondCell: '100',
+        thirdCell: '200',
+        fourthCell: '300',
+        fifthCell: '400',
+      });
     });
   });
 
@@ -289,35 +289,35 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getSendingIP');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('Sending IP').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'This is a real sending IP, alright.',
-      secondCell: '9K',
-      thirdCell: '10K',
-      fourthCell: '11K',
-      fifthCell: '12K',
-    });
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'This is a real sending IP, alright.',
+        secondCell: '9K',
+        thirdCell: '10K',
+        fourthCell: '11K',
+        fifthCell: '12K',
+      });
 
-    verifyRow({
-      rowIndex: 1,
-      firstCell: 'Confirmation',
-      secondCell: '5K',
-      thirdCell: '6K',
-      fourthCell: '7K',
-      fifthCell: '8K',
-    });
+      verifyRow({
+        rowIndex: 1,
+        firstCell: 'Confirmation',
+        secondCell: '5K',
+        thirdCell: '6K',
+        fourthCell: '7K',
+        fifthCell: '8K',
+      });
 
-    verifyRow({
-      rowIndex: 2,
-      firstCell: 'Password Reset',
-      secondCell: '1K',
-      thirdCell: '2K',
-      fourthCell: '3K',
-      fifthCell: '4K',
+      verifyRow({
+        rowIndex: 2,
+        firstCell: 'Password Reset',
+        secondCell: '1K',
+        thirdCell: '2K',
+        fourthCell: '3K',
+        fifthCell: '4K',
+      });
     });
   });
 
@@ -338,35 +338,35 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getIPPool');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByText('IP Pool').should('be.visible');
-    });
 
-    verifyRow({
-      rowIndex: 0,
-      firstCell: 'highway',
-      secondCell: '5K',
-      thirdCell: '6K',
-      fourthCell: '7K',
-      fifthCell: '8K',
-    });
+      verifyRow({
+        rowIndex: 0,
+        firstCell: 'highway',
+        secondCell: '5K',
+        thirdCell: '6K',
+        fourthCell: '7K',
+        fifthCell: '8K',
+      });
 
-    verifyRow({
-      rowIndex: 1,
-      firstCell: 'to',
-      secondCell: '500',
-      thirdCell: '600',
-      fourthCell: '700',
-      fifthCell: '800',
-    });
+      verifyRow({
+        rowIndex: 1,
+        firstCell: 'to',
+        secondCell: '500',
+        thirdCell: '600',
+        fourthCell: '700',
+        fifthCell: '800',
+      });
 
-    verifyRow({
-      rowIndex: 2,
-      firstCell: 'thedangerzone',
-      secondCell: '50',
-      thirdCell: '60',
-      fourthCell: '70',
-      fifthCell: '80',
+      verifyRow({
+        rowIndex: 2,
+        firstCell: 'thedangerzone',
+        secondCell: '50',
+        thirdCell: '60',
+        fourthCell: '70',
+        fifthCell: '80',
+      });
     });
   });
 
@@ -405,7 +405,7 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getTemplate');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByRole('button', { name: 'my-template-1 (Applies a filter to the report)' }).click({
         force: true,
       });
@@ -436,7 +436,7 @@ describe('Analytics Report breakdown table', () => {
 
     cy.wait('@getTemplate');
 
-    cy.get('table').within(() => {
+    withinBreakdownTable(() => {
       cy.findByRole('button', { name: 'my-template-1 (Applies a filter to the report)' }).click({
         force: true,
       });
@@ -495,7 +495,7 @@ describe('Analytics Report breakdown table', () => {
       cy.wait('@getWatchedDomains');
       cy.wait('@getWatchedDomains');
 
-      cy.get('table').within(() => {
+      withinBreakdownTableWithComparisons(() => {
         cy.findAllByText('Fake Subaccount 1 (ID 101)').should('have.length', 3);
         cy.findAllByText('Fake Subaccount 3 (ID 103)').should('have.length', 3);
       });
@@ -556,10 +556,22 @@ describe('Analytics Report breakdown table', () => {
       cy.wait('@getWatchedDomains');
       cy.wait('@getWatchedDomains');
 
-      cy.get('table').within(() => {
+      withinBreakdownTableWithComparisons(() => {
         cy.findAllByText('Fake Subaccount 1 (ID 101)').should('have.length', 3);
         cy.findAllByText('Fake Subaccount 3 (ID 103)').should('have.length', 3);
       });
     });
   });
 });
+
+function withinBreakdownTable(callback) {
+  return cy.findByDataId('breakdown-by-table').within(() => {
+    cy.findByRole('table').within(callback);
+  });
+}
+
+function withinBreakdownTableWithComparisons(callback) {
+  return cy.findByDataId('breakdown-by-table-with-comparisons').within(() => {
+    cy.findByRole('table').within(callback);
+  });
+}

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { Tabs as TabsComponent } from 'src/components/matchbox';
 import useTabs from 'src/hooks/useTabs';
+
+const TabPanel = styled.div`
+  display: ${props => (props.forceRender && !props.selected ? 'none' : 'initial')};
+`;
 
 function Tabs(props) {
   const { children, defaultTabIndex = 0, forceRender = false, tabs: setTabs, ...rest } = props;
@@ -31,13 +36,9 @@ function Item(props) {
   }, [hasRendered, selected]);
 
   return (
-    <div
-      style={{
-        display: forceRender && !selected ? 'none' : null,
-      }}
-    >
+    <TabPanel role="tabpanel" forceRender={forceRender} selected={selected}>
       {(forceRender || selected) && hasRendered ? children : null}
-    </div>
+    </TabPanel>
   );
 }
 
