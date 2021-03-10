@@ -3,109 +3,67 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TestApp } from 'src/__testHelpers__';
 import AggregatedMetrics from '../AggregatedMetrics';
+import { useSparkPostQuery } from 'src/hooks';
+jest.mock('src/hooks/api/useSparkPostQuery');
+
+const DEFAULT_PROPS = {
+  date: 'Mar 3rd - Mar 10th, 2021',
+  reportOptions: {
+    filters: [],
+    comparisons: [],
+    industryBenchmarkMetric: null,
+    industryBenchmarkFilters: {
+      industryCategory: 'all',
+      mailboxProvider: 'all',
+    },
+    metrics: [
+      'count_sent',
+      'count_unique_confirmed_opened_approx',
+      'count_accepted',
+      'count_bounce',
+    ],
+    to: '2021-03-10T15:19:09.448Z',
+    from: '2021-03-03T15:00:00.000Z',
+    relativeRange: '7days',
+    precision: 'hour',
+    timezone: 'America/New_York',
+  },
+};
 
 const AGGREGATE_DATA = [
   {
-    label: 'Sent',
-    value: 1729842,
-    key: 'count_sent',
-    unit: 'number',
-  },
-  {
-    label: 'Unique Confirmed Opens',
-    value: 585900,
-    key: 'count_unique_confirmed_opened_approx',
-    unit: 'number',
-  },
-  {
-    label: 'Accepted',
-    value: 1560565,
-    key: 'count_accepted',
-    unit: 'number',
-  },
-  {
-    label: 'Bounces',
-    value: 169234,
-    key: 'count_bounce',
-    unit: 'number',
+    count_sent: 1729842,
+    count_accepted: 585900,
+    count_bounce: 1560565,
+    count_unique_confirmed_opened_approx: 169234,
   },
 ];
 
-const DEFAULT_PROCESSED_METRICS = [
-  {
-    key: 'count_sent',
-    label: 'Sent',
-    type: 'total',
-    category: 'Delivery',
-    unit: 'number',
-    description:
-      'Number of emails that were attempted to be delivered. Includes Deliveries and Bounces.',
-    inSummary: true,
-    name: 'count_sent',
-    stroke: '#1273e6',
-  },
-  {
-    key: 'count_unique_confirmed_opened_approx',
-    label: 'Unique Confirmed Opens',
-    type: 'total',
-    category: 'Engagement',
-    unit: 'number',
-    description:
-      'Number of emails that were displayed or had at a link clicked. Approximated with a 5% error threshold.',
-    inSummary: true,
-    isUniquePerTimePeriod: true,
-    name: 'count_unique_confirmed_opened_approx',
-    stroke: '#13bebf',
-  },
-  {
-    key: 'count_accepted',
-    label: 'Accepted',
-    type: 'total',
-    category: 'Delivery',
-    unit: 'number',
-    description: "Number of emails delivered that didn't subsequently bounce (Out-of-Band).",
-    inSummary: true,
-    name: 'count_accepted',
-    stroke: '#7122e3',
-  },
-  {
-    key: 'count_bounce',
-    label: 'Bounces',
-    type: 'total',
-    category: 'Delivery',
-    unit: 'number',
-    description:
-      'Number of bounced emails, not including Admin Bounces. Includes all In-Band and Out-of-Band Bounces.',
-    inSummary: true,
-    tab: 'bounce',
-    name: 'count_bounce',
-    stroke: '#f0549a',
-  },
-];
-
-const DEFAULT_DATE = 'Feb 22nd - Mar 1st, 2021';
+// Mocks `useSparkPostQuery` to return different states and data
+function mockQuery({ status, data = AGGREGATE_DATA }) {
+  return useSparkPostQuery.mockReturnValue({
+    status,
+    data,
+  });
+}
 
 const subject = props =>
   render(
-    <TestApp store={{ summaryChart: { aggregateData: AGGREGATE_DATA } }}>
-      <AggregatedMetrics
-        date={DEFAULT_DATE}
-        processedMetrics={DEFAULT_PROCESSED_METRICS}
-        showFiltersButton={true}
-        handleViewFiltersClick={() => jest.fn()}
-        {...props}
-      />
+    <TestApp>
+      <AggregatedMetrics {...DEFAULT_PROPS} handleViewFiltersClick={() => jest.fn()} {...props} />
     </TestApp>,
   );
 
 describe('AggregatedMetrics', () => {
   it('renders with the passed in date', () => {
+    mockQuery({ status: 'success' });
     subject();
 
-    expect(screen.getByText(DEFAULT_DATE)).toBeInTheDocument();
+    expect(screen.getByText(DEFAULT_PROPS.date)).toBeInTheDocument();
   });
 
-  it('renders the aggregated data from the Redux store', () => {
+  it('renders the aggregated data returned from `useSparkPostQuery`', () => {
+    mockQuery({ status: 'success' });
     subject();
 
     expect(screen.getByText('Sent')).toBeInTheDocument();
@@ -119,6 +77,7 @@ describe('AggregatedMetrics', () => {
   });
 
   it('conditionally renders the "View Filters" button according to the value of the `showFiltersButton`', () => {
+    mockQuery({ status: 'success' });
     subject({ showFiltersButton: false });
 
     expect(screen.queryByRole('button', { name: 'View Filters' })).not.toBeInTheDocument();
@@ -130,7 +89,8 @@ describe('AggregatedMetrics', () => {
 
   it('invokes the passed in `handleViewFiltersClick` when the "View Filters" button is clicked', () => {
     const mockHandleViewFiltersClick = jest.fn();
-    subject({ handleViewFiltersClick: mockHandleViewFiltersClick });
+    mockQuery({ status: 'success' });
+    subject({ handleViewFiltersClick: mockHandleViewFiltersClick, showFiltersButton: true });
     const viewFiltersButton = screen.getByRole('button', { name: 'View Filters' });
 
     userEvent.click(viewFiltersButton);
