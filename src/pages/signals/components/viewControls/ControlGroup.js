@@ -41,7 +41,6 @@ class ControlGroup extends Component {
           key={key}
           selectedKey={key}
           isSelected={selected === key}
-          selectedKey={key}
           onClick={() => this.handleChange(key)}
         >
           {options[key]}
