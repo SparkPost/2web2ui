@@ -16,16 +16,16 @@ import DedicatedIpSummarySection from './DedicatedIpSummarySection';
 import InvoiceHistory from './InvoiceHistory';
 import CardSummary from 'src/components/billing/CardSummary';
 import PlanSummary from './PlanSummary';
-import RecipientValidationModal from './RecipientValidationModal';
+import RecipientValidationCostModal from 'src/components/billing/RecipientValidationCostModal';
 import { formatFullNumber } from 'src/helpers/units';
 import totalRVCost from 'src/helpers/recipientValidation';
 import _ from 'lodash';
 import { formatDateTime } from 'src/helpers/date';
 
-const PAYMENT_MODAL = 'payment';
-const CONTACT_MODAL = 'contact';
-const IP_MODAL = 'ip';
-const RV_MODAL = 'recipient_validation';
+const PAYMENT_MODAL = 'Update Payment Information';
+const CONTACT_MODAL = 'Update Billing Contact';
+const IP_MODAL = 'Add Dedicated Ips';
+const RV_MODAL = 'Recipient Validation Expense Calculation';
 
 export default class BillingSummary extends Component {
   state = {
@@ -159,20 +159,32 @@ export default class BillingSummary extends Component {
         <PremiumBanner />
         <EnterpriseBanner />
 
-        <Modal.LEGACY open={!!show} onClose={this.handleModal} title={show}>
-          {show === PAYMENT_MODAL && <UpdatePaymentForm onCancel={this.handleModal} />}
-          {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
-          {show === IP_MODAL && (
-            <AddIps
-              onClose={this.handleModal}
-              quantityOfDedicatedIps={dedicatedIpProduct.quantity}
-              limitOnDedicatedIps={dedicatedIpProduct.limit}
-              priceOfEachDedicatedIp={dedicatedIpProduct.price}
-              billingPeriodOfDedicatedIp={dedicatedIpProduct.billing_period}
-            />
-          )}
+        <Modal.LEGACY
+          open={show === PAYMENT_MODAL}
+          onClose={this.handleModal}
+          title={PAYMENT_MODAL}
+        >
+          <UpdatePaymentForm onCancel={this.handleModal} />
         </Modal.LEGACY>
-        <RecipientValidationModal
+
+        <Modal.LEGACY
+          open={show === CONTACT_MODAL}
+          onClose={this.handleModal}
+          title={CONTACT_MODAL}
+        >
+          <UpdateContactForm onCancel={this.handleModal} />
+        </Modal.LEGACY>
+        <Modal.LEGACY open={show === IP_MODAL} onClose={this.handleModal} title={IP_MODAL}>
+          <AddIps
+            onClose={this.handleModal}
+            quantityOfDedicatedIps={dedicatedIpProduct.quantity}
+            limitOnDedicatedIps={dedicatedIpProduct.limit}
+            priceOfEachDedicatedIp={dedicatedIpProduct.price}
+            billingPeriodOfDedicatedIp={dedicatedIpProduct.billing_period}
+          />
+        </Modal.LEGACY>
+
+        <RecipientValidationCostModal
           volumeUsed={volumeUsed}
           open={show === RV_MODAL}
           onClose={this.handleModal}
