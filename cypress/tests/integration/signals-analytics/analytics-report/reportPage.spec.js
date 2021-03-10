@@ -10,7 +10,7 @@ import {
 const ENCODED_QUERY_FILTERS =
   '%255B%257B%2522AND%2522%3A%257B%2522campaigns%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%2C%2522world%2522%255D%257D%2C%2522templates%2522%3A%257B%2522eq%2522%3A%255B%2522greg-hackathon%2522%255D%2C%2522notEq%2522%3A%255B%2522gregs-test%2522%255D%257D%257D%257D%2C%257B%2522AND%2522%3A%257B%2522sending_ips%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%255D%2C%2522notLike%2522%3A%255B%2522hello-again%2522%255D%257D%257D%257D%255D';
 
-describe('The Analytics Report page', () => {
+describe('Analytics Report page', () => {
   it('renders the initial state of the page', () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
