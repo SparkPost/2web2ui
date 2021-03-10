@@ -32,7 +32,7 @@
     "lodash/prefer-some": "off",
     "lodash/prefer-startswith": "off",
     "lodash/prefer-times": "off",
-    "react/forbid-elements": ["warn", { "forbid": [{ "element": "form", "message": "Please use the global <Form /> component in src/components/form, which helps in global tracking" }] }],
+    "react/forbid-elements": ["warn", { "forbid": [{ "element": "form", "message": "Please use the global <Form /> component in src/components/tracking/form, which helps in global tracking" }] }],
     "react/forbid-component-props": ["error", { "forbid": ["style"] }],
     "react/forbid-dom-props": ["error", { "forbid": ["style"] }],
     // Custom rule for i18n
