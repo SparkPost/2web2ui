@@ -24,6 +24,7 @@ export const FORMATS = {
     INPUT_DATETIMES: ['YYYY-MM-DD h:mma', 'YYYY-MM-DD H:mm', 'YYYY-MM-DD H:mma'],
   },
   DATE_FNS: {
+    API_DATE_FORMAT: "yyyy-MM-dd'T'HH:mm",
     DATE: 'MMM do',
     DATETIME: 'MMM do h:mma',
     LONG_DATETIME: "MMM do yyyy h:mmaaaaa'm'", //date-fns //Bug with date-fns. token "a" not outputing lowercase

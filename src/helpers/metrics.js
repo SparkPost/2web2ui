@@ -2,16 +2,12 @@ import moment from 'moment';
 import _ from 'lodash';
 import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
-import { HIBANA_METRICS_COLORS, REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
+import { HIBANA_METRICS_COLORS, REPORT_BUILDER_FILTER_KEY_MAP, FORMATS } from 'src/constants';
 import { getRelativeDates, formatToTimezone } from 'src/helpers/date';
 import { dehydrateFilters, getFilterTypeKey } from 'src/pages/reportBuilder/helpers';
 import { safeDivide, safeRate } from './math';
 
-const {
-  metricsPrecisionMap: precisionMap,
-  metricsRollupPrecisionMap: rollupPrecisionMap,
-  apiDateFormat,
-} = config;
+const { metricsPrecisionMap: precisionMap, metricsRollupPrecisionMap: rollupPrecisionMap } = config;
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
 /**
@@ -53,8 +49,8 @@ export function getQueryFromOptions({
   const delimiter = getDelimiter(filters);
   const options = {
     metrics: apiMetricsKeys.join(delimiter),
-    from: from ? formatToTimezone(from, apiDateFormat, timezone) : undefined,
-    to: to ? formatToTimezone(to, apiDateFormat, timezone) : undefined,
+    from: from ? formatToTimezone(from, FORMATS.DATE_FNS.API_DATE_FORMAT, timezone) : undefined,
+    to: to ? formatToTimezone(to, FORMATS.DATE_FNS.API_DATE_FORMAT, timezone) : undefined,
     delimiter,
     timezone,
     precision,
