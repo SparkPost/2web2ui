@@ -6,7 +6,7 @@ describe('Analytics Report metrics form', () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
     // 1. Open the drawer, uncheck default metrics, check all metrics
-    cy.findByRole('button', { name: 'Add Metrics' }).click();
+    openMetricsDrawer();
 
     cy.withinDrawer(() => {
       cy.findByLabelText('Sent').uncheck({ force: true });
@@ -33,11 +33,12 @@ describe('Analytics Report metrics form', () => {
     });
 
     // 4. Open the drawer again, clear metrics except for one
-    cy.findByRole('button', { name: 'Add Metrics' }).click();
+    openMetricsDrawer();
 
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Apply Metrics' }).should('be.disabled');
       cy.findByRole('button', { name: 'Clear Metrics' }).click();
+      cy.findAllByRole('checkbox').should('not.be.checked');
       cy.findByRole('button', { name: 'Apply Metrics' }).should('be.disabled');
       cy.findByLabelText('Admin Bounce Rate').check({ force: true });
       cy.findByRole('button', { name: 'Apply Metrics' }).should('not.be.disabled');
@@ -121,7 +122,7 @@ describe('Analytics Report metrics form', () => {
       cy.visit(PAGE_URL);
       cy.wait(['@getSubaccounts', '@getSubscription']);
 
-      cy.findByRole('button', { name: 'Add Metrics' }).click();
+      openMetricsDrawer();
       cy.withinDrawer(() => {
         // Injection Metrics expandable
         cy.findByDataId('expandable-content')
