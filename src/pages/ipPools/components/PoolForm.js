@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { Button, Panel, Stack } from 'src/components/matchbox';
 import { SendingDomainTypeaheadWrapper, TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import AccessControl from 'src/components/auth/AccessControl';
 import { required } from 'src/helpers/validation';
 import { configFlag } from 'src/helpers/conditions/config';

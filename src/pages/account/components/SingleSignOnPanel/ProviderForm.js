@@ -8,7 +8,7 @@ import {
 } from 'src/actions/accountSingleSignOn';
 import { showAlert } from 'src/actions/globalAlert';
 import { ButtonWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Heading } from 'src/components/text';
 import CopyField from 'src/components/copyField/CopyField';
 import FileFieldWrapper from 'src/components/reduxFormWrappers/FileFieldWrapper';

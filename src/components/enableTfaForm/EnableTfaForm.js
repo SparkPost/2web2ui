@@ -5,7 +5,7 @@ import { QRCode } from 'react-qr-svg';
 import styled from 'styled-components';
 import ButtonWrapper from 'src/components/buttonWrapper';
 import { Button, Grid, Panel, Stack, TextField } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Loading } from 'src/components/loading/Loading';
 import { getTfaSecret, toggleTfa } from 'src/actions/tfa';
 import { showAlert } from 'src/actions/globalAlert';

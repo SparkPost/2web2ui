@@ -13,7 +13,7 @@ import {
 import billingCreate from 'src/actions/billingCreate';
 import billingUpdate from 'src/actions/billingUpdate';
 import { showAlert } from 'src/actions/globalAlert';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import ApiErrorBanner from 'src/components/apiErrorBanner';
 import Loading from 'src/components/loading';
 import { prepareCardInfo } from 'src/helpers/billing';

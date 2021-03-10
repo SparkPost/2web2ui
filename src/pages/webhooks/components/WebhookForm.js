@@ -5,7 +5,7 @@ import { selectInitialSubaccountValue, getSelectedEvents } from 'src/selectors/w
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { withRouter } from 'react-router-dom';
 import { Button, Panel, Stack, Tooltip } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import CheckboxWrapper from 'src/components/reduxFormWrappers/CheckboxWrapper';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { selectWebhookEventListing } from 'src/selectors/eventListing';

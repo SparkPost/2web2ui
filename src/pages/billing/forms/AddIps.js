@@ -7,7 +7,7 @@ import { addDedicatedIps } from 'src/actions/billing';
 import { showAlert } from 'src/actions/globalAlert';
 import { createPool } from 'src/actions/ipPools';
 import { ButtonWrapper, TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import IpPoolSelect from './fields/IpPoolSelect';
 import ErrorTracker from 'src/helpers/errorTracker';
 import { required, integer, minNumber, maxNumber } from 'src/helpers/validation';

@@ -8,7 +8,7 @@ import { updateContactInitialValues } from 'src/selectors/accountBillingForms';
 
 import { Button, Panel } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import BillingContactForm from './fields/BillingContactForm';
 
 const FORMNAME = 'updateContact';

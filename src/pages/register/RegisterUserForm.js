@@ -6,7 +6,7 @@ import { LINKS } from 'src/constants';
 import { TextFieldWrapper } from 'src/components/reduxFormWrappers';
 import { ExternalLink } from 'src/components/links';
 import { Box, Button, Stack } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { required, minLength } from 'src/helpers/validation';
 
 export class RegisterUserForm extends Component {

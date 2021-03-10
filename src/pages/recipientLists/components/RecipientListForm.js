@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, SubmissionError, reduxForm } from 'redux-form';
 import _ from 'lodash';
 import { Banner, Button, Error, Panel, Stack } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { TextFieldWrapper } from 'src/components';
 import { DownloadLink } from 'src/components/links';
 import { required, maxLength } from 'src/helpers/validation';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import { PageLink } from 'src/components/links';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Button, Panel } from 'src/components/matchbox';
 import LabelledValue from 'src/components/labelledValue/LabelledValue';
 import { CheckboxWrapper } from 'src/components/reduxFormWrappers';

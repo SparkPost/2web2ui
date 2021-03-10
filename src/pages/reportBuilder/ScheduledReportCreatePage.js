@@ -7,7 +7,7 @@ import {
   ScheduledReportDetailsForm,
   ScheduledReportTimingForm,
 } from './components/ScheduledReportForm';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Loading } from 'src/components/loading';
 import { PageLink } from 'src/components/links';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';

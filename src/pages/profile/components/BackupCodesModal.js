@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ButtonWrapper } from 'src/components';
 import BackupCodesView from './BackupCodesView';
 import { Grid, Banner, Button, Panel, TextField, Modal, Stack } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 
 const initialState = {
   password: '',

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { FORMS } from 'src/constants';
 import { required } from 'src/helpers/validation';
 import { trimWhitespaces } from 'src/helpers/string';

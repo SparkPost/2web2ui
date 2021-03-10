@@ -5,7 +5,7 @@ import { createTicket } from 'src/actions/support';
 import { showAlert } from 'src/actions/globalAlert';
 import { PageLink } from 'src/components/links';
 import { Button, Page, Panel } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import PremiumSupportFields from './components/PremiumSupportFields';
 import { generateMessage } from './helpers/formHelpers';
 

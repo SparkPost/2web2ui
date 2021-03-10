@@ -4,7 +4,7 @@ import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { Telegram, Autorenew } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { ExternalLink, PageLink, SubduedLink } from 'src/components/links';
 import { useForm, Controller } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';

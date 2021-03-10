@@ -6,7 +6,7 @@ import { showAlert } from 'src/actions/globalAlert';
 import { required, minLength, endsWithWhitespace } from 'src/helpers/validation';
 import { reduxForm, Field } from 'redux-form';
 import { CenteredLogo, TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { PageLink } from 'src/components/links';
 import { Box, Button, Panel, Stack } from 'src/components/matchbox';
 import _ from 'lodash';

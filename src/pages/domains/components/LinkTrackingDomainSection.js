@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Layout, Panel, Select, Stack } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { SubduedText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { useForm, Controller } from 'react-hook-form';

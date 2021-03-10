@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { showAlert } from 'src/actions/globalAlert';
 import { watchlistAdd } from 'src/actions/blocklist';
 import { ButtonWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { PageLink } from 'src/components/links';
 import { Button, Page, Panel, TextField } from 'src/components/matchbox';
 

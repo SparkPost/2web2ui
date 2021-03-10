@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { verifyAndLogin } from 'src/actions/tfa';
 import { TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { ExternalLink } from 'src/components/links';
 import { Box, Button, Error, Stack } from 'src/components/matchbox';
 import { LINKS } from 'src/constants';

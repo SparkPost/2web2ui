@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScheduledReportDetailsForm, ScheduledReportTimingForm } from './ScheduledReportForm';
 import { useForm } from 'react-hook-form';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 /*
 This wrapper is used because of the difficulties in getting async default values to work
  */

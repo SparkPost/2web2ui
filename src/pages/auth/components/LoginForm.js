@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { TextFieldWrapper, CheckboxWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { BottomPad } from 'src/components/hibana';
 import { PageLink } from 'src/components/links';
 import { Box, Button, Error, Stack } from 'src/components/matchbox';

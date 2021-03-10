@@ -2,7 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function handleSubmit() {}
+const { log } = console;
+
+function handleSubmit(event) {
+  // temporarily only log in debug mode - add a debug mode/condition so it only logs locally
+  log(event.target);
+}
 
 document.addEventListener('submit', handleSubmit, false);
 
