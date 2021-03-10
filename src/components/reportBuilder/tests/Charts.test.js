@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { TestApp } from 'src/__testHelpers__';
 import { useSparkPostQuery } from 'src/hooks';
 import { ChartGroups, Charts } from '../Charts';
-import useIndustryBenchmark from 'src/hooks/reportBuilder/useIndustryBenchmark';
+import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
 jest.mock('src/hooks/api/useSparkPostQuery');
 jest.mock('src/hooks/reportBuilder/useIndustryBenchmark');
-jest.mock('src/pages/reportBuilder/components/IndustryBenchmarkModal', () => {
+jest.mock('src/components/reportBuilder/IndustryBenchmarkModal', () => {
   return {
     IndustryBenchmarkModal: () => <>Mock Industry Benchmark Modal</>,
   };

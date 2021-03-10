@@ -1,13 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
+import { differenceInHours } from 'date-fns';
+import { StackedLineChart } from '@sparkpost/matchbox-icons';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from 'src/components/charts/LineChart';
-import { StackedLineChart } from '@sparkpost/matchbox-icons';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
+import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
+import { INDUSTRY_BENCHMARK_INDUSTRIES } from 'src/constants';
 import { Box, Button, Stack, Panel } from 'src/components/matchbox';
 import { useModal, useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api/metrics';
-import { differenceInHours } from 'date-fns';
 import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
@@ -16,11 +18,10 @@ import {
 import { ApiErrorBanner } from 'src/components';
 import Loading from 'src/components/loading/PanelLoading';
 import { Heading } from 'src/components/text';
+import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
 import CustomTooltip from './Tooltip';
-import useIndustryBenchmark from 'src/hooks/reportBuilder/useIndustryBenchmark';
-import { INDUSTRY_BENCHMARK_INDUSTRIES } from 'src/constants';
-import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
-import { IndustryBenchmarkModal } from 'src/pages/reportBuilder/components/IndustryBenchmarkModal';
+import { IndustryBenchmarkModal } from './IndustryBenchmarkModal';
+
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
