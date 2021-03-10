@@ -20,7 +20,7 @@ import Loading from 'src/components/loading/PanelLoading';
 import { Heading } from 'src/components/text';
 import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
 import CustomTooltip from './Tooltip';
-import { IndustryBenchmarkModal } from './IndustryBenchmarkModal';
+import { IndustryBenchmarkModal } from 'src/pages/reportBuilder/components';
 
 const DEFAULT_UNIT = 'number';
 
