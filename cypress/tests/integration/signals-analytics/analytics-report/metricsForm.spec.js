@@ -118,10 +118,12 @@ describe('Analytics Report metrics form', () => {
     });
 
     it('should properly control the expandables', () => {
-      commonBeforeSteps();
       cy.visit(PAGE_URL);
+      cy.wait(['@getSubaccounts', '@getSubscription']);
+
       cy.findByRole('button', { name: 'Add Metrics' }).click();
       cy.withinDrawer(() => {
+        // Injection Metrics expandable
         cy.findByDataId('expandable-content')
           .eq(0)
           .should('be.visible');
@@ -129,6 +131,8 @@ describe('Analytics Report metrics form', () => {
         cy.findByDataId('expandable-content')
           .eq(0)
           .should('not.be.visible');
+
+        // Delivery Metrics expandable
         cy.findByDataId('expandable-content')
           .eq(1)
           .should('be.visible');
@@ -136,12 +140,23 @@ describe('Analytics Report metrics form', () => {
         cy.findByDataId('expandable-content')
           .eq(1)
           .should('not.be.visible');
+
+        // Deliverability metrics expandable
         cy.findByDataId('expandable-content')
           .eq(2)
           .should('be.visible');
-        cy.findByRole('button', { name: /Engagement Metrics/g }).click();
+        cy.findByRole('button', { name: /Deliverability Metrics/g }).click();
         cy.findByDataId('expandable-content')
           .eq(2)
+          .should('not.be.visible');
+
+        // Engagement metrics expandable
+        cy.findByDataId('expandable-content')
+          .eq(3)
+          .should('be.visible');
+        cy.findByRole('button', { name: /Engagement Metrics/g }).click();
+        cy.findByDataId('expandable-content')
+          .eq(3)
           .should('not.be.visible');
       });
     });
