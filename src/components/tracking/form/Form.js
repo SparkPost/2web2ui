@@ -6,7 +6,19 @@ const { log } = console;
 
 function handleSubmit(event) {
   if (process.env.NODE_ENV !== 'production') {
-    log(event.target);
+    log(event.target.elements);
+    const formElements = event.target.elements;
+
+    // https://codesandbox.io/s/custom-components-and-helpers-for-analytics-tracking-forked-y2vqd
+    for (const el of formElements) {
+      log(el);
+      // const name = getElName(el);
+      // const value = getFieldValue(el);
+
+      // if (name || value) {
+      //   formData.push({ name, value });
+      // }
+    }
   }
 }
 
