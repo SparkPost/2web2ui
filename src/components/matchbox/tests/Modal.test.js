@@ -2,14 +2,15 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { useHibana } from 'src/context/HibanaContext';
 import Modal from '../Modal';
+import Panel from '../Panel';
+import { useModal } from 'src/hooks';
+import { render, fireEvent } from '@testing-library/react';
+import * as segmentHelpers from 'src/helpers/segment';
+jest.mock('src/helpers/segment');
 jest.mock('src/context/HibanaContext');
 
 function mockHibanaIsEnabled() {
   return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-}
-
-function mockHibanaIsDisabled() {
-  return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
 }
 
 describe('Modal and Modal.LEGACY', () => {
@@ -22,12 +23,6 @@ describe('Modal and Modal.LEGACY', () => {
 
       expect(wrapper).toExist();
     });
-
-    it('throws an error with Hibana disabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
-    });
   });
 
   describe('Modal.Header', () => {
@@ -38,12 +33,6 @@ describe('Modal and Modal.LEGACY', () => {
       const wrapper = subject();
 
       expect(wrapper).toExist();
-    });
-
-    it('throws an error with Hibana disabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
     });
   });
 
@@ -56,12 +45,6 @@ describe('Modal and Modal.LEGACY', () => {
 
       expect(wrapper).toExist();
     });
-
-    it('throws an error with Hibana disabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
-    });
   });
 
   describe('Modal.Footer', () => {
@@ -72,12 +55,6 @@ describe('Modal and Modal.LEGACY', () => {
       const wrapper = subject();
 
       expect(wrapper).toExist();
-    });
-
-    it('throws an error with Hibana disabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
     });
   });
 
@@ -90,12 +67,51 @@ describe('Modal and Modal.LEGACY', () => {
 
       expect(wrapper).not.toHaveDisplayName('OGModal');
     });
+  });
 
-    it('should render the OG version of the Modal when Hibana is disabled', () => {
-      mockHibanaIsDisabled();
-      const wrapper = subject();
+  describe('segment track is called with correct arguements', () => {
+    const MockComponent = ({ legacy = true }) => {
+      const { closeModal, openModal, isModalOpen = false } = useModal();
 
-      expect(wrapper).toHaveDisplayName('OGModal');
+      if (!legacy) {
+        return (
+          <>
+            <button onClick={openModal}>Open Modal</button>
+
+            <Modal open={isModalOpen} onClose={closeModal}>
+              <Modal.Header showCloseButton={false}>TEST NEW MODAL</Modal.Header>
+              <Modal.Content>New Content</Modal.Content>
+            </Modal>
+          </>
+        );
+      }
+      return (
+        <>
+          <button onClick={openModal}>Open Modal</button>
+
+          <Modal.LEGACY open={isModalOpen} onClose={closeModal} title="TEST MODAL">
+            <Panel.LEGACY title="TEST MODAL"> content</Panel.LEGACY>
+          </Modal.LEGACY>
+        </>
+      );
+    };
+    it('for Legacy Modal', () => {
+      const { queryByText } = render(<MockComponent />);
+
+      fireEvent.click(queryByText('Open Modal'));
+
+      expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith('Modal Opened', {
+        title: 'TEST MODAL',
+      });
+    });
+    it('for Modal', () => {
+      const { queryByText } = render(<MockComponent legacy={false} />);
+
+      fireEvent.click(queryByText('Open Modal'));
+
+      expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith('Modal Opened', {
+        title: 'TEST NEW MODAL',
+      });
     });
   });
 });
