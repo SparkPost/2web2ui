@@ -2,7 +2,7 @@ import { PAGE_URL, INBOX_METRICS, METRICS } from './constants';
 import { commonBeforeSteps } from './helpers';
 
 describe('Analytics Report metrics form', () => {
-  it('filters by metric', () => {
+  it("adds active metrics according to the user's entry", () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
     // 1. Open the drawer, uncheck default metrics, check all metrics
