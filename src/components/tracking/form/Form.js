@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-elements */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -25,6 +24,7 @@ function handleSubmit(event) {
 document.addEventListener('submit', handleSubmit, false);
 
 function Form({ children, ...props }) {
+  /* eslint-disable-next-line react/forbid-elements */
   return <form {...props}>{children}</form>;
 }
 
