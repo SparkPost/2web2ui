@@ -14,6 +14,7 @@ exports[`Component: ShareModal should render correctly when open 1`] = `
     onClose={[Function]}
     open={true}
     showCloseButton={true}
+    title="Share this report"
   >
     <WindowEvent
       event="keydown"
@@ -64,6 +65,7 @@ exports[`Component: ShareModal should render with a valid relative range 1`] = `
     onClose={[Function]}
     open={false}
     showCloseButton={true}
+    title="Share this report"
   >
     <Panel.LEGACY
       title="Share this report"

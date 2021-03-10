@@ -5,6 +5,7 @@ exports[`Support renders search panel by default 1`] = `
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
+  title="Support Modal"
 >
   <Panel.LEGACY
     className="Support"
@@ -40,6 +41,7 @@ exports[`Support renders search panel with current page search term 1`] = `
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
+  title="Support Modal"
 >
   <Panel.LEGACY
     className="Support"
@@ -77,6 +79,7 @@ exports[`Support renders search panel without tabs 1`] = `
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
+  title="Support Modal"
 >
   <Panel.LEGACY
     className="Support"
@@ -91,6 +94,7 @@ exports[`Support renders support contact panel 1`] = `
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
+  title="Support Modal"
 >
   <Panel.LEGACY
     className="Support"
@@ -137,6 +141,7 @@ exports[`Support renders support form 1`] = `
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
+  title="Support Modal"
 >
   <Panel.LEGACY
     className="Support"

@@ -3,6 +3,7 @@
 exports[`Component: BackupCodesModal should change button text to Generating... when submitting 1`] = `
 <Modal.LEGACY
   open={true}
+  title="Generate Two-factor Backup Codes"
 >
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
@@ -75,6 +76,7 @@ exports[`Component: BackupCodesModal should change button text to Generating... 
 exports[`Component: BackupCodesModal should render correctly 1`] = `
 <Modal.LEGACY
   open={true}
+  title="Generate Two-factor Backup Codes"
 >
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
@@ -147,6 +149,7 @@ exports[`Component: BackupCodesModal should render correctly 1`] = `
 exports[`Component: BackupCodesModal should show new codes when they exist 1`] = `
 <Modal.LEGACY
   open={true}
+  title="Generate Two-factor Backup Codes"
 >
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
@@ -202,6 +205,7 @@ exports[`Component: BackupCodesModal should show new codes when they exist 1`] =
 exports[`Component: BackupCodesModal should show password error when exists 1`] = `
 <Modal.LEGACY
   open={true}
+  title="Generate Two-factor Backup Codes"
 >
   <Panel.LEGACY
     title="Generate Two-factor Backup Codes"

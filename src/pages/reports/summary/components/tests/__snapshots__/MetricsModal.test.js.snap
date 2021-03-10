@@ -4,6 +4,7 @@ exports[`Component: Summary Chart Metrics Modal should disable checkboxes when m
 <Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
+  title="Summary Report Metrics Modal"
 >
   <WindowEvent
     event="keydown"
@@ -109,6 +110,7 @@ exports[`Component: Summary Chart Metrics Modal should render 1`] = `
 <Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
+  title="Summary Report Metrics Modal"
 >
   <WindowEvent
     event="keydown"
@@ -214,6 +216,7 @@ exports[`Component: Summary Chart Metrics Modal should select metrics 1`] = `
 <Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
+  title="Summary Report Metrics Modal"
 >
   <WindowEvent
     event="keydown"

@@ -48,8 +48,8 @@ export class ProviderForm extends React.Component {
     const { handleSubmit, submitting } = this.props;
 
     return (
-      <Panel.LEGACY title="Provision Single Sign-On" accent>
-        <Form onSubmit={handleSubmit(this.submit)} id="sso-provider-form">
+      <Form onSubmit={handleSubmit(this.submit)} id="sso-provider-form">
+        <Panel.LEGACY title="Provision Single Sign-On" accent>
           <Panel.LEGACY.Section>
             <Stack>
               <Heading as="h3" looksLike="h6">
@@ -101,8 +101,8 @@ export class ProviderForm extends React.Component {
               </Button>
             </ButtonWrapper>
           </Panel.LEGACY.Section>
-        </Form>
-      </Panel.LEGACY>
+        </Panel.LEGACY>
+      </Form>
     );
   }
 }

@@ -24,6 +24,7 @@ exports[`ProviderSection renders when not provisioned 1`] = `
     onClose={[Function]}
     open={false}
     showCloseButton={true}
+    title="Provision Single Sign-On"
   >
     <Connect(ReduxForm)
       onCancel={[Function]}
@@ -57,6 +58,7 @@ exports[`ProviderSection renders when provisioned 1`] = `
     onClose={[Function]}
     open={false}
     showCloseButton={true}
+    title="Provision Single Sign-On"
   >
     <Connect(ReduxForm)
       onCancel={[Function]}

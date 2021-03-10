@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionsModal renders hidden modal 1`] = `
-<Modal.LEGACY>
+<Modal.LEGACY
+  title="Modal Title"
+>
   <Panel.LEGACY
     title="Modal Title"
   >

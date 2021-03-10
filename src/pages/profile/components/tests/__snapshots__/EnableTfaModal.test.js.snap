@@ -3,6 +3,7 @@
 exports[`EnableTfaModal tests should render correctly 1`] = `
 <Modal.LEGACY
   open={false}
+  title="Enable Two-Factor Authentication"
 >
   <Panel.LEGACY
     title="Enable Two-Factor Authentication"

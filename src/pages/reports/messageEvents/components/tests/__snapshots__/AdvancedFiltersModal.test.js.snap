@@ -12,6 +12,7 @@ exports[`Component: AdvancedFiltersModal should render initially and sync to sta
     onClose={[Function]}
     open={false}
     showCloseButton={true}
+    title="Events Advanced Filters"
   >
     <WindowEvent
       event="keydown"

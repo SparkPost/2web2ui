@@ -14,6 +14,7 @@ exports[`Component: CustomReportsList should render 1`] = `
     onClose={[Function]}
     open={false}
     showCloseButton={true}
+    title="Saved Reports"
   >
     <Panel.LEGACY
       title="Saved Reports"
