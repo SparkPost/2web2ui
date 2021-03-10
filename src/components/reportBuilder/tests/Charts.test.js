@@ -153,6 +153,76 @@ describe('Analytics Report chart components', () => {
       expect(document.querySelector(CHART_SELECTOR)).toBeInTheDocument();
     });
 
+    it('renders multiple charts when a rate metric and count metric are active simultaneously', () => {
+      mockQuery({
+        status: 'success',
+        data: [
+          [
+            {
+              count_accepted: 217640,
+              count_sent: 241518,
+              ts: '2021-03-03T05:00:00+00:00',
+              accepted_rate: 90.11336629153934,
+            },
+            {
+              count_accepted: 217568,
+              count_sent: 242110,
+              ts: '2021-03-04T00:00:00+00:00',
+              accepted_rate: 89.8632852835488,
+            },
+            {
+              count_accepted: 217124,
+              count_sent: 241160,
+              ts: '2021-03-05T00:00:00+00:00',
+              accepted_rate: 90.0331729971803,
+            },
+            {
+              count_accepted: 218497,
+              count_sent: 242698,
+              ts: '2021-03-06T00:00:00+00:00',
+              accepted_rate: 90.02834798803451,
+            },
+            {
+              count_accepted: 217952,
+              count_sent: 242334,
+              ts: '2021-03-07T00:00:00+00:00',
+              accepted_rate: 89.93867967350846,
+            },
+            {
+              count_accepted: 218082,
+              count_sent: 242216,
+              ts: '2021-03-08T00:00:00+00:00',
+              accepted_rate: 90.03616606665126,
+            },
+            {
+              count_accepted: 217889,
+              count_sent: 242228,
+              ts: '2021-03-09T00:00:00+00:00',
+              accepted_rate: 89.95202866720611,
+            },
+            {
+              count_accepted: 165882,
+              count_sent: 184430,
+              ts: '2021-03-10T00:00:00+00:00',
+              accepted_rate: 89.94306783061324,
+            },
+          ],
+        ],
+      });
+      subject({
+        reportOptions: {
+          metrics: ['count_accepted', 'accepted_rate'],
+          comparisons: [],
+        },
+      });
+
+      expect(screen.getAllByTestId('chart-box')).toHaveLength(2);
+
+      // y-axis labels
+      expect(screen.getByText('Count')).toBeInTheDocument();
+      expect(screen.getByText('Percent')).toBeInTheDocument();
+    });
+
     it('renders a chart for each active comparison', () => {
       subject();
 
