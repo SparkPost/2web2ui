@@ -60,7 +60,7 @@ function mockQuery({ status, data = [], refetch = jest.fn }) {
   });
 }
 
-function mockUseIndustryBenchmark({ data }) {
+function mockUseIndustryBenchmark({ data = [] } = {}) {
   return useIndustryBenchmark.mockReturnValue({
     data,
   });
@@ -86,6 +86,7 @@ describe('Analytics Report chart components', () => {
 
     it('renders the loading state when a request is idle', () => {
       mockQuery({ status: 'idle' });
+      mockUseIndustryBenchmark();
       subject();
 
       expect(screen.getByTestId('loading')).toBeInTheDocument();
@@ -93,6 +94,7 @@ describe('Analytics Report chart components', () => {
 
     it('renders the loading state when a request is pending', () => {
       mockQuery({ status: 'loading' });
+      mockUseIndustryBenchmark();
       subject();
 
       expect(screen.getByTestId('loading')).toBeInTheDocument();
@@ -101,6 +103,7 @@ describe('Analytics Report chart components', () => {
     it('renders the error state when the time series request fails, allowing the user to retry the request', () => {
       const mockRefetch = jest.fn();
       mockQuery({ status: 'error', refetch: mockRefetch });
+      mockUseIndustryBenchmark();
       subject();
 
       expect(screen.getByRole('heading', { name: 'Unable to load report' })).toBeInTheDocument();
@@ -114,6 +117,7 @@ describe('Analytics Report chart components', () => {
         status: 'success',
         data: TIME_SERIES_FIXTURE,
       });
+      mockUseIndustryBenchmark();
       subject();
 
       expect(document.querySelector(CHART_SELECTOR)).toBeInTheDocument();
@@ -128,6 +132,7 @@ describe('Analytics Report chart components', () => {
         status: 'success',
         data: TIME_SERIES_FIXTURE,
       });
+      mockUseIndustryBenchmark();
       subject({ setActiveChart: mockSetActiveChart, id: chartId });
       const chartBox = screen.getByTestId('chart-box');
 
@@ -157,6 +162,7 @@ describe('Analytics Report chart components', () => {
         status: 'success',
         data: TIME_SERIES_FIXTURE,
       });
+      mockUseIndustryBenchmark();
       subject({
         reportOptions: {
           metrics: DEFAULT_METRICS,
@@ -223,6 +229,7 @@ describe('Analytics Report chart components', () => {
           ],
         ],
       });
+      mockUseIndustryBenchmark();
       subject({
         reportOptions: {
           metrics: ['count_accepted', 'accepted_rate'],
