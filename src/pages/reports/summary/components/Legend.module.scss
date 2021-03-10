@@ -1,0 +1,23 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.Legend {
+  margin-top: rem(3);
+  margin-left: spacing(larger);
+}
+
+.Metric {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: spacing(large);
+  font-weight: 400;
+}
+
+.Color {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: rem(9);
+  margin-top: -2px;
+  height: 14px;
+  width: 14px;
+  border-radius: border-radius();
+}

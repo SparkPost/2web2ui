@@ -1,0 +1,32 @@
+@import '~@sparkpost/design-tokens-hibana/tokens';
+
+.EngagementSummary {
+  padding: 0;
+
+  h3 {
+    font-size: font-size(600);
+    font-weight: font-weight(semibold);
+    line-height: line-height(400);
+    color: color(gray, 900);
+  }
+
+  h6 {
+    color: color(gray, 700);
+    font-size: font-size(300);
+    font-weight: font-weight(normal);
+    margin-bottom: spacing(400);
+
+    @media (min-width: media-query(sm)) {
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    font-size: font-size(300);
+    color: color(gray, 900);
+
+    strong {
+      color: color(gray, 900);
+    }
+  }
+}

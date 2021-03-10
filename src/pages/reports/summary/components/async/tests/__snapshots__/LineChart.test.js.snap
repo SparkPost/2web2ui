@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LineChart should render 1`] = `
+<div
+  className="ChartWrapper"
+>
+  <ResponsiveContainer
+    debounce={0}
+    height={170}
+    width="99%"
+  >
+    <LineChart
+      barCategoryGap="10%"
+      barGap={4}
+      data={
+        Array [
+          Object {
+            "count_accepted": 9525,
+            "count_bounce": 1064,
+            "count_rendered": 5637,
+            "count_targeted": 10856,
+            "ts": "2018-11-06T10:00:00-05:00",
+          },
+          Object {
+            "count_accepted": 9428,
+            "count_bounce": 1143,
+            "count_rendered": 5628,
+            "count_targeted": 10914,
+            "ts": "2018-11-06T11:00:00-05:00",
+          },
+        ]
+      }
+      layout="horizontal"
+      margin={
+        Object {
+          "bottom": 5,
+          "left": 5,
+          "right": 5,
+          "top": 5,
+        }
+      }
+      reverseStackOrder={false}
+      stackOffset="none"
+      syncId="summaryChart"
+    >
+      <CartesianGrid
+        fill="none"
+        horizontal={true}
+        horizontalFill={Array []}
+        horizontalPoints={Array []}
+        stroke="#ccc"
+        strokeDasharray="4 1"
+        vertical={false}
+        verticalFill={Array []}
+        verticalPoints={Array []}
+      />
+      <XAxis
+        allowDataOverflow={false}
+        allowDecimals={true}
+        allowDuplicatedCategory={true}
+        dataKey="ts"
+        domain={
+          Array [
+            0,
+            "auto",
+          ]
+        }
+        height={30}
+        hide={false}
+        interval="preserveEnd"
+        mirror={false}
+        orientation="bottom"
+        padding={
+          Object {
+            "left": 0,
+            "right": 0,
+          }
+        }
+        reversed={false}
+        scale="auto"
+        tickCount={5}
+        tickFormatter={[Function]}
+        type="category"
+        width={0}
+        xAxisId={0}
+      />
+      <YAxis
+        allowDataOverflow={false}
+        allowDecimals={true}
+        allowDuplicatedCategory={true}
+        domain={
+          Array [
+            "dataMin",
+            "dataMax",
+          ]
+        }
+        height={0}
+        hide={false}
+        interval="preserveStartEnd"
+        mirror={false}
+        orientation="left"
+        padding={
+          Object {
+            "bottom": 8,
+            "top": 8,
+          }
+        }
+        reversed={false}
+        scale="linear"
+        tickCount={5}
+        tickFormatter={[Function]}
+        tickLine={false}
+        type="number"
+        width={60}
+        yAxisId={0}
+      />
+      <Tooltip
+        active={false}
+        animationDuration={400}
+        animationEasing="ease"
+        contentStyle={Object {}}
+        coordinate={
+          Object {
+            "x": 0,
+            "y": 0,
+          }
+        }
+        cursor={true}
+        cursorStyle={Object {}}
+        filterNull={true}
+        formatter={[Function]}
+        isAnimationActive={false}
+        itemSorter={[Function]}
+        itemStyle={Object {}}
+        labelFormatter={[Function]}
+        labelStyle={Object {}}
+        offset={10}
+        separator=" : "
+        useTranslate3d={false}
+        viewBox={
+          Object {
+            "x1": 0,
+            "x2": 0,
+            "y1": 0,
+            "y2": 0,
+          }
+        }
+        wrapperStyle={Object {}}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+  <span
+    className="sp-linechart-yLabel"
+  >
+    Count
+  </span>
+</div>
+`;

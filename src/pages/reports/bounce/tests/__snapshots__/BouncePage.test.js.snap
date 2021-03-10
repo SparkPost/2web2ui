@@ -1,0 +1,601 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BouncePage:  should display loading panel on top level metrics when aggregates are loading 1`] = `
+<Page
+  title="Bounce Report"
+>
+  <withRouter(Connect(ReportOptions))
+    reportLoading={true}
+    searchOptions={Object {}}
+  />
+  <PanelLoading
+    accent={false}
+    minHeight="115px"
+  />
+  <Panel.LEGACY>
+    <TabsWrapper>
+      <Tabs
+        selected={0}
+        tabs={
+          Array [
+            Object {
+              "content": "Bounces",
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Admin Bounces",
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </TabsWrapper>
+    <Panel.LEGACY.Section>
+      <BounceChart
+        aggregates={
+          Object {
+            "countAdminBounce": 5,
+            "countBounce": 1,
+            "countSent": 10,
+          }
+        }
+        loading={true}
+        tab={0}
+      />
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <hr />
+  <TableCollection
+    columns={
+      Array [
+        Object {
+          "label": "Reason",
+          "sortKey": "reason",
+          "width": "45%",
+        },
+        Object {
+          "label": "Domain",
+          "sortKey": "domain",
+        },
+        Object {
+          "label": "Category",
+          "sortKey": "bounce_category_name",
+        },
+        Object {
+          "label": "Classification",
+          "sortKey": "classification_id",
+        },
+        Object {
+          "label": "Count (%)",
+          "sortKey": "count_bounce",
+        },
+      ]
+    }
+    defaultSortColumn="count_bounce"
+    defaultSortDirection="desc"
+    filterBox={
+      Object {
+        "exampleModifiers": Array [
+          "domain",
+          "category",
+          "classification",
+        ],
+        "itemToStringKeys": Array [
+          "bounce_category_name",
+          "bounce_class_name",
+          "domain",
+          "reason",
+        ],
+        "keyMap": Object {
+          "category": "bounce_category_name",
+          "classification": "bounce_class_name",
+        },
+        "matchThreshold": 5,
+        "show": true,
+      }
+    }
+    getRowData={[Function]}
+    pagination={true}
+    rows={
+      Array [
+        Object {
+          "bounce_category_name": "Block",
+          "bounce_class_description": "The message was blocked by the receiver as coming from a known spam source",
+          "bounce_class_name": "Spam Block",
+          "classification_id": 51,
+          "count_bounce": 5,
+          "domain": "yahoo.com",
+          "reason": "554 - 5.7.1 Blocklisted by 'twoomail.com'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.",
+        },
+      ]
+    }
+  />
+</Page>
+`;
+
+exports[`BouncePage:  should render 1`] = `
+<Page
+  title="Bounce Report"
+>
+  <withRouter(Connect(ReportOptions))
+    searchOptions={Object {}}
+  />
+  <Connect(MetricsSummary)
+    rateTitle="Bounce Rate"
+    rateValue={10}
+    secondaryMessage={
+      <React.Fragment>
+        5
+         messages were categorized as Admin Bounces.
+      </React.Fragment>
+    }
+  >
+    <strong>
+      1
+    </strong>
+     of
+     
+    <strong>
+      10
+    </strong>
+     sent messages bounced
+  </Connect(MetricsSummary)>
+  <Panel.LEGACY>
+    <TabsWrapper>
+      <Tabs
+        selected={0}
+        tabs={
+          Array [
+            Object {
+              "content": "Bounces",
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Admin Bounces",
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </TabsWrapper>
+    <Panel.LEGACY.Section>
+      <BounceChart
+        aggregates={
+          Object {
+            "countAdminBounce": 5,
+            "countBounce": 1,
+            "countSent": 10,
+          }
+        }
+        tab={0}
+      />
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <hr />
+  <TableCollection
+    columns={
+      Array [
+        Object {
+          "label": "Reason",
+          "sortKey": "reason",
+          "width": "45%",
+        },
+        Object {
+          "label": "Domain",
+          "sortKey": "domain",
+        },
+        Object {
+          "label": "Category",
+          "sortKey": "bounce_category_name",
+        },
+        Object {
+          "label": "Classification",
+          "sortKey": "classification_id",
+        },
+        Object {
+          "label": "Count (%)",
+          "sortKey": "count_bounce",
+        },
+      ]
+    }
+    defaultSortColumn="count_bounce"
+    defaultSortDirection="desc"
+    filterBox={
+      Object {
+        "exampleModifiers": Array [
+          "domain",
+          "category",
+          "classification",
+        ],
+        "itemToStringKeys": Array [
+          "bounce_category_name",
+          "bounce_class_name",
+          "domain",
+          "reason",
+        ],
+        "keyMap": Object {
+          "category": "bounce_category_name",
+          "classification": "bounce_class_name",
+        },
+        "matchThreshold": 5,
+        "show": true,
+      }
+    }
+    getRowData={[Function]}
+    pagination={true}
+    rows={
+      Array [
+        Object {
+          "bounce_category_name": "Block",
+          "bounce_class_description": "The message was blocked by the receiver as coming from a known spam source",
+          "bounce_class_name": "Spam Block",
+          "classification_id": 51,
+          "count_bounce": 5,
+          "domain": "yahoo.com",
+          "reason": "554 - 5.7.1 Blocklisted by 'twoomail.com'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.",
+        },
+      ]
+    }
+  />
+</Page>
+`;
+
+exports[`BouncePage:  should render correctly with no bounces 1`] = `
+<Page
+  title="Bounce Report"
+>
+  <withRouter(Connect(ReportOptions))
+    searchOptions={Object {}}
+  />
+  <Panel.LEGACY>
+    <TabsWrapper>
+      <Tabs
+        selected={0}
+        tabs={
+          Array [
+            Object {
+              "content": "Bounces",
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Admin Bounces",
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </TabsWrapper>
+    <Empty
+      message="No bounces to report"
+    />
+  </Panel.LEGACY>
+  <hr />
+  <TableCollection
+    columns={
+      Array [
+        Object {
+          "label": "Reason",
+          "sortKey": "reason",
+          "width": "45%",
+        },
+        Object {
+          "label": "Domain",
+          "sortKey": "domain",
+        },
+        Object {
+          "label": "Category",
+          "sortKey": "bounce_category_name",
+        },
+        Object {
+          "label": "Classification",
+          "sortKey": "classification_id",
+        },
+        Object {
+          "label": "Count (%)",
+          "sortKey": "count_bounce",
+        },
+      ]
+    }
+    defaultSortColumn="count_bounce"
+    defaultSortDirection="desc"
+    filterBox={
+      Object {
+        "exampleModifiers": Array [
+          "domain",
+          "category",
+          "classification",
+        ],
+        "itemToStringKeys": Array [
+          "bounce_category_name",
+          "bounce_class_name",
+          "domain",
+          "reason",
+        ],
+        "keyMap": Object {
+          "category": "bounce_category_name",
+          "classification": "bounce_class_name",
+        },
+        "matchThreshold": 5,
+        "show": true,
+      }
+    }
+    getRowData={[Function]}
+    pagination={true}
+    rows={
+      Array [
+        Object {
+          "bounce_category_name": "Block",
+          "bounce_class_description": "The message was blocked by the receiver as coming from a known spam source",
+          "bounce_class_name": "Spam Block",
+          "classification_id": 51,
+          "count_bounce": 5,
+          "domain": "yahoo.com",
+          "reason": "554 - 5.7.1 Blocklisted by 'twoomail.com'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.",
+        },
+      ]
+    }
+  />
+</Page>
+`;
+
+exports[`BouncePage:  should render row data for admin bounce properly 1`] = `
+Array [
+  <LongTextContainer
+    text="bouncy boi"
+  />,
+  <Memo(Connect(AddFilterLink))
+    content="gmail"
+    newFilter={
+      Object {
+        "type": "Recipient Domain",
+        "value": "gmail",
+      }
+    }
+    reportType="bounce"
+  />,
+  "Admin",
+  undefined,
+  <span>
+    5
+     
+    <small>
+      (
+      <Percent
+        value={83.33333333333334}
+      />
+      )
+    </small>
+  </span>,
+]
+`;
+
+exports[`BouncePage:  should render row data properly 1`] = `
+Array [
+  <LongTextContainer
+    text="u y bounce?"
+  />,
+  <Memo(Connect(AddFilterLink))
+    content="gmail"
+    newFilter={
+      Object {
+        "type": "Recipient Domain",
+        "value": "gmail",
+      }
+    }
+    reportType="bounce"
+  />,
+  "bouncy",
+  undefined,
+  <span>
+    10
+     
+    <small>
+      (
+      <Percent
+        value={1000}
+      />
+      )
+    </small>
+  </span>,
+]
+`;
+
+exports[`BouncePage:  should show empty reasons table when there are no admin reasons when on admin bounce tab 1`] = `
+<Page
+  title="Bounce Report"
+>
+  <withRouter(Connect(ReportOptions))
+    searchOptions={Object {}}
+  />
+  <Connect(MetricsSummary)
+    rateTitle="Bounce Rate"
+    rateValue={10}
+    secondaryMessage={
+      <React.Fragment>
+        5
+         messages were categorized as Admin Bounces.
+      </React.Fragment>
+    }
+  >
+    <strong>
+      1
+    </strong>
+     of
+     
+    <strong>
+      10
+    </strong>
+     sent messages bounced
+  </Connect(MetricsSummary)>
+  <Panel.LEGACY>
+    <TabsWrapper>
+      <Tabs
+        selected={1}
+        tabs={
+          Array [
+            Object {
+              "content": "Bounces",
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Admin Bounces",
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </TabsWrapper>
+    <Panel.LEGACY.Section>
+      <BounceChart
+        aggregates={
+          Object {
+            "countAdminBounce": 5,
+            "countBounce": 1,
+            "countSent": 10,
+          }
+        }
+        tab={1}
+      />
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <hr />
+  <Panel.LEGACY>
+    <Empty
+      message="No bounce reasons to report"
+    />
+  </Panel.LEGACY>
+</Page>
+`;
+
+exports[`BouncePage:  should show empty reasons table when there are no reasons when on regular bounce tab 1`] = `
+<Page
+  title="Bounce Report"
+>
+  <withRouter(Connect(ReportOptions))
+    searchOptions={Object {}}
+  />
+  <Connect(MetricsSummary)
+    rateTitle="Bounce Rate"
+    rateValue={10}
+    secondaryMessage={
+      <React.Fragment>
+        5
+         messages were categorized as Admin Bounces.
+      </React.Fragment>
+    }
+  >
+    <strong>
+      1
+    </strong>
+     of
+     
+    <strong>
+      10
+    </strong>
+     sent messages bounced
+  </Connect(MetricsSummary)>
+  <Panel.LEGACY>
+    <TabsWrapper>
+      <Tabs
+        selected={0}
+        tabs={
+          Array [
+            Object {
+              "content": "Bounces",
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Admin Bounces",
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </TabsWrapper>
+    <Panel.LEGACY.Section>
+      <BounceChart
+        aggregates={
+          Object {
+            "countAdminBounce": 5,
+            "countBounce": 1,
+            "countSent": 10,
+          }
+        }
+        tab={0}
+      />
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <hr />
+  <Panel.LEGACY>
+    <Empty
+      message="No bounce reasons to report"
+    />
+  </Panel.LEGACY>
+</Page>
+`;
+
+exports[`BouncePage:  should show loading panel when table is loading 1`] = `
+<Page
+  title="Bounce Report"
+>
+  <withRouter(Connect(ReportOptions))
+    searchOptions={Object {}}
+  />
+  <Connect(MetricsSummary)
+    rateTitle="Bounce Rate"
+    rateValue={10}
+    secondaryMessage={
+      <React.Fragment>
+        5
+         messages were categorized as Admin Bounces.
+      </React.Fragment>
+    }
+  >
+    <strong>
+      1
+    </strong>
+     of
+     
+    <strong>
+      10
+    </strong>
+     sent messages bounced
+  </Connect(MetricsSummary)>
+  <Panel.LEGACY>
+    <TabsWrapper>
+      <Tabs
+        selected={0}
+        tabs={
+          Array [
+            Object {
+              "content": "Bounces",
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Admin Bounces",
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </TabsWrapper>
+    <Panel.LEGACY.Section>
+      <BounceChart
+        aggregates={
+          Object {
+            "countAdminBounce": 5,
+            "countBounce": 1,
+            "countSent": 10,
+          }
+        }
+        tab={0}
+      />
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <hr />
+  <PanelLoading
+    accent={false}
+    minHeight="400px"
+  />
+</Page>
+`;

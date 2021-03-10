@@ -1,10 +1,72 @@
 import { reportBuilder, reports, signals } from 'src/pages';
-import ReportBuilder from 'src/pages/reportBuilder/ReportBuilder.container.js';
 import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
-const signalsRoutes = [
+const reportsRoutes = [
+  {
+    path: '/reports',
+    redirect: '/reports/summary',
+    category: 'Signals Analytics',
+    subcategory: 'Summary',
+  },
+  {
+    path: '/reports/summary',
+    component: reports.SummaryPage,
+    layout: App,
+    title: 'Summary Report | Signals Analytics',
+    supportDocSearch: 'reporting',
+    category: 'Signals Analytics',
+    subcategory: 'Summary',
+  },
+  {
+    path: '/reports/bounce',
+    component: reports.BouncePage,
+    layout: App,
+    title: 'Bounce Report | Signals Analytics',
+    supportDocSearch: 'bounce',
+    category: 'Signals Analytics',
+    subcategory: 'Bounce',
+  },
+  {
+    path: '/reports/rejections',
+    component: reports.RejectionPage,
+    layout: App,
+    title: 'Rejections Report | Signals Analytics',
+    supportDocSearch: 'reject',
+    category: 'Signals Analytics',
+    subcategory: 'Rejections',
+  },
+  {
+    path: '/reports/accepted',
+    component: reports.AcceptedPage,
+    layout: App,
+    title: 'Accepted Report | Signals Analytics',
+    supportDocSearch: 'accept',
+    category: 'Signals Analytics',
+    subcategory: 'Accepted',
+  },
+  {
+    path: '/reports/delayed',
+    component: reports.DelayPage,
+    layout: App,
+    title: 'Delay Report | Signals Analytics',
+    supportDocSearch: 'delay',
+    category: 'Signals Analytics',
+    subcategory: 'Delayed',
+  },
+  {
+    path: '/reports/engagement',
+    component: reports.EngagementPage,
+    layout: App,
+    title: 'Engagement Report | Signals Analytics',
+    supportDocSearch: 'engagement',
+    category: 'Signals Analytics',
+    subcategory: 'Engagement',
+  },
+];
+
+const hibanaReportsRoutes = [
   {
     path: '/signals',
     redirect: '/signals/analytics',
@@ -54,7 +116,7 @@ const signalsRoutes = [
   },
   {
     path: '/signals/analytics',
-    component: ReportBuilder,
+    component: reports.SummaryPage,
     layout: App,
     title: 'Analytics Report | Signals Analytics',
     supportDocSearch: 'reporting',
@@ -77,6 +139,9 @@ const signalsRoutes = [
     subcategory: 'Analytics Report',
     title: 'Edit Scheduled Report',
   },
+];
+
+const signalsRoutes = [
   {
     path: '/reports/message-events',
     component: reports.MessageEventsPage,
@@ -195,4 +260,6 @@ const signalsRoutes = [
   },
 ];
 
-export default signalsRoutes;
+export const hibanaSignalsRoutes = [...hibanaReportsRoutes, ...signalsRoutes];
+
+export default [...reportsRoutes, ...signalsRoutes];

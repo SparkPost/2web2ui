@@ -1,0 +1,251 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accepted ChartGroup:  should handle breadcrumb 1`] = `
+Object {
+  "active": Object {
+    "children": Array [
+      Object {
+        "count": 2,
+        "name": "2-4",
+      },
+      Object {
+        "count": 3,
+        "name": "5+",
+      },
+    ],
+    "count": 1,
+    "name": "2 or more attempts",
+  },
+  "hoveredItem": null,
+}
+`;
+
+exports[`Accepted ChartGroup:  should handle breadcrumb 2`] = `
+Object {
+  "active": null,
+  "hoveredItem": null,
+}
+`;
+
+exports[`Accepted ChartGroup:  should handle mouse in and out 1`] = `
+Object {
+  "active": null,
+  "hoveredItem": Object {
+    "count": 5,
+    "dataSet": undefined,
+    "index": 0,
+    "name": "first attempt",
+  },
+}
+`;
+
+exports[`Accepted ChartGroup:  should handle mouse in and out 2`] = `
+<PieChart.ActiveLabel
+  name="first attempt"
+  value="10%"
+/>
+`;
+
+exports[`Accepted ChartGroup:  should handle mouse in and out 3`] = `
+<PieChart.ActiveLabel
+  name="Accepted Rate"
+  value="62.5%"
+/>
+`;
+
+exports[`Accepted ChartGroup:  should handle mouse in and out 4`] = `
+Object {
+  "active": null,
+  "hoveredItem": null,
+}
+`;
+
+exports[
+  `Accepted ChartGroup:  should not do anything if clicking on an item without children 1`
+] = `
+Object {
+  "active": null,
+  "hoveredItem": null,
+}
+`;
+
+exports[`Accepted ChartGroup:  should render 1`] = `
+<Panel.LEGACY
+  sectioned={true}
+  title="Accepted Rates"
+>
+  <Grid>
+    <Grid.Column
+      lg={5}
+      xs={12}
+    >
+      <div
+        className="ChartWrapper"
+      >
+        <LoadableComponent
+          hoveredItem={null}
+          onClick={[Function]}
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
+          primaryData={
+            Array [
+              Object {
+                "count": 5,
+                "fill": "hsl(210, 65.4%, 20.4%)",
+                "name": "first attempt",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "count": 2,
+                    "name": "2-4",
+                  },
+                  Object {
+                    "count": 3,
+                    "name": "5+",
+                  },
+                ],
+                "count": 1,
+                "fill": "hsl(190, 65.4%, 20.4%)",
+                "name": "2 or more attempts",
+              },
+            ]
+          }
+        />
+        <PieChart.ActiveLabel
+          name="Accepted Rate"
+          value="62.5%"
+        />
+      </div>
+    </Grid.Column>
+    <Grid.Column
+      lg={7}
+      xs={12}
+    >
+      <PieChart.Legend
+        headerData={
+          Array [
+            Object {
+              "count": 50,
+              "name": "Accepted",
+            },
+            Object {
+              "count": 80,
+              "name": "Sent",
+            },
+          ]
+        }
+        hoveredItem={null}
+        onClick={[Function]}
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+        primaryData={
+          Array [
+            Object {
+              "count": 5,
+              "fill": "hsl(210, 65.4%, 20.4%)",
+              "name": "first attempt",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "count": 2,
+                  "name": "2-4",
+                },
+                Object {
+                  "count": 3,
+                  "name": "5+",
+                },
+              ],
+              "count": 1,
+              "fill": "hsl(190, 65.4%, 20.4%)",
+              "name": "2 or more attempts",
+            },
+          ]
+        }
+      />
+    </Grid.Column>
+  </Grid>
+</Panel.LEGACY>
+`;
+
+exports[`Accepted ChartGroup:  should render correctly after click 1`] = `
+<PieChart.Legend
+  headerData={
+    Array [
+      Object {
+        "breadcrumb": true,
+        "count": 50,
+        "name": "Accepted",
+        "onClick": [Function],
+      },
+      Object {
+        "count": 80,
+        "name": "Sent",
+      },
+      Object {
+        "count": 1,
+        "name": "2 or more attempts",
+      },
+    ]
+  }
+  hoveredItem={null}
+  onClick={[Function]}
+  onMouseOut={[Function]}
+  onMouseOver={[Function]}
+  primaryData={
+    Array [
+      Object {
+        "count": 2,
+        "fill": "hsl(210, 65.4%, 20.4%)",
+        "name": "2-4",
+      },
+      Object {
+        "count": 3,
+        "fill": "hsl(190, 65.4%, 20.4%)",
+        "name": "5+",
+      },
+    ]
+  }
+/>
+`;
+
+exports[`Accepted ChartGroup:  should render correctly after click 2`] = `
+<LoadableComponent
+  hoveredItem={null}
+  onClick={[Function]}
+  onMouseOut={[Function]}
+  onMouseOver={[Function]}
+  primaryData={
+    Array [
+      Object {
+        "count": 2,
+        "fill": "hsl(210, 65.4%, 20.4%)",
+        "name": "2-4",
+      },
+      Object {
+        "count": 3,
+        "fill": "hsl(190, 65.4%, 20.4%)",
+        "name": "5+",
+      },
+    ]
+  }
+/>
+`;
+
+exports[`Accepted ChartGroup:  should render label when hovering over a child 1`] = `
+<PieChart.ActiveLabel
+  name="2-4"
+  value="4%"
+/>
+`;
+
+exports[`Accepted ChartGroup:  should render loading 1`] = `
+<Panel.LEGACY
+  className="LoadingPanel"
+  sectioned={true}
+  title="Accepted Rates"
+>
+  <Loading />
+</Panel.LEGACY>
+`;

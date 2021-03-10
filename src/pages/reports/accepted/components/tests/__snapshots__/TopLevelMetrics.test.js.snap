@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accepted TopLevelMetrics Component:  should render correctly 1`] = `
+<div>
+  <Connect(MetricsSummary)
+    rateTitle="Accepted Rate"
+    rateValue={93.75}
+    relativeRange="hour"
+  >
+    <strong>
+      150
+    </strong>
+     of
+     
+    <strong>
+      160
+    </strong>
+     sent messages were accepted
+  </Connect(MetricsSummary)>
+  <Grid>
+    <Grid.Column
+      md={4}
+      xs={12}
+    >
+      <MetricCard
+        label="Avg Latency (First)"
+        tooltipContent="a"
+        value={
+          <Duration
+            value={100}
+          />
+        }
+      />
+    </Grid.Column>
+    <Grid.Column
+      md={4}
+      xs={12}
+    >
+      <MetricCard
+        label="Avg Latency (Subsequent)"
+        tooltipContent="b"
+        value={
+          <Duration
+            value={100}
+          />
+        }
+      />
+    </Grid.Column>
+    <Grid.Column
+      md={4}
+      xs={12}
+    >
+      <MetricCard
+        label="Avg Message Size"
+        tooltipContent="c"
+        value={
+          <Size
+            value={10}
+          />
+        }
+      />
+    </Grid.Column>
+  </Grid>
+</div>
+`;

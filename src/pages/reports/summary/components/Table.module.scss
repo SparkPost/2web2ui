@@ -1,0 +1,36 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.LoadingSection {
+  position: relative;
+  height: 250px;
+}
+
+.Loading {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.RightAlign {
+  text-align: right;
+}
+
+.TopDomainsCheckbox {
+  display: inline-block;
+  margin-top: spacing(larger);
+
+  @media screen and (min-width: breakpoint(small)) {
+    float: right;
+  }
+}
+
+.HeaderCell {
+  vertical-align: bottom;
+  word-break: normal;
+}
+
+.NumericalHeader {
+  text-align: right;
+  max-width: rem(170);
+}

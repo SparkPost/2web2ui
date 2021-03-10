@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PercentLabel renders label 1`] = `
+<g>
+  <svg
+    height={24}
+    width={64}
+    x={232}
+    y={188}
+  >
+    <path
+      d="M3 1h52c.7 0 1.3.3 1.6.8l6.4 9c.5.7.5 1.7-.1 2.4l-6.3 8c-.4.5-1 .8-1.6.8H3a2 2 0 0 1-2-2V3c0-1.1.9-2 2-2z"
+      fill="white"
+      stroke="#e1e1e6"
+      strokeMiterlimit="10"
+      vectorEffect="non-scaling-stroke"
+    />
+  </svg>
+  <text
+    fill="#55555a"
+    x={237}
+    y={205}
+  >
+    89.88%
+  </text>
+</g>
+`;

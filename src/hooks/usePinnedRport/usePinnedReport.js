@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
-import { parseSearch } from 'src/helpers/reports';
+import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { hydrateFilters, replaceComparisonFilterKey } from 'src/pages/reportBuilder/helpers';
 import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants';
 import _ from 'lodash';

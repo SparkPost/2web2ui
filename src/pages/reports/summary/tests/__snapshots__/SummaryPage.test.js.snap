@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page: SummaryPage should render correctly 1`] = `
+<Page
+  title="Summary Report"
+>
+  <withRouter(Connect(ReportOptions))
+    searchOptions={Object {}}
+  />
+  <div
+    data-id="summary-chart"
+  >
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section
+        className="ChartSection"
+      >
+        <ChartHeader
+          onMetricsToggle={[Function]}
+          onScaleClick={[Function]}
+          onTimeClick={[Function]}
+          selectedMetrics={
+            Array [
+              1,
+              2,
+              3,
+            ]
+          }
+          selectedScale="linear"
+          selectedTime="real"
+        />
+        <ChartGroup
+          metrics={
+            Array [
+              1,
+              2,
+              3,
+            ]
+          }
+          yScale="linear"
+        />
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
+  </div>
+  <div
+    data-id="summary-table"
+  >
+    <Connect(Table) />
+  </div>
+  <MetricsModal
+    onCancel={[Function]}
+    onSubmit={[Function]}
+    open={false}
+    selectedMetrics={
+      Array [
+        1,
+        2,
+        3,
+      ]
+    }
+  />
+</Page>
+`;
+
+exports[`Page: SummaryPage should render when loading 1`] = `
+<Page
+  title="Summary Report"
+>
+  <withRouter(Connect(ReportOptions))
+    reportLoading={true}
+    searchOptions={Object {}}
+  />
+  <div
+    data-id="summary-chart"
+  >
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section
+        className="ChartSection pending"
+      >
+        <ChartHeader
+          onMetricsToggle={[Function]}
+          onScaleClick={[Function]}
+          onTimeClick={[Function]}
+          selectedMetrics={
+            Array [
+              1,
+              2,
+              3,
+            ]
+          }
+          selectedScale="linear"
+          selectedTime="real"
+        />
+        <ChartGroup
+          chartLoading={true}
+          metrics={
+            Array [
+              1,
+              2,
+              3,
+            ]
+          }
+          yScale="linear"
+        />
+      </Panel.LEGACY.Section>
+      <div
+        className="Loading"
+      >
+        <Loading />
+      </div>
+    </Panel.LEGACY>
+  </div>
+  <div
+    data-id="summary-table"
+  >
+    <Connect(Table) />
+  </div>
+  <MetricsModal
+    onCancel={[Function]}
+    onSubmit={[Function]}
+    open={false}
+    selectedMetrics={
+      Array [
+        1,
+        2,
+        3,
+      ]
+    }
+  />
+</Page>
+`;

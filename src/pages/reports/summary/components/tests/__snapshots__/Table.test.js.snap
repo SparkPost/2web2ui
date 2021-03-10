@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Summary Table should render group by row data 1`] = `
+Array [
+  <Memo(Connect(AddFilterLink))
+    content="Primary Account (ID 0)"
+    newFilter={
+      Object {
+        "id": 0,
+        "type": "Subaccount",
+        "value": "Primary Account (ID 0)",
+      }
+    }
+    reportType="summary"
+  />,
+  <div
+    className="RightAlign"
+  >
+    <Unit
+      value={123}
+    />
+  </div>,
+  <div
+    className="RightAlign"
+  >
+    <Unit
+      unit="millisecond"
+      value={12345}
+    />
+  </div>,
+  <Memo(Connect(AddFilterLink))
+    content="sub 1 name"
+    newFilter={
+      Object {
+        "id": 555,
+        "type": "Subaccount",
+        "value": "sub 1 name",
+      }
+    }
+    reportType="summary"
+  />,
+  <div
+    className="RightAlign"
+  >
+    <Unit
+      value={123}
+    />
+  </div>,
+  <div
+    className="RightAlign"
+  >
+    <Unit
+      unit="millisecond"
+      value={12345}
+    />
+  </div>,
+  <Memo(Connect(AddFilterLink))
+    content="Deleted (ID 1010)"
+    newFilter={
+      Object {
+        "id": 1010,
+        "type": "Subaccount",
+        "value": "Deleted (ID 1010)",
+      }
+    }
+    reportType="summary"
+  />,
+  <div
+    className="RightAlign"
+  >
+    <Unit
+      value={123}
+    />
+  </div>,
+  <div
+    className="RightAlign"
+  >
+    <Unit
+      unit="millisecond"
+      value={12345}
+    />
+  </div>,
+]
+`;
+
+exports[`Summary Table should render with aggregate data 1`] = `
+<TableCollection
+  defaultSortColumn={null}
+  defaultSortDirection="asc"
+  getRowData={[Function]}
+  headerComponent={[Function]}
+  rows={
+    Array [
+      Object {
+        "metric_1": 987,
+        "metric_2": 654,
+        "metric_3": 321,
+      },
+    ]
+  }
+/>
+`;
+
+exports[`Summary Table should render with data 1`] = `
+<TableCollection
+  columns={
+    Array [
+      Object {
+        "className": "HeaderCell",
+        "label": "Recipient Domain",
+        "sortKey": "domain",
+      },
+      Object {
+        "className": "HeaderCell NumericalHeader",
+        "key": "metric_1",
+        "label": <div
+          className="RightAlign"
+        />,
+        "sortKey": "metric_1",
+      },
+      Object {
+        "className": "HeaderCell NumericalHeader",
+        "key": "metric_2",
+        "label": <div
+          className="RightAlign"
+        />,
+        "sortKey": "metric_2",
+      },
+    ]
+  }
+  defaultPerPage={10}
+  defaultSortColumn="metric_1"
+  defaultSortDirection="desc"
+  getRowData={[Function]}
+  pagination={true}
+  rowKeyName="domain"
+  rows={
+    Array [
+      Object {
+        "metric_1": 123,
+        "metric_2": 12345,
+        "subaccount_id": 0,
+      },
+      Object {
+        "metric_1": 123,
+        "metric_2": 12345,
+        "subaccount_id": 555,
+      },
+      Object {
+        "metric_1": 123,
+        "metric_2": 12345,
+        "subaccount_id": 1010,
+      },
+    ]
+  }
+/>
+`;
+
+exports[`Summary Table should render with no data 1`] = `
+<Panel.LEGACY>
+  <Panel.LEGACY.Section>
+    <GroupByOption
+      _getTableData={[MockFunction]}
+      groupBy="domain"
+      hasSubaccounts={false}
+      tableLoading={false}
+    />
+  </Panel.LEGACY.Section>
+  <Empty
+    message="There is no data to display"
+  />
+</Panel.LEGACY>
+`;

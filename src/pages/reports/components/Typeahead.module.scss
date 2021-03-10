@@ -1,0 +1,54 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.Typeahead {
+  position: relative;
+}
+
+.List {
+  position: absolute;
+  z-index: 1;
+
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 3px;
+
+  background: color(gray, 10);
+  box-shadow: shadow(deep);
+  border-radius: border-radius();
+  border: 1px solid color(gray, 7);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+  transition: 0.06s ease-out;
+}
+
+.Label {
+  @include visually-hidden();
+}
+
+.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.Item {
+  display: flex;
+}
+
+.Value {
+  flex: 1 0 0;
+  padding-right: spacing();
+  font-size: rem(15);
+  font-weight: 400;
+}
+
+.HelpText {
+  flex: 0 0 0;
+  white-space: nowrap;
+  text-align: right;
+  font-size: rem(14);
+  opacity: 0.8;
+}

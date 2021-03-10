@@ -12,7 +12,7 @@ import {
 import { selectMessageEventsSearchOptions } from 'src/selectors/messageEvents';
 import AdvancedFiltersModal from './AdvancedFiltersModal';
 import ActiveFilters from './ActiveFilters';
-import ShareModal from './ShareModal';
+import ShareModal from '../../components/ShareModal';
 import DatePicker from 'src/components/datePicker/DatePicker';
 import { Panel, TextField } from 'src/components/matchbox';
 import { recipientEmail as recipientEmailValidator } from 'src/helpers/validation';

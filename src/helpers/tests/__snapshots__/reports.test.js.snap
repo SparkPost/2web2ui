@@ -51,24 +51,23 @@ exports[`report helpers parseSearch should parse search with missing range 1`] =
 Object {
   "filters": Array [
     Object {
-      "AND": Object {
-        "sending_domains": Object {
-          "eq": Array [
-            "test.com",
-          ],
-        },
-        "subaccounts": Object {
-          "eq": Array [
-            "123",
-          ],
-        },
-      },
+      "id": undefined,
+      "type": "Domain",
+      "value": "test.com",
+    },
+    Object {
+      "id": "123",
+      "type": "Subaccount",
+      "value": "test",
     },
   ],
-  "from": 2017-11-03T14:43:00.000Z,
-  "metrics": Array [
-    "count-something",
-  ],
-  "to": 2017-11-04T14:43:00.000Z,
+  "options": Object {
+    "from": 2017-11-03T14:43:00.000Z,
+    "metrics": Array [
+      "count-something",
+    ],
+    "to": 2017-11-04T14:43:00.000Z,
+  },
+  "report": undefined,
 }
 `;

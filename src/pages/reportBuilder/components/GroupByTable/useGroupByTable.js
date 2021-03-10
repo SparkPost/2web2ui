@@ -5,7 +5,7 @@ import { hasProductOnBillingSubscription } from 'src/helpers/conditions/account'
 import { useSparkPostQueries, useSparkPostQuery } from 'src/hooks';
 import {
   getMetricsFromKeys,
-  getQueryFromOptions,
+  getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
   splitDeliverabilityMetric,
 } from 'src/helpers/metrics';

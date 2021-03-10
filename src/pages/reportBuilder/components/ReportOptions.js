@@ -12,7 +12,7 @@ import {
 import { Tabs, Loading } from 'src/components';
 import { ActiveFilters } from 'src/components/reportBuilder';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-import { parseSearch } from 'src/helpers/reports';
+import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { ActiveMetrics, ActiveComparisons, CompareByForm, FiltersForm, MetricsForm } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';

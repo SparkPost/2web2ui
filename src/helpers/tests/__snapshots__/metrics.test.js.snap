@@ -29,12 +29,13 @@ Object {
 exports[`metrics helpers should build return correct options from updates 1`] = `
 Object {
   "delimiter": ",",
-  "from": undefined,
+  "domains": "gmail.com",
+  "from": "2017-12-17T19:00",
   "metrics": "count_bounce,test + last",
   "precision": "hour",
-  "query_filters": "{\\"groupings\\":[{\\"value\\":{\\"0\\":{\\"0\\":\\"g\\"},\\"1\\":{\\"0\\":\\"m\\"},\\"2\\":{\\"0\\":\\"a\\"},\\"3\\":{\\"0\\":\\"i\\"},\\"4\\":{\\"0\\":\\"l\\"},\\"5\\":{\\"0\\":\\".\\"},\\"6\\":{\\"0\\":\\"c\\"},\\"7\\":{\\"0\\":\\"o\\"},\\"8\\":{\\"0\\":\\"m\\"}}},{\\"value\\":{\\"0\\":{\\"0\\":\\"f\\"},\\"1\\":{\\"0\\":\\"o\\"},\\"2\\":{\\"0\\":\\"o\\"},\\"3\\":{\\"0\\":\\"b\\"},\\"4\\":{\\"0\\":\\"a\\"},\\"5\\":{\\"0\\":\\"r\\"}}}]}",
+  "subaccounts": "100",
   "timezone": "Mock/Timezone",
-  "to": undefined,
+  "to": "2017-12-18T06:00",
 }
 `;
 

@@ -1,0 +1,33 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.ChartHeader {
+  margin-bottom: spacing(large);
+}
+
+.TimeMode {
+  display: inline-block;
+  font-size: rem(13);
+  line-height: rem(15);
+  color: color(gray, 4);
+  padding: spacing(small) 0 0;
+}
+
+.Controls {
+  margin-top: spacing();
+  margin-left: spacing(larger);
+  text-align: left;
+
+  & * {
+    text-align: left;
+  }
+
+  @media screen and (min-width: breakpoint(small)) {
+    margin-top: 0;
+    margin-left: 0;
+    text-align: right;
+  }
+}
+
+.ButtonSpacer {
+  margin-left: spacing(small);
+}

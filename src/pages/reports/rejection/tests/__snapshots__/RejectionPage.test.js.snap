@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RejectionPage:  renders correctly when loading 1`] = `
+<Page
+  title="Rejections Report"
+>
+  <withRouter(Connect(ReportOptions))
+    reportLoading={true}
+  />
+  <Connect(MetricsSummary)
+    rateTitle="Rejected Rate"
+    rateValue={14.000000000000002}
+  >
+    <strong>
+      14
+    </strong>
+     of your messages were rejected of
+     
+    <strong>
+      100
+    </strong>
+     messages targeted
+  </Connect(MetricsSummary)>
+  <hr />
+  <PanelLoading
+    accent={false}
+    minHeight="400px"
+  />
+</Page>
+`;
+
+exports[`RejectionPage:  renders loading pannel when aggregates are still loading 1`] = `
+<Page
+  title="Rejections Report"
+>
+  <withRouter(Connect(ReportOptions))
+    reportLoading={false}
+  />
+  <PanelLoading
+    accent={false}
+    minHeight="115px"
+  />
+  <hr />
+  <DataTable
+    list={
+      Array [
+        Object {
+          "count_rejected": 65,
+          "domain": "gmail.com",
+          "reason": "551 - Cannot Relay 105",
+          "rejection_category_id": 1,
+          "rejection_category_name": "Policy Rejection",
+        },
+        Object {
+          "count_rejected": 62,
+          "domain": "gmail.com",
+          "reason": "550 - Invalid recipient ...@... (#5.1.1)",
+          "rejection_category_id": 1,
+          "rejection_category_name": "Policy Rejection",
+        },
+      ]
+    }
+  />
+</Page>
+`;
+
+exports[`RejectionPage:  should render 1`] = `
+<Page
+  title="Rejections Report"
+>
+  <withRouter(Connect(ReportOptions))
+    reportLoading={false}
+  />
+  <Connect(MetricsSummary)
+    rateTitle="Rejected Rate"
+    rateValue={14.000000000000002}
+  >
+    <strong>
+      14
+    </strong>
+     of your messages were rejected of
+     
+    <strong>
+      100
+    </strong>
+     messages targeted
+  </Connect(MetricsSummary)>
+  <hr />
+  <DataTable
+    list={
+      Array [
+        Object {
+          "count_rejected": 65,
+          "domain": "gmail.com",
+          "reason": "551 - Cannot Relay 105",
+          "rejection_category_id": 1,
+          "rejection_category_name": "Policy Rejection",
+        },
+        Object {
+          "count_rejected": 62,
+          "domain": "gmail.com",
+          "reason": "550 - Invalid recipient ...@... (#5.1.1)",
+          "rejection_category_id": 1,
+          "rejection_category_name": "Policy Rejection",
+        },
+      ]
+    }
+  />
+</Page>
+`;

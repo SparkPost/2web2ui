@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MetricsSummary:  should render custom date 1`] = `
+<Panel.LEGACY
+  className="Panel"
+>
+  <Panel.LEGACY.Section>
+    <Grid>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <div
+          className="panelvertical"
+        >
+          <Heading
+            as="h3"
+            className="RateValue"
+          >
+            <Percent
+              value={10}
+            />
+          </Heading>
+          <Heading
+            as="h4"
+            className="RateTitle"
+          >
+            Summary Title
+          </Heading>
+        </div>
+      </Grid.Column>
+      <Grid.Column>
+        <div
+          className="panelvertical"
+        >
+          <p
+            className="Description"
+          >
+            <p>
+              message
+            </p>
+            <span>
+               
+              from 
+              <strong>
+                Dec 25 2017, 5:30am
+              </strong>
+               to 
+              <strong>
+                Jan 12 2018, 12:00pm
+              </strong>
+            </span>
+            .
+          </p>
+        </div>
+      </Grid.Column>
+    </Grid>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
+`;
+
+exports[`MetricsSummary:  should render relative range 1`] = `
+<Panel.LEGACY
+  className="Panel"
+>
+  <Panel.LEGACY.Section>
+    <Grid>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <div
+          className="panelvertical"
+        >
+          <Heading
+            as="h3"
+            className="RateValue"
+          >
+            <Percent
+              value={10}
+            />
+          </Heading>
+          <Heading
+            as="h4"
+            className="RateTitle"
+          >
+            Summary Title
+          </Heading>
+        </div>
+      </Grid.Column>
+      <Grid.Column>
+        <div
+          className="panelvertical"
+        >
+          <p
+            className="Description"
+          >
+            <p>
+              message
+            </p>
+            <span>
+               
+              in the 
+              <strong>
+                last 30 days
+              </strong>
+            </span>
+            .
+          </p>
+        </div>
+      </Grid.Column>
+    </Grid>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
+`;
+
+exports[`MetricsSummary:  should render secondary message 1`] = `
+<Panel.LEGACY
+  className="Panel"
+>
+  <Panel.LEGACY.Section>
+    <Grid>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <div
+          className="panelvertical"
+        >
+          <Heading
+            as="h3"
+            className="RateValue"
+          >
+            <Percent
+              value={10}
+            />
+          </Heading>
+          <Heading
+            as="h4"
+            className="RateTitle"
+          >
+            Summary Title
+          </Heading>
+        </div>
+      </Grid.Column>
+      <Grid.Column>
+        <div
+          className="panelvertical"
+        >
+          <p
+            className="Description"
+          >
+            <p>
+              message
+            </p>
+            <span>
+               
+              from 
+              <strong>
+                Dec 25 2017, 5:30am
+              </strong>
+               to 
+              <strong>
+                Jan 12 2018, 12:00pm
+              </strong>
+            </span>
+            .
+          </p>
+          <p
+            className="Secondary"
+          >
+            another message
+          </p>
+        </div>
+      </Grid.Column>
+    </Grid>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
+`;

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import qs from 'qs';
+import queryString from 'query-string'; //TODO: Deprecate
 import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
@@ -11,19 +12,74 @@ export function dedupeFilters(filters) {
 /**
  * Parses search string
  * @param  {string} search - location.search
- * @returns {Object}
- * {
- *   filters: array of advanced filters
- *   comparisons: array of filters that are being compared
- *   range: specific range for dates, used in place of specific dates
- *   from: javascript date representing beginning of range
- *   to: javascript date representing beginning of range
- *   timezone: string representing timezone
- *   precision: string representing grouping of data based on a time intervals (minute, hour, day, etc.)
- *  report: string representing ID of an active report
- * }
+ * @return {Object}
+ *   {
+ *     options - options for refresh actions
+ *     filters - array of objects ready to be called with reportOptions.addFilter action
+ *   }
  */
 export function parseSearch(search) {
+  if (!search) {
+    return { options: {} };
+  }
+
+  const { from, to, range, metrics, timezone, precision, filters = [], report } = queryString.parse(
+    search,
+  );
+  const filtersList = (typeof filters === 'string' ? [filters] : filters).map(filter => {
+    const parts = filter.split(':');
+    const type = parts.shift();
+    let value;
+    let id;
+
+    // Subaccount filters include 3 parts
+    // 'Subaccount:1234 (ID 554):554' -> { type: 'Subaccount', value: '1234 (ID 554)', id: '554' }
+    if (type === 'Subaccount') {
+      id = parts.pop();
+      value = parts.join(':');
+    } else {
+      value = parts.join(':');
+    }
+
+    return { value, type, id };
+  });
+
+  let options = {};
+
+  if (metrics) {
+    options.metrics = typeof metrics === 'string' ? [metrics] : metrics;
+  }
+
+  const fromTime = new Date(from);
+  const toTime = new Date(to);
+
+  if (from && !isNaN(fromTime)) {
+    options.from = fromTime;
+  }
+
+  if (to && !isNaN(toTime)) {
+    options.to = toTime;
+  }
+
+  if (range) {
+    const invalidRange = !_.find(relativeDateOptions, ['value', range]);
+    const effectiveRange = invalidRange ? 'day' : range;
+    options = { ...options, ...getRelativeDates(effectiveRange) };
+  }
+
+  if (precision) {
+    options.precision = precision;
+  }
+
+  if (timezone) {
+    options.timezone = timezone;
+  }
+
+  // filters are used in pages to dispatch updates to Redux store
+  return { options, filters: filtersList, report };
+}
+
+export function parseSearchNew(search) {
   if (!search) {
     return {};
   }

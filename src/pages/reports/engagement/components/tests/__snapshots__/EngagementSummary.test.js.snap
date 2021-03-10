@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EngagementSummary renders loading panel 1`] = `
+<PanelLoading
+  accent={false}
+  minHeight="115px"
+/>
+`;
+
+exports[`EngagementSummary renders loading panel when filters are not ready 1`] = `
+<PanelLoading
+  accent={false}
+  minHeight="115px"
+/>
+`;
+
+exports[`EngagementSummary renders metric summary 1`] = `
+<Panel.LEGACY
+  className="EngagementSummary"
+  data-id="summary-panel"
+>
+  <Box
+    padding="400"
+  >
+    <Grid>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <Heading
+          as="h3"
+          data-id="unique-open-rate"
+        >
+          <Percent
+            value={0.4248578391551584}
+          />
+        </Heading>
+        <Heading
+          as="h6"
+        >
+          Unique Open Rate
+        </Heading>
+      </Grid.Column>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <Heading
+          as="h3"
+          data-id="unique-click-rate"
+        >
+          <Percent
+            value={0.09991876523151909}
+          />
+        </Heading>
+        <Heading
+          as="h6"
+        >
+          Unique Click Rate
+        </Heading>
+      </Grid.Column>
+      <Grid.Column
+        md={6}
+        xl={8}
+        xs={12}
+      >
+        <p>
+          Of 
+          <strong
+            data-id="count-sent"
+          >
+            123,123
+          </strong>
+           sent recipients,
+           
+          <strong
+            data-id="count-accepted"
+          >
+            123,100
+          </strong>
+           messages were accepted, 
+          <strong
+            data-id="count-opened"
+          >
+            523
+          </strong>
+           were opened and 
+          <strong
+            data-id="count-unique-clicks"
+          >
+            123
+          </strong>
+           
+          were clicked 
+          <span>
+            in the 
+            <strong>
+              last hour
+            </strong>
+          </span>
+          .
+        </p>
+      </Grid.Column>
+    </Grid>
+  </Box>
+</Panel.LEGACY>
+`;
+
+exports[`EngagementSummary renders metric summary with custom time range 1`] = `
+<Panel.LEGACY
+  className="EngagementSummary"
+  data-id="summary-panel"
+>
+  <Box
+    padding="400"
+  >
+    <Grid>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <Heading
+          as="h3"
+          data-id="unique-open-rate"
+        >
+          <Percent
+            value={0.4248578391551584}
+          />
+        </Heading>
+        <Heading
+          as="h6"
+        >
+          Unique Open Rate
+        </Heading>
+      </Grid.Column>
+      <Grid.Column
+        md={3}
+        xl={2}
+        xs={12}
+      >
+        <Heading
+          as="h3"
+          data-id="unique-click-rate"
+        >
+          <Percent
+            value={0.09991876523151909}
+          />
+        </Heading>
+        <Heading
+          as="h6"
+        >
+          Unique Click Rate
+        </Heading>
+      </Grid.Column>
+      <Grid.Column
+        md={6}
+        xl={8}
+        xs={12}
+      >
+        <p>
+          Of 
+          <strong
+            data-id="count-sent"
+          >
+            123,123
+          </strong>
+           sent recipients,
+           
+          <strong
+            data-id="count-accepted"
+          >
+            123,100
+          </strong>
+           messages were accepted, 
+          <strong
+            data-id="count-opened"
+          >
+            523
+          </strong>
+           were opened and 
+          <strong
+            data-id="count-unique-clicks"
+          >
+            123
+          </strong>
+           
+          were clicked 
+          <span>
+            from 
+            <strong>
+              Jan 31 2018, 8:00pm
+            </strong>
+             to
+             
+            <strong>
+              Feb 1 2018, 8:00pm
+            </strong>
+          </span>
+          .
+        </p>
+      </Grid.Column>
+    </Grid>
+  </Box>
+</Panel.LEGACY>
+`;
+
+exports[`EngagementSummary returns null 1`] = `""`;

@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: Summary Chart Group should render 1`] = `
+<div>
+  <LoadableComponent
+    data={
+      Array [
+        1,
+        2,
+        3,
+      ]
+    }
+    formatter="mock"
+    key="chart=0"
+    lines={Array []}
+    precision="day"
+    referenceLines={
+      Array [
+        Object {
+          "key": "day lines mock",
+          "stroke": "#bbb",
+          "strokeWidth": 2,
+          "x": "day lines mock",
+        },
+      ]
+    }
+    showXAxis={true}
+    syncId="summaryChart"
+    tooltipValueFormatter={[Function]}
+    yLabel="Count"
+    yScale="linear"
+    yTickFormatter={[Function]}
+  />
+</div>
+`;
+
+exports[`Component: Summary Chart Group should render null if no chart data 1`] = `""`;
+
+exports[`Component: Summary Chart Group should render null if no metrics given 1`] = `""`;
+
+exports[`Component: Summary Chart Group should render when loading 1`] = `
+<div>
+  <LoadableComponent
+    data={
+      Array [
+        1,
+        2,
+        3,
+      ]
+    }
+    formatter="mock"
+    key="chart=0"
+    lines={Array []}
+    precision="day"
+    referenceLines={
+      Array [
+        Object {
+          "key": "day lines mock",
+          "stroke": "#bbb",
+          "strokeWidth": 2,
+          "x": "day lines mock",
+        },
+      ]
+    }
+    showXAxis={true}
+    syncId="summaryChart"
+    tooltipValueFormatter={[Function]}
+    yLabel="Count"
+    yScale="linear"
+    yTickFormatter={[Function]}
+  />
+</div>
+`;

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Add Filter Link should render correctly for other reports and should not include metrics in the link 1`] = `
+<PageLink
+  onClick={[Function]}
+  onMouseUp={[Function]}
+  replace={true}
+  to="/reports/bounce/?filters=Campaign%3A%20shiny%20new%20filter&filters=Subaccount%3APrimary%20Account%20%28ID%200%29%3A0"
+>
+  primary account
+</PageLink>
+`;
+
+exports[`Add Filter Link should render correctly for the summary report and include metrics in the link 1`] = `
+<PageLink
+  onClick={[Function]}
+  onMouseUp={[Function]}
+  replace={true}
+  to="/reports/summary/?filters=Campaign%3A%20shiny%20new%20filter&filters=Subaccount%3APrimary%20Account%20%28ID%200%29%3A0&metrics=count_something"
+>
+  primary account
+</PageLink>
+`;

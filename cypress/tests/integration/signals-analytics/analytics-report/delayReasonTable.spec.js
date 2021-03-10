@@ -110,7 +110,7 @@ describe('the delay reason comparison (AKA compare by) tables', () => {
               .should('have.text', '10');
             cy.get('td')
               .eq(1)
-              .should('have.text', '5 (< 0.01%)');
+              .should('have.text', '5 (0%)');
             cy.get('td')
               .eq(2)
               .should('have.text', 'A delay reason reason.');

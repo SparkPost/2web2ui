@@ -8,13 +8,13 @@ import {
 } from 'src/config/metrics';
 import { getMetricsFromKeys, getFilterByComparison } from 'src/helpers/metrics';
 import { getBounceReasonByDomain, getDeliverability } from 'src/helpers/api/metrics';
-import { selectReasons, selectFormattedAggregates } from 'src/selectors/reportBuilder';
+import { selectReasons, selectFormattedAggregates } from 'src/selectors/bounceReport';
 import { BounceReasonTable } from '../tables';
 import { usePrepareReportBuilderQuery } from 'src/hooks';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import { TAB_LOADING_HEIGHT } from '../../constants';
 
-export default function BounceReasonsTab({ comparison }) {
+export default function BounceReasonComparisonTab({ comparison }) {
   const {
     aggregatesQuery,
     bounceReasonsQuery,
@@ -55,15 +55,15 @@ function useQueriesWithComparison(comparison) {
   const deliverabilityMetrics = getMetricsFromKeys(DELIVERABILITY_BOUNCE_METRIC_KEYS);
   const bounceReasonMetrics = getMetricsFromKeys(BOUNCE_BY_DOMAIN_METRIC_KEYS);
   const existingFilters = reportOptions.filters ? reportOptions.filters : [];
-  const comparisonFilter = comparison ? [getFilterByComparison(comparison)] : [];
+  const comparisonFilter = getFilterByComparison(comparison);
   const aggregatesParams = usePrepareReportBuilderQuery({
     ...reportOptions,
-    filters: [...existingFilters, ...comparisonFilter],
+    filters: [...existingFilters, comparisonFilter],
     metrics: deliverabilityMetrics,
   });
   const bounceReasonParams = usePrepareReportBuilderQuery({
     ...reportOptions,
-    filters: [...existingFilters, ...comparisonFilter],
+    filters: [...existingFilters, comparisonFilter],
     metrics: bounceReasonMetrics,
   });
   const bounceReasonsQuery = useSparkPostQuery(() => getBounceReasonByDomain(bounceReasonParams));

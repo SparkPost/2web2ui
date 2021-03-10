@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DelaysDataTable:  should render page 1`] = `
+<TableCollection
+  columns={
+    Array [
+      Object {
+        "label": "Reason",
+        "sortKey": "reason",
+        "width": "45%",
+      },
+      Object {
+        "label": "Domain",
+        "sortKey": "domain",
+      },
+      Object {
+        "label": "Total Delays",
+        "sortKey": "count_delayed",
+      },
+      Object {
+        "label": "Delayed First Attempt (%)",
+        "sortKey": "count_delayed_first",
+      },
+    ]
+  }
+  defaultSortColumn="count_delayed"
+  defaultSortDirection="desc"
+  getRowData={[Function]}
+  pagination={true}
+  rows={
+    Array [
+      Object {
+        "count_delayed": 100,
+        "count_delayed_first": 1,
+        "reason": "my reason",
+      },
+    ]
+  }
+  wrapperComponent={[Function]}
+/>
+`;
+
+exports[`DelaysDataTable:  should render row data properly 1`] = `
+Array [
+  <LongTextContainer
+    text="bad delay"
+  />,
+  <Memo(Connect(AddFilterLink))
+    content="gmail.com"
+    newFilter={
+      Object {
+        "type": "Recipient Domain",
+        "value": "gmail.com",
+      }
+    }
+    reportType="delayed"
+  />,
+  1,
+  <span>
+    10
+     (
+    <Percent
+      value={20}
+    />
+    )
+  </span>,
+]
+`;
+
+exports[`DelaysDataTable:  should show empty message when there are no reasons 1`] = `
+<Panel.LEGACY>
+  <Empty
+    message="No delayed messages to report"
+  />
+</Panel.LEGACY>
+`;
+
+exports[`DelaysDataTable:  should show empty message when there are no reasons 2`] = `
+<Panel.LEGACY>
+  <Empty
+    message="No delayed messages to report"
+  />
+</Panel.LEGACY>
+`;

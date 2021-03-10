@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: CustomReportsList should render 1`] = `
+<Fragment>
+  <Button
+    color="orange"
+    flat={true}
+    onClick={[Function]}
+    size="small"
+  >
+    Saved Reports
+  </Button>
+  <Modal.LEGACY
+    onClose={[Function]}
+    open={false}
+    showCloseButton={true}
+  >
+    <Panel.LEGACY
+      title="Saved Reports"
+    >
+      <ReportRow
+        deleting={false}
+        key="report 1-0"
+        name="report 1"
+        onDelete={[MockFunction]}
+        onLoad={[Function]}
+        url="report1url"
+      />
+      <ReportRow
+        deleting={false}
+        key="report 2-1"
+        name="report 2"
+        onDelete={[MockFunction]}
+        onLoad={[Function]}
+        url="report2url"
+      />
+    </Panel.LEGACY>
+  </Modal.LEGACY>
+</Fragment>
+`;

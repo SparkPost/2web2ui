@@ -1,0 +1,41 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.Row {
+  display: flex;
+  border-bottom: 1px solid color(gray, 9);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.Delete {
+  flex: 0 0;
+  align-self: flex-end;
+  padding: spacing();
+}
+
+.DeleteButton {
+  color: color(gray, 4);
+
+  &:hover {
+    color: color(red)
+  }
+}
+
+.Name {
+  flex: 1 0;
+  padding: spacing();
+  line-height: line-height(600);
+  font-size: font-size(500);
+
+  color: color(blue, dark);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

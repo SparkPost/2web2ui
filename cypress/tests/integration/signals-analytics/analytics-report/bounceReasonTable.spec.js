@@ -49,9 +49,10 @@ describe('the bounce reason table', () => {
 
     cy.findByRole('tab', { name: 'Bounce Reason' }).click();
 
-    cy.wait(['@getDeliverability', '@getBounceReason']).then(xhrs => {
-      const [deliverabilityReq, bounceReasonReq] = xhrs;
+    cy.wait(['@getDeliverability', '@getBounceClassification', '@getBounceReason']).then(xhrs => {
+      const [deliverabilityReq, bounceClassReq, bounceReasonReq] = xhrs;
       cy.wrap(deliverabilityReq.url).should('contain', `${QUERY_FILTER}`);
+      cy.wrap(bounceClassReq.url).should('contain', `${QUERY_FILTER}`);
       cy.wrap(bounceReasonReq.url).should('contain', `${QUERY_FILTER}`);
     });
     cy.get('tbody tr').within(() => {

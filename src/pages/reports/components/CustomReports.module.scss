@@ -1,0 +1,32 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.NameWrapper {
+  input {
+    font-size: font-size(500);
+  }
+}
+
+.Wrap {
+  display: flex;
+  align-items: baseline;
+
+  & > *:not(:first-child) {
+    margin-left: spacing();
+  }
+}
+
+.ReportsButton {
+  flex: 1 0;
+  text-align: right;
+}
+
+.SaveIcon {
+  margin-top: -0.2em;
+  margin-right: 0.5ch;
+}
+
+.Limited {
+  font-size: font-size(200);
+  line-height: line-height(500);
+  color: color(gray, 5);
+}

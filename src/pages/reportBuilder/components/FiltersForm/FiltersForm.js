@@ -26,7 +26,7 @@ import {
 } from './components';
 import useFiltersForm from './useFiltersForm';
 import useAllowSubjectCampaignFilter from '../../hooks/useAllowSubjectCampaignFilter';
-import { getQueryFromOptions } from 'src/helpers/metrics';
+import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
 import { FILTER_OPTIONS } from '../../constants';
 
 const FILTER_VALUE_PLACEHOLDER_TEXT = 'e.g. resource_01 or resource_02';
@@ -89,7 +89,7 @@ function FiltersForm({ handleSubmit }) {
     };
   });
 
-  const { to: formattedTo, from: formattedFrom } = getQueryFromOptions({ to, from });
+  const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
 
   return (
     <Form onSubmit={handleFormSubmit} id="reportbuilder-filter-form">

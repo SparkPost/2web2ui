@@ -2,7 +2,8 @@ const tenantIdFromHostname = hostname => hostname.split('.')[0];
 
 const config = identifier => ({
   apiBase: `https://${identifier}.api.e.sparkpost.com/api`,
-  apiDateFormat: "yyyy-MM-dd'T'HH:mm",
+  apiDateFormat: 'YYYY-MM-DDTHH:mm',
+  apiDateFormatV2: "yyyy-MM-dd'T'HH:mm",
   apiRequestTimeout: 60000,
   apiRequestHeaders: {
     'X-Sparky': '1d24c3473dd52a2f4a53fb6808cf9a73',

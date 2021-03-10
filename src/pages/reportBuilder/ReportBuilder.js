@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Error } from '@sparkpost/matchbox-icons';
+import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { getSubscription } from 'src/actions/billing';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
@@ -22,7 +23,7 @@ import {
   delayTabMetrics,
   linksTabMetrics,
 } from 'src/config/metrics';
-import { parseSearch } from 'src/helpers/reports';
+import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { getFormattedDateRangeForAggregateData } from 'src/helpers/date';
 import {
   Charts,
@@ -32,16 +33,22 @@ import {
   CompareByGroupByTable,
 } from './components';
 import {
-  BounceReasonsTab,
+  BounceReasonTab,
+  BounceReasonComparisonTab,
   DelayReasonsTab,
+  DelayReasonsComparisonTab,
   LinksTab,
+  LinksComparisonTab,
   RejectionReasonsTab,
+  RejectionReasonsComparisonTab,
 } from './components/tabs';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants';
 
 export function ReportBuilder({
+  chart,
   getSubscription,
+  refreshReportBuilder,
   subscription,
   reports,
   reportsStatus,
@@ -61,6 +68,15 @@ export function ReportBuilder({
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
+
+  useEffect(() => {
+    if (reportOptions.isReady && !isEmpty) {
+      refreshReportBuilder({
+        ...reportOptions,
+        filters: reportOptions.filters,
+      });
+    }
+  }, [refreshReportBuilder, reportOptions, isEmpty]);
 
   useEffect(() => {
     if (reportsStatus === 'success') {
@@ -253,6 +269,7 @@ export function ReportBuilder({
         <ReportOptions
           selectedReport={selectedReport}
           setReport={setReport}
+          reportLoading={chart.chartLoading}
           searchOptions={summarySearchOptions}
         />
       </Panel>
@@ -263,7 +280,7 @@ export function ReportBuilder({
           <div data-id="summary-chart">
             <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
               <Tabs.Item>
-                <Charts />
+                <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
 
                 {hasActiveComparisons ? (
                   <CompareByAggregatedMetrics date={dateValue} reportOptions={reportOptions} />
@@ -274,7 +291,7 @@ export function ReportBuilder({
 
               {hasBounceTab && (
                 <Tabs.Item>
-                  <BounceReasonsTab />
+                  <BounceReasonTab />
                 </Tabs.Item>
               )}
 
@@ -301,7 +318,7 @@ export function ReportBuilder({
                 reportOptions.comparisons.map((comparison, index) => {
                   return (
                     <Tabs.Item key={`tab-bounce-${comparison.value}-${index}`}>
-                      <BounceReasonsTab comparison={comparison} />
+                      <BounceReasonComparisonTab comparison={comparison} />
                     </Tabs.Item>
                   );
                 })}
@@ -311,7 +328,7 @@ export function ReportBuilder({
                 reportOptions.comparisons.map((comparison, index) => {
                   return (
                     <Tabs.Item key={`tab-links-${comparison.value}-${index}`}>
-                      <LinksTab comparison={comparison} />
+                      <LinksComparisonTab comparison={comparison} />
                     </Tabs.Item>
                   );
                 })}
@@ -321,7 +338,7 @@ export function ReportBuilder({
                 reportOptions.comparisons.map((comparison, index) => {
                   return (
                     <Tabs.Item key={`tab-delay-${comparison.value}-${index}`}>
-                      <DelayReasonsTab comparison={comparison} />
+                      <DelayReasonsComparisonTab comparison={comparison} />
                     </Tabs.Item>
                   );
                 })}
@@ -331,7 +348,7 @@ export function ReportBuilder({
                 reportOptions.comparisons.map((comparison, index) => {
                   return (
                     <Tabs.Item key={`tab-rejection-${comparison.value}-${index}`}>
-                      <RejectionReasonsTab comparison={comparison} />
+                      <RejectionReasonsComparisonTab comparison={comparison} />
                     </Tabs.Item>
                   );
                 })}
@@ -358,6 +375,7 @@ export function ReportBuilder({
 
 // Redux
 const mapStateToProps = state => ({
+  chart: state.summaryChart,
   reports: state.reports.list,
   reportsStatus: state.reports.status,
   subaccountsReady: state.subaccounts.ready,
@@ -365,6 +383,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+  refreshReportBuilder,
   getSubscription,
   getReports,
   getSubaccountsList,

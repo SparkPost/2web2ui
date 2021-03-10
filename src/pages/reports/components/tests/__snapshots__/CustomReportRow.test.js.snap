@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: CustomReportRow should render 1`] = `
+<div
+  className="Row"
+  onClick={[MockFunction]}
+>
+  <div
+    className="Name"
+  >
+    mock name
+  </div>
+  <div
+    className="Delete"
+  >
+    <Button
+      className="DeleteButton"
+      flat={true}
+      onClick={[Function]}
+      size="small"
+    >
+      Delete
+    </Button>
+  </div>
+</div>
+`;
