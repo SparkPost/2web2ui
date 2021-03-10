@@ -7,7 +7,7 @@ import {
   applyEngagementMetrics,
 } from './helpers';
 
-describe('the links table', () => {
+describe('Analytics report links table', () => {
   beforeEach(() => {
     commonBeforeSteps(FILTERS_URL);
     cy.withinDrawer(() => {

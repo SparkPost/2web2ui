@@ -7,7 +7,7 @@ import {
   applyRejectionMetrics,
 } from './helpers';
 
-describe('the rejection reason table', () => {
+describe('Analytics report rejection reason table', () => {
   beforeEach(() => {
     commonBeforeSteps(FILTERS_URL);
     cy.withinDrawer(() => {

@@ -3,7 +3,7 @@ import { commonBeforeSteps } from './helpers';
 
 const TYPE_LABEL = 'Type';
 
-describe('Analytics Report - Compare By', () => {
+describe('Analytics Report compare by feature', () => {
   beforeEach(() => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);

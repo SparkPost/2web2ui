@@ -1,7 +1,7 @@
 import { PAGE_URL } from './constants';
 import { commonBeforeSteps } from './helpers';
 
-describe('Analytics Report Saved Reports', () => {
+describe('Analytics Report saved reports feature', () => {
   beforeEach(() => {
     commonBeforeSteps();
 

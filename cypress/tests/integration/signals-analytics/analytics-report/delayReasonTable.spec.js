@@ -7,7 +7,7 @@ import {
   applyDelayMetrics,
 } from './helpers';
 
-describe('the delay reason table', () => {
+describe('Analytics report delay reason table', () => {
   beforeEach(() => {
     commonBeforeSteps(FILTERS_URL);
     cy.withinDrawer(() => {

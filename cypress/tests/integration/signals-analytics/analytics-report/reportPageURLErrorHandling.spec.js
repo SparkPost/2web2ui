@@ -2,7 +2,7 @@ import { commonBeforeSteps } from './helpers';
 
 const BASE_URL = '/signals/analytics';
 
-describe('Analytics Report Manual URL Entry', () => {
+describe('Analytics Report URL redirects from old Signals Analytics features', () => {
   it('Allow UTC+0 timezones', () => {
     //regression test
     commonBeforeSteps();

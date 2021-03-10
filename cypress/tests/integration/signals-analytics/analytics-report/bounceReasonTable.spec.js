@@ -7,7 +7,7 @@ import {
   applyBounceMetrics,
 } from './helpers';
 
-describe('the bounce reason table', () => {
+describe('Analytics report bounce reason table', () => {
   beforeEach(() => {
     commonBeforeSteps(FILTERS_URL);
     cy.withinDrawer(() => {

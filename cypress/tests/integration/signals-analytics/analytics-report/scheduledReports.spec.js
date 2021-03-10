@@ -4,7 +4,7 @@ import { commonBeforeSteps } from './helpers';
 //Can't directly import from file due to some babel/webpack error.
 const recipientUserToString = user => (user ? `${user.name} <${user.email}>` : '');
 
-describe('Analytics Report Scheduled Reports', () => {
+describe('Analytics Report scheduled reports feature', () => {
   beforeEach(() => {
     commonBeforeSteps();
 

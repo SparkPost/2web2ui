@@ -2,7 +2,7 @@ import { commonBeforeSteps } from './helpers';
 
 const PAGE_URL = '/signals/analytics';
 
-describe('Date Time Section on Summary Report & Report Builder', () => {
+describe('Analytics report date and time section', () => {
   const timestamp = 1580392800000; //01/30/2020 @ 2:00pm (UTC)
   let getDatePickerText;
 

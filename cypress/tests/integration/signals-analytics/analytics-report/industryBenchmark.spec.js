@@ -1,7 +1,7 @@
 import { commonBeforeSteps } from './helpers';
 import { PAGE_URL } from './constants';
 
-describe('Industry Benchmark', () => {
+describe('Analytics report industry benchmark feature', () => {
   beforeEach(() => {
     commonBeforeSteps();
     cy.stubRequest({
