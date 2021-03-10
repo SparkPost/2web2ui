@@ -65,7 +65,7 @@ const InsertSnippetModal = props => {
   }
 
   return (
-    <ModalWrapper {...modalProps}>
+    <ModalWrapper {...modalProps} title="Add a snippet">
       <Panel.LEGACY title="Add a snippet">
         <Form onSubmit={handleSubmit} id="add-snippet-form">
           <Panel.LEGACY.Section>

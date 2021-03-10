@@ -159,7 +159,7 @@ export default class BillingSummary extends Component {
         <PremiumBanner />
         <EnterpriseBanner />
 
-        <Modal.LEGACY open={!!show} onClose={this.handleModal}>
+        <Modal.LEGACY open={!!show} onClose={this.handleModal} title={show}>
           {show === PAYMENT_MODAL && <UpdatePaymentForm onCancel={this.handleModal} />}
           {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
           {show === IP_MODAL && (

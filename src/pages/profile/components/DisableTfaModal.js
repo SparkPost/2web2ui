@@ -35,7 +35,13 @@ export default class DisableTfaModal extends Component {
     const { open, onClose, togglePending, toggleError, tfaRequired } = this.props;
 
     return (
-      <Modal.LEGACY open={open} onClose={onClose}>
+      <Modal.LEGACY
+        open={open}
+        onClose={onClose}
+        title={
+          tfaRequired ? 'Reset Two-Factor Authentication' : 'Disable Two-Factor Authentication'
+        }
+      >
         <Panel.LEGACY
           title={
             tfaRequired ? 'Reset Two-Factor Authentication' : 'Disable Two-Factor Authentication'

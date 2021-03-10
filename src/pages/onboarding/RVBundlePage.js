@@ -15,7 +15,12 @@ import OGStyles from './RVBundlePage.module.scss';
 import HibanaStyles from './RVBundlePageHibana.module.scss';
 
 const RVPriceModal = ({ open, onClose }) => (
-  <Modal.LEGACY open={open} onClose={onClose} showCloseButton>
+  <Modal.LEGACY
+    open={open}
+    onClose={onClose}
+    showCloseButton
+    title="Onboarding Recipient Validation Pricing Modal"
+  >
     <Panel.LEGACY sectioned title="Pay-As-You-Go Pricing">
       <p>
         We have a monthly pay-as-you-go plan using tiered pricing. The more you validate, the less

@@ -34,7 +34,12 @@ export function CustomReportsList({ deleting, handleLoad, onDelete, reports }) {
       <Button flat color="orange" size="small" onClick={() => setOpen(!open)}>
         Saved Reports
       </Button>
-      <Modal.LEGACY open={open} onClose={() => setOpen(false)} showCloseButton>
+      <Modal.LEGACY
+        open={open}
+        onClose={() => setOpen(false)}
+        showCloseButton
+        title="Saved Reports"
+      >
         <Panel.LEGACY title="Saved Reports">{reportList}</Panel.LEGACY>
       </Modal.LEGACY>
     </>

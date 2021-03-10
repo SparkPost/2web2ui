@@ -53,7 +53,7 @@ export default class Detail extends Component {
     const { open, onCancel, suppression } = this.props;
 
     return (
-      <Modal.LEGACY open={open} showCloseButton onClose={onCancel}>
+      <Modal.LEGACY open={open} showCloseButton onClose={onCancel} title="Suppression Details">
         <Panel.LEGACY title="Suppression Details" sectioned>
           {suppression && this.renderContents()}
         </Panel.LEGACY>

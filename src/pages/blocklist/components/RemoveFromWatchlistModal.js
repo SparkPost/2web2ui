@@ -54,7 +54,12 @@ export const RemoveFromWatchlistModal = ({
   };
 
   return (
-    <Modal.LEGACY open={Boolean(monitorToDelete)} onClose={closeModal} showCloseButton={true}>
+    <Modal.LEGACY
+      open={Boolean(monitorToDelete)}
+      onClose={closeModal}
+      showCloseButton={true}
+      title="Remove from Watchlist"
+    >
       {isPending ? (
         <PanelLoading minHeight="175px" />
       ) : (

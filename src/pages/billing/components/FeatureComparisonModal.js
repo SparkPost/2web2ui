@@ -84,7 +84,12 @@ export function RenderCell({ cellValue }) {
 function ComparisonModal({ open, handleClose }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
-    <Modal.LEGACY open={open} showCloseButton={true} onClose={handleClose}>
+    <Modal.LEGACY
+      open={open}
+      showCloseButton={true}
+      onClose={handleClose}
+      title="Plan Feature Comparison"
+    >
       <Panel.LEGACY>
         <div className={styles.FeatureComparisonTable}>
           <Table>

@@ -95,7 +95,7 @@ const DuplicateTemplateModal = props => {
   }
 
   return (
-    <ModalWrapper {...modalProps}>
+    <ModalWrapper {...modalProps} title="Duplicate Template">
       <Panel.LEGACY title="Duplicate Template">
         <Form onSubmit={e => handleSubmit(e)} id="templates-duplicate-form">
           <Panel.LEGACY.Section>

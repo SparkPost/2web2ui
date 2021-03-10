@@ -35,7 +35,7 @@ const DeleteTemplateModal = props => {
         />
       )}
 
-      <Modal.LEGACY open={open} showCloseButton onClose={onClose}>
+      <Modal.LEGACY open={open} showCloseButton onClose={onClose} title="Delete Template">
         {isLoading ? (
           <PanelLoading minHeight="190px" />
         ) : (

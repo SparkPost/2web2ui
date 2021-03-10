@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useHibana } from 'src/context/HibanaContext';
 import { omitSystemProps } from 'src/helpers/hibana';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
@@ -21,17 +21,16 @@ function OGModal({ children, ...rest }) {
 const LEGACY = props => {
   const [{ isHibanaEnabled }] = useHibana();
   const wasOpen = usePrevious(props.open);
-  let modalTitle = useRef(props.title);
 
   useEffect(() => {
     if (!wasOpen && props.open) {
-      segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: modalTitle.current });
+      segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: props.title });
     }
 
     if (wasOpen && !props.open) {
-      segmentTrack(SEGMENT_EVENTS.MODAL_CLOSED, { title: modalTitle.current });
+      segmentTrack(SEGMENT_EVENTS.MODAL_CLOSED, { title: props.title });
     }
-  }, [modalTitle, props.open, wasOpen]);
+  }, [props.open, props.title, wasOpen]);
 
   if (!isHibanaEnabled) {
     return <OGModal {...omitSystemProps(props)} />;

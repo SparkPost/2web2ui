@@ -63,7 +63,7 @@ export function RecipientValidationModal({ onClose, volumeUsed, open }) {
   });
 
   return (
-    <Modal.LEGACY open={open} onClose={onClose}>
+    <Modal.LEGACY open={open} onClose={onClose} title="Recipient Validation Cost Calculation">
       <Panel.LEGACY
         actions={[{ content: <Close />, onClick: onClose }]}
         className={styles.modalContainer}

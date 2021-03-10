@@ -74,7 +74,7 @@ export default class MetricsModal extends Component {
     const selectedCount = this.getSelectedMetrics().length;
 
     return (
-      <Modal.LEGACY open={open} onClose={onCancel}>
+      <Modal.LEGACY open={open} onClose={onCancel} title="Summary Report Metrics Modal">
         <WindowEvent event="keydown" handler={this.handleKeyDown} />
         <Panel.LEGACY>
           <Panel.LEGACY.Section>

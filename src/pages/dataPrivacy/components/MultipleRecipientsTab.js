@@ -148,6 +148,7 @@ export function MultipleRecipientsTab({
         open={Boolean(dataPrivacyRequestError)}
         showCloseButton
         onClose={resetDataPrivacy}
+        title="Data Privacy Multiple Recipient Upload Error"
       >
         <Panel.LEGACY title="Upload Error">
           <Panel.LEGACY.Section>

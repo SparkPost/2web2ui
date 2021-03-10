@@ -108,7 +108,12 @@ export class ShareModal extends Component {
             Share
           </Button>
         )}
-        <Modal.LEGACY open={open} onClose={this.toggleModal} showCloseButton={true}>
+        <Modal.LEGACY
+          open={open}
+          onClose={this.toggleModal}
+          showCloseButton={true}
+          title="Share this report"
+        >
           {open && <WindowEvent event="keydown" handler={this.handleKeydown} />}
           <Panel.LEGACY title="Share this report">
             <Panel.LEGACY.Section>

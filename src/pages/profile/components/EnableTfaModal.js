@@ -16,7 +16,7 @@ export default class EnableTfaModal extends React.Component {
     const { open, onEnable, onClose } = this.props;
 
     return (
-      <Modal.LEGACY open={open}>
+      <Modal.LEGACY open={open} title="Enable Two-Factor Authentication">
         <Panel.LEGACY title="Enable Two-Factor Authentication">
           <EnableTfaForm afterEnable={onEnable} onClose={onClose} />
         </Panel.LEGACY>

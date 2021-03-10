@@ -63,7 +63,7 @@ export default class BackupCodesModal extends Component {
     const hasCodes = activeCount > 0;
 
     return (
-      <Modal.LEGACY open={open}>
+      <Modal.LEGACY open={open} title="Generate Two-factor Backup Codes">
         <Panel.LEGACY title="Generate Two-factor Backup Codes">
           <Form onSubmit={e => e.preventDefault()}>
             <Panel.LEGACY.Section>

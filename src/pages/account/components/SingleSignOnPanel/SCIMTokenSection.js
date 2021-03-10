@@ -184,7 +184,7 @@ export default function SCIMTokenSection(props) {
         </Heading>
       </LabelledValue>
       {!error && (
-        <Modal.LEGACY open={isModalOpen} onClose={() => closeModal()} showCloseButton>
+        <Modal.LEGACY open={isModalOpen} onClose={() => closeModal()} showCloseButton title={name}>
           {isModalOpen && renderModalByName(name)}
         </Modal.LEGACY>
       )}
