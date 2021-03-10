@@ -4,7 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { TestApp } from 'src/__testHelpers__';
 import { useSparkPostQuery } from 'src/hooks';
 import { ChartGroups, Charts } from '../Charts';
+import useIndustryBenchmark from 'src/hooks/reportBuilder/useIndustryBenchmark';
 jest.mock('src/hooks/api/useSparkPostQuery');
+jest.mock('src/hooks/reportBuilder/useIndustryBenchmark');
+jest.mock('src/pages/reportBuilder/components/IndustryBenchmarkModal', () => {
+  return {
+    IndustryBenchmarkModal: () => <>Mock Industry Benchmark Modal</>,
+  };
+});
 
 const CHART_SELECTOR = '.recharts-responsive-container';
 
@@ -50,6 +57,12 @@ function mockQuery({ status, data = [], refetch = jest.fn }) {
     status,
     data,
     refetch,
+  });
+}
+
+function mockUseIndustryBenchmark({ data }) {
+  return useIndustryBenchmark.mockReturnValue({
+    data,
   });
 }
 
@@ -128,6 +141,7 @@ describe('Analytics Report chart components', () => {
       render(
         <TestApp>
           <ChartGroups
+            showIndustryBenchmarkButton={false}
             reportOptions={{
               comparisons: DEFAULT_COMPARISONS,
               metrics: DEFAULT_METRICS,
@@ -221,6 +235,56 @@ describe('Analytics Report chart components', () => {
       // y-axis labels
       expect(screen.getByText('Count')).toBeInTheDocument();
       expect(screen.getByText('Percent')).toBeInTheDocument();
+    });
+
+    it('renders with the "Industry Benchmark" button when `showIndustryBenchmarkButton` is `true` and when selected metrics include a valid industry benchmark metric', () => {
+      mockQuery({
+        status: 'success',
+        data: [
+          {
+            count_inbox_panel: 0,
+            count_inbox_seed: 0,
+            count_spam_panel: 0,
+            count_spam_seed: 0,
+            ts: '2021-03-03T05:00:00+00:00',
+          },
+          {
+            count_inbox_panel: 0,
+            count_inbox_seed: 0,
+            count_spam_panel: 0,
+            count_spam_seed: 0,
+            ts: '2021-03-04T00:00:00+00:00',
+          },
+        ],
+      });
+      mockUseIndustryBenchmark({
+        data: [
+          {
+            median: 0.9375,
+            q25: 0.8148,
+            q75: 0.9787,
+            ts: '2021-03-04T00:00:00.000Z',
+          },
+          {
+            median: 0.9375,
+            q25: 0.8156,
+            q75: 0.9787,
+            ts: '2021-03-05T00:00:00.000Z',
+          },
+        ],
+        industryCategory: 'all',
+      });
+      subject({
+        showIndustryBenchmarkButton: true,
+        reportOptions: {
+          filters: [],
+          comparisons: [],
+          metrics: ['inbox_folder_rate'],
+        },
+      });
+
+      expect(screen.getByRole('button', { name: 'Industry Benchmark' })).toBeInTheDocument();
+      expect(screen.getByText('Mock Industry Benchmark Modal')).toBeInTheDocument();
     });
 
     it('renders a chart for each active comparison', () => {
