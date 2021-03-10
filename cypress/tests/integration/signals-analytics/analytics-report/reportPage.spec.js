@@ -224,12 +224,20 @@ describe('The Analytics Report page', () => {
     cy.visit(PAGE_URL);
     cy.findByText('Add Filters').click();
 
+    // Have to use `findAll*` as there are multiple, hidden modals in the DOM
+    cy.findAllByRole('dialog').should('not.be.visible');
+
     cy.withinDrawer(() => {
-      cy.findByLabelText('Type').should('be.visible');
       cy.findByText('Close').click({ force: true });
     });
 
-    cy.findByLabelText('Type').should('not.exist');
+    cy.findAllByRole('dialog').should('not.be.visible');
+
+    cy.findByText('Add Metrics').click();
+
+    cy.get('body').type('{esc}');
+
+    cy.findAllByRole('dialog').should('not.be.visible');
   });
 });
 
