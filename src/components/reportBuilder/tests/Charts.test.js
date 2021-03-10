@@ -7,7 +7,7 @@ import { ChartGroups, Charts } from '../Charts';
 import { useIndustryBenchmark } from 'src/hooks/reportBuilder';
 jest.mock('src/hooks/api/useSparkPostQuery');
 jest.mock('src/hooks/reportBuilder/useIndustryBenchmark');
-jest.mock(() => {
+jest.mock('src/pages/reportBuilder/components/IndustryBenchmarkModal', () => {
   return {
     IndustryBenchmarkModal: () => <>Mock Industry Benchmark Modal</>,
   };
