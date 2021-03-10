@@ -18,10 +18,10 @@ function OGModal({ children, ...rest }) {
   );
 }
 //NOTE - title prop is required for segment tracking only
-const LEGACY = (title, ...props) => {
+const LEGACY = props => {
   const [{ isHibanaEnabled }] = useHibana();
   const wasOpen = usePrevious(props.open);
-
+  const { title, ...restProps } = props;
   useEffect(() => {
     if (!wasOpen && props.open) {
       segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: title });
@@ -33,10 +33,10 @@ const LEGACY = (title, ...props) => {
   }, [props.open, title, wasOpen]);
 
   if (!isHibanaEnabled) {
-    return <OGModal {...omitSystemProps(props)} />;
+    return <OGModal {...omitSystemProps(restProps)} />;
   }
 
-  return <HibanaModal.LEGACY {...props} />;
+  return <HibanaModal.LEGACY {...restProps} />;
 };
 
 function Modal(props) {
