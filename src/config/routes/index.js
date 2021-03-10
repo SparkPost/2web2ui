@@ -73,7 +73,7 @@ import { emailRedirects, emailVerificationRedirect } from './emailRoutes';
 import templateRoutes from './templates';
 import inboxPlacementRoutes from './inboxPlacement';
 import blocklistRoutes, { hibanaBlocklistRoutes } from './blocklist';
-import signalsRoutes, { hibanaSignalsRoutes } from './signals';
+import signalsRoutes from './signals';
 import templatesRoutes from './templates';
 
 // See @sparkpost/access for role to grant mappings
@@ -808,7 +808,7 @@ const routes = [
 const hibanaRoutes = [
   ...appRoutes,
   ...hibanaDomainRoutes,
-  ...hibanaSignalsRoutes,
+  ...signalsRoutes,
   ...templatesRoutes,
   ...inboxPlacementRoutes,
   ...hibanaBlocklistRoutes,

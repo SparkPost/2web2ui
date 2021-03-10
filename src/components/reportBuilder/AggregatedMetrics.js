@@ -3,7 +3,7 @@ import { Button, Box, Grid, Text, Inline, LabelValue } from 'src/components/matc
 import { FilterAlt } from '@sparkpost/matchbox-icons';
 import { Unit, LegendCircle } from 'src/components';
 import { getDeliverability } from 'src/helpers/api/metrics';
-import { getMetricsFromKeys, getQueryFromOptionsV2, transformData } from 'src/helpers/metrics';
+import { getMetricsFromKeys, getQueryFromOptions, transformData } from 'src/helpers/metrics';
 import { useSparkPostQuery } from 'src/hooks';
 
 import styled from 'styled-components';
@@ -24,8 +24,7 @@ export default function AggregatedMetrics({
   const { metrics } = reportOptions;
   const aggregatedMetrics = getMetricsFromKeys(metrics, true);
   const { status, data } = useSparkPostQuery(
-    () =>
-      getDeliverability(getQueryFromOptionsV2({ ...reportOptions, metrics: aggregatedMetrics })),
+    () => getDeliverability(getQueryFromOptions({ ...reportOptions, metrics: aggregatedMetrics })),
     {
       refetchOnWindowFocus: false,
     },

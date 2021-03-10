@@ -10,7 +10,7 @@ jest.mock('src/helpers/string', () => ({
 
 describe('report helpers', () => {
   describe('parseSearch', () => {
-    const filters = 'filters=Domain:test.com&filters=Subaccount:test:123';
+    const filters = 'filters=Sending Domain:test.com&filters=Subaccount:test:123';
     const metrics = 'metrics=count-something';
 
     beforeEach(() => {
@@ -25,18 +25,14 @@ describe('report helpers', () => {
       expect(reports.parseSearch(search)).toMatchSnapshot();
     });
 
-    it('should parse search with no empty value', () => {
-      expect(reports.parseSearch('').options).toEqual({});
+    it('should parse an empty string for query params', () => {
+      expect(reports.parseSearch('')).toEqual({});
     });
 
     it('should parse search with a colon in a subaccount name', () => {
       const search = '?filters=Subaccount%3ASubaccount%20with%20a%20bad%3A%20symbol%3A100';
       expect(reports.parseSearch(search).filters).toEqual([
-        {
-          id: '100',
-          type: 'Subaccount',
-          value: 'Subaccount with a bad: symbol',
-        },
+        { AND: { subaccounts: { eq: ['100'] } } },
       ]);
     });
 
@@ -70,14 +66,14 @@ describe('report helpers', () => {
       //Because it's over 21
       //Formatted like metrics[0]=foo&metrics[1]=bar
 
-      const { metrics } = reports.parseSearchNew(`?range=week${metricsBeer}`);
+      const { metrics } = reports.parseSearch(`?range=week${metricsBeer}`);
       expect(Array.isArray(metrics)).toEqual(true);
     });
 
     cases(
       'handles invalid datetimes with custom format',
       opts => {
-        expect(reports.parseSearch(opts.search).options).toEqual(opts.match);
+        expect(reports.parseSearch(opts.search)).toEqual(expect.objectContaining(opts.match));
       },
       [
         {

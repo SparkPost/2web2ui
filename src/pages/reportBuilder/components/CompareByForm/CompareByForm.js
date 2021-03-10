@@ -13,7 +13,7 @@ import { Form } from 'src/components/form';
 import { TranslatableText, Comparison } from 'src/components/text';
 
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
-import { getQueryFromOptionsV2 } from 'src/helpers/metrics';
+import { getQueryFromOptions } from 'src/helpers/metrics';
 import Typeahead from './Typeahead';
 import { FILTER_OPTIONS } from '../../constants';
 import styled from 'styled-components';
@@ -130,8 +130,7 @@ function CompareByForm({ handleSubmit }) {
   const filterLabel = filterConfig?.label;
 
   const areInputsFilled = filters.every(filter => filter !== null);
-  const { to: formattedTo, from: formattedFrom } = getQueryFromOptionsV2({ to, from });
-
+  const { to: formattedTo, from: formattedFrom } = getQueryFromOptions({ to, from });
   return (
     <Form onSubmit={handleFormSubmit} id="reportbuilder-compareby-form">
       <Box padding="500" paddingBottom="8rem">

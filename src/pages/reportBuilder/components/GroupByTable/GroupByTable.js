@@ -5,7 +5,6 @@ import cx from 'classnames';
 
 import { CheckboxWithLink } from './components';
 
-import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 
 import { ApiErrorBanner, PanelLoading, TableCollection, Unit } from 'src/components';

@@ -3,7 +3,7 @@ import { useSparkPostQuery } from 'src/hooks';
 import { getIndustryBenchmark } from 'src/helpers/api/metrics';
 import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
 
-import { getQueryFromOptionsV2, getMetricsFromKeys } from 'src/helpers/metrics';
+import { getQueryFromOptions, getMetricsFromKeys } from 'src/helpers/metrics';
 import isSameDay from 'date-fns/isSameDay';
 function useIndustryBenchmark(reportOptions) {
   const {
@@ -18,7 +18,7 @@ function useIndustryBenchmark(reportOptions) {
   }, [metrics]);
 
   const formattedOptions = useMemo(() => {
-    return getQueryFromOptionsV2({ ...reportOptions, metrics: formattedMetrics });
+    return getQueryFromOptions({ ...reportOptions, metrics: formattedMetrics });
   }, [reportOptions, formattedMetrics]);
 
   const queryEnabled = useMemo(() => {
