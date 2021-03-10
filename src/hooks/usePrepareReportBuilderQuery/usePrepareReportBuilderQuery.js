@@ -1,8 +1,5 @@
 import { useMemo } from 'react';
-import {
-  getMetricsFromKeys,
-  getQueryFromOptionsV2 as getQueryFromOptions,
-} from 'src/helpers/metrics';
+import { getMetricsFromKeys, getQueryFromOptions } from 'src/helpers/metrics';
 
 /**
  * Prepares options for requests based on the current state of the passed in `reportOptions`. Returns URL encoded JSON.

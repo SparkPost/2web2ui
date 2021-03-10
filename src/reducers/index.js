@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 
-import acceptedReport from './acceptedReport';
 import accessControlReady from './accessControlReady';
 import account from './account';
 import accountSingleSignOn from './accountSingleSignOn';
@@ -12,13 +11,9 @@ import apiKeys from './api-keys';
 import auth from './auth';
 import billing from './billing';
 import billingCreate from './billingCreate';
-import bounceReport from './bounceReport';
 import blocklist from './blocklist';
 import cookieConsent from './cookieConsent';
-import delayReport from './delayReport';
 import dataPrivacy from './dataPrivacy';
-import engagementReport from './engagementReport';
-import rejectionReport from './rejectionReport';
 import currentUser from './currentUser';
 import globalAlert from './globalAlert';
 import invoices from './invoices';
@@ -28,7 +23,6 @@ import metrics from './metrics';
 import passwordReset from './passwordReset';
 import recipientLists from './recipientLists';
 import recipientValidation from './recipientValidation';
-import reportOptions from './reportOptions';
 import reports from './reports';
 import scimToken from './scimToken';
 import sendingDomains from './sendingDomains';
@@ -37,7 +31,6 @@ import signalOptions from './signalOptions';
 import signals from './signals';
 import snippets from './snippets';
 import subaccounts from './subaccounts';
-import summaryChart from './summaryChart';
 import summaryTables from './summaryTables';
 import support from './support';
 import suppressions from './suppressions';
@@ -54,7 +47,6 @@ import ingestBatchEvents from './ingestBatchEvents';
 
 const appReducer = combineReducers({
   abTesting,
-  acceptedReport,
   accessControlReady,
   account,
   accountSingleSignOn,
@@ -65,12 +57,9 @@ const appReducer = combineReducers({
   billing,
   billingCreate,
   blocklist,
-  bounceReport,
   cookieConsent,
   currentUser,
   dataPrivacy,
-  delayReport,
-  engagementReport,
   scimToken,
   globalAlert,
   form,
@@ -81,11 +70,9 @@ const appReducer = combineReducers({
   metrics,
   messageEvents,
   passwordReset,
-  reportOptions,
   reports,
   recipientLists,
   recipientValidation,
-  rejectionReport,
   sendingDomains,
   sendingIps,
   signalOptions,
@@ -93,7 +80,6 @@ const appReducer = combineReducers({
   snippets,
   subaccounts,
   support,
-  summaryChart,
   summaryTables,
   suppressions,
   templates,

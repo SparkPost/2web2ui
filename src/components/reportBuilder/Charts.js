@@ -10,11 +10,9 @@ import { INDUSTRY_BENCHMARK_INDUSTRIES } from 'src/constants';
 import { Box, Button, Stack, Panel } from 'src/components/matchbox';
 import { useModal, useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api/metrics';
-import {
-  getMetricsFromKeys,
-  getQueryFromOptionsV2 as getQueryFromOptions,
-  transformData,
-} from 'src/helpers/metrics';
+import { getMetricsFromKeys, getQueryFromOptions, transformData } from 'src/helpers/metrics';
+import { differenceInHours } from 'date-fns';
+
 import { ApiErrorBanner } from 'src/components';
 import Loading from 'src/components/loading/PanelLoading';
 import { Heading } from 'src/components/text';

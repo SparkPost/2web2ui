@@ -4,7 +4,6 @@ import cx from 'classnames';
 import _ from 'lodash';
 
 import { CheckboxWithLink } from './components';
-import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
 import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 import { ApiErrorBanner, Empty, PanelLoading, TableCollection, Unit } from 'src/components';
 import MultiCheckboxDropdown from 'src/components/MultiCheckboxDropdown';

@@ -11,51 +11,11 @@ const {
   metricsPrecisionMap: precisionMap,
   metricsRollupPrecisionMap: rollupPrecisionMap,
   apiDateFormat,
-  apiDateFormatV2,
 } = config;
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
 /**
- * @deprecated
  * @name getQueryFromOptions
- * @description - Generates query parameters from the passed in Signals Analytics report state. This function was used in old Signals Analytics features though is not in use following the rollout of the Hibana them
- */
-export function getQueryFromOptions({
-  from,
-  to,
-  timezone,
-  precision,
-  metrics,
-  filters = [],
-  match = '',
-  limit,
-}) {
-  from = moment(from);
-  to = moment(to);
-
-  const apiMetricsKeys = getKeysFromMetrics(metrics);
-  const delimiter = getDelimiter(filters);
-  const options = {
-    metrics: apiMetricsKeys.join(delimiter),
-    from: from.format(apiDateFormat),
-    to: to.format(apiDateFormat),
-    delimiter,
-    timezone,
-    precision,
-  };
-  Object.assign(options, getFilterSets(filters, delimiter));
-  if (match.length > 0) {
-    options.match = match;
-  }
-  if (limit) {
-    options.limit = limit;
-  }
-  return options;
-}
-
-// TODO: Replace original once OG theme is removed
-/**
- * @name getQueryFromOptionsV2
  * @description Convert's report state options to valid API parameter values for
  *
  * @param {Date} from The beginning of the user's desired date range for a report.
@@ -79,7 +39,7 @@ export function getQueryFromOptions({
  *
  * @returns {Object} options returns structured object of [query string parameters](https://developers.sparkpost.com/api/metrics/#metrics-get-time-series-metrics) as required by metrics endpoints
  */
-export function getQueryFromOptionsV2({
+export function getQueryFromOptions({
   from,
   to,
   timezone,
@@ -93,8 +53,8 @@ export function getQueryFromOptionsV2({
   const delimiter = getDelimiter(filters);
   const options = {
     metrics: apiMetricsKeys.join(delimiter),
-    from: from ? formatToTimezone(from, apiDateFormatV2, timezone) : undefined,
-    to: to ? formatToTimezone(to, apiDateFormatV2, timezone) : undefined,
+    from: from ? formatToTimezone(from, apiDateFormat, timezone) : undefined,
+    to: to ? formatToTimezone(to, apiDateFormat, timezone) : undefined,
     delimiter,
     timezone,
     precision,
