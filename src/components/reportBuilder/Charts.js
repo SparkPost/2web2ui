@@ -20,12 +20,13 @@ import CustomTooltip from './Tooltip';
 import useIndustryBenchmark from 'src/hooks/reportBuilder/useIndustryBenchmark';
 import { INDUSTRY_BENCHMARK_INDUSTRIES } from 'src/constants';
 import { INDUSTRY_BENCHMARK_METRICS_MAP } from 'src/config/metrics';
-import { IndustryModal } from 'src/pages/reportBuilder/components/IndustryBenchmarkModal';
+import { IndustryBenchmarkModal } from 'src/pages/reportBuilder/components/IndustryBenchmarkModal';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
   return _.uniq(metrics.map(({ unit = DEFAULT_UNIT }) => unit));
 }
+
 export function ChartGroups(props) {
   const { reportOptions, small, showIndustryBenchmarkButton } = props;
   const { comparisons, metrics } = reportOptions;
@@ -48,13 +49,14 @@ export function ChartGroups(props) {
               </Panel.Action>
             </Panel.Header>
 
-            <IndustryModal
+            <IndustryBenchmarkModal
               isModalOpen={isModalOpen}
               closeModal={closeModal}
               metrics={industryBenchmarkMetrics}
             />
           </>
         )}
+
         <Panel.Section>
           <Charts
             activeChart={activeChart}
@@ -79,7 +81,7 @@ export function ChartGroups(props) {
             </Panel.Action>
           </Panel.Header>
 
-          <IndustryModal
+          <IndustryBenchmarkModal
             isModalOpen={isModalOpen}
             closeModal={closeModal}
             metrics={industryBenchmarkMetrics}
