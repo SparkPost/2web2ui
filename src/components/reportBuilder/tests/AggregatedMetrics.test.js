@@ -49,7 +49,7 @@ function mockQuery({ status, data = AGGREGATE_DATA }) {
   });
 }
 
-function mockIndustryBenchmark({ data = [] } = {}) {
+function mockUseIndustryBenchmark({ data = [] } = {}) {
   return useIndustryBenchmark.mockReturnValue({ data });
 }
 
@@ -63,7 +63,7 @@ const renderSubject = props =>
 describe('AggregatedMetrics', () => {
   it('renders with the passed in date', () => {
     mockQuery({ status: 'success' });
-    mockIndustryBenchmark();
+    mockUseIndustryBenchmark();
     renderSubject();
 
     expect(screen.getByText(DEFAULT_PROPS.date)).toBeInTheDocument();
@@ -71,7 +71,7 @@ describe('AggregatedMetrics', () => {
 
   it('renders the aggregated data returned from `useSparkPostQuery`', () => {
     mockQuery({ status: 'success' });
-    mockIndustryBenchmark();
+    mockUseIndustryBenchmark();
     renderSubject();
 
     expect(screen.getByText('Sent')).toBeInTheDocument();
@@ -86,7 +86,7 @@ describe('AggregatedMetrics', () => {
 
   it('conditionally renders the "View Filters" button according to the value of the `showFiltersButton`', () => {
     mockQuery({ status: 'success' });
-    mockIndustryBenchmark();
+    mockUseIndustryBenchmark();
     renderSubject({ showFiltersButton: false });
 
     expect(screen.queryByRole('button', { name: 'View Filters' })).not.toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('AggregatedMetrics', () => {
   it('invokes the passed in `handleViewFiltersClick` when the "View Filters" button is clicked', () => {
     const mockHandleViewFiltersClick = jest.fn();
     mockQuery({ status: 'success' });
-    mockIndustryBenchmark();
+    mockUseIndustryBenchmark();
     renderSubject({ handleViewFiltersClick: mockHandleViewFiltersClick, showFiltersButton: true });
     const viewFiltersButton = screen.getByRole('button', { name: 'View Filters' });
 
@@ -136,7 +136,7 @@ describe('AggregatedMetrics', () => {
       ],
     };
     mockQuery({ status: 'success', data: dataWithBenchmark });
-    mockIndustryBenchmark({
+    mockUseIndustryBenchmark({
       data: [
         {
           median: 0.9375,
