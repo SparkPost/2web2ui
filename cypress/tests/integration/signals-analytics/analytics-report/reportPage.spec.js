@@ -10,7 +10,7 @@ import {
 const ENCODED_QUERY_FILTERS =
   '%255B%257B%2522AND%2522%3A%257B%2522campaigns%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%2C%2522world%2522%255D%257D%2C%2522templates%2522%3A%257B%2522eq%2522%3A%255B%2522greg-hackathon%2522%255D%2C%2522notEq%2522%3A%255B%2522gregs-test%2522%255D%257D%257D%257D%2C%257B%2522AND%2522%3A%257B%2522sending_ips%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%255D%2C%2522notLike%2522%3A%255B%2522hello-again%2522%255D%257D%257D%257D%255D';
 
-describe('Analytics Report', () => {
+describe('The Analytics Report page', () => {
   it('renders the initial state of the page', () => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
@@ -80,94 +80,6 @@ describe('Analytics Report', () => {
       cy.findByText('is equal to').should('be.visible');
       cy.findByText('test.com').should('be.visible');
     });
-  });
-
-  it('should properly control the expandables', () => {
-    commonBeforeSteps();
-    cy.visit(PAGE_URL);
-    cy.findByRole('button', { name: 'Add Metrics' }).click();
-    cy.withinDrawer(() => {
-      cy.findByDataId('expandable-content')
-        .eq(0)
-        .should('be.visible');
-      cy.findByRole('button', { name: /Injection Metrics/g }).click();
-      cy.findByDataId('expandable-content')
-        .eq(0)
-        .should('not.be.visible');
-      cy.findByDataId('expandable-content')
-        .eq(1)
-        .should('be.visible');
-      cy.findByRole('button', { name: /Delivery Metrics/g }).click();
-      cy.findByDataId('expandable-content')
-        .eq(1)
-        .should('not.be.visible');
-      cy.findByDataId('expandable-content')
-        .eq(2)
-        .should('be.visible');
-      cy.findByRole('button', { name: /Engagement Metrics/g }).click();
-      cy.findByDataId('expandable-content')
-        .eq(2)
-        .should('not.be.visible');
-    });
-  });
-
-  it('filters by metric', () => {
-    commonBeforeSteps();
-    cy.visit(PAGE_URL);
-    // 1. Open the drawer, uncheck default metrics, check all metrics
-    cy.findByRole('button', { name: 'Add Metrics' }).click();
-
-    cy.withinDrawer(() => {
-      cy.findByLabelText('Sent').uncheck({ force: true });
-      cy.findByLabelText('Unique Confirmed Opens').uncheck({ force: true });
-      cy.findByLabelText('Accepted').uncheck({ force: true });
-      cy.findByLabelText('Bounces').uncheck({ force: true });
-
-      METRICS.forEach(metric => {
-        cy.findByLabelText(metric.name).check({ force: true });
-      });
-
-      cy.findByRole('button', { name: 'Apply Metrics' }).click();
-    });
-
-    // 2. Wait for server response
-    cy.wait(['@getTimeSeries', '@getDeliverability']);
-
-    // 3. Verify that tags render for each metric *and* query params for each metric appear in the URL
-    cy.withinMainContent(() => {
-      METRICS.forEach(metric => {
-        cy.findByDataId(`metric-tag-${metric.queryParam}`).should('be.visible');
-        cy.url().should('include', `=${metric.queryParam}`);
-      });
-    });
-
-    // 4. Open the drawer again, clear metrics except for one
-    cy.findByRole('button', { name: 'Add Metrics' }).click();
-
-    cy.withinDrawer(() => {
-      cy.findByRole('button', { name: 'Apply Metrics' }).should('be.disabled');
-      cy.findByRole('button', { name: 'Clear Metrics' }).click();
-      cy.findByRole('button', { name: 'Apply Metrics' }).should('be.disabled');
-      cy.findByLabelText('Admin Bounce Rate').check({ force: true });
-      cy.findByRole('button', { name: 'Apply Metrics' }).should('not.be.disabled');
-      cy.findByRole('button', { name: 'Apply Metrics' }).click();
-    });
-
-    // 5. Wait for the server response
-    cy.wait(['@getTimeSeries', '@getDeliverability']);
-
-    const uncheckedMetrics = METRICS.filter(metric => metric.name !== 'Admin Bounce Rate');
-
-    // 6. Verify that that the only metric rendered is "Admin Bounce Rate"
-    cy.withinMainContent(() => {
-      uncheckedMetrics.forEach(metric => {
-        cy.findAllByText(metric.name).should('not.exist');
-        cy.url().should('not.include', `=${metric.queryParam}`);
-      });
-    });
-
-    cy.findAllByText('Admin Bounce Rate').should('be.visible');
-    cy.url().should('include', 'admin_bounce_rate');
   });
 
   it('removes currently active metrics when clicking the close button within metric tags', () => {
