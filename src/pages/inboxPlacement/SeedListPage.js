@@ -5,21 +5,11 @@ import { selectReferenceSeed } from 'src/selectors/inboxPlacement';
 import { showAlert } from 'src/actions/globalAlert';
 import { ApiErrorBanner, ButtonWrapper, CopyToClipboard, Loading } from 'src/components';
 import SaveCSVButton from 'src/components/collection/SaveCSVButton';
-import { PageLink } from 'src/components/links';
 import { Text, CodeBlock, Grid, Page, Panel, Stack, Layout } from 'src/components/matchbox';
 import { Bold } from 'src/components/text';
-import { useHibana } from 'src/context/HibanaContext';
 
 const ActionText = () => {
-  const [{ isHibanaEnabled }] = useHibana();
-  return isHibanaEnabled ? (
-    <Bold>Send the email and jump into the Inbox Placement report to see the results.</Bold>
-  ) : (
-    <p>
-      Send the email and jump back to <PageLink to="/inbox-placement">Inbox Placement</PageLink> to
-      see the results.
-    </p>
-  );
+  return <Bold>Send the email and jump into the Inbox Placement report to see the results.</Bold>;
 };
 
 export const InstructionsContent = ({ seeds, referenceSeed }) => {
@@ -87,31 +77,10 @@ export const InstructionsContent = ({ seeds, referenceSeed }) => {
 
 export const SeedListPage = props => {
   const { pending, error, getSeedList, seeds, referenceSeed } = props;
-  const [{ isHibanaEnabled }] = useHibana();
 
   useEffect(() => {
     getSeedList();
   }, [getSeedList]);
-
-  const renderHibana = () => (
-    <Layout>
-      <Layout.Section annotated>
-        <Layout.SectionTitle>Seed Data</Layout.SectionTitle>
-        <p>Configure inbox placement testing</p>
-      </Layout.Section>
-      <Layout.Section>
-        <Panel.LEGACY title="Seed Addresses">
-          <InstructionsContent seeds={seeds} referenceSeed={referenceSeed} />
-        </Panel.LEGACY>
-      </Layout.Section>
-    </Layout>
-  );
-
-  const renderOG = () => (
-    <Panel.LEGACY title="Seed Addresses">
-      <InstructionsContent seeds={seeds} referenceSeed={referenceSeed} />
-    </Panel.LEGACY>
-  );
 
   if (pending) {
     return <Loading />;
@@ -127,7 +96,21 @@ export const SeedListPage = props => {
     );
   }
 
-  return <Page title="Seedlist">{isHibanaEnabled ? renderHibana() : renderOG()}</Page>;
+  return (
+    <Page title="Seedlist">
+      <Layout>
+        <Layout.Section annotated>
+          <Layout.SectionTitle>Seed Data</Layout.SectionTitle>
+          <p>Configure inbox placement testing</p>
+        </Layout.Section>
+        <Layout.Section>
+          <Panel.LEGACY title="Seed Addresses">
+            <InstructionsContent seeds={seeds} referenceSeed={referenceSeed} />
+          </Panel.LEGACY>
+        </Layout.Section>
+      </Layout>
+    </Page>
+  );
 };
 
 const mapStateToProps = state => ({
