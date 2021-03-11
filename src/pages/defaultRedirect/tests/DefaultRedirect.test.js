@@ -5,7 +5,6 @@ import { useHibana } from 'src/context/HibanaContext';
 import routeData from 'react-router-dom';
 import cases from 'jest-in-case';
 import { ROLES } from 'src/constants';
-jest.mock('src/helpers/authCookie');
 jest.mock('src/context/HibanaContext');
 useHibana.mockImplementation(() => [{ isHibanaEnabled: false }]);
 const mockHistoryPush = jest.fn();
@@ -24,9 +23,6 @@ describe('DefaultRedirect', () => {
     defaultProps = {
       currentUser: {
         access_level: 'admin',
-      },
-      auth: {
-        authCookieData: {},
       },
       ready: false,
     };
@@ -71,9 +67,6 @@ describe('DefaultRedirect', () => {
           access_level: accessLevel,
         },
         ready: true,
-        auth: {
-          authCookieData: {},
-        },
       });
       expect(mockHistoryReplace).toHaveBeenCalledTimes(1);
       expect(mockHistoryReplace).toHaveBeenCalledWith({
