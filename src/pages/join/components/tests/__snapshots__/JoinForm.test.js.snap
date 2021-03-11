@@ -3,6 +3,7 @@
 exports[`JoinForm render disables form when loading 1`] = `
 <Form
   id="sign-up-form"
+  onSubmit={[Function]}
 >
   <Stack>
     <Field
@@ -101,7 +102,7 @@ exports[`JoinForm render disables form when loading 1`] = `
       <Button
         disabled={true}
         id="submit"
-        onClick={[Function]}
+        type="submit"
         variant="primary"
       >
         Loading
@@ -130,6 +131,7 @@ exports[`JoinForm render disables form when loading 1`] = `
 exports[`JoinForm render disables form when recaptcha is not loaded 1`] = `
 <Form
   id="sign-up-form"
+  onSubmit={[Function]}
 >
   <Stack>
     <Field
@@ -228,7 +230,7 @@ exports[`JoinForm render disables form when recaptcha is not loaded 1`] = `
       <Button
         disabled={true}
         id="submit"
-        onClick={[Function]}
+        type="submit"
         variant="primary"
       >
         Create Account
@@ -257,6 +259,7 @@ exports[`JoinForm render disables form when recaptcha is not loaded 1`] = `
 exports[`JoinForm render enables form correctly 1`] = `
 <Form
   id="sign-up-form"
+  onSubmit={[Function]}
 >
   <Stack>
     <Field
@@ -355,7 +358,7 @@ exports[`JoinForm render enables form correctly 1`] = `
       <Button
         disabled={false}
         id="submit"
-        onClick={[Function]}
+        type="submit"
         variant="primary"
       >
         Create Account

@@ -55,16 +55,16 @@ export default class CreatePage extends React.Component {
     }
 
     return (
-      <Page
-        title={snippetToDuplicate ? 'Duplicate Snippet' : 'Create a Snippet'}
-        breadcrumbAction={{ Component: PageLink, content: 'View All Snippets', to: '/snippets' }}
-        primaryAction={{
-          Component: Button,
-          content: 'Create Snippet',
-          onClick: handleSubmit(this.submitSnippet),
-        }}
-      >
-        <Form onSubmit={this.submitSnippet} id="snippets-create-form">
+      <Form id="snippets-create-form" onSubmit={handleSubmit(this.submitSnippet)}>
+        <Page
+          title={snippetToDuplicate ? 'Duplicate Snippet' : 'Create a Snippet'}
+          breadcrumbAction={{ Component: PageLink, content: 'View All Snippets', to: '/snippets' }}
+          primaryAction={{
+            Component: Button,
+            content: 'Create Snippet',
+            type: 'submit',
+          }}
+        >
           <Grid>
             <Grid.Column xs={12} lg={4}>
               <Panel.LEGACY sectioned>
@@ -98,8 +98,8 @@ export default class CreatePage extends React.Component {
               <ContentEditor contentOnly={true} />
             </Grid.Column>
           </Grid>
-        </Form>
-      </Page>
+        </Page>
+      </Form>
     );
   }
 }
