@@ -9,7 +9,7 @@ export default [
     layout: App,
     condition: hasGrants('inbox-placement/manage'),
     title: 'Seedlist',
-    supportDocSearch: 'seedlis4t',
+    supportDocSearch: 'seedlist',
     category: 'Seedlist',
   },
 ];
