@@ -5,7 +5,7 @@ const { log } = console;
 const debug = false;
 
 function handleSubmit(event) {
-  if (debug) {
+  if (process.env.NODE_ENV !== 'production' && debug) {
     log(event.target.elements);
     const formElements = event.target.elements;
 
