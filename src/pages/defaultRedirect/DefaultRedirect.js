@@ -6,11 +6,17 @@ import { useLocation, useHistory } from 'react-router-dom';
 import selectAccessConditionState from 'src/selectors/accessConditionState';
 import { useHibana } from 'src/context/HibanaContext';
 import config from 'src/config';
+import authCookie from 'src/helpers/authCookie';
 
-export function DefaultRedirect({ currentUser, ready }) {
+export function DefaultRedirect({ currentUser, ready, auth }) {
   const [{ isHibanaEnabled }] = useHibana();
   const location = useLocation();
   const history = useHistory();
+
+  if (!authCookie.get()) {
+    //in case of safari because of multiple redirects auth cookie is not being set on SSOPage
+    authCookie.save(auth.authCookieData);
+  }
   useEffect(() => {
     const handleRedirect = () => {
       const { state: routerState = {}, ...locationWithoutState } = location;
@@ -46,5 +52,8 @@ export function DefaultRedirect({ currentUser, ready }) {
   return <Loading />;
 }
 
-const mapStateToProps = state => selectAccessConditionState(state);
+const mapStateToProps = state => ({
+  ...selectAccessConditionState(state),
+  auth: state.auth,
+});
 export default connect(mapStateToProps)(DefaultRedirect);
