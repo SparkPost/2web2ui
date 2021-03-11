@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const { log } = console;
+const debug = false;
 
 function handleSubmit(event) {
-  if (process.env.NODE_ENV !== 'production') {
+  if (debug) {
     log(event.target.elements);
     const formElements = event.target.elements;
 
