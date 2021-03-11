@@ -14,12 +14,13 @@ import { sparkpost as sparkpostRequest } from 'src/helpers/axiosInstances';
  */
 export function defaultQueryFn({ queryKey }) {
   // Destructure the passed in `queryKey` to pass arguments to our axios instance
-  const [url, { method, params, headers, auth }] = queryKey;
+  const [url, { method, params, data, headers, auth }] = queryKey;
 
   return sparkpostRequest({
     url,
     method,
     params,
+    data,
     headers: {
       ...headers,
       Authorization: auth.loggedIn ? auth.token : undefined,
