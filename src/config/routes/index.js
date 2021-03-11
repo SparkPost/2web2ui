@@ -329,7 +329,7 @@ const appRoutes = [
     component: suppressions.CreatePage,
     condition: hasGrants('suppression_lists/manage'),
     layout: App,
-    title: 'New Suppression',
+    title: 'Add Suppressions',
     supportDocSearch: 'suppression list',
     category: 'Recipients',
     subcategory: 'Suppressions',
