@@ -1,4 +1,5 @@
 export { useSparkPostMutation, useSparkPostQuery, useSparkPostQueries } from './api';
+export { default as useAlert } from './useAlert';
 export { default as useABTest } from './useABTest';
 export { default as useMultiEntry } from './useMultiEntry';
 export { default as useEffectAfterMounting } from './useEffectAfterMounting';
