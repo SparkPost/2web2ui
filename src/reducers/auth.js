@@ -1,3 +1,4 @@
+
 const initialState = { loggedIn: false, ssoUser: null };
 
 export default (state = initialState, action) => {
@@ -10,7 +11,7 @@ export default (state = initialState, action) => {
       const {
         access_token: token,
         username = state.username,
-        refresh_token: refreshToken,
+        refresh_token: refreshToken
       } = action.payload;
 
       return {
@@ -19,8 +20,7 @@ export default (state = initialState, action) => {
         token,
         username,
         refreshToken,
-        loggedIn: true,
-        authCookieData: action.payload,
+        loggedIn: true
       };
     }
 
