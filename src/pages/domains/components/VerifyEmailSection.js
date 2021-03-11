@@ -71,7 +71,7 @@ export default function VerifyEmailSection({ domain, isSectionVisible }) {
 
 function VerifyButton({ onClick, variant = 'primary', submitting }) {
   return (
-    <Button variant={variant} loading={submitting} onClick={onClick}>
+    <Button variant={variant} loading={submitting} onClick={onClick} type="submit">
       Send Email
     </Button>
   );
@@ -169,36 +169,38 @@ function MailboxVerificationModal(props) {
             Start sending email from this domain by sending a verification email to one of the
             addresses below.
           </p>
-
-          <Grid middle="xs">
-            <Grid.Column xs={6}>
-              <p>
-                <strong>{`postmaster@${id}`}</strong>
-              </p>
-            </Grid.Column>
-            <Grid.Column xs={6}>
-              <VerifyButton
-                onClick={verifyWithPostmaster}
-                variant="secondary"
-                submitting={verifyEmailLoading}
-              />
-            </Grid.Column>
-          </Grid>
-
-          <Grid middle="xs">
-            <Grid.Column xs={6}>
-              <p>
-                <strong>{`abuse@${id}`}</strong>
-              </p>
-            </Grid.Column>
-            <Grid.Column xs={6}>
-              <VerifyButton
-                onClick={verifyWithAbuse}
-                variant="secondary"
-                submitting={verifyEmailLoading}
-              />
-            </Grid.Column>
-          </Grid>
+          <Form id="domain-email-verification-postmaster">
+            <Grid middle="xs">
+              <Grid.Column xs={6}>
+                <p>
+                  <strong>{`postmaster@${id}`}</strong>
+                </p>
+              </Grid.Column>
+              <Grid.Column xs={6}>
+                <VerifyButton
+                  onClick={verifyWithPostmaster}
+                  variant="secondary"
+                  submitting={verifyEmailLoading}
+                />
+              </Grid.Column>
+            </Grid>
+          </Form>
+          <Form id="domain-email-verification-abuse">
+            <Grid middle="xs">
+              <Grid.Column xs={6}>
+                <p>
+                  <strong>{`abuse@${id}`}</strong>
+                </p>
+              </Grid.Column>
+              <Grid.Column xs={6}>
+                <VerifyButton
+                  onClick={verifyWithAbuse}
+                  variant="secondary"
+                  submitting={verifyEmailLoading}
+                />
+              </Grid.Column>
+            </Grid>
+          </Form>
         </Stack>
       </Modal.Content>
     </Modal>
