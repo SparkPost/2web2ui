@@ -110,7 +110,7 @@ export default function SetupBounceDomainSection({
                   record for the Hostname and Value for this domain at your DNS provider.
                 </TranslatableText>
               </p>
-              <Panel.Action type="submit">
+              <Panel.Action type="submit" form="verify-bounce-form">
                 <TranslatableText>Re-Verify Domain </TranslatableText>
                 <Autorenew size={18} />
               </Panel.Action>
