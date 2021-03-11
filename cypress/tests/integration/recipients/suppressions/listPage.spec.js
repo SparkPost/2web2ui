@@ -417,7 +417,13 @@ describe('The recipients suppressions list page', () => {
       });
 
       it('re-requests data when filtering by a broad date range', () => {
+        cy.clock(Date.UTC(2019, 8, 11)); // freeze time
+
         cy.findByLabelText('Broad Date Range').select('Last Hour');
+        cy.wait('@stubbedFilteredRequest').then(xhr => {
+          cy.wrap(xhr.url).should('contain', 'from=2019-09-10T23:00');
+          cy.wrap(xhr.url).should('contain', 'to=2019-09-11T00:00');
+        });
 
         cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
       });
