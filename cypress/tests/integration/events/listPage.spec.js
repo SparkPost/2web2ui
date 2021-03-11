@@ -95,7 +95,10 @@ describe('The events page', () => {
   describe('filtering', () => {
     describe('by date', () => {
       it('re-requests data when filtering by "Broad Date Range"', () => {
+        cy.clock(Date.UTC(2019, 8, 11)); // freeze time
+
         cy.visit(PAGE_URL);
+        cy.wait('@getMessageEvents');
 
         cy.findByText('different-results@hotmail.com').should('not.exist');
 
@@ -106,6 +109,11 @@ describe('The events page', () => {
         });
 
         cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
+
+        cy.wait('@eventsRequest').then(xhr => {
+          cy.wrap(xhr.url).should('include', 'from=2019-09-10T00:00');
+          cy.wrap(xhr.url).should('include', 'to=2019-09-11T00:00');
+        });
 
         cy.findByText('different-results@hotmail.com').should('be.visible');
       });
