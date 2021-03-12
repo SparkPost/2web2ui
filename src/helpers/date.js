@@ -268,7 +268,7 @@ function getTimezoneWithOffset({ date = NOW, timezoneStr }) {
  * @param {Object} timezone timezone object as derived from `getTimezoneWithOffset` helper
  * @description reformat list to UI-friendly/formatted list consumable by the Typeahead
  */
-function getTimezoneOption(timezone) {
+function formatTimezoneToOption(timezone) {
   return {
     value: timezone.name,
     label: `(UTC${timezone.offset !== 0 ? timezone.formattedOffset : ''}) ${timezone.name.replace(
@@ -298,12 +298,12 @@ function isStandardTimezone(timezone) {
  * @description get a list of Typeahead options configuration derived from a static list of timezones
  * @param {Array} timezones array of [IANA timezones](https://www.iana.org/time-zones) - defaults to list retrieved from `timezone-support`
  */
-export function getTimezoneOptions(timezones = TIMEZONES) {
+export function formatTimezonesToOptions(timezones = TIMEZONES) {
   const timezoneOptions = timezones
     .filter(isStandardTimezone)
     .map(timezoneStr => getTimezoneWithOffset({ timezoneStr }))
     .sort(sortByOffset)
-    .map(getTimezoneOption);
+    .map(formatTimezoneToOption);
 
   // Adds UTC option as the first value in the list
   // Array.prototype.unshift() does not return the array itself so cannot be chained like .map or .filter

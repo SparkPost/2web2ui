@@ -6,7 +6,7 @@ import { isForcedUTCRollupPrecision } from 'src/helpers/metrics';
 import { Grid, Select, Tooltip } from 'src/components/matchbox';
 import DatePicker from 'src/components/datePicker/DatePickerV2';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
-import { getTimezoneOptions } from 'src/helpers/date';
+import { formatTimezonesToOptions } from 'src/helpers/date';
 import { METRICS_TIMEZONE_BLOCK_LIST } from 'src/constants';
 import config from 'src/config';
 import styles from '../ReportOptions.module.scss';
@@ -24,7 +24,7 @@ export const DateTimeSection = ({
   handleTimezoneSelect,
   refreshReportOptions,
 }) => {
-  const timezoneOptions = getTimezoneOptions().filter(
+  const timezoneOptions = formatTimezonesToOptions().filter(
     option => !METRICS_TIMEZONE_BLOCK_LIST.includes(option.value),
   );
   const [shownPrecision, setShownPrecision] = useState('');

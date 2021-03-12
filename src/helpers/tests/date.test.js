@@ -22,7 +22,7 @@ import {
   toMilliseconds,
   formatDateTimeWithoutYear,
   getFormattedDateRangeForAggregateData,
-  getTimezoneOptions,
+  formatTimezonesToOptions,
 } from '../date';
 import { roundBoundaries } from '../metrics';
 import cases from 'jest-in-case';
@@ -400,7 +400,7 @@ describe('Date helpers', () => {
 
   describe('getTimezoneOptions', () => {
     it('returns a list of typeahead options according to timezones returned by `timezone-support`', () => {
-      const options = getTimezoneOptions();
+      const options = formatTimezonesToOptions();
 
       expect(options).toMatchSnapshot();
       expect(options[0]).toEqual({

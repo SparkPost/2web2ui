@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AccessTime } from '@sparkpost/matchbox-icons';
 import { UTC_TYPEAHEAD_OPTION } from 'src/constants';
-import { getTimezoneOptions } from 'src/helpers/date';
+import { formatTimezonesToOptions } from 'src/helpers/date';
 import { Typeahead } from './Typeahead';
 import styles from './Typeahead.module.scss';
 
-const TIMEZONE_OPTIONS = getTimezoneOptions();
+const TIMEZONE_OPTIONS = formatTimezonesToOptions();
 
 export const TimezoneTypeahead = props => {
   const {
