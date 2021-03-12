@@ -203,7 +203,7 @@ export const parseDatetime = (...args) =>
 
 /**
  * @name parseDateTimeTz
- * @description parses passed in timezone, date, and time strings to return a Moment date
+ * @description combines a date string and time string and to generate a date object
  * @param {string} timezone
  * @param {Date} date
  * @param {Date} time
