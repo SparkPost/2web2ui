@@ -95,18 +95,18 @@ export default class EditPage extends React.Component {
     }
 
     return (
-      <Page
-        title="Edit Snippet"
-        breadcrumbAction={{ Component: PageLink, content: 'View All Snippets', to: '/snippets' }}
-        primaryAction={{
-          Component: Button,
-          content: 'Save Snippet',
-          disabled,
-          onClick: handleSubmit(this.submitSnippet),
-        }}
-        secondaryActions={this.secondaryActions.filter(({ visible = () => true }) => visible())}
-      >
-        <Form onSubmit={this.submitSnippet} id="snippets-edit-form">
+      <Form id="snippets-edit-form" onSubmit={handleSubmit(this.submitSnippet)}>
+        <Page
+          title="Edit Snippet"
+          breadcrumbAction={{ Component: PageLink, content: 'View All Snippets', to: '/snippets' }}
+          primaryAction={{
+            Component: Button,
+            content: 'Save Snippet',
+            type: 'submit',
+            disabled,
+          }}
+          secondaryActions={this.secondaryActions.filter(({ visible = () => true }) => visible())}
+        >
           <Grid>
             <Grid.Column xs={12} lg={4}>
               <Panel.LEGACY sectioned>
@@ -145,8 +145,8 @@ export default class EditPage extends React.Component {
               <ContentEditor contentOnly={true} readOnly={disabled} />
             </Grid.Column>
           </Grid>
-        </Form>
-      </Page>
+        </Page>
+      </Form>
     );
   }
 }

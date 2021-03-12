@@ -13,49 +13,49 @@ exports[`EditPage redirects with alert when load request fails 1`] = `
 `;
 
 exports[`EditPage renders disabled form when submitting 1`] = `
-<Page
-  breadcrumbAction={
-    Object {
-      "Component": [Function],
-      "content": "View All Snippets",
-      "to": "/snippets",
-    }
-  }
-  primaryAction={
-    Object {
-      "Component": [Function],
-      "content": "Save Snippet",
-      "disabled": true,
-      "onClick": [Function],
-    }
-  }
-  secondaryActions={
-    Array [
-      Object {
-        "Component": [Function],
-        "content": "Delete",
-        "to": "/",
-        "visible": [Function],
-      },
-      Object {
-        "Component": [Function],
-        "content": "Duplicate",
-        "to": Object {
-          "pathname": "/snippets/create",
-          "state": Object {
-            "id": "test-snippet",
-            "subaccountId": undefined,
-          },
-        },
-        "visible": [Function],
-      },
-    ]
-  }
-  title="Edit Snippet"
+<Form
+  id="snippets-edit-form"
+  onSubmit={[Function]}
 >
-  <Form
-    id="snippets-edit-form"
-    onSubmit={[Function]}
+  <Page
+    breadcrumbAction={
+      Object {
+        "Component": [Function],
+        "content": "View All Snippets",
+        "to": "/snippets",
+      }
+    }
+    primaryAction={
+      Object {
+        "Component": [Function],
+        "content": "Save Snippet",
+        "disabled": true,
+        "type": "submit",
+      }
+    }
+    secondaryActions={
+      Array [
+        Object {
+          "Component": [Function],
+          "content": "Delete",
+          "to": "/",
+          "visible": [Function],
+        },
+        Object {
+          "Component": [Function],
+          "content": "Duplicate",
+          "to": Object {
+            "pathname": "/snippets/create",
+            "state": Object {
+              "id": "test-snippet",
+              "subaccountId": undefined,
+            },
+          },
+          "visible": [Function],
+        },
+      ]
+    }
+    title="Edit Snippet"
   >
     <Grid>
       <Grid.Column
@@ -115,33 +115,33 @@ exports[`EditPage renders disabled form when submitting 1`] = `
         />
       </Grid.Column>
     </Grid>
-  </Form>
-</Page>
+  </Page>
+</Form>
 `;
 
 exports[`EditPage renders disabled form when user does not have authorization to modify snippets 1`] = `
-<Page
-  breadcrumbAction={
-    Object {
-      "Component": [Function],
-      "content": "View All Snippets",
-      "to": "/snippets",
-    }
-  }
-  primaryAction={
-    Object {
-      "Component": [Function],
-      "content": "Save Snippet",
-      "disabled": true,
-      "onClick": [Function],
-    }
-  }
-  secondaryActions={Array []}
-  title="Edit Snippet"
+<Form
+  id="snippets-edit-form"
+  onSubmit={[Function]}
 >
-  <Form
-    id="snippets-edit-form"
-    onSubmit={[Function]}
+  <Page
+    breadcrumbAction={
+      Object {
+        "Component": [Function],
+        "content": "View All Snippets",
+        "to": "/snippets",
+      }
+    }
+    primaryAction={
+      Object {
+        "Component": [Function],
+        "content": "Save Snippet",
+        "disabled": true,
+        "type": "submit",
+      }
+    }
+    secondaryActions={Array []}
+    title="Edit Snippet"
   >
     <Grid>
       <Grid.Column
@@ -201,54 +201,54 @@ exports[`EditPage renders disabled form when user does not have authorization to
         />
       </Grid.Column>
     </Grid>
-  </Form>
-</Page>
+  </Page>
+</Form>
 `;
 
 exports[`EditPage renders edit form 1`] = `
-<Page
-  breadcrumbAction={
-    Object {
-      "Component": [Function],
-      "content": "View All Snippets",
-      "to": "/snippets",
-    }
-  }
-  primaryAction={
-    Object {
-      "Component": [Function],
-      "content": "Save Snippet",
-      "disabled": undefined,
-      "onClick": [Function],
-    }
-  }
-  secondaryActions={
-    Array [
-      Object {
-        "Component": [Function],
-        "content": "Delete",
-        "to": "/",
-        "visible": [Function],
-      },
-      Object {
-        "Component": [Function],
-        "content": "Duplicate",
-        "to": Object {
-          "pathname": "/snippets/create",
-          "state": Object {
-            "id": "test-snippet",
-            "subaccountId": undefined,
-          },
-        },
-        "visible": [Function],
-      },
-    ]
-  }
-  title="Edit Snippet"
+<Form
+  id="snippets-edit-form"
+  onSubmit={[Function]}
 >
-  <Form
-    id="snippets-edit-form"
-    onSubmit={[Function]}
+  <Page
+    breadcrumbAction={
+      Object {
+        "Component": [Function],
+        "content": "View All Snippets",
+        "to": "/snippets",
+      }
+    }
+    primaryAction={
+      Object {
+        "Component": [Function],
+        "content": "Save Snippet",
+        "disabled": undefined,
+        "type": "submit",
+      }
+    }
+    secondaryActions={
+      Array [
+        Object {
+          "Component": [Function],
+          "content": "Delete",
+          "to": "/",
+          "visible": [Function],
+        },
+        Object {
+          "Component": [Function],
+          "content": "Duplicate",
+          "to": Object {
+            "pathname": "/snippets/create",
+            "state": Object {
+              "id": "test-snippet",
+              "subaccountId": undefined,
+            },
+          },
+          "visible": [Function],
+        },
+      ]
+    }
+    title="Edit Snippet"
   >
     <Grid>
       <Grid.Column
@@ -305,6 +305,6 @@ exports[`EditPage renders edit form 1`] = `
         />
       </Grid.Column>
     </Grid>
-  </Form>
-</Page>
+  </Page>
+</Form>
 `;

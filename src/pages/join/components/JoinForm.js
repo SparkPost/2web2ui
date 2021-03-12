@@ -54,7 +54,10 @@ export class JoinForm extends Component {
     this.setState({ recaptcha_response: response }, this.props.handleSubmit(this.onSubmit));
   };
 
-  executeRecaptcha = () => this.state.reCaptchaInstance.execute();
+  executeRecaptcha = event => {
+    event.preventDefault();
+    return this.state.reCaptchaInstance.execute();
+  };
 
   linkRecaptcha = instance => {
     if (!this.state.reCaptchaInstance) {
@@ -70,7 +73,7 @@ export class JoinForm extends Component {
     const pending = loading || submitting || !reCaptchaReady;
 
     return (
-      <Form id="sign-up-form">
+      <Form id="sign-up-form" onSubmit={this.executeRecaptcha}>
         <Stack>
           <Field
             name="first_name"
@@ -150,12 +153,9 @@ export class JoinForm extends Component {
           <Box>
             <Button
               id="submit"
-              // todo, need to refactor this form to add type="submit" to the button and move
-              //  this onClick to onSubmit
-              // type="submit"
+              type="submit"
               variant="primary"
               disabled={pending || pristine || invalid}
-              onClick={this.executeRecaptcha}
             >
               {loading ? 'Loading' : 'Create Account'}
             </Button>

@@ -28,7 +28,7 @@ describe('CreatePage', () => {
     });
 
     expect(getSnippet).toHaveBeenCalledWith({ id: 'duplicate-snippet', subaccountId: '123' });
-    expect(wrapper.prop('title')).toEqual('Duplicate Snippet');
+    expect(wrapper.find('Page').prop('title')).toEqual('Duplicate Snippet');
   });
 
   it('renders spinner when loading snippet to duplicate', () => {
@@ -49,8 +49,8 @@ describe('CreatePage', () => {
     const createSnippet = jest.fn(() => Promise.resolve());
     const historyPush = jest.fn();
     const wrapper = subject({ createSnippet, history: { push: historyPush } });
-
-    await wrapper.prop('primaryAction').onClick({ id: 'test-snippet', subaccount: { id: 123 } });
+    const form = wrapper.find('Form').first();
+    await form.simulate('submit', { id: 'test-snippet', subaccount: { id: 123 } });
 
     expect(createSnippet).toHaveBeenCalled();
     expect(historyPush).toHaveBeenCalledWith('/snippets/edit/test-snippet?subaccount=123');
@@ -63,8 +63,8 @@ describe('CreatePage', () => {
         const createSnippet = jest.fn(() => Promise.resolve());
         const historyPush = jest.fn();
         const wrapper = subject({ createSnippet, history: { push: historyPush } });
-
-        wrapper.prop('primaryAction').onClick({
+        const form = wrapper.find('Form').first();
+        form.simulate('submit', {
           ...values,
           id: 'example-snippet',
           name: 'Example Snippet',
