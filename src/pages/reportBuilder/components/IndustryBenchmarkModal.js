@@ -28,7 +28,7 @@ const reducer = (state, { type, payload }) => {
   }
 };
 
-export const IndustryModal = ({ metrics, isModalOpen, closeModal }) => {
+export const IndustryBenchmarkModal = ({ metrics, isModalOpen, closeModal }) => {
   const {
     state: reportOptions,
     actions: { setIndustryBenchmark },

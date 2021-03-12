@@ -150,14 +150,14 @@ export default function DashboardPageV2() {
                     <CompareByAggregatedMetrics
                       date={dateValue}
                       reportOptions={pinnedReport.options}
-                      handleClickFiltersButton={() => openModal({ name: 'Filters' })}
+                      handleViewFiltersClick={() => openModal({ name: 'Filters' })}
                       showFiltersButton={pinnedReport?.options?.filters.length > 0}
                     />
                   ) : (
                     <AggregatedMetrics
                       date={dateValue}
                       reportOptions={pinnedReport.options}
-                      handleClickFiltersButton={() => openModal({ name: 'Filters' })}
+                      handleViewFiltersClick={() => openModal({ name: 'Filters' })}
                       showFiltersButton={pinnedReport?.options?.filters.length > 0}
                     />
                   )}

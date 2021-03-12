@@ -41,15 +41,15 @@ describe('TypeSelect', () => {
   });
 
   it('renders an empty listbox', () => {
-    const { getByLabelText, queryAllByRole } = subject({ results: [] });
-    userEvent.click(getByLabelText('Things')); // to focus
+    const { getByRole, queryAllByRole } = subject({ results: [] });
+    userEvent.click(getByRole('textbox')); // to focus
     expect(queryAllByRole('option')).toHaveLength(0);
   });
 
   it('renders all listbox options', () => {
-    const { getAllByRole, getByLabelText } = subject();
+    const { getAllByRole, getByRole } = subject();
 
-    userEvent.click(getByLabelText('Things')); // to focus
+    userEvent.click(getByRole('textbox')); // to focus
 
     const listboxItems = getAllByRole('option');
 
@@ -60,11 +60,11 @@ describe('TypeSelect', () => {
   });
 
   it('renders custom items', () => {
-    const { getAllByRole, getByLabelText } = subject({
+    const { getAllByRole, getByRole } = subject({
       renderItem: item => <TypeSelect.Item label={item.name} meta={item.key} />,
     });
 
-    userEvent.click(getByLabelText('Things')); // to focus
+    userEvent.click(getByRole('textbox')); // to focus
 
     const listboxItems = getAllByRole('option');
 
@@ -78,9 +78,9 @@ describe('TypeSelect', () => {
   });
 
   it('renders matching items', async () => {
-    const { getAllByRole, getByLabelText } = subject();
+    const { getAllByRole, getByRole } = subject();
 
-    await userEvent.type(getByLabelText('Things'), 'e');
+    await userEvent.type(getByRole('textbox'), 'e');
 
     const listboxItems = getAllByRole('option');
 
@@ -89,21 +89,21 @@ describe('TypeSelect', () => {
   });
 
   it('shows all items after blurring and refocusing', async () => {
-    const { getAllByRole, getByLabelText } = subject();
-    getByLabelText('Things').focus();
-    await userEvent.type(getByLabelText('Things'), 'e');
+    const { getAllByRole, getByRole } = subject();
+    getByRole('textbox').focus();
+    await userEvent.type(getByRole('textbox'), 'e');
     const listboxItems = getAllByRole('option');
 
     expect(listboxItems).toHaveLength(1);
     expect(listboxItems[0]).toHaveTextContent('eleven');
-    fireEvent.blur(getByLabelText('Things'));
-    fireEvent.focus(getByLabelText('Things'));
+    fireEvent.blur(getByRole('textbox'));
+    fireEvent.focus(getByRole('textbox'));
 
     expect(getAllByRole('option')).toHaveLength(3);
   });
 
   it('when disabled renders a disabled text field', async () => {
-    const { getByLabelText } = subject({ disabled: true });
-    expect(getByLabelText('Things')).toHaveAttribute('disabled');
+    const { getByRole } = subject({ disabled: true });
+    expect(getByRole('textbox')).toHaveAttribute('disabled');
   });
 });
