@@ -38,7 +38,6 @@ export const list = [
     inSummary: true,
   },
   {
-    //TODO: Remove once deliverability metrics are released
     key: 'count_accepted',
     label: 'Accepted',
     type: 'total',
@@ -495,25 +494,6 @@ export const list = [
     description: 'Total number of messages which had at least one link selected one or more times.',
   },
   {
-    key: 'count_accepted',
-    label: 'Accepted',
-    type: 'total',
-    category: deliverability,
-    unit: 'number',
-    description: "Number of emails delivered that didn't subsequently bounce (Out-of-Band).",
-    inSummary: true,
-  },
-  {
-    key: 'accepted_rate',
-    label: 'Accepted Rate',
-    category: deliverability,
-    unit: 'percent',
-    computeKeys: ['count_accepted', 'count_sent'],
-    compute: rate,
-    description: 'Percentage of Sent messages that were accepted.',
-    inSummary: true,
-  },
-  {
     key: 'count_inbox',
     label: 'Inbox Folder Count',
     type: 'total',
@@ -523,6 +503,7 @@ export const list = [
     computeKeys: ['count_inbox_panel', 'count_inbox_seed'],
     inReportBuilder: true,
     product: 'deliverability',
+    description: 'Number of seed and panel messages delivered to the inbox.',
   },
   {
     key: 'count_spam',
@@ -534,6 +515,7 @@ export const list = [
     category: deliverability,
     inReportBuilder: true,
     product: 'deliverability',
+    description: 'Number of seed and panel messages delivered to the spam folder.',
   },
   {
     key: 'inbox_folder_rate',
@@ -550,6 +532,7 @@ export const list = [
     computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
     inReportBuilder: true,
     product: 'deliverability',
+    description: 'Percentage of seed and panel messages delivered to the inbox.',
   },
   {
     key: 'spam_folder_rate',
@@ -566,6 +549,7 @@ export const list = [
     computeKeys: ['count_inbox_panel', 'count_inbox_seed', 'count_spam_panel', 'count_spam_seed'],
     inReportBuilder: true,
     product: 'deliverability',
+    description: 'Percentage of seed and panel messages delivered to the spam folder.',
   },
   {
     key: 'count_moved_to_inbox',
@@ -575,6 +559,8 @@ export const list = [
     category: deliverability,
     inReportBuilder: true,
     product: 'deliverability',
+    description:
+      'Number of panel messages delivered to the spam folder but then moved to the inbox.',
   },
   {
     key: 'count_moved_to_spam',
@@ -584,6 +570,8 @@ export const list = [
     category: deliverability,
     inReportBuilder: true,
     product: 'deliverability',
+    description:
+      'Number of panel messages delivered to the inbox but then moved to the spam folder.',
   },
   {
     key: 'moved_to_inbox_rate',
@@ -591,12 +579,14 @@ export const list = [
     unit: 'percent',
     type: 'percentage',
     category: deliverability,
-    compute: ({ count_moved_to_inbox, count_spam_panel, count_spam_seed }) => {
-      return safeRate(count_moved_to_inbox, count_spam_panel + count_spam_seed);
+    compute: ({ count_moved_to_inbox, count_spam_panel }) => {
+      return safeRate(count_moved_to_inbox, count_spam_panel);
     },
-    computeKeys: ['count_moved_to_inbox', 'count_spam_panel', 'count_spam_seed'],
+    computeKeys: ['count_moved_to_inbox', 'count_spam_panel'],
     inReportBuilder: true,
     product: 'deliverability',
+    description:
+      'Percentage of panel messages delivered to the spam folder but then moved to the inbox.',
   },
   {
     key: 'moved_to_spam_rate',
@@ -604,12 +594,14 @@ export const list = [
     unit: 'percent',
     type: 'percentage',
     category: deliverability,
-    compute: ({ count_moved_to_spam, count_inbox_panel, count_inbox_seed }) => {
-      return safeRate(count_moved_to_spam, count_inbox_panel + count_inbox_seed);
+    compute: ({ count_moved_to_spam, count_inbox_panel }) => {
+      return safeRate(count_moved_to_spam, count_inbox_panel);
     },
-    computeKeys: ['count_moved_to_spam', 'count_inbox_panel', 'count_inbox_seed'],
+    computeKeys: ['count_moved_to_spam', 'count_inbox_panel'],
     inReportBuilder: true,
     product: 'deliverability',
+    description:
+      'Percentage of panel messages delivered to the inbox but then moved to the spam folder.',
   },
 ];
 

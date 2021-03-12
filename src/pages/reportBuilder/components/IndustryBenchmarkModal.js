@@ -100,7 +100,7 @@ export const IndustryBenchmarkModal = ({ metrics, isModalOpen, closeModal }) => 
               closeModal();
             }}
           >
-            Display Benchmark
+            Apply Settings
           </Button>
           <Button variant="secondary" onClick={closeModal}>
             Cancel
