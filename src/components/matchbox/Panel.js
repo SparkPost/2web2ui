@@ -1,80 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel as OGPanel } from '@sparkpost/matchbox';
 import { Panel as HibanaPanel } from '@sparkpost/matchbox-hibana';
 import { Box } from 'src/components/matchbox';
-import { useHibana } from 'src/context/HibanaContext';
-import { omitSystemProps } from 'src/helpers/hibana';
-
-const ERROR_MESSAGE =
-  'Panel components can only be used with Hibana enabled. To use a Panel component in both themes, please use Panel.LEGACY';
 
 function Panel(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) throw new Error(ERROR_MESSAGE);
-
   return <HibanaPanel mb={props.mb ? props.mb : '500'} {...props} />;
 }
 
 function LEGACY(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) {
-    return <OGPanel {...omitSystemProps(props)} />;
-  }
-
   return <HibanaPanel.LEGACY mb={props.mb ? props.mb : '500'} {...props} />;
 }
 
 function LegacySection(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) {
-    return <OGPanel.Section {...omitSystemProps(props)} />;
-  }
-
   return <HibanaPanel.LEGACY.Section {...props} />;
 }
 
 function LegacyFooter(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) {
-    return <OGPanel.Footer {...omitSystemProps(props, ['left', 'right'])} />;
-  }
-
   return <HibanaPanel.LEGACY.Footer {...props} />;
 }
 
 function Section(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) throw new Error(ERROR_MESSAGE);
-
   return <HibanaPanel.Section {...props} />;
 }
 
 function Header(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) throw new Error(ERROR_MESSAGE);
-
   return <HibanaPanel.Header {...props} />;
 }
 
 function Action(props) {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
-
-  if (!isHibanaEnabled) throw new Error(ERROR_MESSAGE);
-
   return <HibanaPanel.Action {...props} />;
 }
 
@@ -85,12 +38,6 @@ function Action(props) {
  *
  */
 function Headline({ children }) {
-  const [{ isHibanaEnabled }] = useHibana();
-
-  if (!isHibanaEnabled) {
-    throw new Error('Panel.Headline can only be used with Hibana enabled.');
-  }
-
   return (
     <Box as="span" fontSize="500" fontWeight="medium" display="flex" alignItems="center">
       {children}
@@ -99,12 +46,6 @@ function Headline({ children }) {
 }
 
 function HeadlineIcon({ as }) {
-  const [{ isHibanaEnabled }] = useHibana();
-
-  if (!isHibanaEnabled) {
-    throw new Error('Panel.HeadlineIcon can only be used with Hibana enabled.');
-  }
-
   return <Box as={as} mr="200" marginTop="3px" size={24} />;
 }
 

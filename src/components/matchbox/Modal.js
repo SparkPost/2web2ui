@@ -1,27 +1,19 @@
-import React, { useEffect } from 'react';
-import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
+import React from 'react';
 import { Modal as HibanaModal } from '@sparkpost/matchbox-hibana';
-import { usePrevious } from 'src/hooks';
+import { TrackModal } from 'src/components/tracking/TrackModal';
 
 //NOTE - title prop is required for segment tracking only
 const LEGACY = props => {
-  const wasOpen = usePrevious(props.open);
   const { title, ...restProps } = props;
-  useEffect(() => {
-    if (!wasOpen && props.open) {
-      segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: title });
-    }
 
-    if (wasOpen && !props.open) {
-      segmentTrack(SEGMENT_EVENTS.MODAL_CLOSED, { title: title });
-    }
-  }, [props.open, title, wasOpen]);
-
-  return <HibanaModal.LEGACY {...restProps} />;
+  return (
+    <TrackModal open={props.open} title={title}>
+      <HibanaModal.LEGACY {...restProps} />
+    </TrackModal>
+  );
 };
 
 function Modal(props) {
-  const wasOpen = usePrevious(props.open);
   let modalTitle;
   React.Children.map(props.children, function(child) {
     if (child?.type && child.type.displayName === 'Modal.Header') {
@@ -29,17 +21,11 @@ function Modal(props) {
     }
   });
 
-  useEffect(() => {
-    if (!wasOpen && props.open) {
-      segmentTrack(SEGMENT_EVENTS.MODAL_OPENED, { title: modalTitle });
-    }
-
-    if (wasOpen && !props.open) {
-      segmentTrack(SEGMENT_EVENTS.MODAL_CLOSED, { title: modalTitle });
-    }
-  }, [modalTitle, props.open, wasOpen]);
-
-  return <HibanaModal {...props} />;
+  return (
+    <TrackModal open={props.open} title={modalTitle}>
+      <HibanaModal {...props} />
+    </TrackModal>
+  );
 }
 
 function Header(props) {

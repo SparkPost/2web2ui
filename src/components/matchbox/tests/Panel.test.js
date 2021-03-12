@@ -8,10 +8,6 @@ function mockHibanaIsEnabled() {
   return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
 }
 
-function mockHibanaIsDisabled() {
-  return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
-}
-
 describe('Panel Matchbox component wrapper: ', () => {
   describe('Panel', () => {
     const subject = () => shallow(<Panel />);
@@ -21,12 +17,6 @@ describe('Panel Matchbox component wrapper: ', () => {
       const wrapper = subject();
 
       expect(wrapper.find('Panel')).toExist();
-    });
-
-    it('throws an error when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
     });
   });
 
@@ -39,12 +29,6 @@ describe('Panel Matchbox component wrapper: ', () => {
 
       expect(wrapper).toHaveDisplayName('Panel.Section');
     });
-
-    it('throws an error when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
-    });
   });
 
   describe('Panel.Action', () => {
@@ -56,23 +40,10 @@ describe('Panel Matchbox component wrapper: ', () => {
 
       expect(wrapper).toHaveDisplayName('Panel.Action');
     });
-
-    it('throws an error when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
-    });
   });
 
   describe('Panel.LEGACY', () => {
     const subject = () => shallow(<Panel.LEGACY />);
-
-    it('renders the OG version of Panel.LEGACY when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-      const wrapper = subject();
-
-      expect(wrapper).toHaveDisplayName('Panel');
-    });
 
     it('renders the Hibana version of Panel.LEGACY when Hibana is enabled', () => {
       mockHibanaIsEnabled();
@@ -85,13 +56,6 @@ describe('Panel Matchbox component wrapper: ', () => {
   describe('Panel.LEGACY.Section', () => {
     const subject = () => shallow(<Panel.LEGACY.Section />);
 
-    it('renders the OG version of Panel.LEGACY.Section when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-      const wrapper = subject();
-
-      expect(wrapper).toHaveDisplayName('Panel.Section');
-    });
-
     it('renders the Hibana version of Panel.LEGACY.Section when Hibana is enabled', () => {
       mockHibanaIsEnabled();
       const wrapper = subject();
@@ -102,13 +66,6 @@ describe('Panel Matchbox component wrapper: ', () => {
 
   describe('Panel.LEGACY.Footer', () => {
     const subject = () => shallow(<Panel.LEGACY.Footer />);
-
-    it('renders the OG version of Panel.LEGACY.Footer when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-      const wrapper = subject();
-
-      expect(wrapper).toHaveDisplayName('Panel.Footer');
-    });
 
     it('renders the Hibana version of Panel.LEGACY.Footer when Hibana is enabled', () => {
       mockHibanaIsEnabled();
@@ -127,12 +84,6 @@ describe('Panel Matchbox component wrapper: ', () => {
 
       expect(wrapper).toHaveTextContent('Hello!');
     });
-
-    it('throws an error when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
-    });
   });
 
   describe('Panel.HeadlineIcon', () => {
@@ -144,12 +95,6 @@ describe('Panel Matchbox component wrapper: ', () => {
       const wrapper = subject({ as: MyIcon });
 
       expect(wrapper.find('Box')).toHaveProp('as', MyIcon);
-    });
-
-    it('throws an error when Hibana is not enabled', () => {
-      mockHibanaIsDisabled();
-
-      expect(subject).toThrowError();
     });
   });
 });
