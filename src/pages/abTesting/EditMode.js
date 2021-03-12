@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, getFormValues } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { showAlert } from 'src/actions/globalAlert';
 import {
   updateDraft,
