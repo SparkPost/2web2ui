@@ -22,7 +22,7 @@ import { AsyncActionModal, ButtonWrapper, RadioButtonGroup } from 'src/component
 import { hasAtLeastOneRecipient, recipientUserToString } from '../helpers/scheduledReports';
 import { DAY_OF_WEEK_OPTIONS, WEEK_OPTIONS } from '../constants/scheduledReports';
 import { ComboBoxTypeahead } from 'src/components/typeahead/ComboBoxTypeahead';
-import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrapper';
+import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrappers';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import useModal from 'src/hooks/useModal';
 
