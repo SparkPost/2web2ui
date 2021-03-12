@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 import { listTimeZones, findTimeZone, getUTCOffset, setTimeZone } from 'timezone-support';
 import { formatZonedTime } from 'timezone-support/dist/parse-format';
 import config from 'src/config';
@@ -298,7 +299,7 @@ function isStandardTimezone(timezone) {
  * @description get a list of Typeahead options configuration derived from a static list of timezones
  * @param {Array} timezones array of [IANA timezones](https://www.iana.org/time-zones) - defaults to list retrieved from `timezone-support`
  */
-export function formatTimezonesToOptions(timezones = TIMEZONES) {
+export const formatTimezonesToOptions = _.memoize(function(timezones = TIMEZONES) {
   const timezoneOptions = timezones
     .filter(isStandardTimezone)
     .map(timezoneStr => getTimezoneWithOffset({ timezoneStr }))
@@ -311,4 +312,4 @@ export function formatTimezonesToOptions(timezones = TIMEZONES) {
   timezoneOptions.unshift(UTC_TYPEAHEAD_OPTION);
 
   return timezoneOptions;
-}
+});
