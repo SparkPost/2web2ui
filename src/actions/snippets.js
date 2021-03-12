@@ -1,5 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
-import setSubaccountHeader from './helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 
 export const clearSnippet = () => ({ type: 'CLEAR_SNIPPET' });
 

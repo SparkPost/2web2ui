@@ -4,7 +4,7 @@ import config from 'src/config';
 import _ from 'lodash';
 import csvFileParseRequest, { hasData, hasField } from 'src/actions/helpers/csvFileParseRequest';
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
-import setSubaccountHeader from 'src/actions/helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 
 const { apiDateFormat } = config;
 

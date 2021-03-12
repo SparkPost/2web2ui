@@ -1,5 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
-import setSubaccountHeader from './helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 
 export function listWebhooks() {
   return sparkpostApiRequest({
@@ -7,8 +7,8 @@ export function listWebhooks() {
     meta: {
       method: 'GET',
       url: '/v1/webhooks',
-      showErrorAlert: false
-    }
+      showErrorAlert: false,
+    },
   });
 }
 
@@ -24,8 +24,8 @@ export function getWebhook({ id, subaccount = null }) {
       method: 'GET',
       url: `/v1/webhooks/${id}`,
       subaccount,
-      headers
-    }
+      headers,
+    },
   });
 }
 
@@ -41,8 +41,8 @@ export function createWebhook({ webhook, subaccount = null }) {
       url: '/v1/webhooks',
       data: webhook,
       subaccount,
-      headers
-    }
+      headers,
+    },
   });
 }
 
@@ -54,8 +54,8 @@ export function updateWebhook({ id, subaccount = null, ...data }) {
       method: 'PUT',
       url: `/v1/webhooks/${id}`,
       data,
-      headers
-    }
+      headers,
+    },
   });
 }
 
@@ -66,8 +66,8 @@ export function deleteWebhook({ id, subaccount = null }) {
     meta: {
       method: 'DELETE',
       url: `/v1/webhooks/${id}`,
-      headers
-    }
+      headers,
+    },
   });
 }
 
@@ -79,8 +79,8 @@ export function testWebhook({ id, subaccount = null, message }) {
       method: 'POST',
       url: `/v1/webhooks/${id}/validate`,
       data: { message },
-      headers
-    }
+      headers,
+    },
   });
 }
 
@@ -89,8 +89,8 @@ export function getEventDocs() {
     type: 'GET_EVENT_DOCS',
     meta: {
       method: 'GET',
-      url: '/v1/webhooks/events/documentation'
-    }
+      url: '/v1/webhooks/events/documentation',
+    },
   });
 }
 
@@ -100,8 +100,8 @@ export function getEventSamples(events) {
     meta: {
       method: 'GET',
       url: '/v1/webhooks/events/samples',
-      params: { events: events.join(',') }
-    }
+      params: { events: events.join(',') },
+    },
   });
 }
 
@@ -112,7 +112,7 @@ export function getBatches({ id, subaccount = null }) {
     meta: {
       method: 'GET',
       url: `/v1/webhooks/${id}/batch-status`,
-      headers
-    }
+      headers,
+    },
   });
 }

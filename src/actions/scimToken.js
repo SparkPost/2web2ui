@@ -1,5 +1,5 @@
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
-import setSubaccountHeader from './helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 
 export function generateScimToken() {
   return sparkpostApiRequest({

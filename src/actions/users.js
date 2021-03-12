@@ -1,5 +1,5 @@
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
-import setSubaccountHeader from 'src/actions/helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 import { showAlert } from './globalAlert';
 import ErrorTracker from 'src/helpers/errorTracker';
 
@@ -10,8 +10,8 @@ export function inviteUser(email, access_level, subaccount) {
       data: { email, access_level },
       method: 'POST',
       url: '/v1/users/invite',
-      headers: setSubaccountHeader(subaccount)
-    }
+      headers: setSubaccountHeader(subaccount),
+    },
   };
 
   return sparkpostApiRequest(action);
@@ -23,15 +23,19 @@ export function deleteUser(username) {
     meta: {
       data: { username }, // need in reducer, no user reference in response
       method: 'DELETE',
-      url: `/v1/users/${username}`
-    }
+      url: `/v1/users/${username}`,
+    },
   };
 
-  return (dispatch) => dispatch(sparkpostApiRequest(action))
-    .then(() => dispatch(showAlert({
-      type: 'success',
-      message: `Deleted ${username}`
-    })));
+  return dispatch =>
+    dispatch(sparkpostApiRequest(action)).then(() =>
+      dispatch(
+        showAlert({
+          type: 'success',
+          message: `Deleted ${username}`,
+        }),
+      ),
+    );
 }
 
 export function listUsers() {
@@ -40,8 +44,8 @@ export function listUsers() {
     meta: {
       method: 'GET',
       url: '/v1/users',
-      showErrorAlert: false
-    }
+      showErrorAlert: false,
+    },
   });
 }
 
@@ -53,13 +57,15 @@ export function updateUser(username, data) {
       url: `/v1/users/${username}`,
       data: {
         ...data,
-        username // need in reducer, no user reference in response
-      }
-    }
+        username, // need in reducer, no user reference in response
+      },
+    },
   };
 
-  return (dispatch) => dispatch(sparkpostApiRequest(action))
-    .then(({ message }) => dispatch(showAlert({ type: 'success', message })));
+  return dispatch =>
+    dispatch(sparkpostApiRequest(action)).then(({ message }) =>
+      dispatch(showAlert({ type: 'success', message })),
+    );
 }
 
 export function checkInviteToken(token) {
@@ -67,12 +73,15 @@ export function checkInviteToken(token) {
     type: 'CHECK_INVITE_TOKEN',
     meta: {
       method: 'GET',
-      url: `/v1/users/invite/${token}`
-    }
+      url: `/v1/users/invite/${token}`,
+    },
   };
 
   // returns 404 when not found
-  return (dispatch) => dispatch(sparkpostApiRequest(action)).catch((error) => { ErrorTracker.report('check-invite', error); });
+  return dispatch =>
+    dispatch(sparkpostApiRequest(action)).catch(error => {
+      ErrorTracker.report('check-invite', error);
+    });
 }
 
 export function registerUser(token, data) {
@@ -81,13 +90,17 @@ export function registerUser(token, data) {
     meta: {
       method: 'POST',
       url: `/v1/users/register/${token}`,
-      data: { ...data, tou_accepted: true }
-    }
+      data: { ...data, tou_accepted: true },
+    },
   };
 
-  return (dispatch) => dispatch(sparkpostApiRequest(action))
-    .then(() => dispatch(showAlert({
-      type: 'success',
-      message: 'Welcome to SparkPost'
-    })));
+  return dispatch =>
+    dispatch(sparkpostApiRequest(action)).then(() =>
+      dispatch(
+        showAlert({
+          type: 'success',
+          message: 'Welcome to SparkPost',
+        }),
+      ),
+    );
 }

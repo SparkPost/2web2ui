@@ -1,5 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
-import setSubaccountHeader from 'src/actions/helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 import { SENDING_DOMAIN_TOKEN_TYPE } from 'src/constants';
 
 export function list() {

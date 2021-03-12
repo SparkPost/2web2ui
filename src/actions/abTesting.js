@@ -1,5 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
-import setSubaccountHeader from './helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 
 export function listAbTests() {
   return sparkpostApiRequest({
@@ -7,8 +7,8 @@ export function listAbTests() {
     meta: {
       method: 'GET',
       url: '/v1/ab-test',
-      showErrorAlert: false
-    }
+      showErrorAlert: false,
+    },
   });
 }
 
@@ -21,8 +21,8 @@ export function createAbTestDraft({ abTest, subaccount }) {
       method: 'POST',
       url: '/v1/ab-test/draft',
       data: abTest,
-      headers
-    }
+      headers,
+    },
   });
 }
 
@@ -35,9 +35,9 @@ export function getAbTest({ id, version, subaccountId, type = 'GET_AB_TEST' }) {
       showErrorAlert: false,
       headers: setSubaccountHeader(subaccountId),
       params: {
-        version
-      }
-    }
+        version,
+      },
+    },
   });
 }
 
@@ -48,8 +48,8 @@ export function deleteAbTest({ id, subaccountId }) {
       method: 'DELETE',
       url: `/v1/ab-test/${id}`,
       headers: setSubaccountHeader(subaccountId),
-      data: { id, subaccountId }
-    }
+      data: { id, subaccountId },
+    },
   });
 }
 
@@ -60,8 +60,9 @@ export function cancelAbTest({ id, subaccountId }) {
       method: 'POST',
       url: `/v1/ab-test/${id}/cancel`,
       headers: setSubaccountHeader(subaccountId),
-      id, subaccountId
-    }
+      id,
+      subaccountId,
+    },
   });
 }
 
@@ -72,8 +73,8 @@ export function scheduleAbTest({ data, id, subaccountId }) {
       method: 'POST',
       url: `/v1/ab-test/draft/${id}/schedule`,
       headers: setSubaccountHeader(subaccountId),
-      data
-    }
+      data,
+    },
   });
 }
 
@@ -89,8 +90,8 @@ export function updateDraft({ data, id, subaccountId }) {
       method: 'PUT',
       url: `/v1/ab-test/draft/${id}`,
       headers: setSubaccountHeader(subaccountId),
-      data
-    }
+      data,
+    },
   });
 }
 
@@ -101,8 +102,8 @@ export function updateAbTest({ data, id, subaccountId, type = 'UPDATE_AB_TEST' }
       method: 'PUT',
       url: `/v1/ab-test/${id}`,
       headers: setSubaccountHeader(subaccountId),
-      data
-    }
+      data,
+    },
   });
 }
 

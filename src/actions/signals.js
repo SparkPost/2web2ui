@@ -1,5 +1,5 @@
 import { formatInputDate } from 'src/helpers/date';
-import setSubaccountHeader from './helpers/setSubaccountHeader';
+import { setSubaccountHeader } from 'src/helpers/subaccounts';
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
 
 // order_by param values do not match field names, so we have to translate here
