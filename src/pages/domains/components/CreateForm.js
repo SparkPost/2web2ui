@@ -14,7 +14,7 @@ import {
   Stack,
   TextField,
 } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { useHistory } from 'react-router-dom';

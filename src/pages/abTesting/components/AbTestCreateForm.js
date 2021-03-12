@@ -6,7 +6,7 @@ import { TextFieldWrapper } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Grid, Box, Button, Panel, Stack } from 'src/components/matchbox';
 import { OGOnlyWrapper } from 'src/components/hibana';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { ExternalLink } from 'src/components/links';
 import {
   TemplateTypeaheadWrapper,

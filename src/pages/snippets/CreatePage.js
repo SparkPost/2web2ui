@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import { Grid, Button, Page, Panel, Stack } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import ContentEditor from 'src/components/contentEditor';
 import { ExternalLink, PageLink } from 'src/components/links';
 import Loading from 'src/components/loading';

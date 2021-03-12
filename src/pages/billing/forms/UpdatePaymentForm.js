@@ -8,7 +8,7 @@ import { updatePaymentInitialValues } from 'src/selectors/accountBillingForms';
 import { prepareCardInfo } from 'src/helpers/billing';
 import { Button, Panel } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import PaymentForm from 'src/components/billing/PaymentForm';
 import BillingAddressForm from 'src/components/billing/BillingAddressForm';
 

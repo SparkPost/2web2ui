@@ -11,7 +11,7 @@ import {
   ScreenReaderOnly,
   Stack,
 } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Uppercase, Comparison } from 'src/components/text';
 import { getGroupingFields, getApiFormattedGroupings } from '../../helpers';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';

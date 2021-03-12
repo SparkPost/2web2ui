@@ -4,7 +4,7 @@ import { reduxForm, formValueSelector } from 'redux-form';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { Box, Button, Panel, Stack } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { getIpPools } from 'src/selectors/ipPools';
 import { selectFirstIpPoolId } from 'src/selectors/ipPools';
 import { NameField, StatusSelect } from './formFields';

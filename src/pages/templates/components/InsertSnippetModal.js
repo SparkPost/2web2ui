@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Label, Modal, Panel, Stack } from 'src/components/matchbox';
 import copy from 'copy-to-clipboard';
 import { PageLink } from 'src/components/links';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Typeahead, TypeaheadItem } from 'src/components/typeahead/Typeahead';
 import { PanelLoading } from 'src/components/loading';
 import CopyField from 'src/components/copyField';

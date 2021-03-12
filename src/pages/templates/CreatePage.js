@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Page, Panel } from 'src/components/matchbox';
 import { ButtonWrapper, Loading } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { PageLink } from 'src/components/links';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
 import CreateForm from './components/create/CreateForm';

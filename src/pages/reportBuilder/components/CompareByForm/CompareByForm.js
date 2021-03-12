@@ -9,7 +9,7 @@ import {
   Stack,
 } from 'src/components/matchbox';
 import { Add, Close } from '@sparkpost/matchbox-icons';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { TranslatableText, Comparison } from 'src/components/text';
 
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';

@@ -4,7 +4,7 @@ import Papa from 'papaparse';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { RadioGroup, ButtonWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { DownloadLink } from 'src/components/links';
 import { Button, Panel, Modal, Stack } from 'src/components/matchbox';
 import { FileFieldWrapper } from 'src/components/reduxFormWrappers';

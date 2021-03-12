@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Grid, Button, Panel } from 'src/components/matchbox';
 import { Heading } from 'src/components/text';
 import { showAlert } from 'src/actions/globalAlert';

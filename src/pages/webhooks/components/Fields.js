@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import { TextFieldWrapper, SelectWrapper, RadioGroup, CheckboxWrapper } from 'src/components';
-import { FieldSet } from 'src/components/form';
+import { FieldSet } from 'src/components/fieldSet';
 import { ExternalLink } from 'src/components/links';
 import { Stack } from 'src/components/matchbox';
 import { required, maxLength, url } from 'src/helpers/validation';

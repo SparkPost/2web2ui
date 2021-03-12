@@ -3,7 +3,7 @@ import { Button, Modal, Text, Radio, Stack } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';
 import { useForm } from 'react-hook-form';
 import useDomains from '../hooks/useDomains';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 
 export function DomainAlignmentModal(props) {
   const { isOpen, onSubmit, onClose } = props;

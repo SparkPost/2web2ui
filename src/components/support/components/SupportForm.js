@@ -5,7 +5,7 @@ import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { PageLink } from 'src/components/links';
 import { Button, Panel, Stack } from 'src/components/matchbox';
 import { ButtonWrapper, SelectWrapper, TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import * as supportActions from 'src/actions/support';
 import { Heading } from 'src/components/text';
 import FileFieldWrapper from 'src/components/reduxFormWrappers/FileFieldWrapper';

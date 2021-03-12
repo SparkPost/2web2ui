@@ -14,7 +14,7 @@ import {
   TextField,
 } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Heading } from 'src/components/text';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';

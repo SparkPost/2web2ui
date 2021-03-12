@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import { TextFieldWrapper } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { PageLink } from 'src/components/links';
 import { Button, Page, Panel, Stack } from 'src/components/matchbox';
 import { required, email } from 'src/helpers/validation';

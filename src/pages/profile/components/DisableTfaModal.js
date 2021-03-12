@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Button, Panel, Stack, TextField, Modal } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { ButtonWrapper } from 'src/components';
 import { TranslatableText } from 'src/components/text';
 

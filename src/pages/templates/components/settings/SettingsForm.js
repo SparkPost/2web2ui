@@ -2,7 +2,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import { Button, Panel, Stack } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { ToggleBlock } from 'src/components/toggleBlock';
 import SubaccountSection from 'src/components/subaccountSection';
 import { TextFieldWrapper } from 'src/components';

@@ -5,7 +5,7 @@ import {
   hasProductOnBillingSubscription,
 } from 'src/helpers/conditions/account';
 import { Box, Button, Checkbox, Drawer, Expandable, Stack, Tooltip } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { DeliverabilityBanner } from './components';
 import { categorizedMetricsList, list } from 'src/config/metrics';
 import _ from 'lodash';

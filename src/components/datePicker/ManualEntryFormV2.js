@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import { Grid, TextField } from 'src/components/matchbox';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { formatToTimezone, parseDateTimeTz } from 'src/helpers/date';
 import {
   getValidDateRange,

@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Label, Panel } from 'src/components/matchbox';
 import { SelectWrapper, RadioGroup } from 'src/components/reduxFormWrappers';
 import { ConfirmationModal, Abbreviation } from 'src/components';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Card, CardTitle, CardContent } from 'src/components/card';
 import { ExternalLink } from 'src/components/links';
 import {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Inline, Panel } from 'src/components/matchbox';
 import { FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import OGStyles from './SearchForm.module.scss';
 import hibanaStyles from './SearchFormHibana.module.scss';
 import { FORMS } from 'src/constants';

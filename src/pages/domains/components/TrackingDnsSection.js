@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Layout, Stack, Text, Panel, Checkbox } from 'src/components/matchbox';
 import { Autorenew } from '@sparkpost/matchbox-icons';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { SubduedText, TranslatableText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import useDomains from '../hooks/useDomains';

@@ -6,7 +6,7 @@ import { Autorenew, Telegram } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
 import { ExternalLink, SubduedLink } from 'src/components/links';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { CopyField } from 'src/components';
 import { useForm } from 'react-hook-form';
 import { EXTERNAL_LINKS } from '../constants';

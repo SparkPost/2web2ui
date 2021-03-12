@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { PanelLoading } from 'src/components/loading';
-import { Form } from 'src/components/form';
+import { Form } from 'src/components/tracking/form';
 import { Button, Panel, TextField, Modal, Stack } from 'src/components/matchbox';
 
 const ModalWrapper = props => {
