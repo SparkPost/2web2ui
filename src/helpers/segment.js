@@ -97,10 +97,12 @@ const getUTMsFromURL = () => {
   }, {});
 };
 
-export const segmentPage = () => {
+export const segmentPage = url => {
   if (window.analytics && window.analytics.page) {
     const UTMs = getUTMsFromURL();
-    if (UTMs) {
+    if (url) {
+      window.analytics.page(url);
+    } else if (UTMs) {
       window.analytics.page(undefined, UTMs);
     } else {
       window.analytics.page();
