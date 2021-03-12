@@ -56,7 +56,7 @@ export class JoinForm extends Component {
 
   executeRecaptcha = event => {
     event.preventDefault();
-    this.state.reCaptchaInstance.execute();
+    return this.state.reCaptchaInstance.execute();
   };
 
   linkRecaptcha = instance => {
