@@ -69,9 +69,9 @@ export default function VerifyEmailSection({ domain, isSectionVisible }) {
   );
 }
 
-function VerifyButton({ onClick, variant = 'primary', submitting }) {
+function VerifyButton({ variant = 'primary', submitting }) {
   return (
-    <Button variant={variant} loading={submitting} onClick={onClick} type="submit">
+    <Button variant={variant} loading={submitting} type="submit">
       Send Email
     </Button>
   );
@@ -168,7 +168,13 @@ function MailboxVerificationModal(props) {
             Start sending email from this domain by sending a verification email to one of the
             addresses below.
           </p>
-          <Form id="domain-email-verification-postmaster">
+          <Form
+            id="domain-email-verification-postmaster"
+            onSubmit={e => {
+              e.preventDefault();
+              verifyWithPostmaster();
+            }}
+          >
             <Grid middle="xs">
               <Grid.Column xs={6}>
                 <p>
@@ -184,7 +190,13 @@ function MailboxVerificationModal(props) {
               </Grid.Column>
             </Grid>
           </Form>
-          <Form id="domain-email-verification-abuse">
+          <Form
+            id="domain-email-verification-abuse"
+            onSubmit={e => {
+              e.preventDefault();
+              verifyWithAbuse();
+            }}
+          >
             <Grid middle="xs">
               <Grid.Column xs={6}>
                 <p>
