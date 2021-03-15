@@ -15,12 +15,14 @@ export function useSparkPostMutation(mutationFn, config = {}) {
   const { method } = mutationFn();
   const { queryClient, auth, dispatch } = usePrepareQuery();
 
+  // Derive an async request based on the passed-in variables derived from the `mutationFn`
   function derivedMutationFn(vars, config) {
     const derivedQueryKey = deriveQueryKey({ queryFn: () => mutationFn(vars, config), auth });
 
     return defaultQueryFn({ queryKey: derivedQueryKey });
   }
 
+  // Return an instance of `useMutation` with the derived mutation function as well as some default configuration
   return useMutation(derivedMutationFn, {
     onError: error => handleError({ error, method, queryClient, auth, dispatch }),
     ...config,
