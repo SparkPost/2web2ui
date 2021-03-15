@@ -1,104 +1,117 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Field, reset, reduxForm } from 'redux-form';
-import { Button, Checkbox, Panel, Stack } from 'src/components/matchbox';
-import { TextFieldWrapper, CheckboxWrapper } from 'src/components';
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { Button, Checkbox, Panel, Stack, TextField } from 'src/components/matchbox';
+import { SubaccountTypeahead } from 'src/components/typeahead';
 import { Form } from 'src/components/tracking/form';
-import { showAlert } from 'src/actions/globalAlert';
-import { createOrUpdateSuppressions } from 'src/actions/suppressions';
-import SubaccountTypeaheadWrapper from 'src/components/reduxFormWrappers/SubaccountTypeaheadWrapper';
-import { required, email } from 'src/helpers/validation';
+import { useAlert, useSparkPostMutation } from 'src/hooks';
+import { createOrUpdateSuppressions } from 'src/helpers/api/suppressions';
+import { email } from 'src/helpers/validation';
 
-const FORM_NAME = 'addSuppression';
+export default function AddForm() {
+  const { showAlert } = useAlert();
+  const form = useForm();
+  const mutation = useSparkPostMutation(
+    (args = {}) => {
+      const { recipients, subaccount } = args;
 
-export class AddForm extends Component {
-  atLeastOne = (_value, { types }) =>
-    !_.some(_.values(types)) ? 'You must select at least one Type' : undefined;
-
-  onSubmit = ({ description, recipient, subaccount, types }) => {
-    const { reset, showAlert } = this.props;
-    const recipients = _.reduce(
-      types,
-      (result, checked, type) => {
-        if (!checked) {
-          return result;
-        }
-
-        return [...result, { recipient, description, type }];
+      return createOrUpdateSuppressions(recipients, subaccount);
+    },
+    {
+      onSuccess: () => {
+        showAlert({ type: 'success', message: 'Successfully updated your suppression list' });
+        form.reset();
       },
-      [],
-    );
+    },
+  );
 
-    return this.props.createOrUpdateSuppressions(recipients, subaccount).then(() => {
-      showAlert({ message: 'Successfully updated your suppression list', type: 'success' });
-      reset(FORM_NAME);
-    });
+  const submitHandler = data => {
+    const { subaccount } = data;
+    const recipients = mapDataToRecipients(data);
+
+    return mutation.mutate({ recipients, subaccount });
   };
 
-  render() {
-    const { handleSubmit, pristine, submitting } = this.props;
+  return (
+    <Form onSubmit={form.handleSubmit(submitHandler)} id="suppressions-add-form">
+      <Panel.Section>
+        <Stack>
+          <TextField
+            label="Email Address"
+            name="recipient"
+            id="email-address-textfield"
+            disabled={mutation.status === 'loading'}
+            ref={form.register({ required: true, validate: email })}
+            error={form.errors.recipient ? 'A valid email address is required.' : null}
+            defaultValue=""
+          />
 
-    return (
-      <>
-        <Form onSubmit={handleSubmit(this.onSubmit)} id="suppressions-add-form">
-          <Panel.LEGACY.Section>
-            <Stack>
-              <Field
-                name="recipient"
-                component={TextFieldWrapper}
-                validate={[required, email]}
-                required
-                label="Email Address"
-              />
-              <Field
-                component={SubaccountTypeaheadWrapper}
-                disabled={submitting}
-                helpText="Leaving this field blank will add the suppressions to the primary account."
-                name="subaccount"
-              />
-              <Checkbox.Group label="Type" required>
-                <Field
-                  component={CheckboxWrapper}
-                  name="types.transactional"
-                  label="Transactional"
-                  type="checkbox"
-                />
-                <Field
-                  component={CheckboxWrapper}
-                  name="types.non_transactional"
-                  label="Non-Transactional"
-                  type="checkbox"
-                  validate={this.atLeastOne}
-                />
-              </Checkbox.Group>
-              <Field name="description" component={TextFieldWrapper} label="Description" />
-            </Stack>
-          </Panel.LEGACY.Section>
+          <Controller
+            as={SubaccountTypeahead}
+            control={form.control}
+            name="subaccount"
+            id="subaccount-typeahead"
+            disabled={mutation.status === 'loading'}
+            helpText="Leaving this field blank will add the suppressions to the primary account."
+            defaultValue=""
+          />
 
-          <Panel.LEGACY.Section>
-            <Button variant="primary" disabled={pristine || submitting} type="submit">
-              Add / Update
-            </Button>
-          </Panel.LEGACY.Section>
-        </Form>
-      </>
-    );
-  }
+          <Checkbox.Group label="Type">
+            <Checkbox
+              label="Transactional"
+              name="type.transactional"
+              id="transactional-checkbox"
+              disabled={mutation.status === 'loading'}
+              ref={form.register({
+                validate: () => {
+                  const { type } = form.getValues();
+
+                  return type.non_transactional || type.transactional;
+                },
+              })}
+              error={form.errors.type ? '"Type" is required.' : null}
+            />
+
+            <Checkbox
+              label="Non-Transactional"
+              name="type.non_transactional"
+              id="non-transactional-checkbox"
+              disabled={mutation.status === 'loading'}
+              ref={form.register}
+            />
+          </Checkbox.Group>
+
+          <TextField
+            label="Description"
+            name="description"
+            id="description-textfield"
+            ref={form.register}
+            defaultValue=""
+          />
+        </Stack>
+      </Panel.Section>
+
+      <Panel.Section>
+        <Button variant="primary" loading={mutation.status === 'loading'} type="submit">
+          Add / Update
+        </Button>
+      </Panel.Section>
+    </Form>
+  );
 }
 
-const mapStateToProps = () => ({
-  initialValues: {
-    types: {
-      non_transactional: false,
-      transactional: false,
-    },
-  },
-});
+function mapDataToRecipients(data) {
+  const { recipient, description, type } = data;
 
-export default withRouter(
-  connect(mapStateToProps, { showAlert, createOrUpdateSuppressions, reset })(
-    reduxForm({ form: FORM_NAME })(AddForm),
-  ),
-);
+  return _.reduce(
+    type,
+    (result, checked, type) => {
+      if (!checked) {
+        return result;
+      }
+
+      return [...result, { recipient, description, type }];
+    },
+    [],
+  );
+}
