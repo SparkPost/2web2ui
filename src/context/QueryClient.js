@@ -8,9 +8,6 @@ const queryClient = new QueryClient({
     queries: {
       queryFn: defaultQueryFn,
     },
-    mutations: {
-      mutationFn: defaultQueryFn,
-    },
   },
 });
 
