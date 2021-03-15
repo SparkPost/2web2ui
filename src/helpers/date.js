@@ -1,6 +1,12 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { listTimeZones, findTimeZone, getUTCOffset, setTimeZone } from 'timezone-support';
+import {
+  listTimeZones,
+  findTimeZone,
+  getUTCOffset,
+  getZonedTime,
+  setTimeZone,
+} from 'timezone-support';
 import { formatZonedTime } from 'timezone-support/dist/parse-format';
 import config from 'src/config';
 import { roundBoundaries } from './metrics';
@@ -205,15 +211,18 @@ export const parseDatetime = (...args) =>
 /**
  * @name parseDateTimeTz
  * @description combines a date string and time string and to generate a date object
- * @param {string} timezone
- * @param {Date} date
- * @param {Date} time
+ * @param {string} timezone timezone string derived from [timezone-support](https://github.com/prantlf/timezone-support/blob/HEAD/docs/API.md)
+ * @param {string} date formatted YYYY-MM-DD, e.g. "2021-02-09"
+ * @param {string} time formatted h:mma, e.g. "9:29am"
  * @returns Moment date
  */
 export const parseDateTimeTz = ({ timezone, date, time }) => {
   const timezoneObj = findTimeZone(timezone);
+  const dateStr = `${date} ${time}`;
+  const dateObj = moment(dateStr, FORMATS.MOMENT.INPUT_DATETIMES, true).toDate();
+  const dateTime = getZonedTime(dateObj, timezoneObj);
 
-  return moment(`${date} ${time}`, FORMATS.MOMENT.INPUT_DATETIMES, true, timezoneObj);
+  return moment(dateTime, FORMATS.MOMENT.INPUT_DATETIMES, true);
 };
 
 export const fillByDate = ({ dataSet, fill = {}, from, to } = {}) => {
