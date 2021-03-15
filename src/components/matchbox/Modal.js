@@ -17,7 +17,13 @@ function Modal(props) {
   let modalTitle = '';
   React.Children.map(props.children, function(child) {
     if (child?.type && child.type.displayName === 'Modal.Header') {
-      modalTitle = child.props.children;
+      if (React.isValidElement(child.props.children)) {
+        React.Children.map(child.props.children, function(c) {
+          if (c?.type && c.type.name === 'ScreenReaderOnly') modalTitle = c.props.children;
+        });
+      } else {
+        modalTitle = child.props.children;
+      }
     }
   });
 
