@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { GlobalAlertWrapper } from 'src/components';
 import { TestApp } from 'src/__testHelpers__';
 import useAlert from './useAlert';
 
@@ -30,6 +31,7 @@ describe('useAlert', () => {
     render(
       <TestApp>
         <Demo />
+        <GlobalAlertWrapper />
       </TestApp>,
     );
 
