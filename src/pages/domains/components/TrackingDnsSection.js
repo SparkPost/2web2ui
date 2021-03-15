@@ -72,7 +72,7 @@ export default function TrackingDnsSection({ domain, isSectionVisible, title }) 
                   </Text>
                   <TranslatableText>record for this domain at your DNS provider.</TranslatableText>
                 </p>
-                <Panel.Action onClick={onSubmit}>
+                <Panel.Action type="submit">
                   <TranslatableText>Re-Verify Domain </TranslatableText>
                   <Autorenew size={18} />
                 </Panel.Action>

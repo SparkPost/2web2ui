@@ -131,7 +131,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
             ) : (
               <Panel.Section>
                 Below is the records for this domain at your DNS provider
-                <Panel.Action onClick={() => onSubmit({ reVerify: true })}>
+                <Panel.Action onClick={() => onSubmit({ reVerify: true })} type="submit">
                   <TranslatableText>Re-Verify Domain </TranslatableText>
                   <Autorenew size={18} />
                 </Panel.Action>
