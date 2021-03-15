@@ -5,10 +5,10 @@ import { Form } from 'src/components/form';
 import { Button, Panel, TextField, Modal, Stack } from 'src/components/matchbox';
 
 const ModalWrapper = props => {
-  const { open, onClose, children } = props;
+  const { open, onClose, children, title } = props;
 
   return (
-    <Modal.LEGACY open={open} onClose={onClose} showCloseButton={true}>
+    <Modal.LEGACY open={open} onClose={onClose} showCloseButton={true} title={title}>
       {children}
     </Modal.LEGACY>
   );
@@ -88,7 +88,7 @@ const DuplicateTemplateModal = props => {
 
   if (isLoading) {
     return (
-      <ModalWrapper {...modalProps}>
+      <ModalWrapper {...modalProps} title="Duplicate Template">
         <PanelLoading minHeight="330px" />
       </ModalWrapper>
     );
