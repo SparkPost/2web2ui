@@ -182,11 +182,7 @@ function MailboxVerificationModal(props) {
                 </p>
               </Grid.Column>
               <Grid.Column xs={6}>
-                <VerifyButton
-                  onClick={verifyWithPostmaster}
-                  variant="secondary"
-                  submitting={verifyEmailLoading}
-                />
+                <VerifyButton variant="secondary" submitting={verifyEmailLoading} />
               </Grid.Column>
             </Grid>
           </Form>
@@ -204,11 +200,7 @@ function MailboxVerificationModal(props) {
                 </p>
               </Grid.Column>
               <Grid.Column xs={6}>
-                <VerifyButton
-                  onClick={verifyWithAbuse}
-                  variant="secondary"
-                  submitting={verifyEmailLoading}
-                />
+                <VerifyButton variant="secondary" submitting={verifyEmailLoading} />
               </Grid.Column>
             </Grid>
           </Form>
