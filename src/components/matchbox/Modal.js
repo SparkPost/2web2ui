@@ -14,12 +14,19 @@ const LEGACY = props => {
 };
 
 function Modal(props) {
-  let modalTitle;
+  let modalTitle = '';
   React.Children.map(props.children, function(child) {
     if (child?.type && child.type.displayName === 'Modal.Header') {
       modalTitle = child.props.children;
     }
   });
+
+  if (Boolean(modalTitle)) {
+    // eslint-disable-next-line
+    console.warn(
+      'This modal will not be tracked with a correct name. Please use `Modal.Header` along with `ScreenReaderOnly` to avoid this problem',
+    );
+  }
 
   return (
     <TrackModal open={props.open} title={modalTitle}>
