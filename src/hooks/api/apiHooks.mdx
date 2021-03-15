@@ -83,14 +83,49 @@ function MyComponent() {
 
 ## useSparkPostQueries
 
-Similar to `useSparkPostQuery`, but can be passed in multiple, dynamic request configurations. This
-is used when data is codependent and can dynamically accept a number of requests. This should NOT be
-used in preference over running a known number of parallel requests as in the previous example.
-Defer to using `useSparkPostQuery` instead.
+Similar to useSparkPostQuery, but can be passed in multiple request configurations. This is used
+when data is codependent and can dynamically accept a number of requests. This should NOT be used in
+preference over running a known number of parallel requests as in the previous example. Defer to
+using `useSparkPostQuery` instead.
 
 ```js
-const queries = useSparkPostQueries([getAccount, () => getUserId({ userId }))], { enabled: true })
+const queries = useSparkPostQueries([...dynamicRequests], {
+  enabled: Boolean(reportOptions.isReady && groupBy && reformattedMetrics.length),
+  refetchOnWindowFocus: false,
+});
 ```
 
-Because of the variable number of requests and joining of data, the last parameter is an array of
-dependencies used for the query key.
+## useSparkPostMutation
+
+Use [mutations](https://react-query.tanstack.com/guides/mutations) to handle PUT and POST requests
+via the `useSparkPostMutation` hook. This hook accepts a mutation function and mutation
+configuration options as arguments. For more detail, read the API docs for the `react-query` hook:
+[useMutation](https://react-query.tanstack.com/reference/useMutation).
+
+```js
+import { addTodo } from 'src/helpers/api/todos';
+
+const mutation = useSparkPostMutation(newTodo => addTodo(newTodo), {
+  onSuccess: () => window.alert('This is a success callback'),
+});
+
+function MyComponent() {
+  const newTodo = {
+    name: 'say hello to my little friend.',
+    status: 'incomplete',
+  };
+  return (
+    <div>
+      {mutation.status === 'idle' && (
+        <button onClick={() => mutation.mutate(newTodo)}>Add New Todo</button>
+      )}
+
+      {mutation.status === 'loading' && <p>Loading...</p>}
+
+      {mutation.status === 'error' && <p>Something went wrong</p>}
+
+      {mutation.status === 'success' && <p>You added a new todo! Woohoo!</p>}
+    </div>
+  );
+}
+```
