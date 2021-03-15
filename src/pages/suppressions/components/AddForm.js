@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Button, Checkbox, Panel, Stack, TextField } from 'src/components/matchbox';
-import { SubaccountTypeahead } from 'src/components/typeahead';
-import { Form } from 'src/components/tracking/form';
+import { Form } from 'src/components/form';
+import { SubaccountTypeaheadController } from 'src/components/reactHookFormControllers';
 import { useAlert, useSparkPostMutation } from 'src/hooks';
 import { createOrUpdateSuppressions } from 'src/helpers/api/suppressions';
 import { email } from 'src/helpers/validation';
@@ -12,25 +12,27 @@ export default function AddForm() {
   const { showAlert } = useAlert();
   const form = useForm();
   const mutation = useSparkPostMutation(
-    (args = {}) => {
-      const { recipients, subaccount } = args;
-
-      return createOrUpdateSuppressions(recipients, subaccount);
-    },
-    {
-      onSuccess: () => {
-        showAlert({ type: 'success', message: 'Successfully updated your suppression list' });
-        form.reset();
-      },
-    },
+    ({ recipients, subaccount } = {}) => createOrUpdateSuppressions(recipients, subaccount),
+    { onSuccess: handleSuccess },
   );
 
-  const submitHandler = data => {
+  function handleSuccess() {
+    showAlert({ type: 'success', message: 'Successfully updated your suppression list' });
+    form.reset();
+  }
+
+  function submitHandler(data) {
     const { subaccount } = data;
     const recipients = mapDataToRecipients(data);
 
     return mutation.mutate({ recipients, subaccount });
-  };
+  }
+
+  function hasTypeSelected() {
+    const { type } = form.getValues();
+
+    return type.non_transactional || type.transactional;
+  }
 
   return (
     <Form onSubmit={form.handleSubmit(submitHandler)} id="suppressions-add-form">
@@ -46,14 +48,12 @@ export default function AddForm() {
             defaultValue=""
           />
 
-          <Controller
-            as={SubaccountTypeahead}
+          <SubaccountTypeaheadController
             control={form.control}
             name="subaccount"
             id="subaccount-typeahead"
             disabled={mutation.status === 'loading'}
             helpText="Leaving this field blank will add the suppressions to the primary account."
-            defaultValue=""
           />
 
           <Checkbox.Group label="Type">
@@ -62,13 +62,7 @@ export default function AddForm() {
               name="type.transactional"
               id="transactional-checkbox"
               disabled={mutation.status === 'loading'}
-              ref={form.register({
-                validate: () => {
-                  const { type } = form.getValues();
-
-                  return type.non_transactional || type.transactional;
-                },
-              })}
+              ref={form.register({ validate: hasTypeSelected })}
               error={form.errors.type ? '"Type" is required.' : null}
             />
 
@@ -92,7 +86,12 @@ export default function AddForm() {
       </Panel.Section>
 
       <Panel.Section>
-        <Button variant="primary" loading={mutation.status === 'loading'} type="submit">
+        <Button
+          variant="primary"
+          disabled={!form.formState.isDirty}
+          loading={mutation.status === 'loading'}
+          type="submit"
+        >
           Add / Update
         </Button>
       </Panel.Section>
@@ -100,6 +99,11 @@ export default function AddForm() {
   );
 }
 
+/**
+ * @description Remaps UI form data to array of recipients as expected by the Suppressions API
+ * @param {object} data form data
+ * @returns array of recipients as required when making a PUT to /api/v1/suppression-list - see the [API docs](https://developers.sparkpost.com/api/suppression-list/#suppression-list-put-bulk-create-or-update-suppressions) for more
+ */
 function mapDataToRecipients(data) {
   const { recipient, description, type } = data;
 

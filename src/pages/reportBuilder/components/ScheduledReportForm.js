@@ -22,7 +22,7 @@ import { AsyncActionModal, ButtonWrapper, RadioButtonGroup } from 'src/component
 import { hasAtLeastOneRecipient, recipientUserToString } from '../helpers/scheduledReports';
 import { DAY_OF_WEEK_OPTIONS, WEEK_OPTIONS } from '../constants/scheduledReports';
 import { ComboBoxTypeahead } from 'src/components/typeahead/ComboBoxTypeahead';
-import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrappers';
+import { ComboBoxTypeaheadController } from 'src/components/reactHookFormControllers';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import useModal from 'src/hooks/useModal';
 
@@ -78,7 +78,7 @@ export const ScheduledReportDetailsForm = ({
     });
   };
   const Typeahead = (
-    <ComboBoxTypeaheadWrapper
+    <ComboBoxTypeaheadController
       disabled={disabled}
       error={errors.recipients && 'At least 1 recipient must be selected'}
       id="to-address"
