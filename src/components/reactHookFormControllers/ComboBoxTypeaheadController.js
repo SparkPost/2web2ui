@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ComboBoxTypeahead } from 'src/components/typeahead/ComboBoxTypeahead';
+import { ComboBoxTypeahead } from 'src/components/typeahead';
 
 export function ComboBoxTypeaheadController(props) {
   const { name, setValue, value = [], ...rest } = props;
