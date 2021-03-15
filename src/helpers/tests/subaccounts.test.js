@@ -19,7 +19,7 @@ describe('subaccount helpers', () => {
     });
   });
 
-  describe('setSubaccountHeader helper tests', () => {
+  describe('setSubaccountHeader', () => {
     it('should set headers to empty object if subaccount is null', () => {
       expect(subaccounts.setSubaccountHeader()).toEqual({});
     });
