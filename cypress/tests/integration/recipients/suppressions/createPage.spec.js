@@ -44,14 +44,14 @@ describe('The create suppressions page', () => {
         expect(xhr.request.body).to.deep.equal({
           recipients: [
             {
-              recipient: 'fake-email@fake.com',
-              type: 'non_transactional',
               description: 'this is a description',
-            },
-            {
               recipient: 'fake-email@fake.com',
               type: 'transactional',
+            },
+            {
               description: 'this is a description',
+              recipient: 'fake-email@fake.com',
+              type: 'non_transactional',
             },
           ],
         });
@@ -71,7 +71,7 @@ describe('The create suppressions page', () => {
         .focus()
         .blur();
 
-      cy.findByText('Required').should('be.visible');
+      cy.findByText('A valid email address is required.').should('be.visible');
 
       cy.findByRole('textbox', { name: /Email Address/g }).type('fake-email-address@hello.com');
       cy.findByRole('button', { name: 'Add / Update' }).click();
@@ -101,14 +101,11 @@ describe('The create suppressions page', () => {
 
       cy.wait('@suppressionListReq');
 
-      // TODO: Why aren't we handling this with the snackbar? Rendering above the form is also an a11y problem unless we add focus management. We can cut a bug ticket to address.
-      cy.findByRole('heading', { name: 'An error occurred' })
-        .scrollIntoView()
-        .should('be.visible');
-      cy.findByText('Unable to add recipients to your suppression list').should('be.visible');
-      cy.findByRole('button', { name: 'Show Error Details' }).click();
-      cy.findByText('This is an error').should('be.visible');
-      cy.findByRole('button', { name: 'Hide Error Details' }).should('be.visible');
+      cy.withinSnackbar(() => {
+        cy.findByText('Something went wrong.').should('be.visible');
+        cy.findByRole('button', { name: 'View Details' }).click();
+        cy.findByText('This is an error').should('be.visible');
+      });
     });
   });
 

@@ -10,7 +10,7 @@ import { email } from 'src/helpers/validation';
 
 export default function AddForm() {
   const { showAlert } = useAlert();
-  const form = useForm();
+  const form = useForm({ mode: 'onBlur' });
   const mutation = useSparkPostMutation(
     ({ recipients, subaccount } = {}) => createOrUpdateSuppressions({ recipients, subaccount }),
     { onSuccess: handleSuccess },
@@ -74,7 +74,7 @@ export default function AddForm() {
               id="transactional-checkbox"
               disabled={mutation.status === 'loading'}
               ref={form.register({ validate: hasTypeSelected })}
-              error={form.errors.type ? '"Type" is required.' : null}
+              error={form.errors.type ? 'You must select at least one Type' : null}
             />
 
             <Checkbox
