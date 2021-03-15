@@ -12,15 +12,22 @@ export default function AddForm() {
   const { showAlert } = useAlert();
   const form = useForm();
   const mutation = useSparkPostMutation(
-    ({ recipients, subaccount } = {}) => createOrUpdateSuppressions(recipients, subaccount),
+    ({ recipients, subaccount } = {}) => createOrUpdateSuppressions({ recipients, subaccount }),
     { onSuccess: handleSuccess },
   );
 
+  /**
+   * @description handles successful form submission/API request
+   */
   function handleSuccess() {
     showAlert({ type: 'success', message: 'Successfully updated your suppression list' });
     form.reset();
   }
 
+  /**
+   * @description handles form submission after `react-hook-form` handles validation
+   * @returns {function} the returned mutation function derived from `useSparkPostMutation`
+   */
   function submitHandler(data) {
     const { subaccount } = data;
     const recipients = mapDataToRecipients(data);
@@ -28,6 +35,10 @@ export default function AddForm() {
     return mutation.mutate({ recipients, subaccount });
   }
 
+  /**
+   * @description validates whether either "type" field is checked
+   * @returns {boolean}
+   */
   function hasTypeSelected() {
     const { type } = form.getValues();
 
