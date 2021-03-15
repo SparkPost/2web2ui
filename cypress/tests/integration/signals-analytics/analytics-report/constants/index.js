@@ -194,3 +194,62 @@ export const INBOX_METRICS = [
   { name: 'Moved to Inbox Rate' },
   { name: 'Moved to Spam Rate' },
 ];
+
+export const FILTER_OPTIONS = [
+  {
+    label: 'Recipient Domain',
+    url: '/api/v1/metrics/domains**',
+    requestAlias: 'getRecipientDomains',
+    fixture: 'metrics/domains/200.get.json',
+    search: 'hello.com',
+  },
+  {
+    label: 'Sending IP',
+    url: '/api/v1/metrics/sending-ips**',
+    requestAlias: 'getSendingIpMetrics',
+    fixture: 'metrics/sending-ips/200.get.json',
+    search: 'my-sending-ip',
+  },
+  {
+    label: 'IP Pool',
+    url: '/api/v1/metrics/ip-pools**',
+    requestAlias: 'getIpPoolMetrics',
+    fixture: 'metrics/ip-pools/200.get.json',
+    search: 'myPool',
+  },
+  {
+    label: 'Campaign (ID)',
+    url: '/api/v1/metrics/campaigns**',
+    requestAlias: 'getCampaignMetrics',
+    fixture: 'metrics/campaigns/200.get.json',
+    search: 'test-campaign',
+  },
+  {
+    label: 'Campaign (Subject Line)',
+    url: '/api/v1/metrics/subject-campaigns**',
+    requestAlias: 'getCampaignSubjectMetrics',
+    fixture: 'metrics/subject-campaigns/200.get.json',
+    search: 'subject-1',
+  },
+  {
+    label: 'Template',
+    url: '/api/v1/metrics/templates**',
+    requestAlias: 'getTemplateMetrics',
+    fixture: 'metrics/templates/200.get.json',
+    search: 'fake-template-1',
+  },
+  {
+    label: 'Sending Domain',
+    url: '/api/v1/sending-domains',
+    requestAlias: 'getSendingDomains',
+    fixture: 'sending-domains/200.get.json',
+    search: 'bounce.uat.sparkspam.com',
+  },
+  {
+    label: 'Subaccount',
+    url: '/api/v1/subaccounts',
+    requestAlias: 'getSubaccounts',
+    fixture: 'subaccounts/200.get.json',
+    search: 'Fake Subaccount 3',
+  },
+];

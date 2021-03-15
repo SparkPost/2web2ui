@@ -1,5 +1,5 @@
 import { toRegex } from 'cypress/helpers';
-import { PAGE_URL } from './constants';
+import { FILTER_OPTIONS, PAGE_URL } from './constants';
 import {
   commonBeforeSteps,
   getFilterTags,
@@ -232,43 +232,57 @@ describe('Analytics Report filters form', () => {
   });
 
   describe('the filters typeahead', () => {
-    beforeEach(() => navigateToForm());
+    // Dynamically generate a test case according to the config
+    FILTER_OPTIONS.forEach(option => {
+      it(`requests data for the ${option.label} typeahead when the user searches`, () => {
+        // Stub the billing request in order to ensure the "deliverability" product is present on the account
+        cy.stubRequest({
+          url: '/api/v1/billing/subscription',
+          fixture: 'billing/subscription/200.get.include-deliverability.json',
+          requestAlias: 'getBillingSubscription',
+        });
+        cy.visit(`${PAGE_URL}&metrics[0]=count_inbox`); // Has a "deliverability" metric selected so as to render all filter options
+        cy.wait([
+          '@getSubaccounts',
+          '@getDeliverability',
+          '@getTimeSeries',
+          '@getBillingSubscription',
+        ]);
 
-    it('requests data according to the selected filter type', () => {
-      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
-      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
-      cy.findByLabelText('Subaccount').type('Fake Subaccount');
+        cy.findByRole('button', { name: 'Add Filters' }).click();
 
-      cy.wait('@getSubaccounts');
+        cy.withinDrawer(() => {
+          // Loop through each type of filter, make a search, and verify the request renders an option in the typeahead
+          cy.stubRequest({
+            url: option.url,
+            fixture: option.fixture,
+            requestAlias: option.requestAlias,
+          });
+          cy.findByLabelText(TYPE_LABEL).select(option.label);
+          cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
+          cy.findByLabelText(option.label).type(option.search);
+          cy.wait(`@${option.requestAlias}`).then(xhr => {
+            if (xhr.url.includes('match=')) {
+              cy.wrap(xhr.url).should('include', option.search);
+            }
+          });
 
-      cy.findByRole('option', { name: 'Fake Subaccount 1 (ID 101)' }).should('be.visible');
-      cy.findByRole('option', { name: 'Fake Subaccount 2 (ID 102)' }).should('be.visible');
-      cy.findByRole('option', { name: 'Fake Subaccount 3 (ID 103)' })
-        .should('be.visible')
-        .click();
-
-      cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
-      cy.findByRole('radio', { name: 'And' }).should('be.checked');
-      cy.findByRole('radio', { name: 'Or' }).should('not.be.checked');
-    });
-
-    // This test protects against the re-introduction of a bug - https://sparkpost.atlassian.net/browse/SA-2018
-    it('requests data for sending domains successfully when searching for sending domains in the relevant typeahead', () => {
-      cy.stubRequest({
-        url: '/api/v1/sending-domains',
-        fixture: 'sending-domains/200.get.json',
-        requestAlias: 'getSendingDomains',
+          if (option.label === 'Subaccount') {
+            cy.findByRole('option', { name: `${option.search} (ID 103)` })
+              .should('be.visible')
+              .click();
+          } else {
+            cy.findByRole('option', { name: option.search })
+              .should('be.visible')
+              .click();
+          }
+        });
       });
-      cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
-      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
-      cy.findByLabelText('Sending Domain').type('bounce');
-
-      cy.wait('@getSendingDomains');
-
-      cy.findByRole('option', { name: 'bounce.uat.sparkspam.com' }).should('be.visible');
     });
 
     it('returns no results when the user has already added a matching filter', () => {
+      navigateToForm();
+
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
       cy.findByLabelText('Subaccount').type('103');
@@ -283,6 +297,8 @@ describe('Analytics Report filters form', () => {
     });
 
     it('allows the user to enter multiple values as well as remove them after they have been added', () => {
+      navigateToForm();
+
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
 
@@ -303,6 +319,8 @@ describe('Analytics Report filters form', () => {
     });
 
     it('does not request filter options from server until user enters three or more characters', () => {
+      navigateToForm();
+
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
       cy.findByLabelText('Subaccount').type('Fa');
@@ -317,6 +335,8 @@ describe('Analytics Report filters form', () => {
     });
 
     it('allows any value to be added as a custom filter', () => {
+      navigateToForm();
+
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
       cy.findByLabelText('Subaccount').type('Fa');
@@ -331,6 +351,8 @@ describe('Analytics Report filters form', () => {
     });
 
     it('does not allow duplicate custom filters to be selected', () => {
+      navigateToForm();
+
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
       cy.findByLabelText('Subaccount').type('Fa');

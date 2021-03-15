@@ -1,16 +1,16 @@
-import { PAGE_URL } from './constants';
+import { FILTER_OPTIONS, PAGE_URL } from './constants';
 import { commonBeforeSteps } from './helpers';
 
 const TYPE_LABEL = 'Type';
 
-describe('Analytics Report - Compare By', () => {
+describe('Analytics Report compare by form', () => {
   beforeEach(() => {
     commonBeforeSteps();
     cy.visit(PAGE_URL);
   });
 
-  it('Clicking compare button open compare by drawer', () => {
-    openCompareByModal();
+  it('renders the compare by form when the user clicks "Add Comparison"', () => {
+    openCompareByDrawer();
     cy.withinDrawer(() => {
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findAllByLabelText('Subaccount').should('have.length', 2);
@@ -20,8 +20,8 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Clicking add filter adds a new field for a filter', () => {
-    openCompareByModal();
+  it('adds additional filters when the user clicks the relevant "Add" button', () => {
+    openCompareByDrawer();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Add Subaccount' }).should('not.exist');
     });
@@ -33,8 +33,8 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Clicking clear resets the form filters', () => {
-    openCompareByModal();
+  it('resets form filters when clicking "Clear Filters"', () => {
+    openCompareByDrawer();
     fillOutForm();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Add Subaccount' }).click();
@@ -45,8 +45,8 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Changing filter type unsets all existing fields', () => {
-    openCompareByModal();
+  it('unsets all existing fields when the filter type is changed', () => {
+    openCompareByDrawer();
     fillOutForm();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Add Subaccount' }).click();
@@ -62,8 +62,8 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Clicking remove removes the appropriate field', () => {
-    openCompareByModal();
+  it('removes relevant fields when the user clicks a "Remove Filter" button', () => {
+    openCompareByDrawer();
     fillOutForm();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Remove Filter' }).should('not.exist');
@@ -76,8 +76,8 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Properly submits the form and adds to reportOptions', () => {
-    openCompareByModal();
+  it('submit the form and adds data to the Analytics Report state', () => {
+    openCompareByDrawer();
     fillOutForm();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Compare' }).click();
@@ -90,7 +90,7 @@ describe('Analytics Report - Compare By', () => {
       cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
     });
 
-    openCompareByModal();
+    openCompareByDrawer();
 
     cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
     cy.findAllByLabelText('Subaccount')
@@ -101,8 +101,60 @@ describe('Analytics Report - Compare By', () => {
       .should('have.value', 'Fake Subaccount 3 (ID 103)');
   });
 
+  describe('the comparison typeahead', () => {
+    // Dynamically generate a test case according to the config
+    FILTER_OPTIONS.forEach(option => {
+      return it(`requests data for the ${option.label} typeahead when the user searches`, () => {
+        // Stub the billing request in order to ensure the "deliverability" product is present on the account
+        cy.stubRequest({
+          url: '/api/v1/billing/subscription',
+          fixture: 'billing/subscription/200.get.include-deliverability.json',
+          requestAlias: 'getBillingSubscription',
+        });
+        cy.visit(`${PAGE_URL}&metrics[0]=count_inbox`); // Has a "deliverability" metric selected so as to render all filter options
+        cy.wait([
+          '@getSubaccounts',
+          '@getDeliverability',
+          '@getTimeSeries',
+          '@getBillingSubscription',
+        ]);
+
+        cy.stubRequest({
+          url: option.url,
+          fixture: option.fixture,
+          requestAlias: option.requestAlias,
+        });
+
+        cy.findByRole('button', { name: 'Add Comparison' }).click();
+
+        cy.withinDrawer(() => {
+          cy.findByLabelText(TYPE_LABEL).select(option.label);
+          cy.findAllByLabelText(option.label)
+            .first()
+            .type(option.search);
+
+          cy.wait(`@${option.requestAlias}`).then(xhr => {
+            if (xhr.url.includes('match=')) {
+              cy.wrap(xhr.url).should('include', option.search);
+            }
+          });
+
+          if (option.label === 'Subaccount') {
+            cy.findByRole('option', { name: `${option.search} (ID 103)` })
+              .should('be.visible')
+              .click();
+          } else {
+            cy.findByRole('option', { name: option.search })
+              .should('be.visible')
+              .click();
+          }
+        });
+      });
+    });
+  });
+
   it('properly submits form with custom comparisons and adds to report options', () => {
-    openCompareByModal();
+    openCompareByDrawer();
 
     cy.withinDrawer(() => {
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
@@ -133,7 +185,7 @@ describe('Analytics Report - Compare By', () => {
       cy.findByText('St').should('be.visible');
     });
 
-    openCompareByModal();
+    openCompareByDrawer();
 
     cy.withinDrawer(() => {
       cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
@@ -147,8 +199,8 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('clicking remove on tags properly remove comparison filters', () => {
-    openCompareByModal();
+  it('removes tags properly when clicking on tag remove buttons', () => {
+    openCompareByDrawer();
     fillOutForm();
     addOneMoreField();
     cy.withinDrawer(() => {
@@ -175,7 +227,7 @@ describe('Analytics Report - Compare By', () => {
   });
 
   it('appends to filters if 2nd to last comparison removed', () => {
-    openCompareByModal();
+    openCompareByDrawer();
     fillOutForm();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Compare' }).click();
@@ -199,14 +251,14 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it("doesn't render a tooltip if not truncating text", () => {
+  it("doesn't render a tooltip if not truncating text in the aggregated data section", () => {
     cy.wait(['@getDeliverability', '@getTimeSeries']);
 
     cy.stubRequest({
       url: '/api/v1/subaccounts',
       fixture: 'subaccounts/200.get.short.json',
     });
-    openCompareByModal();
+    openCompareByDrawer();
 
     cy.withinDrawer(() => {
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
@@ -263,7 +315,7 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Submits the compare by form and renders multiple charts along with aggregated data below the charts', () => {
+  it('submits the compare by form and renders multiple charts along with aggregated data below the charts', () => {
     // Add metrics that align with the fixture response *and* contain a dynamically calculated metric ('Accepted Rate' in this case)
     cy.findByRole('button', { name: 'Add Metrics' }).click();
     cy.withinDrawer(() => {
@@ -273,7 +325,7 @@ describe('Analytics Report - Compare By', () => {
       cy.findByRole('button', { name: 'Apply Metrics' }).click();
     });
     cy.wait(['@getDeliverability', '@getTimeSeries']);
-    openCompareByModal();
+    openCompareByDrawer();
     fillOutForm();
     cy.withinDrawer(() => {
       cy.findByRole('button', { name: 'Compare' }).click();
@@ -316,8 +368,8 @@ describe('Analytics Report - Compare By', () => {
       });
   });
 
-  it('Shows form error if form contains less than 2 filters', () => {
-    openCompareByModal();
+  it('shows a form error if the form contains fewer than 2 filters', () => {
+    openCompareByDrawer();
     cy.withinDrawer(() => {
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findAllByLabelText('Subaccount').should('have.length', 2);
@@ -332,7 +384,7 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Shows form warning if 10 comparison filters used', () => {
+  it('shows a form warning if 10 comparison filters are used', () => {
     cy.stubRequest({
       url: '/api/v1/subaccounts',
       fixture: 'subaccounts/200.get.many.json',
@@ -342,7 +394,7 @@ describe('Analytics Report - Compare By', () => {
     cy.visit(PAGE_URL);
     cy.wait(['@getManySubaccounts', '@getDeliverability', '@getTimeSeries']);
 
-    openCompareByModal();
+    openCompareByDrawer();
     cy.withinDrawer(() => {
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
 
@@ -403,13 +455,13 @@ describe('Analytics Report - Compare By', () => {
     });
   });
 
-  it('Properly loads form with query parameter', () => {
+  it('loads the form according to the URL query parameters', () => {
     cy.visit(
       '/signals/analytics?comparisons%5B0%5D%5Btype%5D=Subaccount&comparisons%5B0%5D%5Bvalue%5D=Fake%20Subaccount%201%20%28ID%20101%29&comparisons%5B0%5D%5Bid%5D=101&comparisons%5B1%5D%5Btype%5D=Subaccount&comparisons%5B1%5D%5Bvalue%5D=Fake%20Subaccount%203%20%28ID%20103%29&comparisons%5B1%5D%5Bid%5D=103',
     );
     cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
 
-    openCompareByModal();
+    openCompareByDrawer();
     cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
     cy.findAllByLabelText('Subaccount')
       .eq(0)
@@ -420,7 +472,7 @@ describe('Analytics Report - Compare By', () => {
   });
 });
 
-function openCompareByModal() {
+function openCompareByDrawer() {
   cy.findByRole('button', { name: 'Add Comparison' }).click();
 }
 
