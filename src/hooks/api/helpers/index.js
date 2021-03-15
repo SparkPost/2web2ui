@@ -104,7 +104,7 @@ export function handleError({ error, method, queryClient, auth, dispatch }) {
  *
  */
 export function deriveQueryKey({ queryFn, auth }) {
-  const { url, method, params, headers } = queryFn();
+  const { url, method, params, headers, data } = queryFn();
 
-  return [url, { method, params, headers, auth }];
+  return [url, { method, params, headers, auth, data }];
 }
