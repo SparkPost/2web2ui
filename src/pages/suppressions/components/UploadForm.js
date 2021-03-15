@@ -30,7 +30,7 @@ export class UploadForm extends Component {
     return (
       <>
         <Form onSubmit={reduxFormSubmit(this.handleSubmit)} id="suppresions-upload-form">
-          <Panel.LEGACY.Section>
+          <Panel.Section>
             <Stack>
               <Field
                 component={FileFieldWrapper}
@@ -62,13 +62,13 @@ export class UploadForm extends Component {
                 name="subaccount"
               />
             </Stack>
-          </Panel.LEGACY.Section>
+          </Panel.Section>
 
-          <Panel.LEGACY.Section>
+          <Panel.Section>
             <Button variant="primary" disabled={pristine || submitting} type="submit">
               Upload
             </Button>
-          </Panel.LEGACY.Section>
+          </Panel.Section>
         </Form>
       </>
     );
