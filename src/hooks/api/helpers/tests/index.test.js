@@ -29,7 +29,6 @@ describe('Helpers for global API hooks', () => {
           "dispatch": [Function],
           "queryClient": QueryClient {
             "defaultOptions": Object {
-              "mutations": Object {},
               "queries": Object {
                 "queryFn": [Function],
               },
@@ -226,6 +225,7 @@ describe('Helpers for global API hooks', () => {
               "loggedIn": true,
               "other": "stuff",
             },
+            "data": undefined,
             "headers": Object {
               "anotherThing": "here",
             },
