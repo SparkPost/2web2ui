@@ -1,4 +1,5 @@
 import { useMutation } from 'react-query';
+import { defaultQueryFn } from 'src/helpers/api';
 import { usePrepareQuery, deriveQueryKey, handleError } from './helpers';
 
 /**
@@ -11,11 +12,16 @@ import { usePrepareQuery, deriveQueryKey, handleError } from './helpers';
  */
 
 export function useSparkPostMutation(mutationFn, config = {}) {
-  const { queryClient, auth, dispatch } = usePrepareQuery();
   const { method } = mutationFn();
+  const { queryClient, auth, dispatch } = usePrepareQuery();
 
-  return useMutation(mutationFn, {
-    mutationKey: deriveQueryKey({ queryFn: mutationFn, auth }),
+  function derivedMutationFn(vars, config) {
+    const derivedQueryKey = deriveQueryKey({ queryFn: () => mutationFn(vars, config), auth });
+
+    return defaultQueryFn({ queryKey: derivedQueryKey });
+  }
+
+  return useMutation(derivedMutationFn, {
     onError: error => handleError({ error, method, queryClient, auth, dispatch }),
     ...config,
   });
