@@ -27,7 +27,7 @@ function Modal(props) {
     }
   });
 
-  if (Boolean(modalTitle)) {
+  if (!Boolean(modalTitle) && props.open) {
     // eslint-disable-next-line
     console.warn(
       'This modal will not be tracked with a correct name. Please use `Modal.Header` along with `ScreenReaderOnly` to avoid this problem',
