@@ -217,12 +217,13 @@ export const parseDatetime = (...args) =>
  * @returns Moment date
  */
 export const parseDateTimeTz = ({ timezone, date, time }) => {
-  const timezoneObj = findTimeZone(timezone);
-  const dateStr = `${date} ${time}`;
-  const dateObj = moment(dateStr, FORMATS.MOMENT.INPUT_DATETIMES, true).toDate();
-  const dateTime = getZonedTime(dateObj, timezoneObj);
+  const timezoneObj = findTimeZone(timezone); // Retrieve the timezone from the passed in strig
+  const dateObj = parseDatetime(date, time).toDate(); // parse the date time in to a JS date object
+  const zonedTime = getZonedTime(dateObj, timezoneObj); // pass in the date object and the timezone to get the time for the passed-in timezone
+  const formattedZonedTime = formatZonedTime(zonedTime, FORMATS.MOMENT.INPUT_DATETIMES[0]); // format that date according to the config
 
-  return moment(dateTime, FORMATS.MOMENT.INPUT_DATETIMES, true);
+  // And then make it in to a Moment date object
+  return moment(formattedZonedTime, FORMATS.MOMENT.INPUT_DATETIMES, true);
 };
 
 export const fillByDate = ({ dataSet, fill = {}, from, to } = {}) => {

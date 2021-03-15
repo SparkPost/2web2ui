@@ -351,8 +351,8 @@ describe('Date helpers', () => {
     it('returns a valid Moment date time according to the passed in date and timezone', () => {
       const result = parseDateTimeTz({
         timezone: 'America/Belize',
-        date: '2018-01-01',
-        time: '1:00am',
+        date: '2018-03-02',
+        time: '4:33am',
       });
 
       expect(result).toBeValidMomentDate();
