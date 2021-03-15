@@ -4,6 +4,10 @@ import { useModal } from 'src/hooks';
 import { render, fireEvent } from '@testing-library/react';
 import * as segmentHelpers from 'src/helpers/segment';
 jest.mock('src/helpers/segment');
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({ location: '' }),
+}));
 
 describe('segment track is called with correct arguements', () => {
   const MockComponent = ({ legacy = true }) => {
