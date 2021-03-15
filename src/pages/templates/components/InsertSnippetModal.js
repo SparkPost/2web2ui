@@ -11,10 +11,10 @@ import { slugToFriendly } from 'src/helpers/string';
 import useEditorContext from '../hooks/useEditorContext';
 
 const ModalWrapper = props => {
-  const { open, onClose, children } = props;
+  const { open, onClose, children, title = '' } = props;
 
   return (
-    <Modal.LEGACY open={open} onClose={onClose} showCloseButton={true}>
+    <Modal.LEGACY open={open} onClose={onClose} showCloseButton={true} title={title}>
       {children}
     </Modal.LEGACY>
   );
@@ -58,7 +58,7 @@ const InsertSnippetModal = props => {
 
   if (areSnippetsLoading) {
     return (
-      <ModalWrapper {...modalProps}>
+      <ModalWrapper {...modalProps} title="Add a snippet">
         <PanelLoading />
       </ModalWrapper>
     );
