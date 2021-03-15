@@ -96,16 +96,15 @@ function AllowAnyoneAtModal(props) {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} id="domain-verify-by-email">
-      <Modal open onClose={onCancel} showCloseButton>
-        <Modal.Header>Verify through Email</Modal.Header>
-        <Modal.Content>
-          <Stack>
-            <p>
-              Start sending email from this domain by sending a verification email to any mailbox on
-              your domain using the form below.
-            </p>
-
+    <Modal open onClose={onCancel} showCloseButton>
+      <Modal.Header>Verify through Email</Modal.Header>
+      <Modal.Content>
+        <Stack>
+          <p>
+            Start sending email from this domain by sending a verification email to any mailbox on
+            your domain using the form below.
+          </p>
+          <Form onSubmit={handleSubmit(onSubmit)} id="domain-verify-by-email">
             <Grid>
               <Grid.Column xs={6}>
                 <div>
@@ -124,21 +123,21 @@ function AllowAnyoneAtModal(props) {
                 </div>
               </Grid.Column>
             </Grid>
-          </Stack>
-        </Modal.Content>
+          </Form>
+        </Stack>
+      </Modal.Content>
 
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            type="submit"
-            form="domain-verify-by-email"
-            loading={verifyEmailLoading}
-          >
-            Send Email
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Form>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          type="submit"
+          form="domain-verify-by-email"
+          loading={verifyEmailLoading}
+        >
+          Send Email
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 
