@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Snackbar } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 import styles from './Alert.module.scss';
 
 class Alert extends Component {
@@ -58,17 +59,17 @@ class Alert extends Component {
 
     const detailsLink =
       details && !showDetails ? (
-        <a className={styles.Details} onClick={this.handleDetails}>
+        <ButtonLink className={styles.Details} onClick={this.handleDetails}>
           View Details
-        </a>
+        </ButtonLink>
       ) : null;
 
     if (action) {
       const { content: actionContent, ...actionProps } = action;
       actionMarkup = (
-        <a className={styles.Details} {...actionProps}>
+        <ButtonLink className={styles.Details} {...actionProps}>
           {actionContent}
-        </a>
+        </ButtonLink>
       );
     }
 
